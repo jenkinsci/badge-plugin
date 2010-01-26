@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.jvnet.hudson.plugins</groupId>
+        <artifactId>plugin</artifactId>
+        <version>1.337</version><!-- which version of Hudson is this plugin built against? -->
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <name>Groovy Postbuild</name>
+    <groupId>org.jvnet.hudson</groupId>
+    <artifactId>groovy-postbuild</artifactId>
+    <version>1.0</version>
+    <packaging>hpi</packaging>
+    <url>http://wiki.hudson-ci.org/display/HUDSON/Groovy+Postbuild+Plugin</url>
+
+    <developers>
+      <developer>
+        <id>beryx</id>
+        <name>Serban Iordache</name>
+      </developer>
+    </developers>
+    
+    <!-- get every artifact through maven.glassfish.org, which proxies all the artifacts that we need -->
+    <repositories>
+        <repository>
+            <id>m.g.o-public</id>
+            <url>http://maven.glassfish.org/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+        <id>m.g.o-public</id>
+        <url>http://maven.glassfish.org/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+  <scm>
+    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/tags/groovy-postbuild-1.0</connection>
+    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/tags/groovy-postbuild-1.0</developerConnection>
+    <url>https://hudson.dev.java.net/source/browse/hudson/tags/groovy-postbuild-1.0</url>
+  </scm>
+</project>
