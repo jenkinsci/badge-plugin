@@ -11,7 +11,7 @@
     <name>Groovy Postbuild</name>
     <groupId>org.jvnet.hudson</groupId>
     <artifactId>groovy-postbuild</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <url>http://wiki.hudson-ci.org/display/HUDSON/Groovy+Postbuild+Plugin</url>
 
