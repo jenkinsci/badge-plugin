@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2004-2009, Sun Microsystems, Inc., Serban Iordache
+ * Copyright (c) 2004-2010, Sun Microsystems, Inc., Serban Iordache
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -90,6 +90,7 @@ public class GroovyPostbuildAction implements BuildBadgeAction {
 
     public static String getIconPath(String icon) {
 		if(icon == null) return null;
+		if(icon.startsWith("/")) return icon;
 		// Try plugin images dir, fallback to Hudson images dir
 		PluginWrapper wrapper = Hudson.getInstance().getPluginManager().getPlugin(GroovyPostbuildPlugin.class);
 		return new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists()

@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2004-2009, Sun Microsystems, Inc., Serban Iordache
+ * Copyright (c) 2004-2010, Sun Microsystems, Inc., Serban Iordache
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,6 +92,12 @@ public class GroovyPostbuildRecorder extends Recorder {
 			build.getActions().add(GroovyPostbuildAction.createErrorBadge(text));
 		}		
 
+		public GroovyPostbuildSummaryAction createSummary(String icon) {
+			GroovyPostbuildSummaryAction action = new GroovyPostbuildSummaryAction(icon);
+			build.getActions().add(action);
+			return action;
+		}
+		
 		public void buildUnstable() {
 			build.setResult(Result.UNSTABLE);
 		}
