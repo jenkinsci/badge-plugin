@@ -9,7 +9,7 @@
     </parent>
 
     <name>Groovy Postbuild</name>
-    <groupId>org.jvnet.hudson</groupId>
+    <groupId>org.jvnet.hudson.plugins</groupId>
     <artifactId>groovy-postbuild</artifactId>
     <version>1.2-SNAPSHOT</version>
     <packaging>hpi</packaging>
