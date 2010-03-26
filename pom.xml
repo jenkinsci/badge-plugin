@@ -11,7 +11,7 @@
     <name>Groovy Postbuild</name>
     <groupId>org.jvnet.hudson.plugins</groupId>
     <artifactId>groovy-postbuild</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
     <packaging>hpi</packaging>
     <url>http://wiki.hudson-ci.org/display/HUDSON/Groovy+Postbuild+Plugin</url>
 
@@ -36,4 +36,10 @@
         <url>http://maven.glassfish.org/content/groups/public/</url>
         </pluginRepository>
     </pluginRepositories>
+
+  <scm>
+    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/tags/groovy-postbuild-1.2</connection>
+    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/tags/groovy-postbuild-1.2</developerConnection>
+    <url>https://hudson.dev.java.net/source/browse/hudson/tags/groovy-postbuild-1.2</url>
+  </scm>
 </project>
