@@ -40,6 +40,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,11 +58,12 @@ public class GroovyPostbuildRecorder extends Recorder {
 	private final String groovyScript;
 
 	public static class BadgeManager {
-		private final AbstractBuild<?, ?> build;
+		private AbstractBuild<?, ?> build;
 		private final BuildListener listener;
+		private final Set<AbstractBuild<?, ?>> builds = new HashSet<AbstractBuild<?,?>>();
 
 		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener) {
-			this.build = build;
+			setBuild(build);
 			this.listener = listener;
 		}
 		
@@ -68,6 +72,17 @@ public class GroovyPostbuildRecorder extends Recorder {
 		}
 		public AbstractBuild<?, ?> getBuild() {
 			return build;
+		}
+		public void setBuild(AbstractBuild<?, ?> build) {
+			if(build != null) {
+				this.build = build;
+				builds.add(build);
+			}
+		}
+		public boolean setBuildNumber(int buildNumber) {
+			AbstractBuild<?, ?> newBuild = build.getProject().getBuildByNumber(buildNumber);
+			setBuild(newBuild);
+			return (newBuild != null);
 		}
 		public BuildListener getListener() {
 			return listener;
@@ -90,12 +105,46 @@ public class GroovyPostbuildRecorder extends Recorder {
 		}
 		public void addErrorBadge(String text) {
 			build.getActions().add(GroovyPostbuildAction.createErrorBadge(text));
-		}		
+		}
+		public void removeBadges() {
+			List<Action> actions = build.getActions();
+			List<GroovyPostbuildAction> badgeActions = build.getActions(GroovyPostbuildAction.class);
+			for(GroovyPostbuildAction action : badgeActions) {
+				actions.remove(action);
+			}
+		}
+		public void removeBadge(int index) {
+			List<Action> actions = build.getActions();
+			List<GroovyPostbuildAction> badgeActions = build.getActions(GroovyPostbuildAction.class);
+			if(index < 0 || index >= badgeActions.size()) {
+				listener.error("Invalid badge index: " + index + ". Allowed values: 0 .. " + (badgeActions.size()-1));
+			} else {
+				GroovyPostbuildAction action = badgeActions.get(index);
+				actions.remove(action);				
+			}
+		}
 
 		public GroovyPostbuildSummaryAction createSummary(String icon) {
 			GroovyPostbuildSummaryAction action = new GroovyPostbuildSummaryAction(icon);
 			build.getActions().add(action);
 			return action;
+		}
+		public void removeSummaries() {
+			List<Action> actions = build.getActions();
+			List<GroovyPostbuildSummaryAction> summaryActions = build.getActions(GroovyPostbuildSummaryAction.class);
+			for(GroovyPostbuildSummaryAction action : summaryActions) {
+				actions.remove(action);
+			}
+		}
+		public void removeSummary(int index) {
+			List<Action> actions = build.getActions();
+			List<GroovyPostbuildSummaryAction> summaryActions = build.getActions(GroovyPostbuildSummaryAction.class);
+			if(index < 0 || index >= summaryActions.size()) {
+				listener.error("Invalid summary index: " + index + ". Allowed values: 0 .. " + (summaryActions.size()-1));
+			} else {
+				GroovyPostbuildSummaryAction action = summaryActions.get(index);
+				actions.remove(action);				
+			}
 		}
 		
 		public void buildUnstable() {
@@ -182,7 +231,9 @@ public class GroovyPostbuildRecorder extends Recorder {
 		} catch (Exception e) {
 			e.printStackTrace(listener.error("Failed to evaluate groovy script."));
 		}
-		build.save();
+		for(AbstractBuild<?, ?> b : badgeManager.builds) {
+			b.save();
+		}
 		return build.getResult().isBetterThan(Result.FAILURE);
 	}
 

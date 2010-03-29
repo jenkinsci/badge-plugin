@@ -93,8 +93,7 @@ public class GroovyPostbuildAction implements BuildBadgeAction {
 		if(icon.startsWith("/")) return icon;
 		// Try plugin images dir, fallback to Hudson images dir
 		PluginWrapper wrapper = Hudson.getInstance().getPluginManager().getPlugin(GroovyPostbuildPlugin.class);
-		return new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists()
-		    ? "/plugin/" + wrapper.getShortName() + "/images/" + icon
-		    : Hudson.RESOURCE_PATH + "/images/16x16/" + icon;
+		boolean pluginIconExists = (wrapper != null) && new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists();
+		return pluginIconExists ? "/plugin/" + wrapper.getShortName() + "/images/" + icon : Hudson.RESOURCE_PATH + "/images/16x16/" + icon;
     }
 }
