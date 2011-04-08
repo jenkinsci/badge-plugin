@@ -23,7 +23,15 @@ THE SOFTWARE.
 -->
 
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
-  <f:entry title="Groovy script" description="Enter your groovy script here.">
+  <P>behavior: ${instance.behavior}</P>
+  <f:entry title="Groovy script:">
     <f:textarea field="groovyScript" />
+  </f:entry>
+  <f:entry title="If the script fails:" field="behavior">
+    <select name="groovypostbuild.groovyPostbuilRecorder.behavior" align="right" >
+      <f:option value="0" selected="${instance.behavior == 0}">Do nothing</f:option>
+      <f:option value="1" selected="${instance.behavior == 1}">Mark build as unstable</f:option>
+      <f:option value="2" selected="${instance.behavior == 2}">Mark build as failed</f:option>
+    </select>
   </f:entry>
 </j:jelly>

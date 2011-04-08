@@ -40,6 +40,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,15 +58,18 @@ public class GroovyPostbuildRecorder extends Recorder {
 	private static final Logger LOGGER = Logger.getLogger(GroovyPostbuildRecorder.class.getName());
 
 	private final String groovyScript;
+	private final int behavior;
 
 	public static class BadgeManager {
 		private AbstractBuild<?, ?> build;
 		private final BuildListener listener;
+		private final Result scriptFailureResult;
 		private final Set<AbstractBuild<?, ?>> builds = new HashSet<AbstractBuild<?,?>>();
 
-		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener) {
+		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult) {			
 			setBuild(build);
 			this.listener = listener;
+			this.scriptFailureResult = scriptFailureResult;
 		}
 		
 		public Hudson getHudson() {
@@ -156,6 +161,24 @@ public class GroovyPostbuildRecorder extends Recorder {
 		public void buildSuccess() {
 			build.setResult(Result.SUCCESS);
 		}
+
+		public void buildScriptFailed(Exception e) {
+			StringWriter writer = new StringWriter();
+			e.printStackTrace(new PrintWriter(writer));
+			boolean isError = scriptFailureResult.isWorseThan(Result.UNSTABLE);
+			String icon = isError ? "error" : "warning";
+			GroovyPostbuildSummaryAction summary = createSummary(icon + ".gif");
+			summary.appendText("<b><font color=\"red\">Groovy script failed:</font></b><br><pre>", false);
+			summary.appendText(writer.toString(), true);
+			summary.appendText("</pre>", false);
+
+			addShortText("Groovy", "black", isError ? "#FFE0E0" : "#FFFFC0", "1px", isError ? "#E08080" : "#C0C080");
+			
+			Result result = build.getResult();
+			if(result.isBetterThan(scriptFailureResult)) {
+				build.setResult(scriptFailureResult);				
+			}
+		}
 		
 	    public boolean logContains(String regexp) {
 	    	return contains(build.getLogFile(), regexp);
@@ -188,6 +211,7 @@ public class GroovyPostbuildRecorder extends Recorder {
 				}
 			} catch (IOException e) {
 				e.printStackTrace(listener.error("Groovy Postbuild: getMatcher(\"" + f + "\", \"" + regexp + "\") failed."));
+				buildScriptFailed(e);
 			} finally {
 				IOUtils.closeQuietly(reader);
 			}
@@ -208,9 +232,11 @@ public class GroovyPostbuildRecorder extends Recorder {
 	}
 	
 	@DataBoundConstructor
-	public GroovyPostbuildRecorder(String groovyScript) {
+	public GroovyPostbuildRecorder(String groovyScript, int behavior) {
 		this.groovyScript = groovyScript;
+		this.behavior = behavior;
 		LOGGER.fine("GroovyPostbuildRecorder created with groovyScript:\n" + groovyScript);
+		LOGGER.fine("GroovyPostbuildRecorder behavior:" + behavior);
 	}
 
 	@Override
@@ -222,14 +248,21 @@ public class GroovyPostbuildRecorder extends Recorder {
 	public final boolean perform(final AbstractBuild<?, ?> build, final Launcher launcher, final BuildListener listener) throws InterruptedException, IOException {
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
 		LOGGER.fine("perform() called for script:\n" + groovyScript);
-		
-		BadgeManager badgeManager = new BadgeManager(build, listener);
+		LOGGER.fine("behavior: " + behavior);
+		Result scriptFailureResult = Result.SUCCESS;
+		switch(behavior) {
+			case 0: scriptFailureResult = Result.SUCCESS; break;
+			case 1: scriptFailureResult = Result.UNSTABLE; break;
+			case 2: scriptFailureResult = Result.FAILURE; break;
+		}
+		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult);
 		GroovyShell shell = new GroovyShell();
         shell.setVariable("manager", badgeManager);
         try {
 			shell.evaluate(groovyScript);
 		} catch (Exception e) {
-			e.printStackTrace(listener.error("Failed to evaluate groovy script."));
+			e.printStackTrace(listener.error("Failed to evaluate groovy script."));			
+			badgeManager.buildScriptFailed(e);
 		}
 		for(AbstractBuild<?, ?> b : badgeManager.builds) {
 			b.save();
@@ -243,5 +276,9 @@ public class GroovyPostbuildRecorder extends Recorder {
 	
 	public String getGroovyScript() {
 		return groovyScript;
+	}
+	
+	public int getBehavior() {
+		return behavior;
 	}
 }
