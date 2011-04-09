@@ -11,7 +11,7 @@
     <name>Groovy Postbuild</name>
     <groupId>org.jvnet.hudson.plugins</groupId>
     <artifactId>groovy-postbuild</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.4</version>
     <packaging>hpi</packaging>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Groovy+Postbuild+Plugin</url>
 
@@ -56,9 +56,9 @@
   </distributionManagement>
   
   <scm>
-      <connection>scm:svn:https://svn.jenkins-ci.org/trunk/hudson/plugins/groovy-postbuild</connection>
-      <developerConnection>scm:svn:https://svn.jenkins-ci.org/trunk/hudson/plugins/groovy-postbuild</developerConnection>
-      <url>https://svn.jenkins-ci.org/trunk/hudson/plugins/groovy-postbuild</url>
+      <connection>scm:svn:https://svn.jenkins-ci.org/tags/groovy-postbuild-1.4</connection>
+      <developerConnection>scm:svn:https://svn.jenkins-ci.org/tags/groovy-postbuild-1.4</developerConnection>
+      <url>https://svn.jenkins-ci.org/tags/groovy-postbuild-1.4</url>
   </scm>
   
 </project>
