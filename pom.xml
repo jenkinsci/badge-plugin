@@ -37,9 +37,21 @@
         </pluginRepository>
     </pluginRepositories>
 
+    <build>
+      <plugins>
+        <plugin>
+          <artifactId>maven-release-plugin</artifactId>
+          <configuration>
+            <goals>deploy</goals>
+          </configuration>
+        </plugin>
+      </plugins>
+    </build>
+
   <scm>
-    <connection>scm:svn:https://guest@svn.dev.java.net/svn/hudson/tags/groovy-postbuild-1.4</connection>
-    <developerConnection>scm:svn:https://svn.dev.java.net/svn/hudson/tags/groovy-postbuild-1.4</developerConnection>
-    <url>https://hudson.dev.java.net/source/browse/hudson/tags/groovy-postbuild-1.4</url>
+      <connection>scm:svn:https://svn.jenkins-ci.org/trunk/hudson/plugins/groovy-postbuild</connection>
+      <developerConnection>scm:svn:https://svn.jenkins-ci.org/trunk/hudson/plugins/groovy-postbuild</developerConnection>
+      <url>https://svn.jenkins-ci.org/trunk/hudson/plugins/groovy-postbuild</url>
   </scm>
+  
 </project>
