@@ -11,7 +11,7 @@
     <name>Groovy Postbuild</name>
     <groupId>org.jvnet.hudson.plugins</groupId>
     <artifactId>groovy-postbuild</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Groovy+Postbuild+Plugin</url>
 
