@@ -1,12 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>org.jvnet.hudson.plugins</groupId>
-        <artifactId>plugin</artifactId>
-        <version>1.343</version><!-- which version of Hudson is this plugin built against? -->
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>1.400</version>
+  </parent>
 
     <name>Groovy Postbuild</name>
     <groupId>org.jvnet.hudson.plugins</groupId>
@@ -17,48 +15,19 @@
 
     <developers>
       <developer>
+        <id>wolfs</id>
+        <name>Stefan Wolf</name>
+      </developer>
+      <developer>
         <id>beryx</id>
         <name>Serban Iordache</name>
       </developer>
     </developers>
     
-    <!-- get every artifact through maven.glassfish.org, which proxies all the artifacts that we need -->
-    <repositories>
-        <repository>
-            <id>m.g.o-public</id>
-            <url>http://maven.glassfish.org/content/groups/public/</url>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-        <id>m.g.o-public</id>
-        <url>http://maven.glassfish.org/content/groups/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
-
-    <build>
-      <plugins>
-        <plugin>
-          <artifactId>maven-release-plugin</artifactId>
-          <configuration>
-            <goals>deploy</goals>
-          </configuration>
-        </plugin>
-      </plugins>
-    </build>
-
-  <distributionManagement>
-    <repository>
-      <id>maven.jenkins-ci.org</id>
-      <url>http://maven.jenkins-ci.org:8081/content/repositories/releases/</url>
-    </repository>
-  </distributionManagement>
-  
   <scm>
-      <connection>scm:svn:https://svn.jenkins-ci.org/trunk/hudson/plugins/groovy-postbuild</connection>
-      <developerConnection>scm:svn:https://svn.jenkins-ci.org/trunk/hudson/plugins/groovy-postbuild</developerConnection>
-      <url>https://svn.jenkins-ci.org/trunk/hudson/plugins/groovy-postbuild</url>
+    <connection>scm:git:git://github.com/jenkinsci/groovy-postbuild-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/groovy-postbuild-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/groovy-postbuild-plugin</url>
   </scm>
   
 </project>
