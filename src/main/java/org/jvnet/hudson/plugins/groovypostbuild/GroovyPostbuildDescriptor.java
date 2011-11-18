@@ -23,6 +23,10 @@
  */
 package org.jvnet.hudson.plugins.groovypostbuild;
 
+import net.sf.json.JSONObject;
+
+import org.kohsuke.stapler.StaplerRequest;
+
 import hudson.Extension;
 import hudson.model.AbstractProject;
 import hudson.tasks.BuildStepDescriptor;
@@ -31,6 +35,8 @@ import hudson.tasks.Publisher;
 @Extension
 public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
 
+	private boolean enableSecurity = false;
+	
     /**
      * Constructs a {@link GroovyPostbuildDescriptor}.
      */
@@ -62,5 +68,15 @@ public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
 	@Override
     public final boolean isApplicable(final Class<? extends AbstractProject> clazz) {
         return true;
+    }
+    
+    @Override
+    public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
+        enableSecurity = formData.getBoolean("enableGroovyPostBuildSecurity");
+        save();
+        return super.configure(req,formData);
+    }
+    public boolean isSecurityEnabled(){
+    	return enableSecurity;
     }
 }
