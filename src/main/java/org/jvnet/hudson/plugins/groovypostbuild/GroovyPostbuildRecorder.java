@@ -294,10 +294,14 @@ public class GroovyPostbuildRecorder extends Recorder {
 	}
 
     private URL[] getClassPath() throws MalformedURLException {
-        URL[] urls = new URL[classpath.size()];
-        int i = 0;
-        for (GroovyScriptPath path : classpath) {
-            urls[i++] = path.getPath().toURI().toURL();
+        URL[] urls = new URL[0];
+        // even though classpath is final: existing, not updated jobs do not have it set when loaded from disc
+        if(classpath != null) {  
+            urls = new URL[classpath.size()];
+            int i = 0;
+            for (GroovyScriptPath path : classpath) {
+                urls[i++] = path.getPath().toURI().toURL();
+            }
         }
         return urls;
     }
