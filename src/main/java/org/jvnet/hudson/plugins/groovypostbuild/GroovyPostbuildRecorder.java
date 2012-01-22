@@ -23,7 +23,6 @@
  */
 package org.jvnet.hudson.plugins.groovypostbuild;
 
-import groovy.lang.GroovyShell;
 import hudson.AbortException;
 import hudson.Launcher;
 import hudson.model.AbstractBuild;
@@ -42,6 +41,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +54,8 @@ import java.util.regex.PatternSyntaxException;
 
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import groovy.lang.GroovyShell;
+
 /** This class associates {@link GroovyPostbuildAction}s to a build. */
 @SuppressWarnings("unchecked")
 public class GroovyPostbuildRecorder extends Recorder {
@@ -59,8 +63,9 @@ public class GroovyPostbuildRecorder extends Recorder {
 
 	private final String groovyScript;
 	private final int behavior;
+    private final List<GroovyScriptPath> classpath;
 
-	public static class BadgeManager {
+    public static class BadgeManager {
 		private AbstractBuild<?, ?> build;
 		private final BuildListener listener;
 		private final Result scriptFailureResult;
@@ -232,8 +237,9 @@ public class GroovyPostbuildRecorder extends Recorder {
 	}
 	
 	@DataBoundConstructor
-	public GroovyPostbuildRecorder(String groovyScript, int behavior) {
+	public GroovyPostbuildRecorder(String groovyScript, List<GroovyScriptPath> classpath, int behavior) {
 		this.groovyScript = groovyScript;
+        this.classpath = classpath;
 		this.behavior = behavior;
 		LOGGER.fine("GroovyPostbuildRecorder created with groovyScript:\n" + groovyScript);
 		LOGGER.fine("GroovyPostbuildRecorder behavior:" + behavior);
@@ -256,7 +262,8 @@ public class GroovyPostbuildRecorder extends Recorder {
 			case 2: scriptFailureResult = Result.FAILURE; break;
 		}
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult);
-		GroovyShell shell = new GroovyShell();
+        ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
+		GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
         try {
 			shell.evaluate(groovyScript);
@@ -270,7 +277,16 @@ public class GroovyPostbuildRecorder extends Recorder {
 		return build.getResult().isBetterThan(Result.FAILURE);
 	}
 
-	public final BuildStepMonitor getRequiredMonitorService() {
+    private URL[] getClassPath() throws MalformedURLException {
+        URL[] urls = new URL[classpath.size()];
+        int i = 0;
+        for (GroovyScriptPath path : classpath) {
+            urls[i++] = path.getPath().toURI().toURL();
+        }
+        return urls;
+    }
+
+    public final BuildStepMonitor getRequiredMonitorService() {
 		return BuildStepMonitor.NONE;
 	}
 	

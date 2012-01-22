@@ -26,6 +26,16 @@ THE SOFTWARE.
   <f:entry title="Groovy script:">
     <f:textarea field="groovyScript" />
   </f:entry>
+
+  <f:entry title="${%Additional grrovy classpath}" help="/plugin/groovy-postbuild/classpath-help.html">
+    <f:repeatable var="classpath" items="${it.classpath}">
+      <f:textbox value="${classpath}" name="path"/>
+      <div align="right">
+        <f:repeatableDeleteButton />
+      </div>
+    </f:repeatable>
+  </f:entry>
+
   <f:entry title="If the script fails:" field="behavior">
     <select name="groovypostbuild.groovyPostbuilRecorder.behavior" align="right" >
       <f:option value="0" selected="${instance.behavior == 0}">Do nothing</f:option>
