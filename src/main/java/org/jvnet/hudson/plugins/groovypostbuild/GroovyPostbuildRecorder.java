@@ -70,17 +70,25 @@ public class GroovyPostbuildRecorder extends Recorder {
 		private final BuildListener listener;
 		private final Result scriptFailureResult;
 		private final Set<AbstractBuild<?, ?>> builds = new HashSet<AbstractBuild<?,?>>();
+		private final boolean enableSecurity;
 
-		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult) {			
+		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult, boolean enableSecurity) {			
 			setBuild(build);
 			this.listener = listener;
 			this.scriptFailureResult = scriptFailureResult;
+			this.enableSecurity = enableSecurity;
 		}
 		
 		public Hudson getHudson() {
+			if(enableSecurity){
+				throw new SecurityException("access to 'hudson' is denied by global config");
+			}
 			return Hudson.getInstance();
 		}
 		public AbstractBuild<?, ?> getBuild() {
+			if(enableSecurity){
+				throw new SecurityException("access to 'build' is denied by global config");
+			}
 			return build;
 		}
 		public void setBuild(AbstractBuild<?, ?> build) {
@@ -95,6 +103,9 @@ public class GroovyPostbuildRecorder extends Recorder {
 			return (newBuild != null);
 		}
 		public BuildListener getListener() {
+			if(enableSecurity){
+				throw new SecurityException("access to 'listener' is denied by global config");
+			}
 			return listener;
 		}
 		
@@ -249,6 +260,11 @@ public class GroovyPostbuildRecorder extends Recorder {
 	public final Action getProjectAction(final AbstractProject<?, ?> project) {
 		return null;
 	}
+	
+	@Override
+    public GroovyPostbuildDescriptor getDescriptor() {
+        return (GroovyPostbuildDescriptor)super.getDescriptor();
+    }
 
 	@Override
 	public final boolean perform(final AbstractBuild<?, ?> build, final Launcher launcher, final BuildListener listener) throws InterruptedException, IOException {
@@ -261,7 +277,7 @@ public class GroovyPostbuildRecorder extends Recorder {
 			case 1: scriptFailureResult = Result.UNSTABLE; break;
 			case 2: scriptFailureResult = Result.FAILURE; break;
 		}
-		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult);
+		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
         ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
 		GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
@@ -278,10 +294,14 @@ public class GroovyPostbuildRecorder extends Recorder {
 	}
 
     private URL[] getClassPath() throws MalformedURLException {
-        URL[] urls = new URL[classpath.size()];
-        int i = 0;
-        for (GroovyScriptPath path : classpath) {
-            urls[i++] = path.getPath().toURI().toURL();
+        URL[] urls = new URL[0];
+        // even though classpath is final: existing, not updated jobs do not have it set when loaded from disc
+        if(classpath != null) {  
+            urls = new URL[classpath.size()];
+            int i = 0;
+            for (GroovyScriptPath path : classpath) {
+                urls[i++] = path.getPath().toURI().toURL();
+            }
         }
         return urls;
     }
