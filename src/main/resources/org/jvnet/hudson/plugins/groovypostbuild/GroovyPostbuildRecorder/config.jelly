@@ -32,9 +32,9 @@ THE SOFTWARE.
     <f:textarea field="groovyScript" />
   </f:entry>
 
-  <f:entry title="${%Additional grrovy classpath}" help="/plugin/groovy-postbuild/classpath-help.html">
-    <f:repeatable var="classpath" items="${it.classpath}">
-      <f:textbox value="${classpath}" name="path"/>
+  <f:entry title="${%Additional groovy classpath}" help="/plugin/groovy-postbuild/classpath-help.html">
+    <f:repeatable field="classpath">
+      <f:textbox field="path"/>
       <div align="right">
         <f:repeatableDeleteButton />
       </div>

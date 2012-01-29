@@ -23,24 +23,16 @@
  */
 package org.jvnet.hudson.plugins.groovypostbuild;
 
+import groovy.lang.GroovyShell;
 import hudson.AbortException;
 import hudson.Launcher;
-import hudson.model.AbstractBuild;
-import hudson.model.AbstractProject;
-import hudson.model.Action;
-import hudson.model.BuildListener;
-import hudson.model.Hudson;
-import hudson.model.Result;
+import hudson.model.*;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Recorder;
 import hudson.util.IOUtils;
+import org.kohsuke.stapler.DataBoundConstructor;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -51,10 +43,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
-import org.kohsuke.stapler.DataBoundConstructor;
-
-import groovy.lang.GroovyShell;
 
 /** This class associates {@link GroovyPostbuildAction}s to a build. */
 @SuppressWarnings("unchecked")
@@ -72,13 +60,13 @@ public class GroovyPostbuildRecorder extends Recorder {
 		private final Set<AbstractBuild<?, ?>> builds = new HashSet<AbstractBuild<?,?>>();
 		private final boolean enableSecurity;
 
-		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult, boolean enableSecurity) {			
+		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult, boolean enableSecurity) {
 			setBuild(build);
 			this.listener = listener;
 			this.scriptFailureResult = scriptFailureResult;
 			this.enableSecurity = enableSecurity;
 		}
-		
+
 		public Hudson getHudson() {
 			if(enableSecurity){
 				throw new SecurityException("access to 'hudson' is denied by global config");
@@ -108,7 +96,7 @@ public class GroovyPostbuildRecorder extends Recorder {
 			}
 			return listener;
 		}
-		
+
 		public void addShortText(String text) {
 			build.getActions().add(GroovyPostbuildAction.createShortText(text));
 		}
@@ -141,7 +129,7 @@ public class GroovyPostbuildRecorder extends Recorder {
 				listener.error("Invalid badge index: " + index + ". Allowed values: 0 .. " + (badgeActions.size()-1));
 			} else {
 				GroovyPostbuildAction action = badgeActions.get(index);
-				actions.remove(action);				
+				actions.remove(action);
 			}
 		}
 
@@ -164,10 +152,10 @@ public class GroovyPostbuildRecorder extends Recorder {
 				listener.error("Invalid summary index: " + index + ". Allowed values: 0 .. " + (summaryActions.size()-1));
 			} else {
 				GroovyPostbuildSummaryAction action = summaryActions.get(index);
-				actions.remove(action);				
+				actions.remove(action);
 			}
 		}
-		
+
 		public void buildUnstable() {
 			build.setResult(Result.UNSTABLE);
 		}
@@ -189,26 +177,26 @@ public class GroovyPostbuildRecorder extends Recorder {
 			summary.appendText("</pre>", false);
 
 			addShortText("Groovy", "black", isError ? "#FFE0E0" : "#FFFFC0", "1px", isError ? "#E08080" : "#C0C080");
-			
+
 			Result result = build.getResult();
 			if(result.isBetterThan(scriptFailureResult)) {
-				build.setResult(scriptFailureResult);				
+				build.setResult(scriptFailureResult);
 			}
 		}
-		
+
 	    public boolean logContains(String regexp) {
 	    	return contains(build.getLogFile(), regexp);
 	    }
 
 	    public boolean contains(File f, String regexp) {
 	    	Matcher matcher = getMatcher(f, regexp);
-	    	return (matcher != null) && matcher.matches(); 
+	    	return (matcher != null) && matcher.matches();
 		}
 
 	    public Matcher getLogMatcher(String regexp) {
 	    	return getMatcher(build.getLogFile(), regexp);
 	    }
-	    
+
 	    public Matcher getMatcher(File f, String regexp) {
 	    	LOGGER.info("Searching for '" + regexp + "' in '" + f + "'.");
 			Matcher matcher = null;
@@ -244,9 +232,9 @@ public class GroovyPostbuildRecorder extends Recorder {
 	        }
 	        return pattern;
 	    }
-		
+
 	}
-	
+
 	@DataBoundConstructor
 	public GroovyPostbuildRecorder(String groovyScript, List<GroovyScriptPath> classpath, int behavior) {
 		this.groovyScript = groovyScript;
@@ -260,7 +248,7 @@ public class GroovyPostbuildRecorder extends Recorder {
 	public final Action getProjectAction(final AbstractProject<?, ?> project) {
 		return null;
 	}
-	
+
 	@Override
     public GroovyPostbuildDescriptor getDescriptor() {
         return (GroovyPostbuildDescriptor)super.getDescriptor();
@@ -284,7 +272,7 @@ public class GroovyPostbuildRecorder extends Recorder {
         try {
 			shell.evaluate(groovyScript);
 		} catch (Exception e) {
-			e.printStackTrace(listener.error("Failed to evaluate groovy script."));			
+			e.printStackTrace(listener.error("Failed to evaluate groovy script."));
 			badgeManager.buildScriptFailed(e);
 		}
 		for(AbstractBuild<?, ?> b : badgeManager.builds) {
@@ -293,10 +281,14 @@ public class GroovyPostbuildRecorder extends Recorder {
 		return build.getResult().isBetterThan(Result.FAILURE);
 	}
 
+    public List<GroovyScriptPath> getClasspath() {
+        return classpath;
+    }
+
     private URL[] getClassPath() throws MalformedURLException {
         URL[] urls = new URL[0];
         // even though classpath is final: existing, not updated jobs do not have it set when loaded from disc
-        if(classpath != null) {  
+        if(classpath != null) {
             urls = new URL[classpath.size()];
             int i = 0;
             for (GroovyScriptPath path : classpath) {
@@ -309,11 +301,11 @@ public class GroovyPostbuildRecorder extends Recorder {
     public final BuildStepMonitor getRequiredMonitorService() {
 		return BuildStepMonitor.NONE;
 	}
-	
+
 	public String getGroovyScript() {
 		return groovyScript;
 	}
-	
+
 	public int getBehavior() {
 		return behavior;
 	}
