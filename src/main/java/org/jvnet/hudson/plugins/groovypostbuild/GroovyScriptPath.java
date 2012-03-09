@@ -1,13 +1,15 @@
 package org.jvnet.hudson.plugins.groovypostbuild;
 
-import java.io.File;
-
+import hudson.model.AbstractDescribableImpl;
+import hudson.model.Descriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
+
+import java.io.File;
 
 /**
  * @author <a href="mailto:nicolas.deloof@cloudbees.com">Nicolas De loof</a>
  */
-public class GroovyScriptPath {
+public class GroovyScriptPath extends AbstractDescribableImpl<GroovyScriptPath> {
 
     private final File path;
 
@@ -18,5 +20,13 @@ public class GroovyScriptPath {
 
     public File getPath() {
         return path;
+    }
+
+    public static class GroovyScriptPathDescriptor extends Descriptor<GroovyScriptPath> {
+
+        @Override
+        public String getDisplayName() {
+            return "";
+        }
     }
 }
