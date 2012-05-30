@@ -40,20 +40,27 @@ public class GroovyPostbuildAction implements BuildBadgeAction {
     private String background = "#FFFF00";
     private String border = "1px";
     private String borderColor = "#C0C000";
+    private String link;
 
     private GroovyPostbuildAction(String iconPath, String text) {
     	this.iconPath = iconPath;
     	this.text = text;
     }
-    
+
     public static GroovyPostbuildAction createBadge(String icon, String text) {
     	return new GroovyPostbuildAction(getIconPath(icon), text);
     }
-    
+
+    public static GroovyPostbuildAction createBadge(String icon, String text, String link) {
+    	GroovyPostbuildAction action =  new GroovyPostbuildAction(getIconPath(icon), text);
+		action.link = link;
+		return action;
+    }
+
     public static GroovyPostbuildAction createShortText(String text) {
     	return new GroovyPostbuildAction(null, text);
     }
-    
+
     public static GroovyPostbuildAction createShortText(String text, String color, String background, String border, String borderColor) {
     	GroovyPostbuildAction action =  new GroovyPostbuildAction(null, text);
     	action.color = color;
@@ -62,19 +69,19 @@ public class GroovyPostbuildAction implements BuildBadgeAction {
     	action.borderColor = borderColor;
     	return action;
     }
-    
+
     public static GroovyPostbuildAction createInfoBadge(String text) {
     	return new GroovyPostbuildAction(getIconPath("info.gif"), text);
     }
-    
+
     public static GroovyPostbuildAction createWarningBadge(String text) {
     	return new GroovyPostbuildAction(getIconPath("warning.gif"), text);
     }
-    
+
     public static GroovyPostbuildAction createErrorBadge(String text) {
     	return new GroovyPostbuildAction(getIconPath("error.gif"), text);
     }
-        
+
     /* Action methods */
     public String getUrlName() { return ""; }
     public String getDisplayName() { return ""; }
@@ -87,6 +94,7 @@ public class GroovyPostbuildAction implements BuildBadgeAction {
     @Exported public String getBackground() { return background; }
     @Exported public String getBorder() { return border; }
     @Exported public String getBorderColor() { return borderColor; }
+    @Exported public String getLink() { return link; }
 
     public static String getIconPath(String icon) {
 		if(icon == null) return null;
