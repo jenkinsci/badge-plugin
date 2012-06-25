@@ -1,5 +1,6 @@
 package org.jvnet.hudson.plugins.groovypostbuild;
 
+import hudson.Extension;
 import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -22,6 +23,7 @@ public class GroovyScriptPath extends AbstractDescribableImpl<GroovyScriptPath> 
         return path;
     }
 
+    @Extension
     public static class GroovyScriptPathDescriptor extends Descriptor<GroovyScriptPath> {
 
         @Override
