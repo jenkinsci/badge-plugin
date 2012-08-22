@@ -106,6 +106,9 @@ public class GroovyPostbuildRecorder extends Recorder {
 		public void addBadge(String icon, String text) {
 			build.getActions().add(GroovyPostbuildAction.createBadge(icon, text));
 		}
+		public void addBadge(String icon, String text, String link) {
+			build.getActions().add(GroovyPostbuildAction.createBadge(icon, text, link));
+		}
 		public void addInfoBadge(String text) {
 			build.getActions().add(GroovyPostbuildAction.createInfoBadge(text));
 		}
