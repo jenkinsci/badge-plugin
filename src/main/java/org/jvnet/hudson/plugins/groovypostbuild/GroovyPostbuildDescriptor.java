@@ -36,7 +36,7 @@ import hudson.tasks.Publisher;
 public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
 
 	private boolean enableSecurity = false;
-	
+
     /**
      * Constructs a {@link GroovyPostbuildDescriptor}.
      */
@@ -55,9 +55,9 @@ public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
 
     @Override
     public String getHelpFile() {
-        return "/plugin/groovy-postbuild/projectconfig.html";
+        return super.getHelpFile();
     }
-    
+
     /**
      * Checks whether this descriptor is applicable.
      * @param clazz
@@ -69,7 +69,7 @@ public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
     public final boolean isApplicable(final Class<? extends AbstractProject> clazz) {
         return true;
     }
-    
+
     @Override
     public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
         enableSecurity = formData.getBoolean("enableGroovyPostBuildSecurity");
