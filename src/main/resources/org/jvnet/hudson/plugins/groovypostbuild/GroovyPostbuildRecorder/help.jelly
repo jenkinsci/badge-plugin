@@ -1,5 +1,5 @@
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+<l:ajax xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
   <div>
       Executes a groovy script in the Jenkins JVM. Typically, the script checks some conditions and changes accordingly the build result, puts badges next to the build in the build history and/or displays information on the build summary page.
   <br/>The groovy script can use the variable <i>manager</i>, which provides access to the following objects and methods:
@@ -18,8 +18,8 @@
     <li><code>addBadge(icon, text)</code> - puts a badge with the given icon and text.</li>
     <li><code>addBadge(icon, text, link)</code> - puts a badge with the given icon and text linking to link.</li>
     <li><code>addInfoBadge(text)</code> - puts a badge with <img src="${rootURL}/plugin/groovy-postbuild/images/info.gif"/> info icon and the given text.</li>
-    <li><code>addWarningBadge(text)</code> - puts a badge with <img src="${resURL}/images/warning.gif"/> warning icon and the given text.</li>
-    <li><code>addErrorBadge(text)</code> - puts a badge with <img src="${resURL}/images/error.gif"/> error icon and the given text.</li>
+    <li><code>addWarningBadge(text)</code> - puts a badge with <img src="${rootURL}/plugin/groovy-postbuild/images/warning.gif"/> warning icon and the given text.</li>
+    <li><code>addErrorBadge(text)</code> - puts a badge with <img src="${rootURL}/plugin/groovy-postbuild/images/error.gif"/> error icon and the given text.</li>
     <P/>
     <li><code>createSummary(icon)</code> - creates an entry in the build summary page and returns a <i>summary</i> object corresponding to this entry. You can append text to the <i>summary</i> object by calling its <i>appendText</i> methods:
       <ul type="none">
@@ -39,4 +39,4 @@
     }</code></pre>
   See <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Postbuild+Plugin">Jenkins Wiki</a> for more information.
 </div>
-</j:jelly>
+</l:ajax>
