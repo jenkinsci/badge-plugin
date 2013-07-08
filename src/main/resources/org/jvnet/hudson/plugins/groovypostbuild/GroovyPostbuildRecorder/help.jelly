@@ -31,6 +31,8 @@
     <li><code>buildUnstable()</code> - sets the build result to <i>UNSTABLE</i>.</li>
     <li><code>buildFailure()</code> - sets the build result to <i>FAILURE</i>.</li>
     <li><code>buildSuccess()</code> - sets the build result to <i>SUCCESS</i>.</li>
+    <li><code>buildAborted()</code> - sets the build result to <i>ABORTED</i>.</li>
+    <li><code>buildNotBuilt()</code> - sets the build result to <i>NOT_BUILT</i>.</li>
   </ul>
   Example:<pre><code>    if(manager.logContains(".*uses or overrides a deprecated API.*")) {
       manager.addWarningBadge("Thou shalt not use deprecated methods.")

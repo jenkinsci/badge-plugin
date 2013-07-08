@@ -168,6 +168,12 @@ public class GroovyPostbuildRecorder extends Recorder {
 		public void buildSuccess() {
 			build.setResult(Result.SUCCESS);
 		}
+    public void buildAborted() {
+      build.setResult(Result.ABORTED);
+    }
+    public void buildNotBuilt() {
+      build.setResult(Result.NOT_BUILT);
+    }
 
 		public void buildScriptFailed(Exception e) {
 			StringWriter writer = new StringWriter();
