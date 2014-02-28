@@ -23,6 +23,7 @@
  */
 package org.jvnet.hudson.plugins.groovypostbuild;
 
+import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import hudson.AbortException;
 import hudson.Launcher;
@@ -43,6 +44,15 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import org.jenkinsci.plugins.scriptsecurity.sandbox.RejectedAccessException;
+import org.jenkinsci.plugins.scriptsecurity.sandbox.Whitelist;
+import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.GroovySandbox;
+import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
+import org.jenkinsci.plugins.scriptsecurity.scripts.ApprovalContext;
+import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval;
+import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage;
+import org.kohsuke.stapler.Stapler;
+import org.kohsuke.stapler.StaplerRequest;
 
 /** This class associates {@link GroovyPostbuildAction}s to a build. */
 @SuppressWarnings("unchecked")
@@ -50,6 +60,7 @@ public class GroovyPostbuildRecorder extends Recorder {
 	private static final Logger LOGGER = Logger.getLogger(GroovyPostbuildRecorder.class.getName());
 
 	private final String groovyScript;
+    private final boolean sandbox;
 	private final int behavior;
     private final List<GroovyScriptPath> classpath;
 
@@ -67,12 +78,14 @@ public class GroovyPostbuildRecorder extends Recorder {
 			this.enableSecurity = enableSecurity;
 		}
 
+        // TBD: @Whitelisted
 		public Hudson getHudson() {
 			if(enableSecurity){
 				throw new SecurityException("access to 'hudson' is denied by global config");
 			}
 			return Hudson.getInstance();
 		}
+        // TBD: @Whitelisted
 		public AbstractBuild<?, ?> getBuild() {
 			if(enableSecurity){
 				throw new SecurityException("access to 'build' is denied by global config");
@@ -90,6 +103,7 @@ public class GroovyPostbuildRecorder extends Recorder {
 			setBuild(newBuild);
 			return (newBuild != null);
 		}
+        // TBD: @Whitelisted
 		public BuildListener getListener() {
 			if(enableSecurity){
 				throw new SecurityException("access to 'listener' is denied by global config");
@@ -97,24 +111,31 @@ public class GroovyPostbuildRecorder extends Recorder {
 			return listener;
 		}
 
+        @Whitelisted
 		public void addShortText(String text) {
 			build.getActions().add(GroovyPostbuildAction.createShortText(text));
 		}
+        @Whitelisted
 		public void addShortText(String text, String color, String background, String border, String borderColor) {
 			build.getActions().add(GroovyPostbuildAction.createShortText(text, color, background, border, borderColor));
 		}
+        @Whitelisted
 		public void addBadge(String icon, String text) {
 			build.getActions().add(GroovyPostbuildAction.createBadge(icon, text));
 		}
+        @Whitelisted
 		public void addBadge(String icon, String text, String link) {
 			build.getActions().add(GroovyPostbuildAction.createBadge(icon, text, link));
 		}
+        @Whitelisted
 		public void addInfoBadge(String text) {
 			build.getActions().add(GroovyPostbuildAction.createInfoBadge(text));
 		}
+        @Whitelisted
 		public void addWarningBadge(String text) {
 			build.getActions().add(GroovyPostbuildAction.createWarningBadge(text));
 		}
+        @Whitelisted
 		public void addErrorBadge(String text) {
 			build.getActions().add(GroovyPostbuildAction.createErrorBadge(text));
 		}
@@ -159,18 +180,23 @@ public class GroovyPostbuildRecorder extends Recorder {
 			}
 		}
 
+        @Whitelisted
 		public void buildUnstable() {
 			build.setResult(Result.UNSTABLE);
 		}
+        @Whitelisted
 		public void buildFailure() {
 			build.setResult(Result.FAILURE);
 		}
+        @Whitelisted
 		public void buildSuccess() {
 			build.setResult(Result.SUCCESS);
 		}
+        @Whitelisted
     public void buildAborted() {
       build.setResult(Result.ABORTED);
     }
+        @Whitelisted
     public void buildNotBuilt() {
       build.setResult(Result.NOT_BUILT);
     }
@@ -193,15 +219,18 @@ public class GroovyPostbuildRecorder extends Recorder {
 			}
 		}
 
+        @Whitelisted
 	    public boolean logContains(String regexp) {
 	    	return contains(build.getLogFile(), regexp);
 	    }
 
+        // not @Whitelisted unless we know what file that is
 	    public boolean contains(File f, String regexp) {
 	    	Matcher matcher = getMatcher(f, regexp);
 	    	return (matcher != null) && matcher.matches();
 		}
 
+        @Whitelisted
 	    public Matcher getLogMatcher(String regexp) {
 	    	return getMatcher(build.getLogFile(), regexp);
 	    }
@@ -244,14 +273,32 @@ public class GroovyPostbuildRecorder extends Recorder {
 
 	}
 
-	@DataBoundConstructor
+	@Deprecated
 	public GroovyPostbuildRecorder(String groovyScript, List<GroovyScriptPath> classpath, int behavior) {
-		this.groovyScript = groovyScript;
+        this(groovyScript, false, classpath, behavior);
+    }
+
+    private static AbstractProject<?,?> currentProject() {
+        StaplerRequest req = Stapler.getCurrentRequest();
+        return req != null ? req.findAncestorObject(AbstractProject.class) : null;
+    }
+
+	@DataBoundConstructor
+	public GroovyPostbuildRecorder(String groovyScript, boolean sandbox, List<GroovyScriptPath> classpath, int behavior) {
+		this.groovyScript = sandbox ? groovyScript : ScriptApproval.get().configuring(groovyScript, GroovyLanguage.get(), ApprovalContext.create().withCurrentUser().withItem(currentProject()));
+        this.sandbox = sandbox;
         this.classpath = classpath;
 		this.behavior = behavior;
 		LOGGER.fine("GroovyPostbuildRecorder created with groovyScript:\n" + groovyScript);
 		LOGGER.fine("GroovyPostbuildRecorder behavior:" + behavior);
 	}
+
+    private Object readResolve() {
+        if (!sandbox) {
+            ScriptApproval.get().configuring(groovyScript, GroovyLanguage.get(), ApprovalContext.create());
+        }
+        return this;
+    }
 
 	@Override
 	public final Action getProjectAction(final AbstractProject<?, ?> project) {
@@ -276,12 +323,25 @@ public class GroovyPostbuildRecorder extends Recorder {
 		}
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
         ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
-		GroovyShell shell = new GroovyShell(cl);
-        shell.setVariable("manager", badgeManager);
+        Binding binding = new Binding();
+        binding.setVariable("manager", badgeManager);
         try {
-			shell.evaluate(groovyScript);
+            if (sandbox) {
+                final GroovyShell shell = new GroovyShell(cl, binding, GroovySandbox.createSecureCompilerConfiguration());
+                GroovySandbox.runInSandbox(new Runnable() {
+                    @Override public void run() {
+                        shell.evaluate(groovyScript);
+                    }
+                }, Whitelist.all());
+            } else {
+                new GroovyShell(cl, binding).evaluate(ScriptApproval.get().using(groovyScript, GroovyLanguage.get()));
+            }
 		} catch (Exception e) {
+            // TODO could print more refined errors for UnapprovedUsageException and/or RejectedAccessException:
 			e.printStackTrace(listener.error("Failed to evaluate groovy script."));
+            if (e instanceof RejectedAccessException) {
+                ScriptApproval.get().accessRejected((RejectedAccessException) e, ApprovalContext.create());
+            }
 			badgeManager.buildScriptFailed(e);
 		}
 		for(AbstractBuild<?, ?> b : badgeManager.builds) {
@@ -314,6 +374,10 @@ public class GroovyPostbuildRecorder extends Recorder {
 	public String getGroovyScript() {
 		return groovyScript;
 	}
+
+    public boolean isSandbox() {
+        return sandbox;
+    }
 
 	public int getBehavior() {
 		return behavior;

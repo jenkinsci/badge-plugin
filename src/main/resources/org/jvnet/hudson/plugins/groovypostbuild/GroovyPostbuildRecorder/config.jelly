@@ -32,6 +32,10 @@ THE SOFTWARE.
     <f:textarea field="groovyScript" />
   </f:entry>
 
+  <f:entry field="sandbox" title="${%Use Groovy Sandbox}">
+    <f:checkbox/>
+  </f:entry>
+
   <f:entry title="${%Additional groovy classpath}" help="/plugin/groovy-postbuild/classpath-help.html">
     <f:repeatable field="classpath">
       <f:textbox field="path"/>

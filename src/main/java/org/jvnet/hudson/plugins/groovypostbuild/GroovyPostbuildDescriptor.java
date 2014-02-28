@@ -23,18 +23,21 @@
  */
 package org.jvnet.hudson.plugins.groovypostbuild;
 
-import net.sf.json.JSONObject;
-
-import org.kohsuke.stapler.StaplerRequest;
-
 import hudson.Extension;
 import hudson.model.AbstractProject;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Publisher;
+import hudson.util.FormValidation;
+import net.sf.json.JSONObject;
+import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval;
+import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage;
+import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.StaplerRequest;
 
 @Extension
 public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
 
+    // TODO of dubious value, should probably be deleted
 	private boolean enableSecurity = false;
 
     /**
@@ -79,4 +82,10 @@ public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
     public boolean isSecurityEnabled(){
     	return enableSecurity;
     }
+
+    public FormValidation doCheckGroovyScript(@QueryParameter String value, @QueryParameter boolean sandbox) {
+        // TODO try to compile, show error if syntactically malformed
+        return sandbox ? FormValidation.ok() : ScriptApproval.get().checking(value, GroovyLanguage.get());
+    }
+
 }
