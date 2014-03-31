@@ -24,7 +24,6 @@
 package org.jvnet.hudson.plugins.groovypostbuild;
 
 import groovy.lang.Binding;
-import groovy.lang.GroovyShell;
 import hudson.AbortException;
 import hudson.Launcher;
 import hudson.model.*;
@@ -44,23 +43,17 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import org.jenkinsci.plugins.scriptsecurity.sandbox.RejectedAccessException;
-import org.jenkinsci.plugins.scriptsecurity.sandbox.Whitelist;
-import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.GroovySandbox;
+import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.jenkinsci.plugins.scriptsecurity.scripts.ApprovalContext;
-import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval;
-import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage;
-import org.kohsuke.stapler.Stapler;
-import org.kohsuke.stapler.StaplerRequest;
 
 /** This class associates {@link GroovyPostbuildAction}s to a build. */
 @SuppressWarnings("unchecked")
 public class GroovyPostbuildRecorder extends Recorder {
 	private static final Logger LOGGER = Logger.getLogger(GroovyPostbuildRecorder.class.getName());
 
-	private final String groovyScript;
-    private final boolean sandbox;
+	@Deprecated private String groovyScript;
+    private SecureGroovyScript script;
 	private final int behavior;
     private final List<GroovyScriptPath> classpath;
 
@@ -275,18 +268,12 @@ public class GroovyPostbuildRecorder extends Recorder {
 
 	@Deprecated
 	public GroovyPostbuildRecorder(String groovyScript, List<GroovyScriptPath> classpath, int behavior) {
-        this(groovyScript, false, classpath, behavior);
-    }
-
-    private static AbstractProject<?,?> currentProject() {
-        StaplerRequest req = Stapler.getCurrentRequest();
-        return req != null ? req.findAncestorObject(AbstractProject.class) : null;
+        this(new SecureGroovyScript(groovyScript, false), classpath, behavior);
     }
 
 	@DataBoundConstructor
-	public GroovyPostbuildRecorder(String groovyScript, boolean sandbox, List<GroovyScriptPath> classpath, int behavior) {
-		this.groovyScript = sandbox ? groovyScript : ScriptApproval.get().configuring(groovyScript, GroovyLanguage.get(), ApprovalContext.create().withCurrentUser().withItem(currentProject()));
-        this.sandbox = sandbox;
+	public GroovyPostbuildRecorder(SecureGroovyScript script, List<GroovyScriptPath> classpath, int behavior) {
+        this.script = script.configuringWithNonKeyItem();
         this.classpath = classpath;
 		this.behavior = behavior;
 		LOGGER.fine("GroovyPostbuildRecorder created with groovyScript:\n" + groovyScript);
@@ -294,8 +281,9 @@ public class GroovyPostbuildRecorder extends Recorder {
 	}
 
     private Object readResolve() {
-        if (!sandbox) {
-            ScriptApproval.get().configuring(groovyScript, GroovyLanguage.get(), ApprovalContext.create());
+        if (groovyScript != null) {
+            script = new SecureGroovyScript(groovyScript, false).configuring(ApprovalContext.create());
+            groovyScript = null;
         }
         return this;
     }
@@ -326,22 +314,10 @@ public class GroovyPostbuildRecorder extends Recorder {
         Binding binding = new Binding();
         binding.setVariable("manager", badgeManager);
         try {
-            if (sandbox) {
-                final GroovyShell shell = new GroovyShell(cl, binding, GroovySandbox.createSecureCompilerConfiguration());
-                GroovySandbox.runInSandbox(new Runnable() {
-                    @Override public void run() {
-                        shell.evaluate(groovyScript);
-                    }
-                }, Whitelist.all());
-            } else {
-                new GroovyShell(cl, binding).evaluate(ScriptApproval.get().using(groovyScript, GroovyLanguage.get()));
-            }
+            script.evaluate(cl, binding);
 		} catch (Exception e) {
             // TODO could print more refined errors for UnapprovedUsageException and/or RejectedAccessException:
 			e.printStackTrace(listener.error("Failed to evaluate groovy script."));
-            if (e instanceof RejectedAccessException) {
-                ScriptApproval.get().accessRejected((RejectedAccessException) e, ApprovalContext.create());
-            }
 			badgeManager.buildScriptFailed(e);
 		}
 		for(AbstractBuild<?, ?> b : badgeManager.builds) {
@@ -371,13 +347,9 @@ public class GroovyPostbuildRecorder extends Recorder {
 		return BuildStepMonitor.NONE;
 	}
 
-	public String getGroovyScript() {
-		return groovyScript;
+	public SecureGroovyScript getScript() {
+		return script;
 	}
-
-    public boolean isSandbox() {
-        return sandbox;
-    }
 
 	public int getBehavior() {
 		return behavior;
