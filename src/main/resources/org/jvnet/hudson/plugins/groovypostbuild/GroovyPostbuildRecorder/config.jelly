@@ -48,4 +48,11 @@ THE SOFTWARE.
       <f:option value="2" selected="${instance.behavior == 2}">Mark build as failed</f:option>
     </select>
   </f:entry>
+
+  <j:if test="${descriptor.isMatrixProject(it)}">
+    <!-- Here is displayed only for matrix project-->
+    <f:entry field="runForMatrixParent" title="${%Run also for matrix parent}">
+      <f:checkbox />
+    </f:entry>
+  </j:if>
 </j:jelly>
