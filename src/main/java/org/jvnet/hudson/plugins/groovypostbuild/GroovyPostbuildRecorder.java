@@ -211,7 +211,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	    }
 
 	    public Matcher getMatcher(File f, String regexp) {
-	    	LOGGER.info("Searching for '" + regexp + "' in '" + f + "'.");
+	    	LOGGER.fine("Searching for '" + regexp + "' in '" + f + "'.");
 			Matcher matcher = null;
 			BufferedReader reader = null;
 			try {
