@@ -32,6 +32,9 @@ import hudson.matrix.MatrixProject;
 import hudson.matrix.TextAxis;
 
 import org.apache.commons.lang.StringUtils;
+import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval;
+import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -56,6 +59,11 @@ public class GroovyPostbuildRecorderTest {
             "  manager.buildFailure();",
             "}"
     }, '\n');
+
+    @Before
+    public void setUp() throws Exception {
+        ScriptApproval.get().preapprove(SCRIPT_FOR_MATRIX, GroovyLanguage.get());
+    }
     
     @Test
     public void testMatrixProjectWithParent() throws Exception {
