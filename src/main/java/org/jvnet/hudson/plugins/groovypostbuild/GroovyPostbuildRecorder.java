@@ -275,6 +275,11 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
             this(new SecureGroovyScript(groovyScript, false), classpath, behavior, false);
         }
 
+	@Deprecated
+	public GroovyPostbuildRecorder(String groovyScript, List<GroovyScriptPath> classpath, int behavior, boolean runForMatrixParent) {
+        this(new SecureGroovyScript(groovyScript, false), classpath, behavior, runForMatrixParent);
+    }
+
 	@DataBoundConstructor
 	public GroovyPostbuildRecorder(SecureGroovyScript script, List<GroovyScriptPath> classpath, int behavior, boolean runForMatrixParent) {
         this.script = script.configuringWithNonKeyItem();
