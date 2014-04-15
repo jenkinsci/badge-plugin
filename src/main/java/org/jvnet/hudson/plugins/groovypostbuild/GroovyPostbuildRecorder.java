@@ -26,6 +26,9 @@ package org.jvnet.hudson.plugins.groovypostbuild;
 import groovy.lang.Binding;
 import hudson.AbortException;
 import hudson.Launcher;
+import hudson.matrix.MatrixAggregatable;
+import hudson.matrix.MatrixAggregator;
+import hudson.matrix.MatrixBuild;
 import hudson.model.*;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Recorder;
@@ -49,13 +52,14 @@ import org.jenkinsci.plugins.scriptsecurity.scripts.ApprovalContext;
 
 /** This class associates {@link GroovyPostbuildAction}s to a build. */
 @SuppressWarnings("unchecked")
-public class GroovyPostbuildRecorder extends Recorder {
+public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregatable {
 	private static final Logger LOGGER = Logger.getLogger(GroovyPostbuildRecorder.class.getName());
 
 	@Deprecated private String groovyScript;
     private SecureGroovyScript script;
 	private final int behavior;
     private final List<GroovyScriptPath> classpath;
+	private final boolean runForMatrixParent;
 
     public static class BadgeManager {
 		private AbstractBuild<?, ?> build;
@@ -229,7 +233,7 @@ public class GroovyPostbuildRecorder extends Recorder {
 	    }
 
 	    public Matcher getMatcher(File f, String regexp) {
-	    	LOGGER.info("Searching for '" + regexp + "' in '" + f + "'.");
+	    	LOGGER.fine("Searching for '" + regexp + "' in '" + f + "'.");
 			Matcher matcher = null;
 			BufferedReader reader = null;
 			try {
@@ -268,14 +272,15 @@ public class GroovyPostbuildRecorder extends Recorder {
 
 	@Deprecated
 	public GroovyPostbuildRecorder(String groovyScript, List<GroovyScriptPath> classpath, int behavior) {
-        this(new SecureGroovyScript(groovyScript, false), classpath, behavior);
-    }
+            this(new SecureGroovyScript(groovyScript, false), classpath, behavior, false);
+        }
 
 	@DataBoundConstructor
-	public GroovyPostbuildRecorder(SecureGroovyScript script, List<GroovyScriptPath> classpath, int behavior) {
+	public GroovyPostbuildRecorder(SecureGroovyScript script, List<GroovyScriptPath> classpath, int behavior, boolean runForMatrixParent) {
         this.script = script.configuringWithNonKeyItem();
         this.classpath = classpath;
 		this.behavior = behavior;
+		this.runForMatrixParent = runForMatrixParent;
 		LOGGER.fine("GroovyPostbuildRecorder created with groovyScript:\n" + groovyScript);
 		LOGGER.fine("GroovyPostbuildRecorder behavior:" + behavior);
 	}
@@ -353,5 +358,37 @@ public class GroovyPostbuildRecorder extends Recorder {
 
 	public int getBehavior() {
 		return behavior;
+	}
+	
+	public boolean isRunForMatrixParent() {
+		return runForMatrixParent;
+	}
+	
+	/**
+	 * @param build
+	 * @param launcher
+	 * @param listener
+	 * @return
+	 * @see hudson.matrix.MatrixAggregatable#createAggregator(hudson.matrix.MatrixBuild, hudson.Launcher, hudson.model.BuildListener)
+	 */
+	public MatrixAggregator createAggregator(final MatrixBuild build, final Launcher launcher, final BuildListener listener) {
+		if (!isRunForMatrixParent()) {
+			return null;
+		}
+		
+		return new MatrixAggregator(build, launcher, listener) {
+			/**
+			 * Called when all child builds are finished.
+			 * 
+			 * @return
+			 * @throws InterruptedException
+			 * @throws IOException
+			 * @see hudson.matrix.MatrixAggregator#endBuild()
+			 */
+			@Override
+			public boolean endBuild() throws InterruptedException, IOException {
+				return perform(build, launcher, listener);
+			}
+		};
 	}
 }

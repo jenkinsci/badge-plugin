@@ -28,6 +28,7 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.StaplerRequest;
 
 import hudson.Extension;
+import hudson.matrix.MatrixProject;
 import hudson.model.AbstractProject;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Publisher;
@@ -79,5 +80,19 @@ public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
     }
     public boolean isSecurityEnabled(){
     	return enableSecurity;
+    }
+    
+    /**
+     * Check whether the configuring model is {@link MatrixProject}. Called from jelly.
+     * 
+     * Note: Caller should pass it for the model is not bound to
+     * {@link StaplerRequest#findAncestorObject(Class)}
+     * when called via hetelo-list.
+     * 
+     * @param it
+     * @return true if the target model is {@link MatrixProject}
+     */
+    public boolean isMatrixProject(Object it) {
+        return (it != null) && (it instanceof MatrixProject);
     }
 }
