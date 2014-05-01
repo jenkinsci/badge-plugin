@@ -36,9 +36,6 @@ import hudson.util.IOUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,7 +55,6 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	@Deprecated private String groovyScript;
     private SecureGroovyScript script;
 	private final int behavior;
-    private final List<GroovyScriptPath> classpath;
 	private final boolean runForMatrixParent;
 
     public static class BadgeManager {
@@ -259,20 +255,9 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 
 	}
 
-	@Deprecated
-	public GroovyPostbuildRecorder(String groovyScript, List<GroovyScriptPath> classpath, int behavior) {
-            this(new SecureGroovyScript(groovyScript, false), classpath, behavior, false);
-        }
-
-	@Deprecated
-	public GroovyPostbuildRecorder(String groovyScript, List<GroovyScriptPath> classpath, int behavior, boolean runForMatrixParent) {
-        this(new SecureGroovyScript(groovyScript, false), classpath, behavior, runForMatrixParent);
-    }
-
 	@DataBoundConstructor
-	public GroovyPostbuildRecorder(SecureGroovyScript script, List<GroovyScriptPath> classpath, int behavior, boolean runForMatrixParent) {
+	public GroovyPostbuildRecorder(SecureGroovyScript script, int behavior, boolean runForMatrixParent) {
         this.script = script.configuringWithNonKeyItem();
-        this.classpath = classpath;
 		this.behavior = behavior;
 		this.runForMatrixParent = runForMatrixParent;
 		LOGGER.fine("GroovyPostbuildRecorder created with groovyScript:\n" + groovyScript);
@@ -309,7 +294,8 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			case 2: scriptFailureResult = Result.FAILURE; break;
 		}
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult);
-        ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
+        // Could use PluginManager.uberClassLoader, though probably unnecessary since most calls would go through badgeManager.
+        ClassLoader cl = getClass().getClassLoader();
         Binding binding = new Binding();
         binding.setVariable("manager", badgeManager);
         try {
@@ -324,23 +310,6 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		}
 		return build.getResult().isBetterThan(Result.FAILURE);
 	}
-
-    public List<GroovyScriptPath> getClasspath() {
-        return classpath;
-    }
-
-    private URL[] getClassPath() throws MalformedURLException {
-        URL[] urls = new URL[0];
-        // even though classpath is final: existing, not updated jobs do not have it set when loaded from disc
-        if(classpath != null) {
-            urls = new URL[classpath.size()];
-            int i = 0;
-            for (GroovyScriptPath path : classpath) {
-                urls[i++] = path.getPath().toURI().toURL();
-            }
-        }
-        return urls;
-    }
 
     public final BuildStepMonitor getRequiredMonitorService() {
 		return BuildStepMonitor.NONE;

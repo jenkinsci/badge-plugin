@@ -32,6 +32,7 @@ import hudson.matrix.MatrixProject;
 import hudson.matrix.TextAxis;
 
 import org.apache.commons.lang.StringUtils;
+import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript;
 import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval;
 import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage;
 import org.junit.Before;
@@ -39,9 +40,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-/**
- *
- */
 public class GroovyPostbuildRecorderTest {
     @Rule
     public JenkinsRule j = new JenkinsRule();
@@ -71,7 +69,7 @@ public class GroovyPostbuildRecorderTest {
         MatrixProject p = j.createMatrixProject();
         AxisList axisList = new AxisList(new TextAxis("axis1", "value1", "value2"));
         p.setAxes(axisList);
-        p.getPublishersList().add(new GroovyPostbuildRecorder(SCRIPT_FOR_MATRIX, null, 2, true));
+        p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, false), 2, true));
         
         MatrixBuild b = p.scheduleBuild2(0).get();
         j.assertBuildStatusSuccess(b);
@@ -86,7 +84,7 @@ public class GroovyPostbuildRecorderTest {
         MatrixProject p = j.createMatrixProject();
         AxisList axisList = new AxisList(new TextAxis("axis1", "value1", "value2"));
         p.setAxes(axisList);
-        p.getPublishersList().add(new GroovyPostbuildRecorder(SCRIPT_FOR_MATRIX, null, 2, false));
+        p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, false), 2, false));
         
         MatrixBuild b = p.scheduleBuild2(0).get();
         j.assertBuildStatusSuccess(b);
