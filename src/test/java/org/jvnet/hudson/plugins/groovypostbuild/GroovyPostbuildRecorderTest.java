@@ -37,13 +37,14 @@ import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 /**
  *
  */
 public class GroovyPostbuildRecorderTest {
     @Rule
-    public GroovyPostbuildJenkinsRule j = new GroovyPostbuildJenkinsRule();
+    public JenkinsRule j = new JenkinsRule();
     
     private static final String SCRIPT_FOR_MATRIX = StringUtils.join(new String[]{
             "import hudson.matrix.MatrixBuild;",
