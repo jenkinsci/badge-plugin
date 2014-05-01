@@ -23,7 +23,6 @@
  */
 package org.jvnet.hudson.plugins.groovypostbuild;
 
-import net.sf.json.JSONObject;
 
 import org.kohsuke.stapler.StaplerRequest;
 
@@ -35,9 +34,6 @@ import hudson.tasks.Publisher;
 
 @Extension
 public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
-
-    // TODO of dubious value, should probably be deleted
-	private boolean enableSecurity = false;
 
     /**
      * Constructs a {@link GroovyPostbuildDescriptor}.
@@ -72,16 +68,6 @@ public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
         return true;
     }
 
-    @Override
-    public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
-        enableSecurity = formData.getBoolean("enableGroovyPostBuildSecurity");
-        save();
-        return super.configure(req,formData);
-    }
-    public boolean isSecurityEnabled(){
-    	return enableSecurity;
-    }
-    
     /**
      * Check whether the configuring model is {@link MatrixProject}. Called from jelly.
      * 

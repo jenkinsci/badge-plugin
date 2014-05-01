@@ -66,27 +66,19 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		private final BuildListener listener;
 		private final Result scriptFailureResult;
 		private final Set<AbstractBuild<?, ?>> builds = new HashSet<AbstractBuild<?,?>>();
-		private final boolean enableSecurity;
 
-		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult, boolean enableSecurity) {
+		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult) {
 			setBuild(build);
 			this.listener = listener;
 			this.scriptFailureResult = scriptFailureResult;
-			this.enableSecurity = enableSecurity;
 		}
 
         // TBD: @Whitelisted
 		public Hudson getHudson() {
-			if(enableSecurity){
-				throw new SecurityException("access to 'hudson' is denied by global config");
-			}
 			return Hudson.getInstance();
 		}
         // TBD: @Whitelisted
 		public AbstractBuild<?, ?> getBuild() {
-			if(enableSecurity){
-				throw new SecurityException("access to 'build' is denied by global config");
-			}
 			return build;
 		}
 		public void setBuild(AbstractBuild<?, ?> build) {
@@ -102,9 +94,6 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		}
         // TBD: @Whitelisted
 		public BuildListener getListener() {
-			if(enableSecurity){
-				throw new SecurityException("access to 'listener' is denied by global config");
-			}
 			return listener;
 		}
 
@@ -319,7 +308,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			case 1: scriptFailureResult = Result.UNSTABLE; break;
 			case 2: scriptFailureResult = Result.FAILURE; break;
 		}
-		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
+		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult);
         ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
         Binding binding = new Binding();
         binding.setVariable("manager", badgeManager);
