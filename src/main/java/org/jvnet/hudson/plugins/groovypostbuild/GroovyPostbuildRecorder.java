@@ -33,12 +33,14 @@ import hudson.model.*;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Recorder;
 import hudson.util.IOUtils;
+
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -47,6 +49,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import jenkins.model.Jenkins;
+
 /** This class associates {@link GroovyPostbuildAction}s to a build. */
 @SuppressWarnings("unchecked")
 public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregatable {
@@ -54,8 +58,11 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 
 	private final String groovyScript;
 	private final int behavior;
+	//Optional dependency: EnvInject plugin
+	private boolean hasInjectedVariables = (Jenkins.getInstance().getPlugin("envinject") != null);;
     private final List<GroovyScriptPath> classpath;
 	private final boolean runForMatrixParent;
+	
 
     public static class BadgeManager {
 		private AbstractBuild<?, ?> build;
@@ -283,11 +290,26 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			case 1: scriptFailureResult = Result.UNSTABLE; break;
 			case 2: scriptFailureResult = Result.FAILURE; break;
 		}
+		
+		//Contains all of the variables of the environment INCLUDING EnvInject's variables.
+		HashMap<String,String> environmentalVariables = new HashMap<String,String>();
+		
+		//If the optional dependency is fulfilled, we need to populate the hash map.
+		if(hasInjectedVariables){
+			String varURL = build.getAbsoluteUrl() + "/injectedEnvVars/export";
+			setVariables(varURL,environmentalVariables);
+		
+		}
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
         ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
 		GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
-        try {
+        
+        //If we put anything at all into the hashmap, set it in the shell.
+        if(!(environmentalVariables.isEmpty())){
+        	shell.setVariable("envVars", environmentalVariables);
+        }
+        	try {
 			shell.evaluate(groovyScript);
 		} catch (Exception e) {
 			e.printStackTrace(listener.error("Failed to evaluate groovy script."));
@@ -298,7 +320,36 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		}
 		return build.getResult().isBetterThan(Result.FAILURE);
 	}
-
+	
+	//Using the URL to the environment variables, getVariables() goes through and creates a map of all the variables.
+	public void setVariables(String url, HashMap<String,String> variables) throws IOException{
+		URL environmentVariables = new URL(url);
+    	BufferedReader in = new BufferedReader(new InputStreamReader(environmentVariables.openStream()));
+    	String inputLine;
+    	
+    	//Loop through all the lines.
+    	while((inputLine=in.readLine()) != null){
+    		
+    		//inputLine will be in the form "key=value", so to differentiate we need the index of the = sign.
+    		int equalIndex = inputLine.indexOf("=");
+    		String key = "";
+    		String value = "";
+    		
+    		//Get the key by grabbing everything before the equals sign
+    		for(int i = 0;i<equalIndex;i++){
+    			key+=inputLine.charAt(i);
+    		}
+    		
+    		//Get the value by grabbign everything after the equals sign.
+    		for(int i = equalIndex+1;i<inputLine.length();i++){
+    			value+=inputLine.charAt(i);
+    		}
+    		
+    		variables.put(key, value);
+    		
+    	}
+    	in.close();
+	}
     public List<GroovyScriptPath> getClasspath() {
         return classpath;
     }
@@ -331,6 +382,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	public boolean isRunForMatrixParent() {
 		return runForMatrixParent;
 	}
+	
 	
 	/**
 	 * @param build

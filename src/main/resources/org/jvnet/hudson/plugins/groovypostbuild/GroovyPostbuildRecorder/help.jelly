@@ -39,6 +39,8 @@
       manager.createSummary("warning.gif").appendText("&amp;lt;h1&amp;gt;You have been warned!&amp;lt;/h1&amp;gt;", false, false, false, "red")
       manager.buildUnstable()
     }</code></pre>
+	The script can also use the variable "envVars", which is a HashMap of all of the environment variables including any set using EnvInject. This is different from using $WORKSPACE, which is not ideal in master/slave scenarios.
+	Example:<pre><code>	def app_data = envVars["APPDATA"] </code></pre>
   See <a href="https://wiki.jenkins-ci.org/display/JENKINS/Groovy+Postbuild+Plugin">Jenkins Wiki</a> for more information.
 </div>
 </l:ajax>

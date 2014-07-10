@@ -42,7 +42,7 @@ THE SOFTWARE.
   </f:entry>
 
   <f:entry title="If the script fails:" field="behavior">
-    <select name="groovypostbuild.groovyPostbuilRecorder.behavior" align="right" >
+    <select name="groovypostbuild.groovyPostbuildRecorder.behavior" align="right" >
       <f:option value="0" selected="${instance.behavior == 0}">Do nothing</f:option>
       <f:option value="1" selected="${instance.behavior == 1}">Mark build as unstable</f:option>
       <f:option value="2" selected="${instance.behavior == 2}">Mark build as failed</f:option>
@@ -55,4 +55,6 @@ THE SOFTWARE.
       <f:checkbox />
     </f:entry>
   </j:if>
+  
+  
 </j:jelly>

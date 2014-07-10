@@ -23,6 +23,7 @@
  */
 package org.jvnet.hudson.plugins.groovypostbuild;
 
+import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 
 import org.kohsuke.stapler.StaplerRequest;
@@ -37,6 +38,7 @@ import hudson.tasks.Publisher;
 public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
 
 	private boolean enableSecurity = false;
+
 
     /**
      * Constructs a {@link GroovyPostbuildDescriptor}.
@@ -54,6 +56,10 @@ public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
         return "Groovy Postbuild";
     }
 
+    public boolean hasEnvInject(){
+    	return (Jenkins.getInstance().getPlugin("envinject") != null);
+    }
+    
     @Override
     public String getHelpFile() {
         return super.getHelpFile();
