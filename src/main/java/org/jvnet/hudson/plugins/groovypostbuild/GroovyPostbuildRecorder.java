@@ -301,12 +301,8 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
         ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
 		GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
-        
-        //If we put anything at all into the hashmap, set it in the shell.
-        for(String k :environmentalVariables.keySet()){
-        	shell.setVariable(k, environmentalVariables.get(k));
-        }
-        	try {
+        shell.setVariable("environment", environmentalVariables);
+        try {
 			shell.evaluate(groovyScript);
 		} catch (Exception e) {
 			e.printStackTrace(listener.error("Failed to evaluate groovy script."));
