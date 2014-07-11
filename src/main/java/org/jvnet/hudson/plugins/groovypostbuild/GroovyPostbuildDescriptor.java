@@ -55,10 +55,6 @@ public class GroovyPostbuildDescriptor extends BuildStepDescriptor<Publisher> {
     public final String getDisplayName() {
         return "Groovy Postbuild";
     }
-
-    public boolean hasEnvInject(){
-    	return (Jenkins.getInstance().getPlugin("envinject") != null);
-    }
     
     @Override
     public String getHelpFile() {

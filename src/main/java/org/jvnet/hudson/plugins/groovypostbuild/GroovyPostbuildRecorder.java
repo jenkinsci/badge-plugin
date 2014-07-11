@@ -25,6 +25,7 @@ package org.jvnet.hudson.plugins.groovypostbuild;
 
 import groovy.lang.GroovyShell;
 import hudson.AbortException;
+import hudson.EnvVars;
 import hudson.Launcher;
 import hudson.matrix.MatrixAggregatable;
 import hudson.matrix.MatrixAggregator;
@@ -58,8 +59,6 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 
 	private final String groovyScript;
 	private final int behavior;
-	//Optional dependency: EnvInject plugin
-	private boolean hasInjectedVariables = (Jenkins.getInstance().getPlugin("envinject") != null);;
     private final List<GroovyScriptPath> classpath;
 	private final boolean runForMatrixParent;
 	
@@ -291,23 +290,21 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			case 2: scriptFailureResult = Result.FAILURE; break;
 		}
 		
-		//Contains all of the variables of the environment INCLUDING EnvInject's variables.
+		
 		HashMap<String,String> environmentalVariables = new HashMap<String,String>();
-		
-		//If the optional dependency is fulfilled, we need to populate the hash map.
-		if(hasInjectedVariables){
-			String varURL = build.getAbsoluteUrl() + "/injectedEnvVars/export";
-			setVariables(varURL,environmentalVariables);
-		
-		}
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
+		
+		
+		String varURL = getUrl(build);
+		setVariables(varURL,environmentalVariables);
+		
         ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
 		GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
         
         //If we put anything at all into the hashmap, set it in the shell.
-        if(!(environmentalVariables.isEmpty())){
-        	shell.setVariable("envVars", environmentalVariables);
+        for(String k :environmentalVariables.keySet()){
+        	shell.setVariable(k, environmentalVariables.get(k));
         }
         	try {
 			shell.evaluate(groovyScript);
@@ -319,6 +316,9 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			b.save();
 		}
 		return build.getResult().isBetterThan(Result.FAILURE);
+	}
+	public String getUrl(AbstractBuild b){
+		return b.getAbsoluteUrl() + "/injectedEnvVars/export";
 	}
 	
 	//Using the URL to the environment variables, getVariables() goes through and creates a map of all the variables.
