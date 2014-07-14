@@ -69,14 +69,24 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		private final Result scriptFailureResult;
 		private final Set<AbstractBuild<?, ?>> builds = new HashSet<AbstractBuild<?,?>>();
 		private final boolean enableSecurity;
+		private HashMap<String,String> EnvVar = new HashMap<String,String>();
 
-		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult, boolean enableSecurity) {
+		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult, boolean enableSecurity) throws IOException {
 			setBuild(build);
 			this.listener = listener;
 			this.scriptFailureResult = scriptFailureResult;
 			this.enableSecurity = enableSecurity;
 		}
-
+		
+		public void print(String string){
+			this.listener.getLogger().println(string);
+		}
+		
+		public String getEnvVariable(String key) throws IOException, InterruptedException{
+			EnvVars variables = this.build.getEnvironment();
+			return variables.get(key);
+		}
+		
 		public Hudson getHudson() {
 			if(enableSecurity){
 				throw new SecurityException("access to 'hudson' is denied by global config");
@@ -291,17 +301,10 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		}
 		
 		
-		HashMap<String,String> environmentalVariables = new HashMap<String,String>();
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
-		
-		
-		String varURL = getUrl(build);
-		setVariables(varURL,environmentalVariables);
-		
         ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
 		GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
-        shell.setVariable("environment", environmentalVariables);
         try {
 			shell.evaluate(groovyScript);
 		} catch (Exception e) {
@@ -313,39 +316,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		}
 		return build.getResult().isBetterThan(Result.FAILURE);
 	}
-	public String getUrl(AbstractBuild b){
-		return b.getAbsoluteUrl() + "/injectedEnvVars/export";
-	}
 	
-	//Using the URL to the environment variables, getVariables() goes through and creates a map of all the variables.
-	public void setVariables(String url, HashMap<String,String> variables) throws IOException{
-		URL environmentVariables = new URL(url);
-    	BufferedReader in = new BufferedReader(new InputStreamReader(environmentVariables.openStream()));
-    	String inputLine;
-    	
-    	//Loop through all the lines.
-    	while((inputLine=in.readLine()) != null){
-    		
-    		//inputLine will be in the form "key=value", so to differentiate we need the index of the = sign.
-    		int equalIndex = inputLine.indexOf("=");
-    		String key = "";
-    		String value = "";
-    		
-    		//Get the key by grabbing everything before the equals sign
-    		for(int i = 0;i<equalIndex;i++){
-    			key+=inputLine.charAt(i);
-    		}
-    		
-    		//Get the value by grabbign everything after the equals sign.
-    		for(int i = equalIndex+1;i<inputLine.length();i++){
-    			value+=inputLine.charAt(i);
-    		}
-    		
-    		variables.put(key, value);
-    		
-    	}
-    	in.close();
-	}
     public List<GroovyScriptPath> getClasspath() {
         return classpath;
     }
