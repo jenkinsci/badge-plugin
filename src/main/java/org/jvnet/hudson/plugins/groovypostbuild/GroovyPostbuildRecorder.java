@@ -61,7 +61,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	private final int behavior;
     private final List<GroovyScriptPath> classpath;
 	private final boolean runForMatrixParent;
-	
+	private BadgeManager badgeManager;
 
     public static class BadgeManager {
 		private AbstractBuild<?, ?> build;
@@ -74,10 +74,12 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult, boolean enableSecurity) throws IOException {
 			setBuild(build);
 			try {
-				this.envVars = this.build.getEnvironment();
+				this.envVars = build.getEnvironment(listener);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.printStackTrace(listener.getLogger());
+			} catch (IOException e){
+				e.printStackTrace(listener.getLogger());
 			}
 			this.listener = listener;
 			this.scriptFailureResult = scriptFailureResult;
@@ -85,23 +87,22 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		}
 		public EnvVars getEnvVars(){
 			try {
-				return this.build.getEnvironment();
+				return this.build.getEnvironment(listener);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.printStackTrace(listener.getLogger());
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.printStackTrace(listener.getLogger());
 			}
-			return null;
+			return this.envVars;
 		}
 		public void println(String string){
 			this.listener.getLogger().println(string);
 		}
 		
 		public String getEnvVariable(String key) throws IOException, InterruptedException{
-			EnvVars variables = this.build.getEnvironment();
-			return variables.get(key);
+			return this.envVars.get(key);
 		}
 		
 		public Hudson getHudson() {
@@ -319,7 +320,8 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		
 		
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
-        ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
+        this.badgeManager = badgeManager;
+		ClassLoader cl = new URLClassLoader(getClassPath(build), getClass().getClassLoader());
 		GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
         try {
@@ -338,13 +340,23 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
         return classpath;
     }
 
-    private URL[] getClassPath() throws MalformedURLException {
+    private URL[] getClassPath(AbstractBuild<?, ?> b) throws MalformedURLException {
         URL[] urls = new URL[0];
         // even though classpath is final: existing, not updated jobs do not have it set when loaded from disc
         if(classpath != null) {
             urls = new URL[classpath.size()];
             int i = 0;
             for (GroovyScriptPath path : classpath) {
+            	
+            	//BIG CHANGES HERE. DELETE THESE IF THEY DON'T WORK.
+            	String ourPath = path.getPath().toString();
+            	String replacement = null;
+            	if(ourPath.contains("WORKSPACE_PATH")){					
+					replacement = b.getWorkspace().toString();
+					ourPath = ourPath.replaceAll("WORKSPACE_PATH", replacement);
+            		path = new GroovyScriptPath(ourPath);
+            	}
+            	//END BIG CHANGES.
                 urls[i++] = path.getPath().toURI().toURL();
             }
         }
