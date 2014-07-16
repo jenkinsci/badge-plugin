@@ -315,7 +315,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		}
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
 	ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
-		GroovyShell shell = new GroovyShell(cl);
+		 GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
         try {
 			shell.evaluate(groovyScript);
@@ -361,7 +361,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	public boolean isRunForMatrixParent() {
 		return runForMatrixParent;
 	}
-
+	
 	/**
 	 * @param build
 	 * @param launcher
