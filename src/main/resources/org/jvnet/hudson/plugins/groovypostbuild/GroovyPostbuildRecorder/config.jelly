@@ -54,7 +54,5 @@ THE SOFTWARE.
     <f:entry field="runForMatrixParent" title="${%Run also for matrix parent}">
       <f:checkbox />
     </f:entry>
-  </j:if>
-  
-  
+  </j:if> 
 </j:jelly>

@@ -35,6 +35,7 @@ import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Recorder;
 import hudson.util.IOUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -313,7 +314,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			case 2: scriptFailureResult = Result.FAILURE; break;
 		}
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
-		ClassLoader cl = new URLClassLoader(getClassPath(build), getClass().getClassLoader());
+		ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
 		GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
         try {
@@ -327,12 +328,12 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		}
 		return build.getResult().isBetterThan(Result.FAILURE);
 	}
-	
+
     public List<GroovyScriptPath> getClasspath() {
         return classpath;
     }
 
-    private URL[] getClassPath(AbstractBuild<?, ?> b) throws MalformedURLException {
+    private URL[] getClassPath() throws MalformedURLException {
         URL[] urls = new URL[0];
         // even though classpath is final: existing, not updated jobs do not have it set when loaded from disc
         if(classpath != null) {
@@ -360,8 +361,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	public boolean isRunForMatrixParent() {
 		return runForMatrixParent;
 	}
-	
-	
+		
 	/**
 	 * @param build
 	 * @param launcher
