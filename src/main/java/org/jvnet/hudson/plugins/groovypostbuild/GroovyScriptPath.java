@@ -16,18 +16,12 @@ public class GroovyScriptPath extends AbstractDescribableImpl<GroovyScriptPath> 
 
     @DataBoundConstructor
     public GroovyScriptPath(String path) {
-        if(path.contains("WORKSPACE_PATH")){
-        	this.path = new File(path);
-        }
-        else{
-        	this.path = new File(path).getAbsoluteFile();
-        }
+        this.path = new File(path).getAbsoluteFile();
     }
 
     public File getPath() {
         return path;
     }
-    
 
     @Extension
     public static class GroovyScriptPathDescriptor extends Descriptor<GroovyScriptPath> {

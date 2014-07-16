@@ -34,14 +34,11 @@ import hudson.model.*;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Recorder;
 import hudson.util.IOUtils;
-
 import org.kohsuke.stapler.DataBoundConstructor;
-
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,8 +46,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-
-import jenkins.model.Jenkins;
 
 /** This class associates {@link GroovyPostbuildAction}s to a build. */
 @SuppressWarnings("unchecked")
@@ -61,7 +56,6 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	private final int behavior;
     private final List<GroovyScriptPath> classpath;
 	private final boolean runForMatrixParent;
-	private BadgeManager badgeManager;
 
     public static class BadgeManager {
 		private AbstractBuild<?, ?> build;
@@ -85,6 +79,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			this.scriptFailureResult = scriptFailureResult;
 			this.enableSecurity = enableSecurity;
 		}
+		
 		public EnvVars getEnvVars(){
 			try {
 				return this.build.getEnvironment(listener);
@@ -317,10 +312,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			case 1: scriptFailureResult = Result.UNSTABLE; break;
 			case 2: scriptFailureResult = Result.FAILURE; break;
 		}
-		
-		
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
-        this.badgeManager = badgeManager;
 		ClassLoader cl = new URLClassLoader(getClassPath(build), getClass().getClassLoader());
 		GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
@@ -347,16 +339,6 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
             urls = new URL[classpath.size()];
             int i = 0;
             for (GroovyScriptPath path : classpath) {
-            	
-            	//BIG CHANGES HERE. DELETE THESE IF THEY DON'T WORK.
-            	String ourPath = path.getPath().toString();
-            	String replacement = null;
-            	if(ourPath.contains("WORKSPACE_PATH")){					
-					replacement = b.getWorkspace().toString();
-					ourPath = ourPath.replaceAll("WORKSPACE_PATH", replacement);
-            		path = new GroovyScriptPath(ourPath);
-            	}
-            	//END BIG CHANGES.
                 urls[i++] = path.getPath().toURI().toURL();
             }
         }
