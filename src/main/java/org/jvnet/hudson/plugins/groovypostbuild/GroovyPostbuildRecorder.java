@@ -314,8 +314,8 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			case 2: scriptFailureResult = Result.FAILURE; break;
 		}
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult, getDescriptor().isSecurityEnabled());
-	ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
-		 GroovyShell shell = new GroovyShell(cl);
+	 ClassLoader cl = new URLClassLoader(getClassPath(), getClass().getClassLoader());
+		GroovyShell shell = new GroovyShell(cl);
         shell.setVariable("manager", badgeManager);
         try {
 			shell.evaluate(groovyScript);
