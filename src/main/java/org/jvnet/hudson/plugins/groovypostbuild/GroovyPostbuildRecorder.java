@@ -66,7 +66,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		private final boolean enableSecurity;
 		private EnvVars envVars;
 
-		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult, boolean enableSecurity) throws IOException {
+		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult, boolean enableSecurity) {
 			setBuild(build);
 			try {
 				this.envVars = build.getEnvironment(listener);
@@ -80,17 +80,8 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			this.scriptFailureResult = scriptFailureResult;
 			this.enableSecurity = enableSecurity;
 		}
-		
+
 		public EnvVars getEnvVars(){
-			try {
-				return this.build.getEnvironment(listener);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace(listener.getLogger());
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace(listener.getLogger());
-			}
 			return this.envVars;
 		}
 		public void println(String string){
