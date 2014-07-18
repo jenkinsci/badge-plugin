@@ -25,6 +25,7 @@ package org.jvnet.hudson.plugins.groovypostbuild;
 
 import groovy.lang.GroovyShell;
 import hudson.AbortException;
+import hudson.EnvVars;
 import hudson.Launcher;
 import hudson.matrix.MatrixAggregatable;
 import hudson.matrix.MatrixAggregator;
@@ -63,14 +64,34 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		private final Result scriptFailureResult;
 		private final Set<AbstractBuild<?, ?>> builds = new HashSet<AbstractBuild<?,?>>();
 		private final boolean enableSecurity;
+		private EnvVars envVars;
 
 		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult, boolean enableSecurity) {
 			setBuild(build);
+			try {
+				this.envVars = build.getEnvironment(listener);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace(listener.getLogger());
+			} catch (IOException e){
+				e.printStackTrace(listener.getLogger());
+			}
 			this.listener = listener;
 			this.scriptFailureResult = scriptFailureResult;
 			this.enableSecurity = enableSecurity;
 		}
 
+		public EnvVars getEnvVars(){
+			return this.envVars;
+		}
+		public void println(String string){
+			this.listener.getLogger().println(string);
+		}
+		
+		public String getEnvVariable(String key) throws IOException, InterruptedException{
+			return this.envVars.get(key);
+		}
+		
 		public Hudson getHudson() {
 			if(enableSecurity){
 				throw new SecurityException("access to 'hudson' is denied by global config");
