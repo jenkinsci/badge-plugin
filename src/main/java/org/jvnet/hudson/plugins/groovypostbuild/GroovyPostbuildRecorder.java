@@ -25,6 +25,7 @@ package org.jvnet.hudson.plugins.groovypostbuild;
 
 import groovy.lang.Binding;
 import hudson.AbortException;
+import hudson.EnvVars;
 import hudson.Launcher;
 import hudson.matrix.MatrixAggregatable;
 import hudson.matrix.MatrixAggregator;
@@ -62,13 +63,37 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		private final BuildListener listener;
 		private final Result scriptFailureResult;
 		private final Set<AbstractBuild<?, ?>> builds = new HashSet<AbstractBuild<?,?>>();
+		private EnvVars envVars;
 
 		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult) {
 			setBuild(build);
+			try {
+				this.envVars = build.getEnvironment(listener);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace(listener.getLogger());
+			} catch (IOException e){
+				e.printStackTrace(listener.getLogger());
+			}
 			this.listener = listener;
 			this.scriptFailureResult = scriptFailureResult;
 		}
 
+        // TBD: @Whitelisted
+		public EnvVars getEnvVars(){
+			return this.envVars;
+		}
+
+        @Whitelisted
+		public void println(String string){
+			this.listener.getLogger().println(string);
+		}
+		
+        @Whitelisted
+		public String getEnvVariable(String key) throws IOException, InterruptedException{
+			return this.envVars.get(key);
+		}
+		
         // TBD: @Whitelisted
 		public Hudson getHudson() {
 			return Hudson.getInstance();
