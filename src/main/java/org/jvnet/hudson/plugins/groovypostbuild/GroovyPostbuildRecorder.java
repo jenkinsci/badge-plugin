@@ -37,9 +37,12 @@ import hudson.util.IOUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.*;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +50,7 @@ import java.util.regex.PatternSyntaxException;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.jenkinsci.plugins.scriptsecurity.scripts.ApprovalContext;
+import org.jenkinsci.plugins.scriptsecurity.scripts.ClasspathEntry;
 
 /** This class associates {@link GroovyPostbuildAction}s to a build. */
 @SuppressWarnings("unchecked")
@@ -56,6 +60,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	@Deprecated private String groovyScript;
     private SecureGroovyScript script;
 	private final int behavior;
+    @Deprecated private List<GroovyScriptPath> classpath;
 	private final boolean runForMatrixParent;
 
     public static class BadgeManager {
@@ -291,7 +296,18 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 
     private Object readResolve() {
         if (groovyScript != null) {
-            script = new SecureGroovyScript(groovyScript, false).configuring(ApprovalContext.create());
+            List<ClasspathEntry> cp = new ArrayList<ClasspathEntry>();
+            if (classpath != null) {
+                for (@SuppressWarnings("deprecation") GroovyScriptPath gsp : classpath) {
+                    try {
+                        cp.add(new ClasspathEntry(gsp.path.getAbsolutePath()));
+                    } catch (MalformedURLException x) {
+                        LOGGER.log(Level.WARNING, "cannot load " + gsp.path, x);
+                    }
+                }
+                classpath = null;
+            }
+            script = new SecureGroovyScript(groovyScript, false, cp).configuring(ApprovalContext.create());
             groovyScript = null;
         }
         return this;
@@ -310,7 +326,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	@Override
 	public final boolean perform(final AbstractBuild<?, ?> build, final Launcher launcher, final BuildListener listener) throws InterruptedException, IOException {
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
-		LOGGER.fine("perform() called for script:\n" + groovyScript);
+		LOGGER.fine("perform() called for script");
 		LOGGER.fine("behavior: " + behavior);
 		Result scriptFailureResult = Result.SUCCESS;
 		switch(behavior) {
