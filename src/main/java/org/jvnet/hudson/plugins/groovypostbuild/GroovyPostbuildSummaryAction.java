@@ -46,6 +46,7 @@ public class GroovyPostbuildSummaryAction implements Action {
     @Exported public String getIconPath() { return iconPath; }
     @Exported public String getText() { return textBuilder.toString(); }
 
+    // not @Whitelisted unless there is a variant with escapeHtml=true
     public void appendText(String text, boolean escapeHtml) {
     	if(escapeHtml) {
         	text = StringEscapeUtils.escapeHtml(text);
