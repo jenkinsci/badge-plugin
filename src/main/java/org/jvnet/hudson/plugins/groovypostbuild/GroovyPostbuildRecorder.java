@@ -283,6 +283,16 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	        return pattern;
 	    }
 
+		/**
+		 * Test whether the current build is specified type.
+		 * 
+		 * @param buildClass
+		 * @return true if the current build is an instance of buildClass
+		 */
+		@Whitelisted
+		public boolean buildIsA(Class<? extends AbstractBuild<?, ?>> buildClass) {
+			return buildClass.isInstance(getBuild());
+		}
 	}
 
 	@DataBoundConstructor
