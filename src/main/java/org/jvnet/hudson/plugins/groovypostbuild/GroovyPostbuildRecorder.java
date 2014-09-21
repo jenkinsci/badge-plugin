@@ -151,6 +151,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		public void addErrorBadge(String text) {
 			build.getActions().add(GroovyPostbuildAction.createErrorBadge(text));
 		}
+		@Whitelisted
 		public void removeBadges() {
 			List<Action> actions = build.getActions();
 			List<GroovyPostbuildAction> badgeActions = build.getActions(GroovyPostbuildAction.class);
@@ -158,6 +159,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 				actions.remove(action);
 			}
 		}
+		@Whitelisted
 		public void removeBadge(int index) {
 			List<Action> actions = build.getActions();
 			List<GroovyPostbuildAction> badgeActions = build.getActions(GroovyPostbuildAction.class);
