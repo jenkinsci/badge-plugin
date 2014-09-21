@@ -47,29 +47,24 @@ public class GroovyPostbuildRecorderTest {
     private static final String SCRIPT_FOR_MATRIX = StringUtils.join(new String[]{
             "import hudson.matrix.MatrixBuild;",
             "import hudson.matrix.MatrixRun;",
-            "if (manager.build instanceof MatrixBuild) {",
+            "if (manager.buildIsA(MatrixBuild.class)) {",
             "  // codes for matrix parents.",
             "  manager.addShortText(\"parent\");",
-            "} else if(manager.build instanceof MatrixRun) {",
+            "} else if(manager.buildIsA(MatrixRun)) {",
             "  // codes for matrix children.",
-            "  manager.addShortText(manager.build.buildVariables[\"axis1\"]);",
+            "  manager.addShortText(manager.getEnvVariable(\"axis1\"));",
             "} else {",
             "  // unexpected case.",
             "  manager.buildFailure();",
             "}"
     }, '\n');
 
-    @Before
-    public void setUp() throws Exception {
-        ScriptApproval.get().preapprove(SCRIPT_FOR_MATRIX, GroovyLanguage.get());
-    }
-    
     @Test
     public void testMatrixProjectWithParent() throws Exception {
         MatrixProject p = j.createMatrixProject();
         AxisList axisList = new AxisList(new TextAxis("axis1", "value1", "value2"));
         p.setAxes(axisList);
-        p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, false), 2, true));
+        p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, true), 2, true));
         
         MatrixBuild b = p.scheduleBuild2(0).get();
         j.assertBuildStatusSuccess(b);
@@ -84,7 +79,7 @@ public class GroovyPostbuildRecorderTest {
         MatrixProject p = j.createMatrixProject();
         AxisList axisList = new AxisList(new TextAxis("axis1", "value1", "value2"));
         p.setAxes(axisList);
-        p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, false), 2, false));
+        p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, true), 2, false));
         
         MatrixBuild b = p.scheduleBuild2(0).get();
         j.assertBuildStatusSuccess(b);
