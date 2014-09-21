@@ -24,6 +24,19 @@
       </developer>
     </developers>
     
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jvnet.hudson.tools</groupId>
+        <artifactId>maven-hpi-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <compatibleSinceVersion>2.0</compatibleSinceVersion>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
   <scm>
     <connection>scm:git:git://github.com/jenkinsci/groovy-postbuild-plugin.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/jenkinsci/groovy-postbuild-plugin.git</developerConnection>
