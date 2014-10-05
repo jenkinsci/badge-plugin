@@ -25,20 +25,26 @@
 package org.jvnet.hudson.plugins.groovypostbuild;
 
 import static org.junit.Assert.*;
+
+import java.util.Collections;
+
 import hudson.matrix.AxisList;
 import hudson.matrix.Combination;
 import hudson.matrix.MatrixBuild;
 import hudson.matrix.MatrixProject;
 import hudson.matrix.TextAxis;
+import hudson.model.FreeStyleBuild;
+import hudson.model.FreeStyleProject;
 
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript;
+import org.jenkinsci.plugins.scriptsecurity.scripts.ClasspathEntry;
 import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval;
 import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.recipes.WithPlugin;
 
 public class GroovyPostbuildRecorderTest {
     @Rule
@@ -64,7 +70,7 @@ public class GroovyPostbuildRecorderTest {
         MatrixProject p = j.createMatrixProject();
         AxisList axisList = new AxisList(new TextAxis("axis1", "value1", "value2"));
         p.setAxes(axisList);
-        p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, true), 2, true));
+        p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, true, Collections.<ClasspathEntry>emptyList()), 2, true));
         
         MatrixBuild b = p.scheduleBuild2(0).get();
         j.assertBuildStatusSuccess(b);
@@ -79,7 +85,7 @@ public class GroovyPostbuildRecorderTest {
         MatrixProject p = j.createMatrixProject();
         AxisList axisList = new AxisList(new TextAxis("axis1", "value1", "value2"));
         p.setAxes(axisList);
-        p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, true), 2, false));
+        p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, true, Collections.<ClasspathEntry>emptyList()), 2, false));
         
         MatrixBuild b = p.scheduleBuild2(0).get();
         j.assertBuildStatusSuccess(b);
@@ -87,5 +93,32 @@ public class GroovyPostbuildRecorderTest {
         assertNull(b.getAction(GroovyPostbuildAction.class));
         assertEquals("value1", b.getRun(new Combination(axisList, "value1")).getAction(GroovyPostbuildAction.class).getText());
         assertEquals("value2", b.getRun(new Combination(axisList, "value2")).getAction(GroovyPostbuildAction.class).getText());
+    }
+    
+    @Test
+    @WithPlugin("dependee.hpi") // provides org.jenkinsci.plugins.dependencytest.dependee.Dependee.getValue() which returns "dependee".
+    public void testDependencyToAnotherPlugin() throws Exception {
+        final String SCRIPT =
+                "import org.jenkinsci.plugins.dependencytest.dependee.Dependee;"
+                + "manager.addShortText(Dependee.getValue());";
+        // as Dependee.getValue isn't whitelisted, we need to approve that.
+        ScriptApproval.get().preapprove(SCRIPT, GroovyLanguage.get());
+        
+        FreeStyleProject p = j.createFreeStyleProject();
+        p.getPublishersList().add(
+                new GroovyPostbuildRecorder(
+                        new SecureGroovyScript(
+                                SCRIPT,
+                                false,
+                                Collections.<ClasspathEntry>emptyList()
+                        ),
+                        2,
+                        false
+                )
+        );
+        
+        FreeStyleBuild b = p.scheduleBuild2(0).get();
+        j.assertBuildStatusSuccess(b);
+        assertEquals("dependee", b.getAction(GroovyPostbuildAction.class).getText());
     }
 }

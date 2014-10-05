@@ -47,6 +47,9 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import jenkins.model.Jenkins;
+
 import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.jenkinsci.plugins.scriptsecurity.scripts.ApprovalContext;
@@ -347,8 +350,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			case 2: scriptFailureResult = Result.FAILURE; break;
 		}
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult);
-        // Could use PluginManager.uberClassLoader, though probably unnecessary since most calls would go through badgeManager.
-        ClassLoader cl = getClass().getClassLoader();
+        ClassLoader cl = Jenkins.getInstance().getPluginManager().uberClassLoader;
         Binding binding = new Binding();
         binding.setVariable("manager", badgeManager);
         try {
