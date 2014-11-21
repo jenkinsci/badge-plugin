@@ -12,6 +12,7 @@
     <li><code>logContains(regexp)</code> - returns true if the build log file contains a line matching <i>regexp</i>.</li>
     <li><code>getMatcher(file, regexp)</code> - returns a java.util.regex.Matcher for the first occurrence of <i>regexp</i> in the given file.</li>
     <li><code>getLogMatcher(regexp)</code> - returns a java.util.regex.Matcher for the first occurrence of <i>regexp</i> in the build log file.</li>
+    <li><code>getResult()</code> - returns the current build result.</li>
     <P/>
     <li><code>addShortText(text)</code> - puts a badge with a short text, using the default format.</li>
     <li><code>addShortText(text, color, background, border, borderColor)</code> - puts a badge with a short text, using the specified format.</li>

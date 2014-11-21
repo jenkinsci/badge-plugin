@@ -154,6 +154,10 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		public void addErrorBadge(String text) {
 			build.getActions().add(GroovyPostbuildAction.createErrorBadge(text));
 		}
+
+		@Whitelisted
+		public String getResult() { return build.getResult().toString(); }
+
 		@Whitelisted
 		public void removeBadges() {
 			List<Action> actions = build.getActions();
