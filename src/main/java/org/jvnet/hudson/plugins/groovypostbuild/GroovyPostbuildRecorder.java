@@ -369,7 +369,12 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		for(AbstractBuild<?, ?> b : badgeManager.builds) {
 			b.save();
 		}
-		return scriptResult;
+		
+		if (!scriptResult && scriptFailureResult.isWorseOrEqualTo(Result.FAILURE)){
+			return false;
+		} else {
+			return true;
+		}
 	}
 
     public final BuildStepMonitor getRequiredMonitorService() {
