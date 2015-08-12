@@ -345,6 +345,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	@Override
 	public final boolean perform(final AbstractBuild<?, ?> build, final Launcher launcher, final BuildListener listener) throws InterruptedException, IOException {
         Hudson.getInstance().checkPermission(Hudson.ADMINISTER);
+		boolean scriptResult = true;
 		LOGGER.fine("perform() called for script");
 		LOGGER.fine("behavior: " + behavior);
 		Result scriptFailureResult = Result.SUCCESS;
@@ -363,11 +364,12 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
             // TODO could print more refined errors for UnapprovedUsageException and/or RejectedAccessException:
 			e.printStackTrace(listener.error("Failed to evaluate groovy script."));
 			badgeManager.buildScriptFailed(e);
+			scriptResult = false;
 		}
 		for(AbstractBuild<?, ?> b : badgeManager.builds) {
 			b.save();
 		}
-		return build.getResult().isBetterThan(Result.FAILURE);
+		return scriptResult;
 	}
 
     public final BuildStepMonitor getRequiredMonitorService() {
