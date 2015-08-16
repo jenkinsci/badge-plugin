@@ -33,22 +33,18 @@ import hudson.matrix.Combination;
 import hudson.matrix.MatrixBuild;
 import hudson.matrix.MatrixProject;
 import hudson.matrix.TextAxis;
-import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
 
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.groovy.SecureGroovyScript;
 import org.jenkinsci.plugins.scriptsecurity.scripts.ClasspathEntry;
-import org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval;
-import org.jenkinsci.plugins.scriptsecurity.scripts.languages.GroovyLanguage;
-import org.junit.Rule;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-import org.jvnet.hudson.test.recipes.WithPlugin;
 
 public class GroovyPostbuildRecorderTest {
-    @Rule
-    public JenkinsRule j = new JenkinsRule();
+    @ClassRule
+    public static JenkinsRule j = new JenkinsRule();
     
     private static final String SCRIPT_FOR_MATRIX = StringUtils.join(new String[]{
             "import hudson.matrix.MatrixBuild;",
@@ -93,32 +89,5 @@ public class GroovyPostbuildRecorderTest {
         assertNull(b.getAction(GroovyPostbuildAction.class));
         assertEquals("value1", b.getRun(new Combination(axisList, "value1")).getAction(GroovyPostbuildAction.class).getText());
         assertEquals("value2", b.getRun(new Combination(axisList, "value2")).getAction(GroovyPostbuildAction.class).getText());
-    }
-    
-    @Test
-    @WithPlugin("dependee.hpi") // provides org.jenkinsci.plugins.dependencytest.dependee.Dependee.getValue() which returns "dependee".
-    public void testDependencyToAnotherPlugin() throws Exception {
-        final String SCRIPT =
-                "import org.jenkinsci.plugins.dependencytest.dependee.Dependee;"
-                + "manager.addShortText(Dependee.getValue());";
-        // as Dependee.getValue isn't whitelisted, we need to approve that.
-        ScriptApproval.get().preapprove(SCRIPT, GroovyLanguage.get());
-        
-        FreeStyleProject p = j.createFreeStyleProject();
-        p.getPublishersList().add(
-                new GroovyPostbuildRecorder(
-                        new SecureGroovyScript(
-                                SCRIPT,
-                                false,
-                                Collections.<ClasspathEntry>emptyList()
-                        ),
-                        2,
-                        false
-                )
-        );
-        
-        FreeStyleBuild b = p.scheduleBuild2(0).get();
-        j.assertBuildStatusSuccess(b);
-        assertEquals("dependee", b.getAction(GroovyPostbuildAction.class).getText());
     }
 }
