@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>1.509.4</version>
+    <version>1.609.1</version>
   </parent>
 
     <name>Groovy Postbuild</name>
@@ -69,6 +69,11 @@
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>script-security</artifactId>
             <version>1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>matrix-project</artifactId>
+            <version>1.4.1</version>
         </dependency>
     </dependencies>
 </project>  
