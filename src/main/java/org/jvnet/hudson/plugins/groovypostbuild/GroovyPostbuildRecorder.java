@@ -67,13 +67,13 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 	private final boolean runForMatrixParent;
 
     public static class BadgeManager {
-		private AbstractBuild<?, ?> build;
-		private final BuildListener listener;
+		private Run<?, ?> build;
+		private final TaskListener listener;
 		private final Result scriptFailureResult;
-		private final Set<AbstractBuild<?, ?>> builds = new HashSet<AbstractBuild<?,?>>();
+		private final Set<Run<?, ?>> builds = new HashSet<Run<?, ?>>();
 		private EnvVars envVars;
 
-		public BadgeManager(AbstractBuild<?, ?> build, BuildListener listener, Result scriptFailureResult) {
+		public BadgeManager(Run<?, ?> build, TaskListener listener, Result scriptFailureResult) {
 			setBuild(build);
 			try {
 				this.envVars = build.getEnvironment(listener);
@@ -107,22 +107,22 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			return Hudson.getInstance();
 		}
         // TBD: @Whitelisted
-		public AbstractBuild<?, ?> getBuild() {
+		public Run<?, ?> getBuild() {
 			return build;
 		}
-		public void setBuild(AbstractBuild<?, ?> build) {
+		public void setBuild(Run<?, ?> build) {
 			if(build != null) {
 				this.build = build;
 				builds.add(build);
 			}
 		}
 		public boolean setBuildNumber(int buildNumber) {
-			AbstractBuild<?, ?> newBuild = build.getProject().getBuildByNumber(buildNumber);
+			Run<?, ?> newBuild = build.getParent().getBuildByNumber(buildNumber);
 			setBuild(newBuild);
 			return (newBuild != null);
 		}
         // TBD: @Whitelisted
-		public BuildListener getListener() {
+		public TaskListener getListener() {
 			return listener;
 		}
 
@@ -366,7 +366,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			badgeManager.buildScriptFailed(e);
 			scriptResult = false;
 		}
-		for(AbstractBuild<?, ?> b : badgeManager.builds) {
+		for (Run<?, ?> b : badgeManager.builds) {
 			b.save();
 		}
 		
