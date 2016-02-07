@@ -37,7 +37,7 @@ import org.jenkinsci.plugins.workflow.cps.GlobalVariable;
 /**
  * Exposes {@link org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder.BadgeManager} to Workflow scripts as {@code manager}.
  */
-@Extension
+@Extension(optional=true)
 public class WorkflowManager extends GlobalVariable {
 
     @Override
