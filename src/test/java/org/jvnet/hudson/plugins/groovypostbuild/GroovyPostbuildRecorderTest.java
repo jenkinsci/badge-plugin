@@ -71,7 +71,7 @@ public class GroovyPostbuildRecorderTest {
 
     @Test
     public void testMatrixProjectWithParent() throws Exception {
-        MatrixProject p = j.createMatrixProject();
+        MatrixProject p = j.createProject(MatrixProject.class);
         AxisList axisList = new AxisList(new TextAxis("axis1", "value1", "value2"));
         p.setAxes(axisList);
         p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, true, Collections.<ClasspathEntry>emptyList()), 2, true));
@@ -86,7 +86,7 @@ public class GroovyPostbuildRecorderTest {
     
     @Test
     public void testMatrixProjectWithoutParent() throws Exception {
-        MatrixProject p = j.createMatrixProject();
+        MatrixProject p = j.createProject(MatrixProject.class);
         AxisList axisList = new AxisList(new TextAxis("axis1", "value1", "value2"));
         p.setAxes(axisList);
         p.getPublishersList().add(new GroovyPostbuildRecorder(new SecureGroovyScript(SCRIPT_FOR_MATRIX, true, Collections.<ClasspathEntry>emptyList()), 2, false));
