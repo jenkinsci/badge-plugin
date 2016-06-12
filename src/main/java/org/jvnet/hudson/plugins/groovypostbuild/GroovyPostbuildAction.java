@@ -29,6 +29,8 @@ import hudson.model.Hudson;
 
 import java.io.File;
 
+import jenkins.model.Jenkins;
+
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
@@ -100,7 +102,8 @@ public class GroovyPostbuildAction implements BuildBadgeAction {
 		if(icon == null) return null;
 		if(icon.startsWith("/")) return icon;
 		// Try plugin images dir, fallback to Hudson images dir
-		PluginWrapper wrapper = Hudson.getInstance().getPluginManager().getPlugin(GroovyPostbuildPlugin.class);
+		Jenkins jenkins = Jenkins.getInstance();
+		PluginWrapper wrapper = (jenkins != null) ? jenkins.getPluginManager().getPlugin(GroovyPostbuildPlugin.class) : null;
 		boolean pluginIconExists = (wrapper != null) && new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists();
 		return pluginIconExists ? "/plugin/" + wrapper.getShortName() + "/images/" + icon : Hudson.RESOURCE_PATH + "/images/16x16/" + icon;
     }

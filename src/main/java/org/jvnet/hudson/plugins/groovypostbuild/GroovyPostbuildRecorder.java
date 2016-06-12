@@ -38,6 +38,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.*;
 import java.net.MalformedURLException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -155,8 +156,11 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			build.getActions().add(GroovyPostbuildAction.createErrorBadge(text));
 		}
 
-		@Whitelisted
-		public String getResult() { return build.getResult().toString(); }
+        @Whitelisted
+        public String getResult() {
+            Result r = build.getResult();
+            return (r != null) ? r.toString() : null;
+        }
 
 		@Whitelisted
 		public void removeBadges() {
@@ -235,28 +239,39 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			addShortText("Groovy", "black", isError ? "#FFE0E0" : "#FFFFC0", "1px", isError ? "#E08080" : "#C0C080");
 
 			Result result = build.getResult();
-			if(result.isBetterThan(scriptFailureResult)) {
+			if(result == null || result.isBetterThan(scriptFailureResult)) {
 				build.setResult(scriptFailureResult);
 			}
 		}
 
         @Whitelisted
 	    public boolean logContains(String regexp) {
-	    	return contains(build.getLogFile(), regexp);
+	    	return contains(build.getLogFile(), build.getCharset(), regexp);
 	    }
 
+
+        @Deprecated
+        public boolean contains(File f, String regexp) {
+            return contains(f, Charset.defaultCharset(), regexp);
+        }
+
         // not @Whitelisted unless we know what file that is
-	    public boolean contains(File f, String regexp) {
-	    	Matcher matcher = getMatcher(f, regexp);
+	    public boolean contains(File f, Charset charset, String regexp) {
+	    	Matcher matcher = getMatcher(f, charset, regexp);
 	    	return (matcher != null) && matcher.matches();
 		}
 
         @Whitelisted
 	    public Matcher getLogMatcher(String regexp) {
-	    	return getMatcher(build.getLogFile(), regexp);
+	    	return getMatcher(build.getLogFile(), build.getCharset(), regexp);
 	    }
 
-	    public Matcher getMatcher(File f, String regexp) {
+        @Deprecated
+        public Matcher getMatcher(File f, String regexp) {
+            return getMatcher(f, Charset.defaultCharset(), regexp);
+        }
+
+	    public Matcher getMatcher(File f, Charset charset, String regexp) {
 	    	LOGGER.fine("Searching for '" + regexp + "' in '" + f + "'.");
 			Matcher matcher = null;
 			BufferedReader reader = null;
@@ -264,7 +279,7 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 		    	Pattern pattern = compilePattern(regexp);
 				// Assume default encoding and text files
 				String line;
-				reader = new BufferedReader(new FileReader(f));
+				reader = new BufferedReader(new InputStreamReader(new FileInputStream(f), charset));
 				while ((line = reader.readLine()) != null) {
 					Matcher m = pattern.matcher(line);
 					if (m.matches()) {
@@ -309,8 +324,6 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
         this.script = script.configuringWithNonKeyItem();
 		this.behavior = behavior;
 		this.runForMatrixParent = runForMatrixParent;
-		LOGGER.fine("GroovyPostbuildRecorder created with groovyScript:\n" + groovyScript);
-		LOGGER.fine("GroovyPostbuildRecorder behavior:" + behavior);
 	}
 
     private Object readResolve() {
@@ -353,9 +366,10 @@ public class GroovyPostbuildRecorder extends Recorder implements MatrixAggregata
 			case 0: scriptFailureResult = Result.SUCCESS; break;
 			case 1: scriptFailureResult = Result.UNSTABLE; break;
 			case 2: scriptFailureResult = Result.FAILURE; break;
+			default:scriptFailureResult = Result.SUCCESS; break; // same to 0
 		}
 		BadgeManager badgeManager = new BadgeManager(build, listener, scriptFailureResult);
-        ClassLoader cl = Jenkins.getInstance().getPluginManager().uberClassLoader;
+        ClassLoader cl = Jenkins.getActiveInstance().getPluginManager().uberClassLoader;
         Binding binding = new Binding();
         binding.setVariable("manager", badgeManager);
         try {
