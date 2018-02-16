@@ -23,11 +23,12 @@
  */
 package org.jvnet.hudson.plugins.groovypostbuild;
 
-import hudson.model.Action;
-
 import org.apache.commons.lang.StringEscapeUtils;
+import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
+
+import hudson.model.Action;
 
 @ExportedBean(defaultVisibility=2)
 public class GroovyPostbuildSummaryAction implements Action {
@@ -46,14 +47,20 @@ public class GroovyPostbuildSummaryAction implements Action {
     @Exported public String getIconPath() { return iconPath; }
     @Exported public String getText() { return textBuilder.toString(); }
 
-    // not @Whitelisted unless there is a variant with escapeHtml=true
-    public void appendText(String text, boolean escapeHtml) {
-    	if(escapeHtml) {
-        	text = StringEscapeUtils.escapeHtml(text);
-    	}
-    	textBuilder.append(text);
-    }
-    
+		@Whitelisted
+		public void appendText(String text) {
+			appendText(text, false);
+		}
+
+		@Whitelisted
+		public void appendText(String text, boolean escapeHtml) {
+			if(escapeHtml) {
+				text = StringEscapeUtils.escapeHtml(text);
+			}
+			textBuilder.append(text);
+		}
+
+	  @Whitelisted
     public void appendText(String text, boolean escapeHtml, boolean bold, boolean italic, String color) {
     	if(bold) {
     		textBuilder.append("<b>");
@@ -62,7 +69,7 @@ public class GroovyPostbuildSummaryAction implements Action {
     		textBuilder.append("<i>");
     	}
     	if(color != null) {
-    		textBuilder.append("<font color=\"" + color + "\">");
+    		textBuilder.append("<font color=\"").append(color).append("\">");
     	}
     	if(escapeHtml) {
         	text = StringEscapeUtils.escapeHtml(text);
