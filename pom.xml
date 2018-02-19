@@ -1,69 +1,76 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.jenkins-ci.plugins</groupId>
-    <artifactId>plugin</artifactId>
-    <version>3.2</version>
-  </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jenkins-ci.plugins</groupId>
+        <artifactId>plugin</artifactId>
+        <version>3.2</version>
+    </parent>
 
-    <name>Groovy Postbuild</name>
-    <groupId>org.jvnet.hudson.plugins</groupId>
-    <artifactId>groovy-postbuild</artifactId>
-    <version>2.4-SNAPSHOT</version>
+    <name>Badge</name>
+    <description>Add Badges for a build and extend the build summary</description>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>badge</artifactId>
+    <version>1.0-SNAPSHOT</version>
     <packaging>hpi</packaging>
-    <url>http://wiki.jenkins-ci.org/display/JENKINS/Groovy+Postbuild+Plugin</url>
+    <url>http://wiki.jenkins-ci.org/display/JENKINS/Badge+Plugin</url>
 
     <developers>
-      <developer>
-        <id>wolfs</id>
-        <name>Stefan Wolf</name>
-      </developer>
-      <developer>
-        <id>beryx</id>
-        <name>Serban Iordache</name>
-      </developer>
+        <developer>
+            <id>bakito</id>
+            <name>Marc Brugger</name>
+        </developer>
+        <developer>
+            <id>wolfs</id>
+            <name>Stefan Wolf</name>
+        </developer>
+        <developer>
+            <id>beryx</id>
+            <name>Serban Iordache</name>
+        </developer>
     </developers>
-    
+
     <licenses>
-      <license>
-        <name>The MIT license</name>
-        <url>http://www.opensource.org/licenses/mit-license.php</url>
-        <distribution>repo</distribution>
-      </license>
+        <license>
+            <name>The MIT license</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <distribution>repo</distribution>
+        </license>
     </licenses>
-    
-  <properties>
-    <jenkins.version>1.625.3</jenkins.version>
-    <java.level>7</java.level>
-    <workflow.version>1.11</workflow.version>
-  </properties>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.jenkins-ci.tools</groupId>
-        <artifactId>maven-hpi-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <compatibleSinceVersion>2.0</compatibleSinceVersion>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-  
-  <scm>
-    <connection>scm:git:git://github.com/jenkinsci/groovy-postbuild-plugin.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/jenkinsci/groovy-postbuild-plugin.git</developerConnection>
-    <url>https://github.com/jenkinsci/groovy-postbuild-plugin</url>
-    <tag>HEAD</tag>
-  </scm>
+    <properties>
+        <jenkins.version>2.7.3</jenkins.version>
+        <java.level>7</java.level>
+        <workflow-step-api-plugin.version>2.14</workflow-step-api-plugin.version>
+        <workflow-cps-plugin.version>2.45</workflow-cps-plugin.version>
+    </properties>
 
-  <repositories>
-    <repository>
-      <id>repo.jenkins-ci.org</id>
-      <url>http://repo.jenkins-ci.org/public/</url>
-    </repository>
-  </repositories>  
+
+    <scm>
+        <connection>scm:git:git://github.com/bakito/${project.artifactId}-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/bakito/${project.artifactId}-plugin.git</developerConnection>
+        <url>https://github.com/bakito/${project.artifactId}-plugin</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>repo.jenkins-ci.org</id>
+            <url>http://repo.jenkins-ci.org/public/</url>
+        </repository>
+    </repositories>
 
     <pluginRepositories>
         <pluginRepository>
@@ -73,37 +80,51 @@
     </pluginRepositories>
     <dependencies>
         <dependency>
+            <groupId>org.jenkins-ci.plugins.workflow</groupId>
+            <artifactId>workflow-step-api</artifactId>
+            <version>${workflow-step-api-plugin.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>script-security</artifactId>
-            <version>1.15</version>
+            <artifactId>structs</artifactId>
+            <version>1.14</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>matrix-project</artifactId>
-            <version>1.4.1</version>
+            <artifactId>script-security</artifactId>
+            <version>1.39</version>
         </dependency>
+
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-cps</artifactId>
-            <version>${workflow.version}</version>
-            <optional>true</optional>
+            <version>${workflow-cps-plugin.version}</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-step-api</artifactId>
-            <version>${workflow.version}</version>
-            <optional>true</optional>
+            <version>${workflow-step-api-plugin.version}</version>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins.workflow</groupId>
+            <artifactId>workflow-durable-task-step</artifactId>
+            <version>2.19</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-job</artifactId>
-            <version>${workflow.version}</version>
+            <version>2.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>junit</artifactId>
-            <version>1.2-beta-4</version>
+            <version>1.20</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
