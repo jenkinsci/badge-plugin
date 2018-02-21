@@ -27,11 +27,12 @@ import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
-import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
+import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
 import java.io.Serializable;
 
@@ -43,8 +44,8 @@ public class AddShortTextStep extends Step {
   private final ShortText shortText;
 
   @DataBoundConstructor
-  public AddShortTextStep(String text, String color, String background, Integer border, String borderColor) {
-    this.shortText = new ShortText(text, color, background, border, borderColor);
+  public AddShortTextStep(String text) {
+    this.shortText = new ShortText(text);
   }
 
 
@@ -56,16 +57,36 @@ public class AddShortTextStep extends Step {
     return shortText.getColor();
   }
 
+  @DataBoundSetter
+  public void setColor(String color) {
+    this.shortText.setColor(color);
+  }
+
   public String getBackground() {
     return shortText.getBackground();
+  }
+
+  @DataBoundSetter
+  public void setBackground(String background) {
+    this.shortText.setBackground(background);
   }
 
   public Integer getBorder() {
     return shortText.getBorder();
   }
 
+  @DataBoundSetter
+  public void setBorder(Integer border) {
+    this.shortText.setBorder(border);
+  }
+
   public String getBorderColor() {
     return shortText.getBorderColor();
+  }
+
+  @DataBoundSetter
+  public void setBorderColor(String borderColor) {
+    this.shortText.setBorderColor(borderColor);
   }
 
   @Override
@@ -92,17 +113,13 @@ public class AddShortTextStep extends Step {
     private static final long serialVersionUID = 1L;
 
     private final String text;
-    private final String color;
-    private final String background;
-    private final Integer border;
-    private final String borderColor;
+    private String color;
+    private String background;
+    private Integer border;
+    private String borderColor;
 
-    public ShortText(String text, String color, String background, Integer border, String borderColor) {
+    public ShortText(String text) {
       this.text = text;
-      this.color = color;
-      this.background = background;
-      this.border = border;
-      this.borderColor = borderColor;
     }
 
     private String getText() {
@@ -113,21 +130,38 @@ public class AddShortTextStep extends Step {
       return color;
     }
 
+    public void setColor(String color) {
+      this.color = color;
+    }
+
     private String getBackground() {
       return background;
+    }
+
+    public void setBackground(String background) {
+      this.background = background;
     }
 
     private Integer getBorder() {
       return border;
     }
 
+    public void setBorder(Integer border) {
+      this.border = border;
+    }
+
     private String getBorderColor() {
       return borderColor;
+    }
+
+    public void setBorderColor(String borderColor) {
+      this.borderColor = borderColor;
     }
 
     private String getBorderString() {
       return border == null ? null : border + "px";
     }
+
   }
 
   public static class Execution extends SynchronousStepExecution<Void> {

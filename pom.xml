@@ -47,9 +47,9 @@
 
 
     <scm>
-        <connection>scm:git:git://github.com/bakito/${project.artifactId}-plugin.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/bakito/${project.artifactId}-plugin.git</developerConnection>
-        <url>https://github.com/bakito/${project.artifactId}-plugin</url>
+        <connection>scm:git:git@github.com:jenkinsci/badge-plugin.git</connection>
+        <developerConnection>scm:git@github.com:jenkinsci/badge-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/badge-plugin</url>
         <tag>HEAD</tag>
     </scm>
 

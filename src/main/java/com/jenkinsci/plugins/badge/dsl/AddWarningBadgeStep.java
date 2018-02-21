@@ -36,7 +36,7 @@ public class AddWarningBadgeStep extends AddBadgeStep {
 
   @DataBoundConstructor
   public AddWarningBadgeStep(String text) {
-    super(null, text, null);
+    super(null, text);
   }
 
   @Extension

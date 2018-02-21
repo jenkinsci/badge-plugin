@@ -32,6 +32,7 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
 import java.io.Serializable;
 
@@ -43,8 +44,8 @@ public class AddBadgeStep extends Step {
   private final Badge badge;
 
   @DataBoundConstructor
-  public AddBadgeStep(String icon, String text, String link) {
-    this.badge = new Badge(icon, text, link);
+  public AddBadgeStep(String icon, String text) {
+    this.badge = new Badge(icon, text);
   }
 
   public String getIcon() {
@@ -57,6 +58,11 @@ public class AddBadgeStep extends Step {
 
   public String getLink() {
     return badge.getLink();
+  }
+
+  @DataBoundSetter
+  public void setLink(String link) {
+    badge.setLink(link);
   }
 
   @Override
@@ -88,12 +94,11 @@ public class AddBadgeStep extends Step {
 
     private final String icon;
     private final String text;
-    private final String link;
+    private String link;
 
-    private Badge(String icon, String text, String link) {
+    private Badge(String icon, String text) {
       this.icon = icon;
       this.text = text;
-      this.link = link;
     }
 
     protected String getIcon() {
@@ -106,6 +111,10 @@ public class AddBadgeStep extends Step {
 
     protected String getLink() {
       return link;
+    }
+
+    public void setLink(String link) {
+      this.link = link;
     }
   }
 
