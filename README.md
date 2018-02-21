@@ -60,5 +60,19 @@ summary.appendText(text, escapeHtml, bold, italic, color)
 ```
 # icons 
 The badge plugin provides the following additional icons:
-[icons](src/main/webapp/images)
 
+
+![alt text](src/main/webapp/images/completed.gif "completed.gif")
+![alt text](src/main/webapp/images/db_in.gif "db_in.gif")
+![alt text](src/main/webapp/images/db_out.gif "db_out.gif")
+![alt text](src/main/webapp/images/delete.gif "delete.gif")
+![alt text](src/main/webapp/images/error.gif "error.gif")
+![alt text](src/main/webapp/images/folder.gif "folder.gif")
+![alt text](src/main/webapp/images/green.gif "green.gif")
+![alt text](src/main/webapp/images/info.gif "info.gif")
+![alt text](src/main/webapp/images/red.gif "red.gif")
+![alt text](src/main/webapp/images/save.gif "save.gif")
+![alt text](src/main/webapp/images/success.gif "success.gif")
+![alt text](src/main/webapp/images/text.gif "text.gif")
+![alt text](src/main/webapp/images/warning.gif "warning.gif")
+![alt text](src/main/webapp/images/yellow.gif "yellow.gif")
