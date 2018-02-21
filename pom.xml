@@ -45,10 +45,9 @@
         <workflow-cps-plugin.version>2.45</workflow-cps-plugin.version>
     </properties>
 
-
     <scm>
-        <connection>scm:git:git@github.com:jenkinsci/badge-plugin.git</connection>
-        <developerConnection>scm:git@github.com:jenkinsci/badge-plugin.git</developerConnection>
+        <connection>scm:git:ssh://github.com/jenkinsci/badge-plugin.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/badge-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/badge-plugin</url>
         <tag>HEAD</tag>
     </scm>
