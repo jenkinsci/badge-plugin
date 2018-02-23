@@ -23,6 +23,8 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.kohsuke.stapler.export.Exported;
@@ -31,7 +33,8 @@ import org.kohsuke.stapler.export.ExportedBean;
 import hudson.model.Action;
 
 @ExportedBean(defaultVisibility = 2)
-public class BadgeSummaryAction implements Action {
+public class BadgeSummaryAction implements Action, Serializable {
+  private static final long serialVersionUID = 1L;
 
   private final String iconPath;
   private String summaryText = "";

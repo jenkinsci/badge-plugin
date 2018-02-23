@@ -32,9 +32,11 @@ import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 import java.io.File;
+import java.io.Serializable;
 
 @ExportedBean(defaultVisibility = 2)
-public class BadgeAction implements BuildBadgeAction {
+public class BadgeAction implements BuildBadgeAction, Serializable {
+  private static final long serialVersionUID = 1L;
   private final String iconPath;
   private final String text;
   private String color = "#000000";
