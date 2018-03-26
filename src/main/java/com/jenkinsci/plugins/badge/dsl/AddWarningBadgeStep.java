@@ -29,13 +29,15 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import javax.inject.Named;
+
 /**
  * Add an error badge.
  */
 public class AddWarningBadgeStep extends AddBadgeStep {
 
   @DataBoundConstructor
-  public AddWarningBadgeStep(String text) {
+  public AddWarningBadgeStep(@Named("text") String text) {
     super(null, text);
   }
 

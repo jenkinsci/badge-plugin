@@ -1,0 +1,71 @@
+jenkins-badge-plugin
+=========================
+
+Jenkins plugin to add badges and build summary entries from a pipeline.
+
+This plugin was forked from the [Groovy Postbuild Plugin](https://github.com/jenkinsci/groovy-postbuild-plugin) which will in future use the API from this plugin.
+
+
+## addBadge
+
+This method allows to add build badge icons.
+
+
+![alt text](src/doc/badge.png "Badge")
+
+```groovy
+
+// puts a badge with the given icon and text.
+
+{% describe_step  com.jenkinsci.plugins.badge.dsl.AddBadgeStep %}
+
+{% describe_step  com.jenkinsci.plugins.badge.dsl.AddInfoBadgeStep %}
+
+{% describe_step  com.jenkinsci.plugins.badge.dsl.AddWarningBadgeStep %}
+
+{% describe_step  com.jenkinsci.plugins.badge.dsl.AddErrorBadgeStep %}
+```
+
+## addHtmlBadge
+
+Puts a badge with custom html
+
+```groovy
+
+// puts a badge with a custom html content.
+{% describe_step  com.jenkinsci.plugins.badge.dsl.AddHtmlBadgeStep %}
+```
+
+## addShortText
+
+Puts a badge with a short text
+
+```groovy
+
+// puts a badge with a short text, using the default format.
+// For Colors supported, Google "html color names".
+
+{% describe_step  com.jenkinsci.plugins.badge.dsl.AddShortTextStep %}
+```
+
+## createSummary
+
+Puts a badge with a short text
+
+![alt text](src/doc/summary.png "Summary")
+
+
+```groovy
+
+// creates an entry in the build summary page and returns a summary object corresponding to this entry. The icon must be one of the 48x48 icons offered
+
+{% describe_step  com.jenkinsci.plugins.badge.dsl.CreateSummaryStep %}
+
+def summary = createSummary(icon)
+summary.appendText(text, escapeHtml)
+summary.appendText(text, escapeHtml, bold, italic, color)
+```
+## icons
+The badge plugin provides the following additional icons:
+
+{% list_images  src/main/webapp/images %}

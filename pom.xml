@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
@@ -59,6 +60,24 @@
                 <configuration>
                     <compilerArgument>-Xlint:all</compilerArgument>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <includeProjectDependencies>true</includeProjectDependencies>
+                            <classpathScope>test</classpathScope>
+                            <mainClass>com.jenkinsci.plugins.badge.readme.ReadmeGenerator</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -123,6 +142,13 @@
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>junit</artifactId>
             <version>1.20</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.hubspot.jinjava</groupId>
+            <artifactId>jinjava</artifactId>
+            <version>2.4.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

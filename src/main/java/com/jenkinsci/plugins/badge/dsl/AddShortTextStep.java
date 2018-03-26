@@ -34,6 +34,7 @@ import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
+import javax.inject.Named;
 import java.io.Serializable;
 
 /**
@@ -44,7 +45,7 @@ public class AddShortTextStep extends Step {
   private final ShortText shortText;
 
   @DataBoundConstructor
-  public AddShortTextStep(String text) {
+  public AddShortTextStep(@Named("text") String text) {
     this.shortText = new ShortText(text);
   }
 

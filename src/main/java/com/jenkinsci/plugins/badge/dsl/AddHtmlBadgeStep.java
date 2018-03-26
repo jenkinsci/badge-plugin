@@ -33,6 +33,8 @@ import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 
+import javax.inject.Named;
+
 /**
  * Create a short text.
  */
@@ -41,7 +43,7 @@ public class AddHtmlBadgeStep extends Step {
   private final String html;
 
   @DataBoundConstructor
-  public AddHtmlBadgeStep(String html) {
+  public AddHtmlBadgeStep(@Named("html") String html) {
     this.html = html;
   }
 

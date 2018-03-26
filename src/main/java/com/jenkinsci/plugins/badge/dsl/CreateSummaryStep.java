@@ -35,6 +35,8 @@ import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
+import javax.inject.Named;
+
 /**
  * Create a summary text.
  */
@@ -44,7 +46,7 @@ public class CreateSummaryStep extends Step {
   private String text;
 
   @DataBoundConstructor
-  public CreateSummaryStep(String icon) {
+  public CreateSummaryStep(@Named("icon") String icon) {
     this.icon = icon;
   }
 

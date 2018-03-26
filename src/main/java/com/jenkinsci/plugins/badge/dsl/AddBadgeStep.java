@@ -34,6 +34,7 @@ import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
+import javax.inject.Named;
 import java.io.Serializable;
 
 /**
@@ -44,7 +45,7 @@ public class AddBadgeStep extends Step {
   private final Badge badge;
 
   @DataBoundConstructor
-  public AddBadgeStep(String icon, String text) {
+  public AddBadgeStep(@Named("icon") String icon, @Named("text") String text) {
     this.badge = new Badge(icon, text);
   }
 
@@ -66,7 +67,7 @@ public class AddBadgeStep extends Step {
   }
 
   @Override
-  public StepExecution start(StepContext context) throws Exception {
+  public StepExecution start(StepContext context) {
     return new Execution(badge, context);
   }
 
