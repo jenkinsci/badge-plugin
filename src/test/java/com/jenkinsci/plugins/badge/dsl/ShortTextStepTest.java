@@ -55,10 +55,11 @@ public class ShortTextStepTest {
     String background = UUID.randomUUID().toString();
     Integer border = new Random().nextInt();
     String borderColor = UUID.randomUUID().toString();
+    String link = UUID.randomUUID().toString();
 
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
     p.setDefinition(new CpsFlowDefinition("addShortText(text:\"" + text + "\",color:\"" + color + "\", background:\"" + background + "\", border:" + border + ", borderColor:\""
-        + borderColor + "\")", true));
+        + borderColor + "\", link:\"" + link + "\")", true));
     WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
     List<BuildBadgeAction> badgeActions = b.getBadgeActions();
@@ -71,7 +72,7 @@ public class ShortTextStepTest {
     assertEquals(borderColor, action.getBorderColor());
     assertEquals(border + "px", action.getBorder());
     assertNull(action.getIconPath());
-    assertNull(action.getLink());
+    assertEquals(link, action.getLink());
   }
 
   @Test

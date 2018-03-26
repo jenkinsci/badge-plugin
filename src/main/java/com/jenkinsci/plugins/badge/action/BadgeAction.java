@@ -64,12 +64,18 @@ public class BadgeAction implements BuildBadgeAction, Serializable {
     return new BadgeAction(null, text);
   }
 
+
   public static BadgeAction createShortText(String text, String color, String background, String border, String borderColor) {
+    return createShortText(text, color, background, border, borderColor, null);
+  }
+
+  public static BadgeAction createShortText(String text, String color, String background, String border, String borderColor, String link) {
     BadgeAction action = new BadgeAction(null, text);
     action.color = color;
     action.background = background;
     action.border = border;
     action.borderColor = borderColor;
+    action.link = link;
     return action;
   }
 

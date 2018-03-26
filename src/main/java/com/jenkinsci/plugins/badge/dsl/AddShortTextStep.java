@@ -48,7 +48,6 @@ public class AddShortTextStep extends Step {
     this.shortText = new ShortText(text);
   }
 
-
   public String getText() {
     return shortText.getText();
   }
@@ -89,6 +88,11 @@ public class AddShortTextStep extends Step {
     this.shortText.setBorderColor(borderColor);
   }
 
+  @DataBoundSetter
+  public void setLink(String link) {
+    this.shortText.setLink(link);
+  }
+
   @Override
   public StepExecution start(StepContext context) {
     return new Execution(shortText, context);
@@ -117,6 +121,7 @@ public class AddShortTextStep extends Step {
     private String background;
     private Integer border;
     private String borderColor;
+    private String link;
 
     public ShortText(String text) {
       this.text = text;
@@ -162,6 +167,13 @@ public class AddShortTextStep extends Step {
       return border == null ? null : border + "px";
     }
 
+    public String getLink() {
+      return link;
+    }
+
+    public void setLink(String link) {
+      this.link = link;
+    }
   }
 
   public static class Execution extends SynchronousStepExecution<Void> {
@@ -177,7 +189,7 @@ public class AddShortTextStep extends Step {
     @Override
     protected Void run() throws Exception {
       getContext().get(Run.class).addAction(BadgeAction.createShortText(shortText.getText(),
-          shortText.getColor(), shortText.getBackground(), shortText.getBorderString(), shortText.getBorderColor()));
+          shortText.getColor(), shortText.getBackground(), shortText.getBorderString(), shortText.getBorderColor(), shortText.link));
       return null;
     }
 
