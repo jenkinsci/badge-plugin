@@ -6,7 +6,7 @@ Jenkins plugin to add badges and build summary entries from a ipeline.
 This plugin was forked from the [Groovy Postbuild Plugin](https://github.com/jenkinsci/groovy-postbuild-plugin) which will in future use the API from this plugin.
 
 
-# addBadge
+## addBadge
 
 This method allows to add build badge icons.
 
@@ -15,36 +15,46 @@ This method allows to add build badge icons.
 
 ```groovy
 
-# puts a badge with the given icon and text.
+// puts a badge with the given icon and text.
 addBadge(icon, text)
 
-# like addBadge(icon, text), but the Badge icon then actually links to the given link
+// like addBadge(icon, text), but the Badge icon then actually links to the given link
 addBadge(icon, text, link) 
 
-# puts a badge with  info icon and the given text.
+// puts a badge with  info icon and the given text.
 addInfoBadge(text)
 
-# puts a badge with  warning icon and the given text.
+// puts a badge with  warning icon and the given text.
 addWarningBadge(text)
 
-# puts a badge with  error icon and the given text.
+// puts a badge with  error icon and the given text.
 addErrorBadge(text)
 ```
 
-# addShortText
+## addHtmlBadge
+
+Puts a badge with custom html
+
+```groovy
+
+// puts a badge with a custom html content.
+addHtmlBadge(html)
+```
+
+## addShortText
 
 Puts a badge with a short text
 
 ```groovy
 
-# puts a badge with a short text, using the default format.
+// puts a badge with a short text, using the default format.
 addShortText(text)
 
-# puts a badge with a short text, using the specified format. For Colors supported, Google "html color names".
+// puts a badge with a short text, using the specified format. For Colors supported, Google "html color names".
 addShortText(text, color, background, border, borderColor)
 ```
 
-# createSummary
+## createSummary
 
 Puts a badge with a short text
 
@@ -53,12 +63,12 @@ Puts a badge with a short text
 
 ```groovy
 
-# creates an entry in the build summary page and returns a summary object corresponding to this entry. The icon must be one of the 48x48 icons offered 
+// creates an entry in the build summary page and returns a summary object corresponding to this entry. The icon must be one of the 48x48 icons offered 
 def summary = createSummary(icon)
 summary.appendText(text, escapeHtml)
 summary.appendText(text, escapeHtml, bold, italic, color)
 ```
-# icons 
+## icons 
 The badge plugin provides the following additional icons:
 
 
