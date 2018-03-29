@@ -20,41 +20,109 @@ This method allows to add build badge icons.
 // addBadge
 // ------------------------------------------
 
-// minimal params
+/**
+ * minimal params
+ * 
+ * icon: The icon for this badge
+ * text: The text for this badge
+ */
 addBadge(icon, text)
 
-// all params
-addBadge(icon, text, link)
+/**
+ * all params
+ * 
+ * icon: The icon for this badge
+ * text: The text for this badge
+ * id: (optional) The id for this badge. This id can be used to selectively delete badges.
+ * link: (optional) The link to be added to this badge
+ */
+addBadge(icon, text, id, link)
 
 
 // addInfoBadge
 // ------------------------------------------
 
-// minimal params
+/**
+ * minimal params
+ * 
+ * text: The info text for this badge
+ */
 addInfoBadge(text)
 
-// all params
-addInfoBadge(text, link)
+/**
+ * all params
+ * 
+ * text: The info text for this badge
+ * id: (optional) The id for this badge. This id can be used to selectively delete badges.
+ * link: (optional) The link to be added to this badge
+ */
+addInfoBadge(text, id, link)
 
 
 // addWarningBadge
 // ------------------------------------------
 
-// minimal params
+/**
+ * minimal params
+ * 
+ * text: The text for this warning badge
+ */
 addWarningBadge(text)
 
-// all params
-addWarningBadge(text, link)
+/**
+ * all params
+ * 
+ * text: The text for this warning badge
+ * id: (optional) The id for this badge. This id can be used to selectively delete badges.
+ * link: (optional) The link to be added to this badge
+ */
+addWarningBadge(text, id, link)
 
 
 // addErrorBadge
 // ------------------------------------------
 
-// minimal params
+/**
+ * minimal params
+ * 
+ * text: The text for this error badge
+ */
 addErrorBadge(text)
 
-// all params
-addErrorBadge(text, link)
+/**
+ * all params
+ * 
+ * text: The text for this error badge
+ * id: (optional) The id for this badge. This id can be used to selectively delete badges.
+ * link: (optional) The link to be added to this badge
+ */
+addErrorBadge(text, id, link)
+
+```
+
+
+## removeBadges
+
+Removes badges
+
+```groovy
+
+// removes badges. If no id is provided all are removed, otherwise only the badges with a matching id
+// removeBadges
+// ------------------------------------------
+
+/**
+ * minimal params
+ * 
+ */
+removeBadges()
+
+/**
+ * all params
+ * 
+ * id: (optional) The id for this badge. This id can be used to selectively delete badges.
+ */
+removeBadges(id)
 
 ```
 
@@ -68,9 +136,44 @@ Puts a badge with custom html
 // addHtmlBadge
 // ------------------------------------------
 
-// params
+/**
+ * minimal params
+ * 
+ * html: The html content to be used for this badge
+ */
 addHtmlBadge(html)
 
+/**
+ * all params
+ * 
+ * html: The html content to be used for this badge
+ * id: (optional) The id for this badge. This id can be used to selectively delete badges.
+ */
+addHtmlBadge(html, id)
+
+```
+## removeHtmlBadges
+
+Removes html badges
+
+```groovy
+
+// removes html badges. If no id is provided all are removed, otherwise only the badges with a matching id
+// removeHtmlBadges
+// ------------------------------------------
+
+/**
+ * minimal params
+ * 
+ */
+removeHtmlBadges()
+
+/**
+ * all params
+ * 
+ * id: (optional) The id for this badge. This id can be used to selectively delete badges.
+ */
+removeHtmlBadges(id)
 
 ```
 
@@ -86,10 +189,23 @@ Puts a badge with a short text
 // addShortText
 // ------------------------------------------
 
-// minimal params
+/**
+ * minimal params
+ * 
+ * text: The text to add fot this badge
+ */
 addShortText(text)
 
-// all params
+/**
+ * all params
+ * 
+ * text: The text to add fot this badge
+ * background: (optional) The background-color for this short text
+ * border: (optional) The border width for this short text
+ * borderColor: (optional) The order color for this short text
+ * color: (optional) The color for this short text
+ * link: (optional) The link for this short text
+ */
 addShortText(text, background, border, borderColor, color, link)
 
 ```
@@ -108,11 +224,21 @@ Puts a badge with a short text
 // createSummary
 // ------------------------------------------
 
-// minimal params
+/**
+ * minimal params
+ * 
+ * icon: The icon for this summary
+ */
 createSummary(icon)
 
-// all params
-createSummary(icon, text)
+/**
+ * all params
+ * 
+ * icon: The icon for this summary
+ * id: (optional) The id for this badge. This id can be used to selectively delete badges.
+ * text: (optional) The title text for this summary
+ */
+createSummary(icon, id, text)
 
 
 def summary = createSummary(icon)

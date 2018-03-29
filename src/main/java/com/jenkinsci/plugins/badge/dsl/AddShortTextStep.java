@@ -24,6 +24,8 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
+import com.jenkinsci.plugins.badge.annotations.OptionalParam;
+import com.jenkinsci.plugins.badge.annotations.Param;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
@@ -34,7 +36,6 @@ import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
-import javax.inject.Named;
 import java.io.Serializable;
 
 /**
@@ -45,7 +46,7 @@ public class AddShortTextStep extends Step {
   private final ShortText shortText;
 
   @DataBoundConstructor
-  public AddShortTextStep(@Named("text") String text) {
+  public AddShortTextStep(@Param(name = "text", description = "The text to add fot this badge") String text) {
     this.shortText = new ShortText(text);
   }
 
@@ -58,6 +59,7 @@ public class AddShortTextStep extends Step {
   }
 
   @DataBoundSetter
+  @OptionalParam(description = "The color for this short text")
   public void setColor(String color) {
     this.shortText.setColor(color);
   }
@@ -67,6 +69,7 @@ public class AddShortTextStep extends Step {
   }
 
   @DataBoundSetter
+  @OptionalParam(description = "The background-color for this short text")
   public void setBackground(String background) {
     this.shortText.setBackground(background);
   }
@@ -76,6 +79,7 @@ public class AddShortTextStep extends Step {
   }
 
   @DataBoundSetter
+  @OptionalParam(description = "The border width for this short text")
   public void setBorder(Integer border) {
     this.shortText.setBorder(border);
   }
@@ -85,11 +89,13 @@ public class AddShortTextStep extends Step {
   }
 
   @DataBoundSetter
+  @OptionalParam(description = "The order color for this short text")
   public void setBorderColor(String borderColor) {
     this.shortText.setBorderColor(borderColor);
   }
 
   @DataBoundSetter
+  @OptionalParam(description = "The link for this short text")
   public void setLink(String link) {
     this.shortText.setLink(link);
   }

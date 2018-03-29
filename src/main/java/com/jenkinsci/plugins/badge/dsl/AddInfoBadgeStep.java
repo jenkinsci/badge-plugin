@@ -24,12 +24,11 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
+import com.jenkinsci.plugins.badge.annotations.Param;
 import hudson.Extension;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
-
-import javax.inject.Named;
 
 /**
  * Add an error badge.
@@ -37,7 +36,7 @@ import javax.inject.Named;
 public class AddInfoBadgeStep extends AddBadgeStep {
 
   @DataBoundConstructor
-  public AddInfoBadgeStep(@Named("text") String text) {
+  public AddInfoBadgeStep(@Param(name = "text", description = "The info text for this badge") String text) {
     super(null, text);
   }
 
@@ -57,7 +56,7 @@ public class AddInfoBadgeStep extends AddBadgeStep {
 
   @Override
   public StepExecution start(StepContext context) {
-    return new Execution(getBadge(), context) {
+    return new Execution(getBadge(), getId(), context) {
 
       @Override
       protected BadgeAction newBatchAction(Badge badge) {

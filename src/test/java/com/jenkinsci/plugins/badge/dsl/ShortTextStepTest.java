@@ -24,6 +24,7 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
+import hudson.model.Action;
 import hudson.model.BuildBadgeAction;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
@@ -41,12 +42,7 @@ import java.util.UUID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class ShortTextStepTest {
-
-  @ClassRule
-  public static BuildWatcher buildWatcher = new BuildWatcher();
-  @Rule
-  public JenkinsRule r = new JenkinsRule();
+public class ShortTextStepTest extends AbstractBadgeTest {
 
   @Test
   public void addShortText() throws Exception {
@@ -62,6 +58,7 @@ public class ShortTextStepTest {
         + borderColor + "\", link:\"" + link + "\")", true));
     WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
+    List<? extends Action> allActions = b.getAllActions();
     List<BuildBadgeAction> badgeActions = b.getBadgeActions();
     assertEquals(1, badgeActions.size());
 

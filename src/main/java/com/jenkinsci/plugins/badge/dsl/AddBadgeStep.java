@@ -24,28 +24,30 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
+import com.jenkinsci.plugins.badge.annotations.OptionalParam;
+import com.jenkinsci.plugins.badge.annotations.Param;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
-import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+import sun.security.krb5.internal.crypto.Des;
 
-import javax.inject.Named;
 import java.io.Serializable;
 
 /**
  * Add a badge.
  */
-public class AddBadgeStep extends Step {
+public class AddBadgeStep extends AbstractStep {
 
   private final Badge badge;
 
   @DataBoundConstructor
-  public AddBadgeStep(@Named("icon") String icon, @Named("text") String text) {
+  public AddBadgeStep(@Param(name = "icon", description = "The icon for this badge") String icon,
+                      @Param(name = "text", description = "The text for this badge") String text) {
     this.badge = new Badge(icon, text);
   }
 
@@ -62,13 +64,14 @@ public class AddBadgeStep extends Step {
   }
 
   @DataBoundSetter
+  @OptionalParam(description = "The link to be added to this badge")
   public void setLink(String link) {
     badge.setLink(link);
   }
 
   @Override
   public StepExecution start(StepContext context) {
-    return new Execution(badge, context);
+    return new Execution(badge, getId(), context);
   }
 
   protected Badge getBadge() {
@@ -123,15 +126,20 @@ public class AddBadgeStep extends Step {
 
     @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
     private transient final Badge badge;
+    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+    private transient final String id;
 
-    Execution(Badge badge, StepContext context) {
+    Execution(Badge badge, String id, StepContext context) {
       super(context);
       this.badge = badge;
+      this.id = id;
     }
 
     @Override
     protected Void run() throws Exception {
-      getContext().get(Run.class).addAction(newBatchAction(badge));
+      BadgeAction action = newBatchAction(badge);
+      action.setId(id);
+      getContext().get(Run.class).addAction(action);
       return null;
     }
 

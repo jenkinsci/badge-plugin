@@ -23,30 +23,29 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import org.apache.commons.lang.StringUtils;
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
+import com.jenkinsci.plugins.badge.annotations.OptionalParam;
+import com.jenkinsci.plugins.badge.annotations.Param;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
-import org.jenkinsci.plugins.workflow.steps.Step;
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
-import javax.inject.Named;
-
 /**
  * Create a summary text.
  */
-public class CreateSummaryStep extends Step {
+public class CreateSummaryStep extends AbstractStep {
 
   private final String icon;
   private String text;
 
   @DataBoundConstructor
-  public CreateSummaryStep(@Named("icon") String icon) {
+  public CreateSummaryStep(@Param(name = "icon", description = "The icon for this summary") String icon) {
     this.icon = icon;
   }
 
@@ -59,13 +58,14 @@ public class CreateSummaryStep extends Step {
   }
 
   @DataBoundSetter
+  @OptionalParam(description = "The title text for this summary")
   public void setText(String text) {
     this.text = text;
   }
 
   @Override
   public StepExecution start(StepContext context) {
-    return new Execution(icon, text, context);
+    return new Execution(icon, text, getId(), context);
   }
 
   @Extension
@@ -89,11 +89,14 @@ public class CreateSummaryStep extends Step {
     private transient final String icon;
     @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
     private transient final String text;
+    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+    private final String id;
 
-    Execution(String icon, String text, StepContext context) {
+    Execution(String icon, String text, String id, StepContext context) {
       super(context);
       this.icon = icon;
       this.text = text;
+      this.id = id;
     }
 
     @Override
@@ -102,6 +105,7 @@ public class CreateSummaryStep extends Step {
       if (StringUtils.isNotBlank(text)) {
         action.appendText(text);
       }
+      action.setId(id);
       getContext().get(Run.class).addAction(action);
       return action;
     }

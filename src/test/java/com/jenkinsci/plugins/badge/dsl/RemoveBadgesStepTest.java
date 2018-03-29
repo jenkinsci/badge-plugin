@@ -23,34 +23,54 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
-import hudson.model.BuildBadgeAction;
+import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
-public class AddHtmlBadgeStepTest extends AbstractBadgeTest {
+public class RemoveBadgesStepTest extends AbstractBadgeTest {
 
   @Test
-  public void addHtmlBadge() throws Exception {
-    String html = UUID.randomUUID().toString();
-    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+  public void removeBadges_by_id() throws Exception {
+    removeBadges("addInfoBadge(text: 'a'", "removeBadges(id:'a')", "b");
+  }
 
-    String script = "addHtmlBadge(\"" + html + "\")";
+  @Test
+  public void removeBadges_all() throws Exception {
+    removeBadges("addInfoBadge(text: 'a'", "removeBadges()");
+  }
+
+  @Test
+  public void removeHtmlBadges_by_id() throws Exception {
+    removeBadges("addHtmlBadge(html: 'a'", "removeHtmlBadges(id:'a')", "b");
+  }
+
+  @Test
+  public void removeHtmlBadges_all() throws Exception {
+    removeBadges("addHtmlBadge(html: 'a'", "removeHtmlBadges()");
+  }
+
+  private void removeBadges(String badgeScriptPrefix, String removeScript, String... remainingBadgeIds) throws Exception {
+    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+    String script = badgeScriptPrefix + ", id: 'a')\n" +
+        badgeScriptPrefix + ", id: 'b')\n" +
+        removeScript;
 
     p.setDefinition(new CpsFlowDefinition(script, true));
     WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
-    List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-    assertEquals(1, badgeActions.size());
+    List<AbstractBadgeAction> badgeActions = b.getActions(AbstractBadgeAction.class);
 
-    HtmlBadgeAction action = (HtmlBadgeAction) badgeActions.get(0);
-    assertEquals(html, action.getHtml());
+    assertEquals(remainingBadgeIds.length, badgeActions.size());
+
+    for (int i = 0; i < remainingBadgeIds.length; i++) {
+      assertEquals(remainingBadgeIds[i], badgeActions.get(i).getId());
+    }
+
   }
 }

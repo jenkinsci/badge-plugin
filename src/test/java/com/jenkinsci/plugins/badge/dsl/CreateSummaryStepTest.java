@@ -41,12 +41,7 @@ import org.jvnet.hudson.test.JenkinsRule;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 
-public class CreateSummaryStepTest {
-
-  @ClassRule
-  public static BuildWatcher buildWatcher = new BuildWatcher();
-  @Rule
-  public JenkinsRule r = new JenkinsRule();
+public class CreateSummaryStepTest extends AbstractBadgeTest {
 
   @Test
   public void createSummary_plain() throws Exception {
