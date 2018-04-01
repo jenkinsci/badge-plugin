@@ -42,12 +42,7 @@ import com.jenkinsci.plugins.badge.action.BadgeAction;
 
 import hudson.model.BuildBadgeAction;
 
-public class AddBadgeStepTest {
-
-  @ClassRule
-  public static BuildWatcher buildWatcher = new BuildWatcher();
-  @Rule
-  public JenkinsRule r = new JenkinsRule();
+public class AddBadgeStepTest extends AbstractBadgeTest {
 
   @Test
   public void addBadge() throws Exception {

@@ -24,26 +24,24 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
+import com.jenkinsci.plugins.badge.annotations.Param;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
-import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-import javax.inject.Named;
-
 /**
  * Create a short text.
  */
-public class AddHtmlBadgeStep extends Step {
+public class AddHtmlBadgeStep extends AbstractStep {
 
   private final String html;
 
   @DataBoundConstructor
-  public AddHtmlBadgeStep(@Named("html") String html) {
+  public AddHtmlBadgeStep(@Param(name = "html", description = "The html content to be used for this badge") String html) {
     this.html = html;
   }
 
@@ -53,7 +51,7 @@ public class AddHtmlBadgeStep extends Step {
 
   @Override
   public StepExecution start(StepContext context) {
-    return new Execution(html, context);
+    return new Execution(html, getId(), context);
   }
 
   @Extension
@@ -75,15 +73,20 @@ public class AddHtmlBadgeStep extends Step {
 
     @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
     private transient final String html;
+    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+    private transient final String id;
 
-    Execution(String html, StepContext context) {
+    Execution(String html, String id, StepContext context) {
       super(context);
       this.html = html;
+      this.id = id;
     }
 
     @Override
     protected Void run() throws Exception {
-      getContext().get(Run.class).addAction(HtmlBadgeAction.createHtmlBadge(html));
+      HtmlBadgeAction htmlBadge = HtmlBadgeAction.createHtmlBadge(html);
+      htmlBadge.setId(id);
+      getContext().get(Run.class).addAction(htmlBadge);
       return null;
     }
 

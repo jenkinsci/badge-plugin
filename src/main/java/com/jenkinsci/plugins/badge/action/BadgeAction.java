@@ -25,18 +25,15 @@ package com.jenkinsci.plugins.badge.action;
 
 import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
-import hudson.model.Action;
-import hudson.model.BuildBadgeAction;
 import hudson.model.Hudson;
 import jenkins.model.Jenkins;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 import java.io.File;
-import java.io.Serializable;
 
 @ExportedBean(defaultVisibility = 2)
-public class BadgeAction implements BuildBadgeAction, Serializable {
+public class BadgeAction extends AbstractBadgeAction {
   private static final long serialVersionUID = 1L;
   private final String iconPath;
   private final String text;

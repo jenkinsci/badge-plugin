@@ -26,6 +26,17 @@ This method allows to add build badge icons.
 {% describe_step  com.jenkinsci.plugins.badge.dsl.AddErrorBadgeStep %}
 ```
 
+
+## removeBadges
+
+Removes badges
+
+```groovy
+
+// removes badges. If no id is provided all are removed, otherwise only the badges with a matching id
+{% describe_step com.jenkinsci.plugins.badge.dsl.RemoveBadgesStep %}
+```
+
 ## addHtmlBadge
 
 Puts a badge with custom html
@@ -34,6 +45,15 @@ Puts a badge with custom html
 
 // puts a badge with a custom html content.
 {% describe_step  com.jenkinsci.plugins.badge.dsl.AddHtmlBadgeStep %}
+```
+## removeHtmlBadges
+
+Removes html badges
+
+```groovy
+
+// removes html badges. If no id is provided all are removed, otherwise only the badges with a matching id
+{% describe_step com.jenkinsci.plugins.badge.dsl.RemoveHtmlBadgesStep %}
 ```
 
 ## addShortText

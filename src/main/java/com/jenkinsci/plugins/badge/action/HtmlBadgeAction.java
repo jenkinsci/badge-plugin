@@ -23,14 +23,11 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import hudson.model.BuildBadgeAction;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
-import java.io.Serializable;
-
 @ExportedBean(defaultVisibility = 2)
-public class HtmlBadgeAction implements BuildBadgeAction, Serializable {
+public class HtmlBadgeAction extends AbstractBadgeAction {
   private static final long serialVersionUID = 1L;
   private final String html;
 
