@@ -1,5 +1,17 @@
 # Change Log
 
+## [badge-1.3](https://github.com/jenkinsci/badge-plugin/tree/badge-1.3) (2018-04-03)
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.2...badge-1.3)
+
+**Closed issues:**
+
+- Adding removeBadge\(icon\) and removeAllBadges\(\) methods to remove existing badges [\#4](https://github.com/jenkinsci/badge-plugin/issues/4)
+- Is it possible to add link in the addShortText dsl? [\#2](https://github.com/jenkinsci/badge-plugin/issues/2)
+
+**Merged pull requests:**
+
+- Adding removeBadge\(icon\) and removeAllBadges\(\) methods to remove existing badges [\#5](https://github.com/jenkinsci/badge-plugin/pull/5) ([bakito](https://github.com/bakito))
+
 ## [badge-1.2](https://github.com/jenkinsci/badge-plugin/tree/badge-1.2) (2018-02-27)
 [Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.1...badge-1.2)
 

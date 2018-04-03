@@ -40,9 +40,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface Param {
 
   /**
-   * The name.
+   * @return the name of this param
    */
   String name();
 
+  /**
+   * @return description for this param
+   */
   String description();
 }
