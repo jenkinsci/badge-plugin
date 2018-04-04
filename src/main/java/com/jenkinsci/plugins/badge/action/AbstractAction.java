@@ -21,43 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.jenkinsci.plugins.badge.dsl;
+package com.jenkinsci.plugins.badge.action;
 
-import com.jenkinsci.plugins.badge.action.AbstractAction;
-import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
-import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
-import hudson.Extension;
-import org.kohsuke.stapler.DataBoundConstructor;
+import hudson.model.Action;
+import hudson.model.BuildBadgeAction;
+import org.kohsuke.stapler.export.Exported;
+
+import java.io.Serializable;
 
 /**
- * Removes all summaries or the summaries with a given id.
+ * An abstract action providing a badge id
  */
-public class RemoveSummariesStep extends AbstractRemoveBadgesStep {
+public abstract class AbstractAction implements Action, Serializable {
+  private String id;
 
-
-  @DataBoundConstructor
-  public RemoveSummariesStep() {
+  public void setId(String id) {
+    this.id = id;
   }
 
-  @Override
-  protected Class<? extends AbstractAction> getActionClass() {
-    return BadgeSummaryAction.class;
+  @Exported
+  public String getId() {
+    return id;
   }
-
-  @Extension
-  public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
-
-    @Override
-    public String getFunctionName() {
-      return "removeSummaries";
-    }
-
-    @Override
-    public String getDisplayName() {
-      return "Remove Summaries";
-    }
-
-  }
-
-
 }

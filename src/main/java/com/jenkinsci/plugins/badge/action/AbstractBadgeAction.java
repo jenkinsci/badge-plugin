@@ -24,23 +24,9 @@
 package com.jenkinsci.plugins.badge.action;
 
 import hudson.model.BuildBadgeAction;
-import org.kohsuke.stapler.export.Exported;
-
-import java.io.Serializable;
-import java.lang.annotation.Documented;
 
 /**
  * An abstract badge action providing a badge id
  */
-public abstract class AbstractBadgeAction implements BuildBadgeAction, Serializable {
-  private String id;
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  @Exported
-  public String getId() {
-    return id;
-  }
+public abstract class AbstractBadgeAction extends AbstractAction implements BuildBadgeAction {
 }

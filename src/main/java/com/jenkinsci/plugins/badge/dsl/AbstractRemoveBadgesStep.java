@@ -23,6 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
+import com.jenkinsci.plugins.badge.action.AbstractAction;
 import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.model.Action;
@@ -43,18 +44,18 @@ abstract class AbstractRemoveBadgesStep extends AbstractStep {
   }
 
 
-  protected abstract Class<? extends AbstractBadgeAction> getActionClass();
+  protected abstract Class<? extends AbstractAction> getActionClass();
 
 
   public static class Execution extends SynchronousStepExecution<Void> {
 
     @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private final Class<? extends AbstractBadgeAction> actionClass;
+    private final Class<? extends AbstractAction> actionClass;
 
     @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
     private final String id;
 
-    Execution(StepContext context, Class<? extends AbstractBadgeAction> actionClass, String id) {
+    Execution(StepContext context, Class<? extends AbstractAction> actionClass, String id) {
       super(context);
       this.actionClass = actionClass;
       this.id = id;
@@ -70,7 +71,7 @@ abstract class AbstractRemoveBadgesStep extends AbstractStep {
     }
 
     private boolean matches(Action a) {
-      return actionClass.isAssignableFrom(a.getClass()) && (id == null || id.equals(((AbstractBadgeAction) a).getId()));
+      return actionClass.isAssignableFrom(a.getClass()) && (id == null || id.equals(((AbstractAction) a).getId()));
     }
 
     private static final long serialVersionUID = 1L;
