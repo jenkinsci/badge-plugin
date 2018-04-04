@@ -1,5 +1,21 @@
 # Change Log
 
+## [Unreleased](https://github.com/jenkinsci/badge-plugin/tree/HEAD)
+
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.4...HEAD)
+
+## [badge-1.4](https://github.com/jenkinsci/badge-plugin/tree/badge-1.4) (2018-04-04)
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.3...badge-1.4)
+
+**Closed issues:**
+
+- No page found 'badge.jelly' for class com.jenkinsci.plugins.badge.action.BadgeSummaryAction [\#6](https://github.com/jenkinsci/badge-plugin/issues/6)
+
+
+**Merged pull requests:**
+
+- fix action hierarchy [\#7](https://github.com/jenkinsci/badge-plugin/pull/7) ([bakito](https://github.com/bakito))
+
 ## [badge-1.3](https://github.com/jenkinsci/badge-plugin/tree/badge-1.3) (2018-04-03)
 [Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.2...badge-1.3)
 
