@@ -29,7 +29,7 @@ import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 @ExportedBean(defaultVisibility = 2)
-public class BadgeSummaryAction extends AbstractBadgeAction {
+public class BadgeSummaryAction extends AbstractAction {
   private static final long serialVersionUID = 1L;
 
   private final String iconPath;
