@@ -23,10 +23,13 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import hudson.markup.RawHtmlMarkupFormatter;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
+
+import java.io.IOException;
 
 @ExportedBean(defaultVisibility = 2)
 public class BadgeSummaryAction extends AbstractAction {
@@ -58,8 +61,8 @@ public class BadgeSummaryAction extends AbstractAction {
   }
 
   @Exported
-  public String getText() {
-    return summaryText;
+  public String getText() throws IOException {
+    return new RawHtmlMarkupFormatter(false).translate(summaryText);
   }
 
   @Whitelisted

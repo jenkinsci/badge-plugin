@@ -6,8 +6,9 @@ import com.hubspot.jinjava.tree.TagNode;
 import com.hubspot.jinjava.util.HelperStringTokenizer;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.joining;
 
 public class ListImagesTag implements Tag {
 
@@ -33,7 +34,7 @@ public class ListImagesTag implements Tag {
     if (files == null) {
       return null;
     }
-    return Arrays.stream(files).map(f -> "![alt text](" + path + "/" + f.getName() + " \"" + f.getName() + "\")").collect(Collectors.joining("\n"));
+    return stream(files).map(File::getName).sorted().map(name -> "![alt text](" + path + "/" + name + " \"" + name + "\")").collect(joining("\n"));
   }
 
   @Override

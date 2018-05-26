@@ -23,8 +23,11 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import hudson.markup.RawHtmlMarkupFormatter;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
+
+import java.io.IOException;
 
 @ExportedBean(defaultVisibility = 2)
 public class HtmlBadgeAction extends AbstractBadgeAction {
@@ -53,8 +56,8 @@ public class HtmlBadgeAction extends AbstractBadgeAction {
   }
 
   @Exported
-  public String getHtml() {
-    return html;
+  public String getHtml() throws IOException {
+    return new RawHtmlMarkupFormatter(false).translate(html);
   }
 
 }

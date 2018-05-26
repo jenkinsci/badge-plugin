@@ -23,23 +23,17 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static java.util.UUID.randomUUID;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
+import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.BuildWatcher;
-import org.jvnet.hudson.test.JenkinsRule;
 
-import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
+import java.util.List;
+
+import static java.util.UUID.randomUUID;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class CreateSummaryStepTest extends AbstractBadgeTest {
 
@@ -54,6 +48,20 @@ public class CreateSummaryStepTest extends AbstractBadgeTest {
   public void createSummary_html_unescaped() throws Exception {
     String text = randomUUID().toString();
     BadgeSummaryAction action = createSummary("summary.appendText('<li>" + text + "</li>', false)");
+    assertEquals("<li>" + text + "</li>", action.getText());
+  }
+
+
+  /**
+   * Test fix for XSS bug.
+   * https://issues.jenkins-ci.org/browse/SECURITY-906
+   *
+   * @throws Exception
+   */
+  @Test
+  public void createSummary_html_unescaped_SECURITY_906() throws Exception {
+    String text = randomUUID().toString();
+    BadgeSummaryAction action = createSummary("summary.appendText('<li>" + text + "</li><script>alert(\"exploit!\");</script>', false);");
     assertEquals("<li>" + text + "</li>", action.getText());
   }
 
@@ -91,7 +99,7 @@ public class CreateSummaryStepTest extends AbstractBadgeTest {
     String text = randomUUID().toString();
 
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-    p.setDefinition(new CpsFlowDefinition("def summary = createSummary(icon:\"" + icon + "\", text:\""+text+"\")", true));
+    p.setDefinition(new CpsFlowDefinition("def summary = createSummary(icon:\"" + icon + "\", text:\"" + text + "\")", true));
     WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
     List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
     assertEquals(1, summaryActions.size());
