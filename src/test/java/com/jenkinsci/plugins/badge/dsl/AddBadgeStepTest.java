@@ -23,24 +23,18 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import com.jenkinsci.plugins.badge.action.BadgeAction;
+import hudson.model.BuildBadgeAction;
+import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
+import org.jenkinsci.plugins.workflow.job.WorkflowJob;
+import org.jenkinsci.plugins.workflow.job.WorkflowRun;
+import org.junit.Test;
 
 import java.util.List;
 import java.util.UUID;
 
-import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
-import org.jenkinsci.plugins.workflow.job.WorkflowJob;
-import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.jvnet.hudson.test.BuildWatcher;
-import org.jvnet.hudson.test.JenkinsRule;
-
-import com.jenkinsci.plugins.badge.action.BadgeAction;
-
-import hudson.model.BuildBadgeAction;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class AddBadgeStepTest extends AbstractBadgeTest {
 

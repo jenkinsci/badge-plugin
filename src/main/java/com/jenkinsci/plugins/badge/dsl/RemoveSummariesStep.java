@@ -24,7 +24,6 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.AbstractAction;
-import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import hudson.Extension;
 import org.kohsuke.stapler.DataBoundConstructor;

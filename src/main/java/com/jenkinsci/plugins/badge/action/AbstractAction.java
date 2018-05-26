@@ -24,7 +24,6 @@
 package com.jenkinsci.plugins.badge.action;
 
 import hudson.model.Action;
-import hudson.model.BuildBadgeAction;
 import org.kohsuke.stapler.export.Exported;
 
 import java.io.Serializable;
