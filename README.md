@@ -202,7 +202,7 @@ addShortText(text)
  * text: The text to add fot this badge
  * background: (optional) The background-color for this short text
  * border: (optional) The border width for this short text
- * borderColor: (optional) The order color for this short text
+ * borderColor: (optional) The border color for this short text
  * color: (optional) The color for this short text
  * link: (optional) The link for this short text
  */
