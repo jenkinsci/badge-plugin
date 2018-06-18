@@ -40,6 +40,18 @@ public class AddHtmlBadgeStepTest extends AbstractBadgeTest {
   @Test
   public void addHtmlBadge() throws Exception {
     String html = UUID.randomUUID().toString();
+    testAddHtmlBadge(html, html);
+  }
+
+  @Test
+  public void addHtmlBadge_remove_script() throws Exception {
+    String uuid = UUID.randomUUID().toString();
+    String html = uuid + "<script>alert('exploit!');</script>";
+    testAddHtmlBadge(html, uuid);
+  }
+
+
+  private void testAddHtmlBadge(String html, String expected) throws Exception {
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
 
     String script = "addHtmlBadge(\"" + html + "\")";
@@ -51,6 +63,7 @@ public class AddHtmlBadgeStepTest extends AbstractBadgeTest {
     assertEquals(1, badgeActions.size());
 
     HtmlBadgeAction action = (HtmlBadgeAction) badgeActions.get(0);
-    assertEquals(html, action.getHtml());
+    assertEquals(expected, action.getHtml());
+    assertEquals(html, action.getRawHtml());
   }
 }

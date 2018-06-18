@@ -23,14 +23,21 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import hudson.markup.RawHtmlMarkupFormatter;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 @ExportedBean(defaultVisibility = 2)
 public class BadgeSummaryAction extends AbstractAction {
   private static final long serialVersionUID = 1L;
+  private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
 
   private final String iconPath;
   private String summaryText = "";
@@ -57,9 +64,18 @@ public class BadgeSummaryAction extends AbstractAction {
     return iconPath;
   }
 
+  public String getRawText() {
+    return summaryText;
+  }
+
   @Exported
   public String getText() {
-    return summaryText;
+    try {
+      return new RawHtmlMarkupFormatter(false).translate(summaryText);
+    } catch (IOException e) {
+      LOGGER.log(Level.WARNING, "Error preparing summary text for ui", e);
+      return "<b><font color=\"red\">ERROR</font></b>";
+    }
   }
 
   @Whitelisted

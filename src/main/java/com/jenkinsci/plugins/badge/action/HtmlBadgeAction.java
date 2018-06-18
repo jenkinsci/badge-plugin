@@ -23,12 +23,19 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import hudson.markup.RawHtmlMarkupFormatter;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ExportedBean(defaultVisibility = 2)
 public class HtmlBadgeAction extends AbstractBadgeAction {
   private static final long serialVersionUID = 1L;
+  private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
+
   private final String html;
 
   private HtmlBadgeAction(String html) {
@@ -52,9 +59,17 @@ public class HtmlBadgeAction extends AbstractBadgeAction {
     return null;
   }
 
-  @Exported
-  public String getHtml() {
+  public String getRawHtml() {
     return html;
   }
 
+  @Exported
+  public String getHtml() {
+    try {
+      return new RawHtmlMarkupFormatter(false).translate(html);
+    } catch (IOException e) {
+      LOGGER.log(Level.WARNING, "Error preparing html content for ui", e);
+      return "<b><font color=\"red\">ERROR</font></b>";
+    }
+  }
 }

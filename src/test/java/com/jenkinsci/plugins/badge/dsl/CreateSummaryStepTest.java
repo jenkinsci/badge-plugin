@@ -52,6 +52,15 @@ public class CreateSummaryStepTest extends AbstractBadgeTest {
   }
 
   @Test
+  public void createSummary_html_unescaped_remove_script() throws Exception {
+    String text = randomUUID().toString();
+    String html = "<li>" + text + "</li><script>alert(\"exploit!\");</script>";
+    BadgeSummaryAction action = createSummary("summary.appendText('" + html + "', false);");
+    assertEquals("<li>" + text + "</li>", action.getText());
+    assertEquals(html, action.getRawText());
+  }
+
+  @Test
   public void createSummary_html_escaped() throws Exception {
     String text = randomUUID().toString();
     BadgeSummaryAction action = createSummary("summary.appendText('<li>" + text + "</li>', true)");
@@ -85,7 +94,7 @@ public class CreateSummaryStepTest extends AbstractBadgeTest {
     String text = randomUUID().toString();
 
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-    p.setDefinition(new CpsFlowDefinition("def summary = createSummary(icon:\"" + icon + "\", text:\""+text+"\")", true));
+    p.setDefinition(new CpsFlowDefinition("def summary = createSummary(icon:\"" + icon + "\", text:\"" + text + "\")", true));
     WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
     List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
     assertEquals(1, summaryActions.size());
