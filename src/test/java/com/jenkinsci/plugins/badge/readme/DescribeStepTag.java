@@ -75,7 +75,8 @@ public class DescribeStepTag implements Tag {
       stream(constructorParams).forEach(sb::append);
       sb.append(" */\n");
 
-      sb.append(functionName).append("(").append(stream(constructorParams).map(MethodParameter::getName)
+      sb.append(functionName).append("(")
+          .append(stream(constructorParams).map(p -> p.getName() + ": <" + p.getName() + ">")
           .collect(joining(", "))).append(")\n\n");
 
 
@@ -86,7 +87,7 @@ public class DescribeStepTag implements Tag {
         sb.append(" */\n");
 
         sb.append(functionName).append("(").append(concat(stream(constructorParams), stream(optionalParameterNames))
-            .map(MethodParameter::getName).collect(joining(", "))).append(")\n");
+            .map(p -> p.getName() + ": <" + p.getName() + ">").collect(joining(", "))).append(")\n");
       }
 
     } catch (Exception e) {

@@ -1,16 +1,18 @@
 # Change Log
 
-## [Unreleased](https://github.com/jenkinsci/badge-plugin/tree/HEAD)
-
-[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.4...HEAD)
-
-## [badge-1.4](https://github.com/jenkinsci/badge-plugin/tree/badge-1.4) (2018-04-04)
-[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.3...badge-1.4)
+## [badge-1.5](https://github.com/jenkinsci/badge-plugin/tree/badge-1.5) (2018-06-18)
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.4...badge-1.5)
 
 **Closed issues:**
 
 - No page found 'badge.jelly' for class com.jenkinsci.plugins.badge.action.BadgeSummaryAction [\#6](https://github.com/jenkinsci/badge-plugin/issues/6)
 
+**Merged pull requests:**
+
+- fix one char typo border vs. order [\#9](https://github.com/jenkinsci/badge-plugin/pull/9) ([balihb](https://github.com/balihb))
+
+## [badge-1.4](https://github.com/jenkinsci/badge-plugin/tree/badge-1.4) (2018-04-04)
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.3...badge-1.4)
 
 **Merged pull requests:**
 

@@ -26,7 +26,7 @@ This method allows to add build badge icons.
  * icon: The icon for this badge
  * text: The text for this badge
  */
-addBadge(icon, text)
+addBadge(icon: <icon>, text: <text>)
 
 /**
  * all params
@@ -36,7 +36,7 @@ addBadge(icon, text)
  * id: (optional) The id for this badge. This id can be used to selectively delete badges.
  * link: (optional) The link to be added to this badge
  */
-addBadge(icon, text, id, link)
+addBadge(icon: <icon>, text: <text>, id: <id>, link: <link>)
 
 
 // addInfoBadge
@@ -47,7 +47,7 @@ addBadge(icon, text, id, link)
  * 
  * text: The info text for this badge
  */
-addInfoBadge(text)
+addInfoBadge(text: <text>)
 
 /**
  * all params
@@ -56,7 +56,7 @@ addInfoBadge(text)
  * id: (optional) The id for this badge. This id can be used to selectively delete badges.
  * link: (optional) The link to be added to this badge
  */
-addInfoBadge(text, id, link)
+addInfoBadge(text: <text>, id: <id>, link: <link>)
 
 
 // addWarningBadge
@@ -67,7 +67,7 @@ addInfoBadge(text, id, link)
  * 
  * text: The text for this warning badge
  */
-addWarningBadge(text)
+addWarningBadge(text: <text>)
 
 /**
  * all params
@@ -76,7 +76,7 @@ addWarningBadge(text)
  * id: (optional) The id for this badge. This id can be used to selectively delete badges.
  * link: (optional) The link to be added to this badge
  */
-addWarningBadge(text, id, link)
+addWarningBadge(text: <text>, id: <id>, link: <link>)
 
 
 // addErrorBadge
@@ -87,7 +87,7 @@ addWarningBadge(text, id, link)
  * 
  * text: The text for this error badge
  */
-addErrorBadge(text)
+addErrorBadge(text: <text>)
 
 /**
  * all params
@@ -96,7 +96,7 @@ addErrorBadge(text)
  * id: (optional) The id for this badge. This id can be used to selectively delete badges.
  * link: (optional) The link to be added to this badge
  */
-addErrorBadge(text, id, link)
+addErrorBadge(text: <text>, id: <id>, link: <link>)
 
 ```
 
@@ -122,7 +122,7 @@ removeBadges()
  * 
  * id: (optional) The id for this badge. This id can be used to selectively delete badges.
  */
-removeBadges(id)
+removeBadges(id: <id>)
 
 ```
 
@@ -141,7 +141,7 @@ Puts a badge with custom html
  * 
  * html: The html content to be used for this badge
  */
-addHtmlBadge(html)
+addHtmlBadge(html: <html>)
 
 /**
  * all params
@@ -149,7 +149,7 @@ addHtmlBadge(html)
  * html: The html content to be used for this badge
  * id: (optional) The id for this badge. This id can be used to selectively delete badges.
  */
-addHtmlBadge(html, id)
+addHtmlBadge(html: <html>, id: <id>)
 
 ```
 ## removeHtmlBadges
@@ -173,7 +173,7 @@ removeHtmlBadges()
  * 
  * id: (optional) The id for this badge. This id can be used to selectively delete badges.
  */
-removeHtmlBadges(id)
+removeHtmlBadges(id: <id>)
 
 ```
 
@@ -194,7 +194,7 @@ Puts a badge with a short text
  * 
  * text: The text to add fot this badge
  */
-addShortText(text)
+addShortText(text: <text>)
 
 /**
  * all params
@@ -202,11 +202,11 @@ addShortText(text)
  * text: The text to add fot this badge
  * background: (optional) The background-color for this short text
  * border: (optional) The border width for this short text
- * borderColor: (optional) The border color for this short text
+ * borderColor: (optional) The order color for this short text
  * color: (optional) The color for this short text
  * link: (optional) The link for this short text
  */
-addShortText(text, background, border, borderColor, color, link)
+addShortText(text: <text>, background: <background>, border: <border>, borderColor: <borderColor>, color: <color>, link: <link>)
 
 ```
 
@@ -229,7 +229,7 @@ Puts a badge with a short text
  * 
  * icon: The icon for this summary
  */
-createSummary(icon)
+createSummary(icon: <icon>)
 
 /**
  * all params
@@ -238,7 +238,7 @@ createSummary(icon)
  * id: (optional) The id for this badge. This id can be used to selectively delete badges.
  * text: (optional) The title text for this summary
  */
-createSummary(icon, id, text)
+createSummary(icon: <icon>, id: <id>, text: <text>)
 
 
 def summary = createSummary(icon)
