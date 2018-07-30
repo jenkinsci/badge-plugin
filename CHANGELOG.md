@@ -1,5 +1,13 @@
 # Change Log
 
+## Unreleasd
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.5...master)
+
+**Closed issues:**
+
+- Multiple ShortText created by Badge plugin failed to wrapped in build history pane [SECURITY-906](https://github.com/jenkinsci/badge-plugin/commit/e3ab5a7f9b11d9553042e8cde9ccf7c635a8f69c) /  [JENKINS-52287](https://issues.jenkins-ci.org/browse/JENKINS-52287)
+
+
 ## [badge-1.5](https://github.com/jenkinsci/badge-plugin/tree/badge-1.5) (2018-06-18)
 [Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.4...badge-1.5)
 
