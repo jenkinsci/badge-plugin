@@ -246,20 +246,26 @@ summary.appendText(text, escapeHtml)
 summary.appendText(text, escapeHtml, bold, italic, color)
 ```
 ## icons
-The badge plugin provides the following additional icons:
+In addition to the default [16x16](https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16) icons offered by Jenkins, badge plugin provides the following icons:
 
-![alt text](src/main/webapp/images/completed.gif "completed.gif")
-![alt text](src/main/webapp/images/db_in.gif "db_in.gif")
-![alt text](src/main/webapp/images/db_out.gif "db_out.gif")
-![alt text](src/main/webapp/images/delete.gif "delete.gif")
-![alt text](src/main/webapp/images/error.gif "error.gif")
-![alt text](src/main/webapp/images/folder.gif "folder.gif")
-![alt text](src/main/webapp/images/green.gif "green.gif")
-![alt text](src/main/webapp/images/info.gif "info.gif")
-![alt text](src/main/webapp/images/red.gif "red.gif")
-![alt text](src/main/webapp/images/save.gif "save.gif")
-![alt text](src/main/webapp/images/success.gif "success.gif")
-![alt text](src/main/webapp/images/text.gif "text.gif")
-![alt text](src/main/webapp/images/warning.gif "warning.gif")
-![alt text](src/main/webapp/images/yellow.gif "yellow.gif")
+- ![alt text](src/main/webapp/images/completed.gif "completed.gif") completed.gif
+- ![alt text](src/main/webapp/images/db_in.gif "db_in.gif") db_in.gif
+- ![alt text](src/main/webapp/images/db_out.gif "db_out.gif") db_out.gif
+- ![alt text](src/main/webapp/images/delete.gif "delete.gif") delete.gif
+- ![alt text](src/main/webapp/images/error.gif "error.gif") error.gif
+- ![alt text](src/main/webapp/images/folder.gif "folder.gif") folder.gif
+- ![alt text](src/main/webapp/images/green.gif "green.gif") green.gif
+- ![alt text](src/main/webapp/images/info.gif "info.gif") info.gif
+- ![alt text](src/main/webapp/images/red.gif "red.gif") red.gif
+- ![alt text](src/main/webapp/images/save.gif "save.gif") save.gif
+- ![alt text](src/main/webapp/images/success.gif "success.gif") success.gif
+- ![alt text](src/main/webapp/images/text.gif "text.gif") text.gif
+- ![alt text](src/main/webapp/images/warning.gif "warning.gif") warning.gif
+- ![alt text](src/main/webapp/images/yellow.gif "yellow.gif") yellow.gif
 
+### other plugin icons
+Other plugin icons can be used by setting the path of the icon within the jenkins context. Don't forget the leading '/'.
+
+```groovy
+addBadge(icon: "/static/8361d0d6/images/16x16/help.png", text: "help")
+```

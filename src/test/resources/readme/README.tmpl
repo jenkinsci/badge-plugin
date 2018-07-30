@@ -86,6 +86,13 @@ summary.appendText(text, escapeHtml)
 summary.appendText(text, escapeHtml, bold, italic, color)
 ```
 ## icons
-The badge plugin provides the following additional icons:
+In addition to the default [16x16](https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16) icons offered by Jenkins, badge plugin provides the following icons:
 
 {% list_images  src/main/webapp/images %}
+
+### other plugin icons
+Other plugin icons can be used by setting the path of the icon within the jenkins context. Don't forget the leading '/'.
+
+```groovy
+addBadge(icon: "/static/8361d0d6/images/16x16/help.png", text: "help")
+```

@@ -34,7 +34,7 @@ public class ListImagesTag implements Tag {
     if (files == null) {
       return null;
     }
-    return stream(files).map(File::getName).sorted().map(name -> "![alt text](" + path + "/" + name + " \"" + name + "\")").collect(joining("\n"));
+    return stream(files).map(File::getName).sorted().map(name -> "- ![alt text](" + path + "/" + name + " \"" + name + "\") " + name).collect(joining("\n"));
   }
 
   @Override
