@@ -33,7 +33,7 @@ THE SOFTWARE.
 </j:if>
 
 <j:if test="${it.iconPath == null &amp;&amp; it.link == null}">
-  <span style="display:inline;padding:1px;border:${it.border} solid ${it.borderColor};margin:0px;background:${it.background};color:${it.color}">${it.text}</span>
+  <span style="padding:1px;border:${it.border} solid ${it.borderColor};margin:0px;background:${it.background};color:${it.color}">${it.text}</span>
 </j:if>
 
 <j:if test="${it.iconPath == null &amp;&amp; it.link != null}">
