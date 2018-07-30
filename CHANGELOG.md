@@ -5,6 +5,8 @@
 
 **Closed issues:**
 
+- Badge Plugin stored and displayed user-provided HTML for badges and summaries unprocessed, allowing users with the ability to control badge content to store malicious HTML to be displayed within Jenkins. [SECURITY-906](https://github.com/jenkinsci/badge-plugin/commit/63a7744cef33338e62898576a50bcc521d76ba9f) /  [Jenkins Security Advisory 2018-06-25](https://jenkins.io/security/advisory/2018-06-25/#SECURITY-906)
+
 - No page found 'badge.jelly' for class com.jenkinsci.plugins.badge.action.BadgeSummaryAction [\#6](https://github.com/jenkinsci/badge-plugin/issues/6)
 
 **Merged pull requests:**
