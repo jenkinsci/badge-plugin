@@ -100,6 +100,10 @@ public class AddShortTextStep extends Step {
     this.shortText.setLink(link);
   }
 
+  public String getLink() {
+    return this.shortText.getLink();
+  }
+
   @Override
   public StepExecution start(StepContext context) {
     return new Execution(shortText, context);
