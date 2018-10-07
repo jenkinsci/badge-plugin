@@ -1,7 +1,7 @@
 # Change Log
 
 ## Unreleasd
-[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.5...master)
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.6...master)
 
 
 ## [badge-1.6](https://github.com/jenkinsci/badge-plugin/tree/badge-1.6) (2018-10-07)
