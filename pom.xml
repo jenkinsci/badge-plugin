@@ -10,7 +10,7 @@
     <description>Add Badges for a build and extend the build summary</description>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>badge</artifactId>
-    <version>1.6</version>
+    <version>1.7-SNAPSHOT</version>
     <packaging>hpi</packaging>
     <url>http://wiki.jenkins-ci.org/display/JENKINS/Badge+Plugin</url>
 
@@ -48,7 +48,7 @@
         <connection>scm:git:ssh://github.com/jenkinsci/badge-plugin.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/jenkinsci/badge-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/badge-plugin</url>
-        <tag>badge-1.6</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <build>
