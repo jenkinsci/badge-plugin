@@ -27,6 +27,9 @@ import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
 import hudson.model.Hudson;
 import jenkins.model.Jenkins;
+import jenkins.model.JenkinsLocationConfiguration;
+import org.kohsuke.stapler.Stapler;
+import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
@@ -78,7 +81,7 @@ public class BadgeAction extends AbstractBadgeAction {
   }
 
   public static BadgeAction createInfoBadge(String text) {
-    return createInfoBadge( text, null);
+    return createInfoBadge(text, null);
   }
 
   public static BadgeAction createInfoBadge(String text, String link) {
@@ -121,6 +124,13 @@ public class BadgeAction extends AbstractBadgeAction {
 
   @Exported
   public String getIconPath() {
+    // add the context path to the path variable if the umage starts with /
+    if (iconPath != null && iconPath.startsWith("/")) {
+      StaplerRequest currentRequest = Stapler.getCurrentRequest();
+      if (currentRequest != null && !iconPath.startsWith(currentRequest.getContextPath())) {
+        return currentRequest.getContextPath() + iconPath;
+      }
+    }
     return iconPath;
   }
 
@@ -155,10 +165,17 @@ public class BadgeAction extends AbstractBadgeAction {
   }
 
   public static String getIconPath(String icon) {
-    if (icon == null) return null;
-    if (icon.startsWith("/")) return icon;
-    // Try plugin images dir, fallback to Hudson images dir
+    if (icon == null) {
+      return null;
+    }
+
+    if (icon.startsWith("/") || icon.matches("^https?:.*")) {
+      return icon;
+    }
+
     Jenkins jenkins = Jenkins.getInstance();
+
+    // Try plugin images dir, fallback to Hudson images dir
     PluginWrapper wrapper = jenkins.getPluginManager().getPlugin(BadgePlugin.class);
     boolean pluginIconExists = (wrapper != null) && new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists();
     return pluginIconExists ? "/plugin/" + wrapper.getShortName() + "/images/" + icon : Hudson.RESOURCE_PATH + "/images/16x16/" + icon;

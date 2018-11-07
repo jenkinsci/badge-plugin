@@ -4,6 +4,13 @@
 [Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.6...master)
 
 
+**Closed issues:**
+
+- Allow external icons [\#16](https://github.com/jenkinsci/badge-plugin/issues/16)
+- link on addErrorBadge not working [\#17](https://github.com/jenkinsci/badge-plugin/issues/17)
+
+
+
 ## [badge-1.6](https://github.com/jenkinsci/badge-plugin/tree/badge-1.6) (2018-10-07)
 [Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.5...badge-1.6)
 
