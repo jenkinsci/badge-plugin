@@ -60,7 +60,7 @@ public class AddWarningBadgeStep extends AddBadgeStep {
 
       @Override
       protected BadgeAction newBatchAction(Badge badge) {
-        return BadgeAction.createWarningBadge(badge.getText());
+        return BadgeAction.createWarningBadge(badge.getText(), badge.getLink());
       }
     };
   }

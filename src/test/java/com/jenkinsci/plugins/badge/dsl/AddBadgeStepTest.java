@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class AddBadgeStepTest extends AbstractBadgeTest {
@@ -73,23 +74,34 @@ public class AddBadgeStepTest extends AbstractBadgeTest {
 
   @Test
   public void addInfoBadge() throws Exception {
-    addStatusBadge("addInfoBadge", "info.gif");
+    addStatusBadge("addInfoBadge", "info.gif", false);
+    addStatusBadge("addInfoBadge", "info.gif", true);
   }
 
   @Test
   public void addWarningBadge() throws Exception {
-    addStatusBadge("addWarningBadge", "warning.gif");
+    addStatusBadge("addWarningBadge", "warning.gif", false);
+    addStatusBadge("addWarningBadge", "warning.gif", true);
   }
 
   @Test
   public void addErrorBadge() throws Exception {
-    addStatusBadge("addErrorBadge", "error.gif");
+    addStatusBadge("addErrorBadge", "error.gif", false);
+    addStatusBadge("addErrorBadge", "error.gif", true);
   }
 
-  private void addStatusBadge(String functionName, String expectedIcon) throws Exception {
+  private void addStatusBadge(String functionName, String expectedIcon, boolean withLink) throws Exception {
     String text = UUID.randomUUID().toString();
-    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-    p.setDefinition(new CpsFlowDefinition(functionName + "(\"" + text + "\")", true));
+    String link = UUID.randomUUID().toString();
+
+    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, text);
+    String script = functionName +"(text:\"" + text + "\"";
+    if (withLink) {
+      script += ",  link:\"" + link + "\"";
+    }
+    script += ")";
+
+    p.setDefinition(new CpsFlowDefinition(script, true));
     WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
     List<BuildBadgeAction> badgeActions = b.getBadgeActions();
@@ -98,5 +110,10 @@ public class AddBadgeStepTest extends AbstractBadgeTest {
     BadgeAction action = (BadgeAction) badgeActions.get(0);
     assertEquals(text, action.getText());
     assertTrue(action.getIconPath().endsWith(expectedIcon));
+    if (withLink) {
+      assertEquals(link, action.getLink());
+    } else {
+      assertNull(action.getLink());
+    }
   }
 }

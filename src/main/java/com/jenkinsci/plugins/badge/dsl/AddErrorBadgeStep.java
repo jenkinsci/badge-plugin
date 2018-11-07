@@ -60,7 +60,7 @@ public class AddErrorBadgeStep extends AddBadgeStep {
 
       @Override
       protected BadgeAction newBatchAction(Badge badge) {
-        return BadgeAction.createErrorBadge(badge.getText());
+        return BadgeAction.createErrorBadge(badge.getText(), badge.getLink());
       }
     };
   }

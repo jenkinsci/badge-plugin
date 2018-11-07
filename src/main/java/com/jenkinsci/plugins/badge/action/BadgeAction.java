@@ -78,15 +78,27 @@ public class BadgeAction extends AbstractBadgeAction {
   }
 
   public static BadgeAction createInfoBadge(String text) {
-    return new BadgeAction(getIconPath("info.gif"), text);
+    return createInfoBadge( text, null);
+  }
+
+  public static BadgeAction createInfoBadge(String text, String link) {
+    return createBadge("info.gif", text, link);
   }
 
   public static BadgeAction createWarningBadge(String text) {
-    return new BadgeAction(getIconPath("warning.gif"), text);
+    return createWarningBadge(text, null);
+  }
+
+  public static BadgeAction createWarningBadge(String text, String link) {
+    return createBadge("warning.gif", text, link);
   }
 
   public static BadgeAction createErrorBadge(String text) {
-    return new BadgeAction(getIconPath("error.gif"), text);
+    return createErrorBadge(text, null);
+  }
+
+  public static BadgeAction createErrorBadge(String text, String link) {
+    return createBadge("error.gif", text, link);
   }
 
   /* Action methods */

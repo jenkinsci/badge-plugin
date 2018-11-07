@@ -60,7 +60,7 @@ public class AddInfoBadgeStep extends AddBadgeStep {
 
       @Override
       protected BadgeAction newBatchAction(Badge badge) {
-        return BadgeAction.createInfoBadge(badge.getText());
+        return BadgeAction.createInfoBadge(badge.getText(), badge.getLink());
       }
     };
   }
