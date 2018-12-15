@@ -212,9 +212,7 @@ addShortText(text: <text>, background: <background>, border: <border>, borderCol
 
 ## createSummary
 
-Puts a badge with a short text.   
-
-Summary only supports jenkins built-in icons from /images/48x48
+Puts a badge with a short text
 
 ![alt text](src/doc/summary.png "Summary")
 
@@ -247,7 +245,7 @@ def summary = createSummary(icon)
 summary.appendText(text, escapeHtml)
 summary.appendText(text, escapeHtml, bold, italic, color)
 ```
-## icons for badges
+## icons
 In addition to the default [16x16](https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16) icons offered by Jenkins, badge plugin provides the following icons:
 
 - ![alt text](src/main/webapp/images/completed.gif "completed.gif") completed.gif
