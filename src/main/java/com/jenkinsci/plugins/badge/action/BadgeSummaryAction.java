@@ -23,6 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.markup.RawHtmlMarkupFormatter;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
@@ -70,6 +71,9 @@ public class BadgeSummaryAction extends AbstractAction {
 
   @Exported
   public String getText() {
+    if (BadgePlugin.get().isDisableFormatHTML()) {
+      return summaryText;
+    }
     try {
       return new RawHtmlMarkupFormatter(false).translate(summaryText);
     } catch (IOException e) {
