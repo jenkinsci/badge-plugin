@@ -23,6 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.markup.RawHtmlMarkupFormatter;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
@@ -65,6 +66,9 @@ public class HtmlBadgeAction extends AbstractBadgeAction {
 
   @Exported
   public String getHtml() {
+    if (BadgePlugin.get().isDisableFormatHTML()) {
+      return html;
+    }
     try {
       return new RawHtmlMarkupFormatter(false).translate(html);
     } catch (IOException e) {

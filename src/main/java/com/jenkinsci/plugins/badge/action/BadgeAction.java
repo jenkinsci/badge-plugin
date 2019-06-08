@@ -173,10 +173,10 @@ public class BadgeAction extends AbstractBadgeAction {
       return icon;
     }
 
-    Jenkins jenkins = Jenkins.getInstance();
+    Jenkins jenkins = Jenkins.getInstanceOrNull();
 
     // Try plugin images dir, fallback to Hudson images dir
-    PluginWrapper wrapper = jenkins.getPluginManager().getPlugin(BadgePlugin.class);
+    PluginWrapper wrapper = jenkins != null ? jenkins.getPluginManager().getPlugin("badge") : null;
     boolean pluginIconExists = (wrapper != null) && new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists();
     return pluginIconExists ? "/plugin/" + wrapper.getShortName() + "/images/" + icon : Hudson.RESOURCE_PATH + "/images/16x16/" + icon;
   }
