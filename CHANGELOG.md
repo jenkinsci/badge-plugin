@@ -2,9 +2,22 @@
 
 ## Unreleasd
 
-[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.7...master)
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.8...master)
 
-## [badge-1.67(https://github.com/jenkinsci/badge-plugin/tree/badge-1.7) (2018-12-15)
+## [badge-1.8](https://github.com/jenkinsci/badge-plugin/tree/badge-1.8) (2018-12-15)
+
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.7...badge-1.8)
+
+**Closed issues:**
+
+- Createsummary removes some html tags [\#18](https://github.com/jenkinsci/badge-plugin/issues/18)
+
+**Merged pull requests:**
+
+- add global config [\#20](https://github.com/jenkinsci/badge-plugin/pull/20)
+
+
+## [badge-1.7](https://github.com/jenkinsci/badge-plugin/tree/badge-1.7) (2018-12-15)
 
 [Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.6...badge-1.7)
 
