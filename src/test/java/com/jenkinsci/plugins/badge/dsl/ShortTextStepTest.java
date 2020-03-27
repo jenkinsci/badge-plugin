@@ -81,10 +81,10 @@ public class ShortTextStepTest extends AbstractBadgeTest {
 
     BadgeAction action = (BadgeAction) badgeActions.get(0);
     assertEquals(text, action.getText());
-    assertNull(action.getColor());
-    assertNull(action.getBackground());
-    assertNull(action.getBorderColor());
-    assertNull(action.getBorder());
+    assertEquals("#000000", action.getColor());
+    assertEquals("#FFFF00", action.getBackground());
+    assertEquals("#C0C000", action.getBorderColor());
+    assertEquals("1px", action.getBorder());
     assertNull(action.getIconPath());
     assertNull(action.getLink());
   }

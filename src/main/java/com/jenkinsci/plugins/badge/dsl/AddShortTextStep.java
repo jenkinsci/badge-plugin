@@ -128,10 +128,10 @@ public class AddShortTextStep extends Step {
     private static final long serialVersionUID = 1L;
 
     private final String text;
-    private String color;
-    private String background;
-    private Integer border;
-    private String borderColor;
+    private String color = "#000000";
+    private String background = "#FFFF00";
+    private Integer border = 1;
+    private String borderColor = "#C0C000";
     private String link;
 
     public ShortText(String text) {
