@@ -5,5 +5,17 @@
        <f:entry title="Disable OWASP Markup Formatter" description="If checked, HTML content will not be formatted according OWASP in badges.">
          <f:checkbox name="disableFormatHTML" field="disableFormatHTML" default="false" value="${disableFormatHTML}"/>
        </f:entry>
+       <f:entry field="shortTextDefaultColor" title="ShortText default Color">
+           <f:textbox default="${descriptor.SHORT_TEXT_DEFAULT_COLOR}"/>
+       </f:entry>
+       <f:entry field="shortTextDefaultBackgroundColor" title="ShortText default Background">
+           <f:textbox default="${descriptor.SHORT_TEXT_DEFAULT_BACKGROUND}"/>
+       </f:entry>
+       <f:entry field="shortTextDefaultBorder" title="ShortText default Border">
+           <f:textbox default="${descriptor.SHORT_TEXT_DEFAULT_BORDER}"/>
+       </f:entry>
+       <f:entry field="shortTextDefaultBorderColor" title="ShortText default Border Color">
+           <f:textbox default="${descriptor.SHORT_TEXT_DEFAULT_BORDER_COLOR}"/>
+       </f:entry>
     </f:section>
 </j:jelly>

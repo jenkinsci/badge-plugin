@@ -37,6 +37,8 @@ import org.kohsuke.stapler.StaplerResponse;
 import java.io.IOException;
 import java.util.List;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 @Extension
 public class BadgePlugin extends GlobalConfiguration {
 
@@ -45,7 +47,22 @@ public class BadgePlugin extends GlobalConfiguration {
     return GlobalConfiguration.all().get(BadgePlugin.class);
   }
 
+  /** Default short text color */
+  public static final String SHORT_TEXT_DEFAULT_COLOR = "#000000";
+  /** Default short text background color */
+  public static final String SHORT_TEXT_DEFAULT_BACKGROUND= "#FFFF00";
+  /** Default short border */
+  public static final String SHORT_TEXT_DEFAULT_BORDER = "1px";
+  /** Default short border color */
+  public static final String SHORT_TEXT_DEFAULT_BORDER_COLOR = "#C0C000";
+
   private boolean disableFormatHTML;
+  private String shortTextDefaultColor = SHORT_TEXT_DEFAULT_COLOR;
+  private String shortTextDefaultBackgroundColor = SHORT_TEXT_DEFAULT_BACKGROUND;
+  private String shortTextDefaultBorder = SHORT_TEXT_DEFAULT_BORDER;
+  private String shortTextDefaultBorderColor = SHORT_TEXT_DEFAULT_BORDER_COLOR;
+
+
 
   public BadgePlugin() {
     // When Jenkins is restarted, load any saved configuration from disk.
@@ -66,6 +83,84 @@ public class BadgePlugin extends GlobalConfiguration {
     this.disableFormatHTML = disableFormatHTML;
     save();
   }
+
+  /** @return the default color for short text badges */
+  public String getShortTextDefaultColor() {
+    return shortTextDefaultColor;
+  }
+
+  /**
+   * Together with {@link #getShortTextDefaultColor}, binds to entry in {@code config.jelly}.
+   * @param shortTextDefaultColor the new value of this field
+   */
+  @DataBoundSetter
+  public void setShortTextDefaultColor(String shortTextDefaultColor) {
+    if (isNullOrEmpty(shortTextDefaultColor)) {
+      this.shortTextDefaultColor = SHORT_TEXT_DEFAULT_BACKGROUND;
+    } else {
+      this.shortTextDefaultColor = shortTextDefaultColor;
+    }
+    this.shortTextDefaultColor = shortTextDefaultColor;
+    save();
+  }
+
+  /** @return the default background color for short text badges */
+  public String getShortTextDefaultBackgroundColor() {
+    return shortTextDefaultBackgroundColor;
+  }
+
+  /**
+   * Together with {@link #getShortTextDefaultBackgroundColor}, binds to entry in {@code config.jelly}.
+   * @param shortTextDefaultBackgroundColor the new value of this field
+   */
+  @DataBoundSetter
+  public void setShortTextDefaultBackgroundColor(String shortTextDefaultBackgroundColor) {
+    if (isNullOrEmpty(shortTextDefaultBackgroundColor)) {
+      this.shortTextDefaultBackgroundColor = SHORT_TEXT_DEFAULT_BACKGROUND;
+    } else {
+      this.shortTextDefaultBackgroundColor = shortTextDefaultBackgroundColor;
+    }
+    save();
+  }
+
+  /** @return the default border for short text badges */
+  public String getShortTextDefaultBorder() {
+    return shortTextDefaultBorder;
+  }
+
+  /**
+   * Together with {@link #getShortTextDefaultBorder}, binds to entry in {@code config.jelly}.
+   * @param shortTextDefaultBorder the new value of this field
+   */
+  @DataBoundSetter
+  public void setShortTextDefaultBorder(String shortTextDefaultBorder) {
+    if (isNullOrEmpty(shortTextDefaultBorder)) {
+      this.shortTextDefaultBorder = SHORT_TEXT_DEFAULT_BORDER;
+    } else {
+      this.shortTextDefaultBorder = shortTextDefaultBorder;
+    }
+    save();
+  }
+
+  /** @return the default border color for short text badges */
+  public String getShortTextDefaultBorderColor() {
+    return shortTextDefaultBorderColor;
+  }
+
+  /**
+   * Together with {@link #getShortTextDefaultColor}, binds to entry in {@code config.jelly}.
+   * @param shortTextDefaultBorderColor the new value of this field
+   */
+  @DataBoundSetter
+  public void setShortTextDefaultBorderColor(String shortTextDefaultBorderColor) {
+    if (isNullOrEmpty(shortTextDefaultBorderColor)) {
+      this.shortTextDefaultBorderColor = SHORT_TEXT_DEFAULT_BORDER_COLOR;
+    } else {
+      this.shortTextDefaultBorderColor = shortTextDefaultBorderColor;
+    }
+    save();
+  }
+
 
   public void doRemoveBadges(StaplerRequest req, StaplerResponse rsp) throws IOException {
     removeActions(BadgeAction.class, req, rsp);

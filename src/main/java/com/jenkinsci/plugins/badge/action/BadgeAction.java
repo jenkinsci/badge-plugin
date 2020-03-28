@@ -23,6 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import com.google.common.base.Strings;
 import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
 import hudson.model.Hudson;
@@ -35,15 +36,17 @@ import org.kohsuke.stapler.export.ExportedBean;
 
 import java.io.File;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 @ExportedBean(defaultVisibility = 2)
 public class BadgeAction extends AbstractBadgeAction {
   private static final long serialVersionUID = 1L;
   private final String iconPath;
   private final String text;
-  private String color = "#000000";
-  private String background = "#FFFF00";
-  private String border = "1px";
-  private String borderColor = "#C0C000";
+  private String color;
+  private String background;
+  private String border;
+  private String borderColor;
   private String link;
 
   private BadgeAction(String iconPath, String text) {
@@ -72,10 +75,26 @@ public class BadgeAction extends AbstractBadgeAction {
 
   public static BadgeAction createShortText(String text, String color, String background, String border, String borderColor, String link) {
     BadgeAction action = new BadgeAction(null, text);
-    action.color = color;
-    action.background = background;
-    action.border = border;
-    action.borderColor = borderColor;
+    if (isNullOrEmpty(color)) {
+      action.color = BadgePlugin.get().getShortTextDefaultColor();
+    } else {
+      action.color = color;
+    }
+    if (isNullOrEmpty(background)) {
+      action.background = BadgePlugin.get().getShortTextDefaultBackgroundColor();
+    } else {
+      action.background = background;
+    }
+    if (isNullOrEmpty(border)) {
+      action.border = BadgePlugin.get().getShortTextDefaultBorder();
+    } else {
+      action.border = border;
+    }
+    if (isNullOrEmpty(borderColor)) {
+      action.borderColor = BadgePlugin.get().getShortTextDefaultBorderColor();
+    } else {
+      action.borderColor = borderColor;
+    }
     action.link = link;
     return action;
   }

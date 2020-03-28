@@ -23,6 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
+import com.jenkinsci.plugins.badge.BadgePlugin;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import hudson.model.Action;
 import hudson.model.BuildBadgeAction;
@@ -81,10 +82,10 @@ public class ShortTextStepTest extends AbstractBadgeTest {
 
     BadgeAction action = (BadgeAction) badgeActions.get(0);
     assertEquals(text, action.getText());
-    assertNull(action.getColor());
-    assertNull(action.getBackground());
-    assertNull(action.getBorderColor());
-    assertNull(action.getBorder());
+    assertEquals(BadgePlugin.SHORT_TEXT_DEFAULT_COLOR, action.getColor());
+    assertEquals(BadgePlugin.SHORT_TEXT_DEFAULT_BACKGROUND, action.getBackground());
+    assertEquals(BadgePlugin.SHORT_TEXT_DEFAULT_BORDER, action.getBorder());
+    assertEquals(BadgePlugin.SHORT_TEXT_DEFAULT_BORDER_COLOR, action.getBorderColor());
     assertNull(action.getIconPath());
     assertNull(action.getLink());
   }
