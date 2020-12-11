@@ -47,24 +47,24 @@ public class CreateSummaryStepTest extends AbstractBadgeTest {
   @Test
   public void createSummary_html_unescaped() throws Exception {
     String text = randomUUID().toString();
-    BadgeSummaryAction action = createSummary("summary.appendText('<li>" + text + "</li>', false)");
-    assertEquals("<li>" + text + "</li>", action.getText());
+    BadgeSummaryAction action = createSummary("summary.appendText('<ul><li>" + text + "</li></ul>', false)");
+    assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
   }
 
   @Test
   public void createSummary_html_unescaped_remove_script() throws Exception {
     String text = randomUUID().toString();
-    String html = "<li>" + text + "</li><script>alert(\"exploit!\");</script>";
+    String html = "<ul><li>" + text + "</li></ul><script>alert(\"exploit!\");</script>";
     BadgeSummaryAction action = createSummary("summary.appendText('" + html + "', false);");
-    assertEquals("<li>" + text + "</li>", action.getText());
+    assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
     assertEquals(html, action.getRawText());
   }
 
   @Test
   public void createSummary_html_escaped() throws Exception {
     String text = randomUUID().toString();
-    BadgeSummaryAction action = createSummary("summary.appendText('<li>" + text + "</li>', true)");
-    assertEquals("&lt;li&gt;" + text + "&lt;/li&gt;", action.getText());
+    BadgeSummaryAction action = createSummary("summary.appendText('<ul><li>" + text + "</li></ul>', true)");
+    assertEquals("&lt;ul&gt;&lt;li&gt;" + text + "&lt;/li&gt;&lt;/ul&gt;", action.getText());
   }
 
   @Test
