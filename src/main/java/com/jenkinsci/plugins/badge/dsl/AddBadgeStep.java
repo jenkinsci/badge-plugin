@@ -142,7 +142,7 @@ public class AddBadgeStep extends AbstractStep {
       return null;
     }
 
-    protected BadgeAction newBatchAction(Badge badge) {
+    protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
       return BadgeAction.createBadge(badge.getIcon(), badge.getText(), badge.getLink());
     }
 

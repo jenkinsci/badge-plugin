@@ -96,3 +96,10 @@ Other plugin icons can be used by setting the path of the icon within the jenkin
 ```groovy
 addBadge(icon: "/static/8361d0d6/images/16x16/help.png", text: "help")
 ```
+
+## Allow HTML in Badge and Summary
+
+The badge plugin uses by default the OWASP Markup Formatter to sanitize the HTML Badge and Summary. This feature can be disabled in the Jenkins configuration:
+Manage Jenkins -> Configure System -> Badge Plugin
+
+![alt text](src/doc/config.png "Config")

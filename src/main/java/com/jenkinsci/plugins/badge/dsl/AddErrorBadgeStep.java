@@ -59,7 +59,7 @@ public class AddErrorBadgeStep extends AddBadgeStep {
     return new Execution(getBadge(), getId(), context) {
 
       @Override
-      protected BadgeAction newBatchAction(Badge badge) {
+      protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
         return BadgeAction.createErrorBadge(badge.getText(), badge.getLink());
       }
     };

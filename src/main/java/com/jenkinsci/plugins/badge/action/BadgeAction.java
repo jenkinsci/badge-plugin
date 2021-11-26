@@ -27,16 +27,19 @@ import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
 import hudson.model.Hudson;
 import jenkins.model.Jenkins;
-import jenkins.model.JenkinsLocationConfiguration;
 import org.kohsuke.stapler.Stapler;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @ExportedBean(defaultVisibility = 2)
 public class BadgeAction extends AbstractBadgeAction {
+  private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
   private static final long serialVersionUID = 1L;
   private final String iconPath;
   private final String text;
@@ -55,9 +58,10 @@ public class BadgeAction extends AbstractBadgeAction {
     return new BadgeAction(getIconPath(icon), text);
   }
 
-  public static BadgeAction createBadge(String icon, String text, String link) {
+  public static BadgeAction createBadge(String icon, String text, String link) throws IllegalArgumentException {
     BadgeAction action = new BadgeAction(getIconPath(icon), text);
     action.link = link;
+    action.validate();
     return action;
   }
 
@@ -80,28 +84,38 @@ public class BadgeAction extends AbstractBadgeAction {
     return action;
   }
 
-  public static BadgeAction createInfoBadge(String text) {
+  public static BadgeAction createInfoBadge(String text) throws IllegalArgumentException {
     return createInfoBadge(text, null);
   }
 
-  public static BadgeAction createInfoBadge(String text, String link) {
+  public static BadgeAction createInfoBadge(String text, String link) throws IllegalArgumentException {
     return createBadge("info.gif", text, link);
   }
 
-  public static BadgeAction createWarningBadge(String text) {
+  public static BadgeAction createWarningBadge(String text) throws IllegalArgumentException {
     return createWarningBadge(text, null);
   }
 
-  public static BadgeAction createWarningBadge(String text, String link) {
+  public static BadgeAction createWarningBadge(String text, String link) throws IllegalArgumentException {
     return createBadge("warning.gif", text, link);
   }
 
-  public static BadgeAction createErrorBadge(String text) {
+  public static BadgeAction createErrorBadge(String text) throws IllegalArgumentException {
     return createErrorBadge(text, null);
   }
 
-  public static BadgeAction createErrorBadge(String text, String link) {
+  public static BadgeAction createErrorBadge(String text, String link) throws IllegalArgumentException {
     return createBadge("error.gif", text, link);
+  }
+
+  protected void validate() throws IllegalArgumentException {
+    if (BadgePlugin.get().isDisableFormatHTML()) {
+      return;
+    }
+
+    if (link != null && !link.startsWith("/") && !link.matches("^https?:.*") && !link.matches("^mailto:.*")) {
+      throw new IllegalArgumentException("Invalid link '" + link + "'for badge action with text '" + text + "'");
+    }
   }
 
   /* Action methods */
@@ -124,7 +138,7 @@ public class BadgeAction extends AbstractBadgeAction {
 
   @Exported
   public String getIconPath() {
-    // add the context path to the path variable if the umage starts with /
+    // add the context path to the path variable if the image starts with /
     if (iconPath != null && iconPath.startsWith("/")) {
       StaplerRequest currentRequest = Stapler.getCurrentRequest();
       if (currentRequest != null && !iconPath.startsWith(currentRequest.getContextPath())) {
@@ -136,7 +150,15 @@ public class BadgeAction extends AbstractBadgeAction {
 
   @Exported
   public String getText() {
-    return text;
+    if (BadgePlugin.get().isDisableFormatHTML()) {
+      return text;
+    }
+    try {
+      return BadgePlugin.get().translate(text);
+    } catch (IOException e) {
+      LOGGER.log(Level.WARNING, "Error preparing badge text for ui", e);
+      return "<b><font color=\"red\">ERROR</font></b>";
+    }
   }
 
   @Exported
@@ -161,7 +183,16 @@ public class BadgeAction extends AbstractBadgeAction {
 
   @Exported
   public String getLink() {
-    return link;
+    if (link == null || BadgePlugin.get().isDisableFormatHTML()) {
+      return link;
+    }
+
+    if (link.startsWith("/") || link.matches("^https?:.*") || link.matches("^mailto:.*")) {
+      return link;
+    }
+    LOGGER.log(Level.WARNING, "Error invalid link value: '" + link + "'");
+
+    return null;
   }
 
   public static String getIconPath(String icon) {

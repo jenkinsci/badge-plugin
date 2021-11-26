@@ -26,6 +26,7 @@ package com.jenkinsci.plugins.badge;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import hudson.Extension;
+import hudson.markup.RawHtmlMarkupFormatter;
 import hudson.model.Action;
 import hudson.model.Job;
 import hudson.model.Run;
@@ -40,25 +41,32 @@ import java.util.List;
 @Extension
 public class BadgePlugin extends GlobalConfiguration {
 
-  /** @return the singleton instance */
+  /**
+   * @return the singleton instance
+   */
   public static BadgePlugin get() {
     return GlobalConfiguration.all().get(BadgePlugin.class);
   }
 
   private boolean disableFormatHTML;
 
+  private final RawHtmlMarkupFormatter formatter = new RawHtmlMarkupFormatter(false);
+
   public BadgePlugin() {
     // When Jenkins is restarted, load any saved configuration from disk.
     load();
   }
 
-  /** @return the whether HTML formatting is disabled or not */
+  /**
+   * @return the whether HTML formatting is disabled or not
+   */
   public boolean isDisableFormatHTML() {
     return disableFormatHTML;
   }
 
   /**
    * Together with {@link #isDisableFormatHTML}, binds to entry in {@code config.jelly}.
+   *
    * @param disableFormatHTML the new value of this field
    */
   @DataBoundSetter
@@ -122,5 +130,9 @@ public class BadgePlugin extends GlobalConfiguration {
       run.save();
       rsp.sendRedirect(req.getRequestURI().substring(0, req.getRequestURI().indexOf("parent/parent")));
     }
+  }
+
+  public String translate(String text) throws IOException {
+    return formatter.translate(text);
   }
 }
