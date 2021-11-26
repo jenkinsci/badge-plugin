@@ -47,11 +47,11 @@ public class ShortTextStepTest extends AbstractBadgeTest {
     String background = UUID.randomUUID().toString();
     Integer border = new Random().nextInt();
     String borderColor = UUID.randomUUID().toString();
-    String link = UUID.randomUUID().toString();
+    String link = "http://" + UUID.randomUUID();
 
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
     p.setDefinition(new CpsFlowDefinition("addShortText(text:\"" + text + "\",color:\"" + color + "\", background:\"" + background + "\", border:" + border + ", borderColor:\""
-        + borderColor + "\", link:\"" + link + "\")", true));
+            + borderColor + "\", link:\"" + link + "\")", true));
     WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
     List<? extends Action> allActions = b.getAllActions();

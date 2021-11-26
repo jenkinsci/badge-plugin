@@ -61,7 +61,7 @@ public class AddWarningBadgeStep extends AddBadgeStep {
     return new Execution(getBadge(), getId(), context) {
 
       @Override
-      protected BadgeAction newBatchAction(Badge badge) {
+      protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
         return BadgeAction.createWarningBadge(badge.getText(), badge.getLink());
       }
     };

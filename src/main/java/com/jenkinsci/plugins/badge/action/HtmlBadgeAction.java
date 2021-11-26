@@ -24,7 +24,6 @@
 package com.jenkinsci.plugins.badge.action;
 
 import com.jenkinsci.plugins.badge.BadgePlugin;
-import hudson.markup.RawHtmlMarkupFormatter;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
@@ -70,7 +69,7 @@ public class HtmlBadgeAction extends AbstractBadgeAction {
       return html;
     }
     try {
-      return new RawHtmlMarkupFormatter(false).translate(html);
+      return BadgePlugin.get().translate(html);
     } catch (IOException e) {
       LOGGER.log(Level.WARNING, "Error preparing html content for ui", e);
       return "<b><font color=\"red\">ERROR</font></b>";

@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import hudson.model.BuildBadgeAction;
+import hudson.model.Result;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
@@ -33,9 +34,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class AddBadgeStepTest extends AbstractBadgeTest {
 
@@ -52,7 +51,7 @@ public class AddBadgeStepTest extends AbstractBadgeTest {
   private void addBadge(boolean inNode) throws Exception {
     String icon = UUID.randomUUID().toString();
     String text = UUID.randomUUID().toString();
-    String link = UUID.randomUUID().toString();
+    String link = "https://" + UUID.randomUUID();
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
 
     String script = "addBadge(icon:\"" + icon + "\",  text:\"" + text + "\",  link:\"" + link + "\")";
@@ -92,10 +91,10 @@ public class AddBadgeStepTest extends AbstractBadgeTest {
 
   private void addStatusBadge(String functionName, String expectedIcon, boolean withLink) throws Exception {
     String text = UUID.randomUUID().toString();
-    String link = UUID.randomUUID().toString();
+    String link = "mailto://" + UUID.randomUUID();
 
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, text);
-    String script = functionName +"(text:\"" + text + "\"";
+    String script = functionName + "(text:\"" + text + "\"";
     if (withLink) {
       script += ",  link:\"" + link + "\"";
     }
@@ -115,5 +114,36 @@ public class AddBadgeStepTest extends AbstractBadgeTest {
     } else {
       assertNull(action.getLink());
     }
+  }
+
+  @Test
+  public void addBadge_invalid_link() throws Exception {
+    String icon = UUID.randomUUID().toString();
+    String text = UUID.randomUUID().toString();
+    String link = "javascript:" + UUID.randomUUID();
+    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+
+    String script = "addBadge(icon:\"" + icon + "\",  text:\"" + text + "\",  link:\"" + link + "\")";
+    p.setDefinition(new CpsFlowDefinition(script, true));
+    r.assertBuildStatus(Result.FAILURE, p.scheduleBuild2(0));
+  }
+
+  @Test
+  public void addBadge_invalid_text() throws Exception {
+    String icon = UUID.randomUUID().toString();
+    String textPrefix = UUID.randomUUID().toString();
+    String text = textPrefix + "');alert('foo";
+    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+
+    String script = "addBadge(icon:\"" + icon + "\",  text:\"" + text + "\")";
+    p.setDefinition(new CpsFlowDefinition(script, true));
+    WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+
+    List<BuildBadgeAction> badgeActions = b.getBadgeActions();
+    assertEquals(1, badgeActions.size());
+
+    BadgeAction action = (BadgeAction) badgeActions.get(0);
+    assertTrue(action.getIconPath().endsWith(icon));
+    assertEquals(textPrefix + "&#39;);alert(&#39;foo", action.getText());
   }
 }

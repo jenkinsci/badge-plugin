@@ -24,7 +24,6 @@
 package com.jenkinsci.plugins.badge.action;
 
 import com.jenkinsci.plugins.badge.BadgePlugin;
-import hudson.markup.RawHtmlMarkupFormatter;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.kohsuke.stapler.export.Exported;
@@ -75,7 +74,7 @@ public class BadgeSummaryAction extends AbstractAction {
       return summaryText;
     }
     try {
-      return new RawHtmlMarkupFormatter(false).translate(summaryText);
+      return BadgePlugin.get().translate(summaryText);
     } catch (IOException e) {
       LOGGER.log(Level.WARNING, "Error preparing summary text for ui", e);
       return "<b><font color=\"red\">ERROR</font></b>";
