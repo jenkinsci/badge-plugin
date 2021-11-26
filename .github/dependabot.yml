@@ -4,3 +4,5 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      # newer jinjava versions are incompatible with guava; this is only needed to generate the readme
+      - dependency-name: "com.hubspot.jinjava:jinjava"

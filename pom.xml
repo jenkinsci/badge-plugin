@@ -3,7 +3,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>4.6</version>
+        <version>4.31</version>
     </parent>
 
     <name>Badge</name>
@@ -32,16 +32,14 @@
     <licenses>
         <license>
             <name>The MIT license</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <url>https://opensource.org/licenses/mit-license.php</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
 
     <properties>
-        <jenkins.version>2.277.1</jenkins.version>
+        <jenkins.version>2.277.4</jenkins.version>
         <java.level>8</java.level>
-        <workflow-step-api-plugin.version>2.23</workflow-step-api-plugin.version>
-        <workflow-cps-plugin.version>2.80</workflow-cps-plugin.version>
     </properties>
 
     <scm>
@@ -63,7 +61,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -98,13 +96,13 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-step-api</artifactId>
-            <version>${workflow-step-api-plugin.version}</version>
+            <version>2.24</version>
         </dependency>
 
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>structs</artifactId>
-            <version>1.20</version>
+            <version>1.24</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
@@ -115,18 +113,18 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>antisamy-markup-formatter</artifactId>
-            <version>1.8</version>
+            <version>2.5</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-cps</artifactId>
-            <version>${workflow-cps-plugin.version}</version>
+            <version>2.94</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-step-api</artifactId>
-            <version>${workflow-step-api-plugin.version}</version>
+            <version>2.24</version>
             <classifier>tests</classifier>
             <scope>test</scope>
         </dependency>
@@ -139,13 +137,13 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-job</artifactId>
-            <version>2.39</version>
+            <version>2.42</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>junit</artifactId>
-            <version>1.21</version>
+            <version>1.53</version>
             <scope>test</scope>
         </dependency>
 
@@ -159,18 +157,15 @@
                     <groupId>commons-net</groupId>
                     <artifactId>commons-net</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.dataformat</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
     </dependencies>
 </project>
-<!--
-
-<b><i>[<font color="grey">8b5bcc38-49fc-4586-b1c9-de61da9080ee</font>]</i></b>
-<b><i>[8b5bcc38-49fc-4586-b1c9-de61da9080ee]</i></b>
-
-<[li>e054e5d4-b18a-4f59-91dc-6390061edcec</li]>
-<[ul><li>e054e5d4-b18a-4f59-91dc-6390061edcec</li></ul]>
-
-<[li>c54226ad-7362-45fd-8f15-5cce4158cb31</li]>
-<[ul><li>c54226ad-7362-45fd-8f15-5cce4158cb31</li></ul]>
--->
