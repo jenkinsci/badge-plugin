@@ -71,7 +71,7 @@ public class CreateSummaryStepTest extends AbstractBadgeTest {
   public void createSummary_all() throws Exception {
     String text = randomUUID().toString();
     BadgeSummaryAction action = createSummary("summary.appendText('" + text + "', false, true, true, 'grey')");
-    assertEquals("<b><i><font color=\"grey\">" + text + "</font></i></b>", action.getText());
+    assertEquals("<b><i>" + text + "</i></b>", action.getText());
   }
 
   private BadgeSummaryAction createSummary(String script) throws Exception {
