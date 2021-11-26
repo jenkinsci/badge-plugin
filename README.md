@@ -245,7 +245,6 @@ def summary = createSummary(icon)
 summary.appendText(text, escapeHtml)
 summary.appendText(text, escapeHtml, bold, italic, color)
 ```
-
 ## icons
 In addition to the default [16x16](https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16) icons offered by Jenkins, badge plugin provides the following icons:
 
@@ -273,7 +272,7 @@ addBadge(icon: "/static/8361d0d6/images/16x16/help.png", text: "help")
 
 ## Allow HTML in Badge and Summary
 
-The badge plugin uses by default the OWASP Markup Formatter to sanitize the HTML Badge and Summary. This feature can be disabled in the Jenkins configuration: 
+The badge plugin uses by default the OWASP Markup Formatter to sanitize the HTML Badge and Summary. This feature can be disabled in the Jenkins configuration:
 Manage Jenkins -> Configure System -> Badge Plugin
 
 ![alt text](src/doc/config.png "Config")
