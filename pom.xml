@@ -38,7 +38,7 @@
     </licenses>
 
     <properties>
-        <jenkins.version>2.222.1</jenkins.version>
+        <jenkins.version>2.277.1</jenkins.version>
         <java.level>8</java.level>
         <workflow-step-api-plugin.version>2.23</workflow-step-api-plugin.version>
         <workflow-cps-plugin.version>2.80</workflow-cps-plugin.version>
