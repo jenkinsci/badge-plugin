@@ -78,7 +78,7 @@ public class BadgePlugin extends GlobalConfiguration {
   @SuppressWarnings("unchecked")
   private void removeActions(Class type, StaplerRequest req, StaplerResponse rsp) throws IOException {
     req.findAncestorObject(Job.class).checkPermission(Run.UPDATE);
-    Run run = req.findAncestorObject(Run.class);
+    Run<?, ?> run = req.findAncestorObject(Run.class);
     if (run != null) {
       List<? extends Action> actions = run.getAllActions();
       List<Action> groovyActions = run.getActions(type);
@@ -111,7 +111,7 @@ public class BadgePlugin extends GlobalConfiguration {
       throw new IOException("Invalid index: " + index);
     }
     req.findAncestorObject(Job.class).checkPermission(Run.UPDATE);
-    Run run = req.findAncestorObject(Run.class);
+    Run<?, ?> run = req.findAncestorObject(Run.class);
     if (run != null) {
       List<? extends Action> actions = run.getAllActions();
       List<? extends Action> groovyActions = run.getActions(type);

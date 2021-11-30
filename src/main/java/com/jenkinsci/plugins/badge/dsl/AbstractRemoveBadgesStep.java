@@ -62,7 +62,7 @@ abstract class AbstractRemoveBadgesStep extends AbstractStep {
 
     @Override
     protected Void run() throws IOException, InterruptedException {
-      Run run = getContext().get(Run.class);
+      Run<?, ?> run = getContext().get(Run.class);
       if (run != null) {
         run.getAllActions().stream().filter(this::matches).forEach(run::removeAction);
       }
