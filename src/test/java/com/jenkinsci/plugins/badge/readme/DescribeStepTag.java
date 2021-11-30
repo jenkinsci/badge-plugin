@@ -12,6 +12,7 @@ import org.jenkinsci.plugins.workflow.steps.StepDescriptor;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Optional;
@@ -133,11 +134,11 @@ public class DescribeStepTag implements Tag {
     }).findFirst();
   }
 
-  private String getFunctionName(Class<?>[] declaredClasses) throws InstantiationException, IllegalAccessException {
+  private String getFunctionName(Class<?>[] declaredClasses) throws InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     for (Class<?> innerClass : declaredClasses) {
       Extension extension = innerClass.getAnnotation(Extension.class);
       if (extension != null && StepDescriptor.class.isAssignableFrom(innerClass)) {
-        return ((StepDescriptor) innerClass.newInstance()).getFunctionName();
+        return ((StepDescriptor) innerClass.getDeclaredConstructor().newInstance()).getFunctionName();
       }
     }
     return null;
