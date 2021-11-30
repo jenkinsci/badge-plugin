@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import org.kohsuke.stapler.DataBoundConstructor;
 
@@ -51,6 +52,7 @@ public class RemoveHtmlBadgesStep extends AbstractRemoveBadgesStep {
       return "removeHtmlBadges";
     }
 
+    @NonNull
     @Override
     public String getDisplayName() {
       return "Remove Html Badges";

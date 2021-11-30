@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.AbstractAction;
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import org.kohsuke.stapler.DataBoundConstructor;
 
@@ -51,6 +52,7 @@ public class RemoveSummariesStep extends AbstractRemoveBadgesStep {
       return "removeSummaries";
     }
 
+    @NonNull
     @Override
     public String getDisplayName() {
       return "Remove Summaries";

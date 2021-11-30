@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
 import com.jenkinsci.plugins.badge.annotations.Param;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
@@ -62,6 +63,7 @@ public class AddHtmlBadgeStep extends AbstractStep {
       return "addHtmlBadge";
     }
 
+    @NonNull
     @Override
     public String getDisplayName() {
       return "Add a html badge Text";
