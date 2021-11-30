@@ -23,11 +23,9 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
 import hudson.model.Hudson;
 import jenkins.model.Jenkins;
-import jenkins.model.JenkinsLocationConfiguration;
 import org.kohsuke.stapler.Stapler;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.export.Exported;

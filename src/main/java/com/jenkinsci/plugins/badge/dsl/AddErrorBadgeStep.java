@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import com.jenkinsci.plugins.badge.annotations.Param;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
@@ -48,6 +49,7 @@ public class AddErrorBadgeStep extends AddBadgeStep {
       return "addErrorBadge";
     }
 
+    @NonNull
     @Override
     public String getDisplayName() {
       return "Add Error Badge";

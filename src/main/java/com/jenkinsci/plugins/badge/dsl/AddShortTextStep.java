@@ -26,6 +26,7 @@ package com.jenkinsci.plugins.badge.dsl;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import com.jenkinsci.plugins.badge.annotations.OptionalParam;
 import com.jenkinsci.plugins.badge.annotations.Param;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
@@ -117,6 +118,7 @@ public class AddShortTextStep extends Step {
       return "addShortText";
     }
 
+    @NonNull
     @Override
     public String getDisplayName() {
       return "Add Short Text";
