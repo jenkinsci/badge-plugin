@@ -1,7 +1,6 @@
-jenkins-badge-plugin
-=========================
+# Badge plugin
 
-Jenkins plugin to add badges and build summary entries from a pipeline.
+Jenkins plugin to add badges and build summary entries from a Pipeline.
 
 This plugin was forked from the [Groovy Postbuild Plugin](https://github.com/jenkinsci/groovy-postbuild-plugin) which will in future use the API from this plugin.
 
@@ -269,3 +268,7 @@ Other plugin icons can be used by setting the path of the icon within the jenkin
 ```groovy
 addBadge(icon: "/static/8361d0d6/images/16x16/help.png", text: "help")
 ```
+
+## Report an issue
+
+Please report issues and enhancements as a [GitHub issue](https://github.com/jenkinsci/badge-plugin/issues/new/choose).
