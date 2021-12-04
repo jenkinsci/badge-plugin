@@ -3,7 +3,7 @@ jenkins-badge-plugin
 
 Jenkins plugin to add badges and build summary entries from a pipeline.
 
-This plugin was forked from the [Groovy Postbuild Plugin](https://github.com/jenkinsci/groovy-postbuild-plugin) which will in future use the API from this plugin.
+This plugin was forked from the [Groovy Postbuild Plugin](https://plugins.jenkins.io/groovy-postbuild) which will in future use the API from this plugin.
 
 
 ## addBadge
@@ -276,3 +276,4 @@ The badge plugin uses by default the OWASP Markup Formatter to sanitize the HTML
 Manage Jenkins -> Configure System -> Badge Plugin
 
 ![alt text](src/doc/config.png "Config")
+

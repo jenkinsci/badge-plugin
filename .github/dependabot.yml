@@ -6,4 +6,5 @@ updates:
       interval: "weekly"
     ignore:
       # newer jinjava versions are incompatible with guava; this is only needed to generate the readme
+      # Ignore dependency until minimum Jenkins version is 2.320 or later
       - dependency-name: "com.hubspot.jinjava:jinjava"
