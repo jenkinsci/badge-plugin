@@ -43,7 +43,7 @@
     </properties>
 
     <scm>
-        <connection>scm:git:ssh://github.com/jenkinsci/badge-plugin.git</connection>
+        <connection>scm:git:https://github.com/jenkinsci/badge-plugin.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/jenkinsci/badge-plugin.git</developerConnection>
         <url>https://github.com/jenkinsci/badge-plugin</url>
         <tag>HEAD</tag>
