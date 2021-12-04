@@ -2,7 +2,7 @@
 
 Jenkins plugin to add badges and build summary entries from a Pipeline.
 
-This plugin was forked from the [Groovy Postbuild Plugin](https://github.com/jenkinsci/groovy-postbuild-plugin) which will in future use the API from this plugin.
+This plugin was forked from the [Groovy Postbuild Plugin](https://plugins.jenkins.io/groovy-postbuild/) which will in future use the API from this plugin.
 
 
 ## addBadge
