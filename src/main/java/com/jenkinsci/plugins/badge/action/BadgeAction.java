@@ -23,6 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
 import hudson.model.Hudson;
 import jenkins.model.Jenkins;
