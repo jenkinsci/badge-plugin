@@ -1,0 +1,4 @@
+<?jelly escape-by-default='true'?>
+<div>
+    Add Badges for a build and extend the build summary
+</div>
