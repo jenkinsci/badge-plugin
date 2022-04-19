@@ -7,7 +7,6 @@
     </parent>
 
     <name>Badge</name>
-    <description>Add Badges for a build and extend the build summary</description>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>badge</artifactId>
     <version>${revision}${changelist}</version>
