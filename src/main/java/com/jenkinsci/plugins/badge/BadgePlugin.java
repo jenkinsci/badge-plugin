@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.markup.RawHtmlMarkupFormatter;
 import hudson.model.Action;
@@ -52,6 +53,8 @@ public class BadgePlugin extends GlobalConfiguration {
 
   private final RawHtmlMarkupFormatter formatter = new RawHtmlMarkupFormatter(false);
 
+  @SuppressFBWarnings(value="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR",
+                      justification="Common pattern in Jenkins constructors")
   public BadgePlugin() {
     // When Jenkins is restarted, load any saved configuration from disk.
     load();
