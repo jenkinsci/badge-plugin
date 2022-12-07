@@ -80,7 +80,7 @@ public class CreateSummaryStep extends AbstractStep {
     @NonNull
     @Override
     public String getDisplayName() {
-      return "Print Message";
+      return "Create Summary";
     }
 
   }
