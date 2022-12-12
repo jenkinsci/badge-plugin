@@ -37,7 +37,7 @@
     </licenses>
 
     <properties>
-        <jenkins.version>2.346.3</jenkins.version>
+        <jenkins.version>2.361.4</jenkins.version>
         <revision>1.10</revision>
         <changelist>-SNAPSHOT</changelist>
         <gitHubRepo>jenkinsci/badge-plugin</gitHubRepo>
@@ -99,7 +99,7 @@
         <dependencies>
             <dependency>
                 <groupId>io.jenkins.tools.bom</groupId>
-                <artifactId>bom-2.346.x</artifactId>
+                <artifactId>bom-2.361.x</artifactId>
                 <version>1742.vb_70478c1b_25f</version>
                 <scope>import</scope>
                 <type>pom</type>
