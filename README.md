@@ -245,6 +245,32 @@ def summary = createSummary(icon)
 summary.appendText(text, escapeHtml)
 summary.appendText(text, escapeHtml, bold, italic, color)
 ```
+
+## removeSummaries
+
+Removes summaries
+
+```groovy
+
+// removes summaries. If no id is provided all are removed, otherwise only the summaries with a matching id
+// removeSummaries
+// ------------------------------------------
+
+/**
+ * minimal params
+ *
+ */
+removeSummaries()
+
+/**
+ * all params
+ *
+ * id: (optional) The summary id. This id can be used to selectively delete summaries.
+ */
+removeSummaries(id: <id>)
+
+```
+
 ## icons
 In addition to the default [16x16](https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16) icons offered by Jenkins, badge plugin provides the following icons:
 
