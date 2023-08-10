@@ -34,7 +34,7 @@ abstract class AbstractStep extends Step {
   private String id;
 
   @DataBoundSetter
-  @OptionalParam(description = "The id for this badge. This id can be used to selectively delete badges.")
+  @OptionalParam(description = "Badge identifier. Selectively delete badges by id.")
   public void setId(String id) {
     this.id = id;
   }

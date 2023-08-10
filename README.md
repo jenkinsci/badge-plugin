@@ -1,5 +1,4 @@
-jenkins-badge-plugin
-=========================
+# Badge plugin
 
 Jenkins plugin to add badges and build summary entries from a pipeline.
 
@@ -31,11 +30,11 @@ addBadge(icon: <icon>, text: <text>)
  *
  * icon: The icon for this badge
  * text: The text for this badge
- * id: (optional) The id for this badge.
- * This id can be used to selectively delete badges.
+ * id: (optional) Badge identifier. Selectively delete badges by id.
  * link: (optional) The link to be added to this badge
  */
 addBadge(icon: <icon>, text: <text>, id: <id>, link: <link>)
+
 
 // addInfoBadge
 // ------------------------------------------
@@ -51,11 +50,11 @@ addInfoBadge(text: <text>)
  * all params
  *
  * text: The info text for this badge
- * id: (optional) The id for this badge.
- * This id can be used to selectively delete badges.
+ * id: (optional) Badge identifier. Selectively delete badges by id.
  * link: (optional) The link to be added to this badge
  */
 addInfoBadge(text: <text>, id: <id>, link: <link>)
+
 
 // addWarningBadge
 // ------------------------------------------
@@ -71,11 +70,11 @@ addWarningBadge(text: <text>)
  * all params
  *
  * text: The text for this warning badge
- * id: (optional) The id for this badge.
- * This id can be used to selectively delete badges.
+ * id: (optional) Badge identifier. Selectively delete badges by id.
  * link: (optional) The link to be added to this badge
  */
 addWarningBadge(text: <text>, id: <id>, link: <link>)
+
 
 // addErrorBadge
 // ------------------------------------------
@@ -91,8 +90,7 @@ addErrorBadge(text: <text>)
  * all params
  *
  * text: The text for this error badge
- * id: (optional) The id for this badge.
- * This id can be used to selectively delete badges.
+ * id: (optional) Badge identifier. Selectively delete badges by id.
  * link: (optional) The link to be added to this badge
  */
 addErrorBadge(text: <text>, id: <id>, link: <link>)
@@ -105,8 +103,9 @@ Removes badges
 
 ```groovy
 
-// removes badges. If no id is provided, all are removed.
+// removes badges. If no id is provided all are removed.
 // If an id is provided, remove badges with the matching id.
+
 // removeBadges
 // ------------------------------------------
 
@@ -119,8 +118,7 @@ removeBadges()
 /**
  * all params
  *
- * id: (optional) The id for this badge.
- * This id can be used to selectively delete badges.
+ * id: (optional) Badge identifier. Selectively delete badges by id.
  */
 removeBadges(id: <id>)
 
@@ -147,8 +145,7 @@ addHtmlBadge(html: <html>)
  * all params
  *
  * html: The html content to be used for this badge
- * id: (optional) The id for this badge.
- * This id can be used to selectively delete badges.
+ * id: (optional) Badge identifier. Selectively delete badges by id.
  */
 addHtmlBadge(html: <html>, id: <id>)
 
@@ -159,8 +156,9 @@ Removes html badges
 
 ```groovy
 
-// removes html badges. If no id is provided, all are removed.
-// If an id is provided, badges with the matching id are removed.
+// removes html badges. If no id is provided all are removed.
+// If an id is provided, remove badges with the matching id.
+
 // removeHtmlBadges
 // ------------------------------------------
 
@@ -173,12 +171,10 @@ removeHtmlBadges()
 /**
  * all params
  *
- * id: (optional) The id for this badge.
- * This id can be used to selectively delete badges.
+ * id: (optional) Badge identifier. Selectively delete badges by id.
  */
 removeHtmlBadges(id: <id>)
-
-```
+ ```
 
 ## addShortText
 
@@ -241,11 +237,11 @@ createSummary(icon: <icon>)
  * all params
  *
  * icon: The icon for this summary
- * id: (optional) The id for this badge.
- * This id can be used to selectively delete badges.
+ * id: (optional) Badge identifier. Selectively delete badges by id.
  * text: (optional) The title text for this summary
  */
 createSummary(icon: <icon>, id: <id>, text: <text>)
+
 
 def summary = createSummary(icon)
 summary.appendText(text, escapeHtml)
@@ -258,8 +254,9 @@ Removes summaries
 
 ```groovy
 
-// removes summaries. If no id is provided all are removed, otherwise
-// only the summaries with a matching id.
+// removes summaries. If no id is provided all are removed.
+// If an id is provided, remove badges with the matching id.
+
 // removeSummaries
 // ------------------------------------------
 
@@ -272,13 +269,13 @@ removeSummaries()
 /**
  * all params
  *
- * id: (optional) The summary id. This id can be used to selectively delete summaries.
+ * id: (optional) Badge identifier. Selectively delete badges by id.
  */
 removeSummaries(id: <id>)
 
 ```
 
-## icons
+## Icons
 
 In addition to the default [16x16](https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16) icons offered by Jenkins, badge plugin provides the following icons:
 
@@ -297,7 +294,7 @@ In addition to the default [16x16](https://github.com/jenkinsci/jenkins/tree/mas
 - ![alt text](src/main/webapp/images/warning.gif "warning.gif") warning.gif
 - ![alt text](src/main/webapp/images/yellow.gif "yellow.gif") yellow.gif
 
-### other plugin icons
+### Other plugin icons
 
 Other plugin icons can be used by setting the path of the icon within the jenkins context. Don't forget the leading '/'.
 
@@ -311,3 +308,4 @@ The badge plugin uses by default the OWASP Markup Formatter to sanitize the HTML
 Manage Jenkins -> Configure System -> Badge Plugin
 
 ![alt text](src/doc/config.png "Config")
+
