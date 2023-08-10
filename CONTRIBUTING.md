@@ -24,7 +24,7 @@ The README file samples are created during the maven `prepare-package` phase by 
 The base template for the generator is `src/test/resources/readme/README.tmpl`.
 
 Update the README with the command:
-* `mvn prepare`
+* `mvn prepare-package`
 
 ## Security Issues
 

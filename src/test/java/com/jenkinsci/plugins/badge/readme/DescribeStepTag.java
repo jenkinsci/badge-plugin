@@ -71,7 +71,7 @@ public class DescribeStepTag implements Tag {
       } else {
         sb.append(" * params");
       }
-      sb.append("\n * \n");
+      sb.append("\n *\n");
 
       stream(constructorParams).forEach(sb::append);
       sb.append(" */\n");
@@ -82,7 +82,7 @@ public class DescribeStepTag implements Tag {
 
 
       if (optionalParameterNames.length != 0) {
-        sb.append("/**\n * all params\n * \n");
+        sb.append("/**\n * all params\n *\n");
         concat(stream(constructorParams), stream(optionalParameterNames)).forEach(sb::append);
 
         sb.append(" */\n");
