@@ -6,9 +6,10 @@ buildPlugin(
   useContainerAgent: true,
   // Show failures on all configurations
   failFast: false,
-  // Test Java 11 and Java 17
+  // Test Java 11, 17, and 21
   configurations: [
     [platform: 'linux',   jdk: '17'],
+    [platform: 'linux',   jdk: '21', jenkins: '2.414'],
     [platform: 'windows', jdk: '11']
   ]
 )
