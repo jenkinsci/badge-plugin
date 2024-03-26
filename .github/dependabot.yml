@@ -7,6 +7,6 @@ updates:
     labels:
       - "dependencies"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     ignore:
       - dependency-name: "commons-validator:commons-validator"
