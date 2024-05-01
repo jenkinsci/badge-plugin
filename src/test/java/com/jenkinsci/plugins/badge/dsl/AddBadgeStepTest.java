@@ -73,20 +73,20 @@ public class AddBadgeStepTest extends AbstractBadgeTest {
 
   @Test
   public void addInfoBadge() throws Exception {
-    addStatusBadge("addInfoBadge", "info.gif", false);
-    addStatusBadge("addInfoBadge", "info.gif", true);
+    addStatusBadge("addInfoBadge", "symbol-information-circle plugin-ionicons-api", false);
+    addStatusBadge("addInfoBadge", "symbol-information-circle plugin-ionicons-api", true);
   }
 
   @Test
   public void addWarningBadge() throws Exception {
-    addStatusBadge("addWarningBadge", "warning.gif", false);
-    addStatusBadge("addWarningBadge", "warning.gif", true);
+    addStatusBadge("addWarningBadge", "symbol-warning plugin-ionicons-api", false);
+    addStatusBadge("addWarningBadge", "symbol-warning plugin-ionicons-api", true);
   }
 
   @Test
   public void addErrorBadge() throws Exception {
-    addStatusBadge("addErrorBadge", "error.gif", false);
-    addStatusBadge("addErrorBadge", "error.gif", true);
+    addStatusBadge("addErrorBadge", "symbol-remove-circle plugin-ionicons-api", false);
+    addStatusBadge("addErrorBadge", "symbol-remove-circle plugin-ionicons-api", true);
   }
 
   private void addStatusBadge(String functionName, String expectedIcon, boolean withLink) throws Exception {
@@ -108,7 +108,7 @@ public class AddBadgeStepTest extends AbstractBadgeTest {
 
     BadgeAction action = (BadgeAction) badgeActions.get(0);
     assertEquals(text, action.getText());
-    assertTrue(action.getIconPath().endsWith(expectedIcon));
+    assertTrue("expect " + action.getIconPath() + " ends with " + expectedIcon, action.getIconPath().endsWith(expectedIcon));
     if (withLink) {
       assertEquals(link, action.getLink());
     } else {

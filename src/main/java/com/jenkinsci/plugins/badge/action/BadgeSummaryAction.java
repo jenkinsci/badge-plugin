@@ -30,6 +30,7 @@ import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,6 +62,10 @@ public class BadgeSummaryAction extends AbstractAction {
 
   @Exported
   public String getIconPath() {
+    if (isJenkinsSymbolRef(this.iconPath)) {
+      return getJenkinsSymbolIconPath(iconPath);
+    }
+
     return iconPath;
   }
 
@@ -96,27 +101,29 @@ public class BadgeSummaryAction extends AbstractAction {
 
   @Whitelisted
   public void appendText(String text, boolean escapeHtml, boolean bold, boolean italic, String color) {
+    String closeTags = "";
     if (bold) {
       summaryText += "<b>";
+      closeTags += "</b>";
     }
     if (italic) {
       summaryText += "<i>";
+      closeTags += "</i>";
     }
     if (color != null) {
-      summaryText += "<font color=\"" + color + "\">";
+      String cls = getJenkinsColorClass(color);
+      if (cls != null) {
+        summaryText += "span";
+        summaryText += "<span class=\"" + StringEscapeUtils.escapeHtml(cls) + "\">";
+        closeTags += "</span>";
+      } else {
+        summaryText += "<font color=\"" + StringEscapeUtils.escapeHtml(color) + "\">";
+        closeTags += "</font>";
+      }
     }
     if (escapeHtml) {
       text = StringEscapeUtils.escapeHtml(text);
     }
-    summaryText += text;
-    if (color != null) {
-      summaryText += "</font>";
-    }
-    if (italic) {
-      summaryText += "</i>";
-    }
-    if (bold) {
-      summaryText += "</b>";
-    }
+    summaryText += text + closeTags;
   }
 }

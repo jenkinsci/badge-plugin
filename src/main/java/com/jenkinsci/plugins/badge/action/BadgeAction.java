@@ -34,6 +34,8 @@ import org.kohsuke.stapler.export.ExportedBean;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,10 +45,10 @@ public class BadgeAction extends AbstractBadgeAction {
   private static final long serialVersionUID = 1L;
   private final String iconPath;
   private final String text;
-  private String color = "#000000";
-  private String background = "#FFFF00";
-  private String border = "1px";
-  private String borderColor = "#C0C000";
+  private String color;
+  private String background;
+  private String border;
+  private String borderColor;
   private String link;
 
   private BadgeAction(String iconPath, String text) {
@@ -61,6 +63,14 @@ public class BadgeAction extends AbstractBadgeAction {
   public static BadgeAction createBadge(String icon, String text, String link) throws IllegalArgumentException {
     BadgeAction action = new BadgeAction(getIconPath(icon), text);
     action.link = link;
+    action.validate();
+    return action;
+  }
+
+  public static BadgeAction createBadge(String icon, String color, String text, String link) throws IllegalArgumentException {
+    BadgeAction action = new BadgeAction(getIconPath(icon), text);
+    action.link = link;
+    action.color = color;
     action.validate();
     return action;
   }
@@ -89,7 +99,7 @@ public class BadgeAction extends AbstractBadgeAction {
   }
 
   public static BadgeAction createInfoBadge(String text, String link) throws IllegalArgumentException {
-    return createBadge("info.gif", text, link);
+    return createBadge("symbol-information-circle", "jenkins-!-color-blue", text, link);
   }
 
   public static BadgeAction createWarningBadge(String text) throws IllegalArgumentException {
@@ -97,7 +107,7 @@ public class BadgeAction extends AbstractBadgeAction {
   }
 
   public static BadgeAction createWarningBadge(String text, String link) throws IllegalArgumentException {
-    return createBadge("warning.gif", text, link);
+    return createBadge("symbol-warning", "jenkins-!-warning-color", text, link);
   }
 
   public static BadgeAction createErrorBadge(String text) throws IllegalArgumentException {
@@ -105,7 +115,7 @@ public class BadgeAction extends AbstractBadgeAction {
   }
 
   public static BadgeAction createErrorBadge(String text, String link) throws IllegalArgumentException {
-    return createBadge("error.gif", text, link);
+    return createBadge("symbol-remove-circle", "jenkins-!-error-color", text, link);
   }
 
   protected void validate() throws IllegalArgumentException {
@@ -181,6 +191,26 @@ public class BadgeAction extends AbstractBadgeAction {
     return borderColor;
   }
 
+  public String getIconClass() {
+    List<String> classes = new LinkedList<>();
+    if (isJenkinsSymbolRef(this.iconPath)) {
+      classes.add("icon-sm");
+    }
+
+    if (this.color != null) {
+      if (this.color.startsWith("jenkins-!-")) {
+        classes.add(this.color);
+      } else {
+        String cls = getJenkinsColorClass(this.color);
+        if (cls != null) {
+          classes.add(cls);
+        }
+      }
+    }
+
+    return String.join(" ", classes);
+  }
+
   @Exported
   public String getLink() {
     if (link == null || BadgePlugin.get().isDisableFormatHTML()) {
@@ -204,6 +234,10 @@ public class BadgeAction extends AbstractBadgeAction {
       return icon;
     }
 
+    if (isJenkinsSymbolRef(icon)) {
+      return getJenkinsSymbolIconPath(icon);
+    }
+
     Jenkins jenkins = Jenkins.getInstanceOrNull();
 
     // Try plugin images dir, fallback to Hudson images dir
@@ -211,4 +245,5 @@ public class BadgeAction extends AbstractBadgeAction {
     boolean pluginIconExists = (wrapper != null) && new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists();
     return pluginIconExists ? "/plugin/" + wrapper.getShortName() + "/images/" + icon : Hudson.RESOURCE_PATH + "/images/16x16/" + icon;
   }
+
 }

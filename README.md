@@ -30,10 +30,11 @@ addBadge(icon: <icon>, text: <text>)
  *
  * icon: The icon for this badge
  * text: The text for this badge
+ * color: (optional) The Jenkins palette/semantic color name or CSS color of the badge icon symbol
  * id: (optional) Badge identifier. Selectively delete badges by id.
  * link: (optional) The link to be added to this badge
  */
-addBadge(icon: <icon>, text: <text>, id: <id>, link: <link>)
+addBadge(icon: <icon>, text: <text>, color: <color>, id: <id>, link: <link>)
 
 
 // addInfoBadge
@@ -205,9 +206,7 @@ addShortText(text: <text>)
  * color: (optional) The color for this short text
  * link: (optional) The link for this short text
  */
-addShortText(text: <text>, background: <background>,
-             border: <border>, borderColor: <borderColor>,
-             color: <color>, link: <link>)
+addShortText(text: <text>, background: <background>, border: <border>, borderColor: <borderColor>, color: <color>, link: <link>)
 
 ```
 
@@ -277,6 +276,12 @@ removeSummaries(id: <id>)
 
 ## Icons
 
+Icons can reference [Jenkins Symbols](https://weekly.ci.jenkins.io/design-library/Symbols/), including [ionicons](View the complete list of all symbols provided by the ionicons-api-plugin on ionic.io/ionicons).
+
+```groovy
+addBadge(icon: 'symbol-star')
+```
+
 In addition to the default [16x16](https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16) icons offered by Jenkins, badge plugin provides the following icons:
 
 - ![alt text](src/main/webapp/images/completed.gif "completed.gif") completed.gif
@@ -300,6 +305,26 @@ Other plugin icons can be used by setting the path of the icon within the jenkin
 
 ```groovy
 addBadge(icon: "/static/8361d0d6/images/16x16/help.png", text: "help")
+```
+
+## Colors
+
+Colors may reference [Jenkins palette colors or variables](https://weekly.ci.jenkins.io/design-library/Colors/).
+
+```groovy
+# jenkins palette colors
+addBadge(icon: 'symbol-star', color: 'yellow')
+addBadge(icon: 'symbol-star', color: 'dark-yellow')
+addBadge(icon: 'symbol-star', color: 'var(--yellow)')
+addBadge(icon: 'symbol-star', color: 'jenkins-!-color-yellow')
+
+# jenkins semantic colors
+addBadge(icon: 'symbol-star', color: 'warning')
+addBadge(icon: 'symbol-star', color: 'success')
+
+# css colors
+addBadge(icon: 'symbol-star', color: '#ffff00')
+addBadge(icon: 'symbol-star', color: 'rgb(239, 245, 66)')
 ```
 
 ## Allow HTML in Badge and Summary

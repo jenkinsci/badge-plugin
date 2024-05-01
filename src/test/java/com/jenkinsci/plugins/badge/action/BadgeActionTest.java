@@ -23,6 +23,25 @@ public class BadgeActionTest {
 
     assertEquals(Hudson.RESOURCE_PATH + "/images/16x16/http.png", BadgeAction.getIconPath("http.png"));
 
+    assertEquals("symbol-information-circle-outline plugin-ionicons-api", BadgeAction.getIconPath("symbol-information-circle-outline"));
+    assertEquals("symbol-information-circle-outline plugin-ionicons-api", BadgeAction.getIconPath("symbol-information-circle-outline plugin-ionicons-api"));
+  }
+
+  @Test
+  public void getIconClass() {
+    BadgeAction action = BadgeAction.createBadge("info.gif", "text");
+    assertEquals("", action.getIconClass());
+    action = BadgeAction.createBadge("symbol-star", "text");
+    assertEquals("icon-sm", action.getIconClass());
+    action = BadgeAction.createBadge("symbol-star",  "#000000", "", null);
+    assertEquals("icon-sm", action.getIconClass());
+    action = BadgeAction.createBadge("symbol-star",  "blue", "", null);
+    assertEquals("icon-sm jenkins-!-color-blue", action.getIconClass());
+    action = BadgeAction.createBadge("/foo/symbol-star.gif",  "blue", "", null);
+    assertEquals("jenkins-!-color-blue", action.getIconClass());
+    // teal is not in the palette
+    action = BadgeAction.createBadge("symbol-star",  "teal", "", null);
+    assertEquals("icon-sm", action.getIconClass());
   }
 
 }

@@ -40,6 +40,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface OptionalParam {
 
   /**
+   * @return the name of this param
+   */
+  String name() default "";
+
+  /**
    * @return description for this param
    */
   String description();

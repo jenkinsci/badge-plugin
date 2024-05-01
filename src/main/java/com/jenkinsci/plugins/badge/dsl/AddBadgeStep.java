@@ -45,10 +45,17 @@ public class AddBadgeStep extends AbstractStep {
 
   private final Badge badge;
 
-  @DataBoundConstructor
   public AddBadgeStep(@Param(name = "icon", description = "The icon for this badge") String icon,
                       @Param(name = "text", description = "The text for this badge") String text) {
+    this(icon, text, null);
+  }
+
+  @DataBoundConstructor
+  public AddBadgeStep(@Param(name = "icon", description = "The icon for this badge") String icon,
+                      @Param(name = "text", description = "The text for this badge") String text,
+                      @OptionalParam(name = "color", description = "The Jenkins palette/semantic color name or CSS color of the badge icon symbol") String color) {
     this.badge = new Badge(icon, text);
+    this.badge.setColor(color);
   }
 
   public String getIcon() {
@@ -100,6 +107,7 @@ public class AddBadgeStep extends AbstractStep {
     private final String icon;
     private final String text;
     private String link;
+    private String color;
 
     private Badge(String icon, String text) {
       this.icon = icon;
@@ -120,6 +128,14 @@ public class AddBadgeStep extends AbstractStep {
 
     public void setLink(String link) {
       this.link = link;
+    }
+
+    protected String getColor() {
+      return color;
+    }
+
+    public void setColor(String color) {
+      this.color = color;
     }
   }
 
@@ -145,7 +161,7 @@ public class AddBadgeStep extends AbstractStep {
     }
 
     protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
-      return BadgeAction.createBadge(badge.getIcon(), badge.getText(), badge.getLink());
+      return BadgeAction.createBadge(badge.getIcon(), badge.getColor(), badge.getText(), badge.getLink());
     }
 
     private static final long serialVersionUID = 1L;
