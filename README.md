@@ -34,7 +34,8 @@ addBadge(icon: <icon>, text: <text>)
  * id: (optional) Badge identifier. Selectively delete badges by id.
  * link: (optional) The link to be added to this badge
  */
-addBadge(icon: <icon>, text: <text>, color: <color>, id: <id>, link: <link>)
+addBadge(icon: <icon>, text: <text>, color: <color>,
+         id: <id>, link: <link>)
 
 
 // addInfoBadge
@@ -206,7 +207,9 @@ addShortText(text: <text>)
  * color: (optional) The color for this short text
  * link: (optional) The link for this short text
  */
-addShortText(text: <text>, background: <background>, border: <border>, borderColor: <borderColor>, color: <color>, link: <link>)
+addShortText(text: <text>, background: <background>,
+             border: <border>, borderColor: <borderColor>,
+             color: <color>, link: <link>)
 
 ```
 
@@ -276,7 +279,7 @@ removeSummaries(id: <id>)
 
 ## Icons
 
-Icons can reference [Jenkins Symbols](https://weekly.ci.jenkins.io/design-library/Symbols/), including [ionicons](View the complete list of all symbols provided by the ionicons-api-plugin on ionic.io/ionicons).
+Icons can reference [Jenkins Symbols](https://weekly.ci.jenkins.io/design-library/Symbols/), including [ionicons](https://ionic.io/ionicons).  View the complete list of all symbols provided by the ionicons-api-plugin on https://ionic.io/ionicons .
 
 ```groovy
 addBadge(icon: 'symbol-star')
