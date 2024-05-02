@@ -279,7 +279,7 @@ removeSummaries(id: <id>)
 
 ## Icons
 
-Icons can reference [Jenkins Symbols](https://weekly.ci.jenkins.io/design-library/Symbols/), including [ionicons](https://ionic.io/ionicons).
+Icons can reference [Jenkins Symbols](https://weekly.ci.jenkins.io/design-library/Symbols/), including all the [symbols provided by the ionicons-api-plugin](https://ionic.io/ionicons).
 
 ```groovy
 addBadge(icon: 'symbol-star')
