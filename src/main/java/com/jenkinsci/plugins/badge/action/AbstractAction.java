@@ -112,6 +112,7 @@ public abstract class AbstractAction implements Action, Serializable {
       case "warning":
       case "destructive":
       case "build":
+      case "success":
       case "danger":
       case "info":
         return "jenkins-!-" + color + "-color";
