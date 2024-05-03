@@ -125,18 +125,18 @@ Colors may reference [Jenkins palette colors or variables](https://weekly.ci.jen
 
 ```groovy
 # jenkins palette colors
-addBadge(icon: 'symbol-star', color: 'yellow')
-addBadge(icon: 'symbol-star', color: 'dark-yellow')
-addBadge(icon: 'symbol-star', color: 'var(--yellow)')
-addBadge(icon: 'symbol-star', color: 'jenkins-!-color-yellow')
+addBadge(icon: 'symbol-star', text: 'A star', color: 'yellow')
+addBadge(icon: 'symbol-star', text: 'A star', color: 'dark-yellow')
+addBadge(icon: 'symbol-star', text: 'A star', color: 'var(--yellow)')
+addBadge(icon: 'symbol-star', text: 'A star', color: 'jenkins-!-color-yellow')
 
 # jenkins semantic colors
-addBadge(icon: 'symbol-star', color: 'warning')
-addBadge(icon: 'symbol-star', color: 'success')
+addBadge(icon: 'symbol-star', text: 'A star', color: 'warning')
+addBadge(icon: 'symbol-star', text: 'A star', color: 'success')
 
 # css colors
-addBadge(icon: 'symbol-star', color: '#ffff00')
-addBadge(icon: 'symbol-star', color: 'rgb(239, 245, 66)')
+addBadge(icon: 'symbol-star', text: 'A star', color: '#ffff00')
+addBadge(icon: 'symbol-star', text: 'A star', color: 'rgb(239, 245, 66)')
 ```
 
 ## Allow HTML in Badge and Summary
