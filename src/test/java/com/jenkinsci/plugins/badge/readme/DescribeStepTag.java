@@ -15,17 +15,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static java.util.Arrays.sort;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Stream.concat;
-
-import javax.swing.text.html.Option;
 
 public class DescribeStepTag implements Tag {
 
@@ -63,48 +58,36 @@ public class DescribeStepTag implements Tag {
         throw new IllegalStateException("No constructor parameters found");
       }
 
-      List<MethodParameter> requiredParameterNames = new ArrayList<>();
-      List<MethodParameter> optionalParameterNames = new ArrayList<>();
-      List<MethodParameter> allParams = new ArrayList<>();
       MethodParameter[] constructorParams = constructorParameterNames.get();
-      MethodParameter[] methodParams = getOptionalParams(clazz);
-      Collections.addAll(allParams, constructorParams);
-      Collections.addAll(allParams, methodParams);
 
-      for (MethodParameter methodParameter : allParams) {
-        if (methodParameter.isOptional()) {
-          optionalParameterNames.add(methodParameter);
-        } else {
-          requiredParameterNames.add(methodParameter);
-        }
-      }
+      MethodParameter[] optionalParameterNames = getOptionalParams(clazz);
 
       sb.append("// ").append(functionName).append("\n");
       sb.append("// ------------------------------------------\n\n");
 
       sb.append("/**\n");
-      if (optionalParameterNames.size() != 0) {
+      if (optionalParameterNames.length != 0) {
         sb.append(" * minimal params");
       } else {
         sb.append(" * params");
       }
       sb.append("\n *\n");
 
-      requiredParameterNames.forEach(sb::append);
+      stream(constructorParams).forEach(sb::append);
       sb.append(" */\n");
 
       sb.append(functionName).append("(")
-          .append(requiredParameterNames.stream().map(p -> p.getName() + ": <" + p.getName() + ">")
+          .append(stream(constructorParams).map(p -> p.getName() + ": <" + p.getName() + ">")
           .collect(joining(", "))).append(")\n\n");
 
 
-      if (optionalParameterNames.size() != 0) {
+      if (optionalParameterNames.length != 0) {
         sb.append("/**\n * all params\n *\n");
-        concat(requiredParameterNames.stream(), optionalParameterNames.stream()).forEach(sb::append);
+        concat(stream(constructorParams), stream(optionalParameterNames)).forEach(sb::append);
 
         sb.append(" */\n");
 
-        sb.append(functionName).append("(").append(concat(requiredParameterNames.stream(), optionalParameterNames.stream())
+        sb.append(functionName).append("(").append(concat(stream(constructorParams), stream(optionalParameterNames))
             .map(p -> p.getName() + ": <" + p.getName() + ">").collect(joining(", "))).append(")\n");
       }
 
@@ -137,21 +120,12 @@ public class DescribeStepTag implements Tag {
 
         Param param = parameter.getAnnotation(Param.class);
 
-        if (param != null) {
-          names[i] = new MethodParameter(param);
-          continue;
+        if (param == null) {
+          throw new IllegalStateException("Constructor argument " + i + " of class " + c.getDeclaringClass().getName() + " needs to have @" + Param.class.getName() + " annotation.");
         }
 
-        OptionalParam optionalParam = parameter.getAnnotation(OptionalParam.class);
+        names[i] = new MethodParameter(param);
 
-        if (optionalParam != null) {
-          names[i] = new MethodParameter(optionalParam);
-          if ("".equals(names[i].name)) {
-            throw new IllegalStateException("Optional parameter " + i + " of class " + c.getDeclaringClass().getName() + " needs to have a name.");
-          }
-        } else {
-          throw new IllegalStateException("Constructor argument " + i + " of class " + c.getDeclaringClass().getName() + " needs to have @" + Param.class.getName() + " or @" + OptionalParam.class.getName() + " annotation.");
-        }
       }
 
       sort(names);
@@ -186,13 +160,8 @@ public class DescribeStepTag implements Tag {
       this.optional = false;
     }
 
-    MethodParameter(OptionalParam param) {
-      this.name = param.name();
-      this.description = param.description();
-      this.optional = true;
-    }
-
     MethodParameter(OptionalParam param, Method method) {
+
       String methodName = method.getName().substring(3);
       this.name = methodName.substring(0, 1).toLowerCase() + methodName.substring(1);
       this.description = param.description();
