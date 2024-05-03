@@ -282,7 +282,7 @@ removeSummaries(id: <id>)
 Icons can reference [Jenkins Symbols](https://weekly.ci.jenkins.io/design-library/Symbols/), including all the [symbols provided by the ionicons-api-plugin](https://ionic.io/ionicons).
 
 ```groovy
-addBadge(icon: 'symbol-star')
+addBadge(icon: 'symbol-star', text: 'a starred build')
 ```
 
 In addition to the default [16x16](https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16) icons offered by Jenkins, badge plugin provides the following icons:
