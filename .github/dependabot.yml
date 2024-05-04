@@ -8,5 +8,3 @@ updates:
       - "dependencies"
     schedule:
       interval: "monthly"
-    ignore:
-      - dependency-name: "commons-validator:commons-validator"
