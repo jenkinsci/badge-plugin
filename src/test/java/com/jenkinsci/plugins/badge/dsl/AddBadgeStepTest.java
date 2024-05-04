@@ -54,7 +54,7 @@ public class AddBadgeStepTest extends AbstractBadgeTest {
     String link = "https://" + UUID.randomUUID();
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
 
-    String script = "addBadge(icon:\"" + icon + "\",  text:\"" + text + "\",  link:\"" + link + "\")";
+    String script = "addBadge icon: '" + icon + "',  text: '" + text + "',  link: '" + link + "'";
     if (inNode) {
       script = "node() {" + script + "}";
     }
@@ -94,11 +94,10 @@ public class AddBadgeStepTest extends AbstractBadgeTest {
     String link = "mailto://" + UUID.randomUUID();
 
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, text);
-    String script = functionName + "(text:\"" + text + "\"";
+    String script = functionName + " text: '" + text + "'";
     if (withLink) {
-      script += ",  link:\"" + link + "\"";
+      script += ",  link: '" + link + "'";
     }
-    script += ")";
 
     p.setDefinition(new CpsFlowDefinition(script, true));
     WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
@@ -135,7 +134,7 @@ public class AddBadgeStepTest extends AbstractBadgeTest {
     String text = textPrefix + "');alert('foo";
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
 
-    String script = "addBadge(icon:\"" + icon + "\",  text:\"" + text + "\")";
+    String script = "addBadge(icon: '" + icon + "',  text:\"" + text + "\")";
     p.setDefinition(new CpsFlowDefinition(script, true));
     WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
