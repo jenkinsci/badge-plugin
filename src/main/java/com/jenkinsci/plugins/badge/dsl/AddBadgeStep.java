@@ -27,7 +27,6 @@ import com.jenkinsci.plugins.badge.action.BadgeAction;
 import com.jenkinsci.plugins.badge.annotations.OptionalParam;
 import com.jenkinsci.plugins.badge.annotations.Param;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
@@ -35,8 +34,6 @@ import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-
-import java.io.Serializable;
 
 /**
  * Add a badge.
