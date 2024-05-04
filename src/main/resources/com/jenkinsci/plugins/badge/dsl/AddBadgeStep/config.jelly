@@ -37,4 +37,7 @@ THE SOFTWARE.
     <f:entry field="id" title="Id">
         <f:textbox/>
     </f:entry>
+    <f:entry field="color`" title="Color">
+        <f:textbox/>
+    </f:entry>
 </j:jelly>
