@@ -2,12 +2,7 @@ package com.jenkinsci.plugins.badge.action;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.IOException;
-
-import hudson.markup.RawHtmlMarkupFormatter;
 import org.junit.jupiter.api.Test;
-import org.owasp.html.PolicyFactory;
-import org.owasp.html.Sanitizers;
 
 class AbstractActionTest {
 
@@ -20,8 +15,12 @@ class AbstractActionTest {
     @Test
     void getJenkinsSymbolIconPath() {
         assertNull(AbstractAction.getJenkinsSymbolIconPath(null));
-        assertEquals(AbstractAction.getJenkinsSymbolIconPath("symbol-information-circle-outline"), "symbol-information-circle-outline plugin-ionicons-api");
-        assertEquals(AbstractAction.getJenkinsSymbolIconPath("symbol-information-circle-outline plugin-ionicons-api"), "symbol-information-circle-outline plugin-ionicons-api");
+        assertEquals(
+                AbstractAction.getJenkinsSymbolIconPath("symbol-information-circle-outline"),
+                "symbol-information-circle-outline plugin-ionicons-api");
+        assertEquals(
+                AbstractAction.getJenkinsSymbolIconPath("symbol-information-circle-outline plugin-ionicons-api"),
+                "symbol-information-circle-outline plugin-ionicons-api");
         assertEquals(AbstractAction.getJenkinsSymbolIconPath("info.gif"), "info.gif");
     }
 
@@ -38,5 +37,4 @@ class AbstractActionTest {
         assertEquals(AbstractAction.getJenkinsColorClass("dark-blue"), "jenkins-!-color-dark-blue");
         assertEquals(AbstractAction.getJenkinsColorClass("danger"), "jenkins-!-danger-color");
     }
-
 }

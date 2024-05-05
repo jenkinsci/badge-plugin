@@ -24,7 +24,6 @@
 package com.jenkinsci.plugins.badge.action;
 
 import edu.umd.cs.findbugs.annotations.CheckForNull;
-import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import hudson.model.Action;
 import org.kohsuke.stapler.export.Exported;
