@@ -113,7 +113,6 @@ public class BadgeSummaryAction extends AbstractAction {
     if (color != null) {
       String cls = getJenkinsColorClass(color);
       if (cls != null) {
-        summaryText += "span";
         summaryText += "<span class=\"" + StringEscapeUtils.escapeHtml(cls) + "\">";
         closeTags += "</span>";
       } else {
