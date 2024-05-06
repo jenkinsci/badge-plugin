@@ -38,12 +38,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target({ElementType.METHOD, ElementType.PARAMETER})
 public @interface OptionalParam {
-
-  /**
-   * @return the name of this param
-   */
-  String name() default "";
-
+  
   /**
    * @return description for this param
    */
