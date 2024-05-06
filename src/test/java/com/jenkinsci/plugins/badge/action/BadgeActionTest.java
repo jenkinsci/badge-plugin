@@ -44,4 +44,20 @@ public class BadgeActionTest {
     assertEquals("icon-sm", action.getIconClass());
   }
 
+  @Test
+  public void getIconColorStyle() {
+    BadgeAction action = BadgeAction.createBadge("info.gif", "text");
+    assertNull(action.getIconColorStyle());
+    action = BadgeAction.createBadge("symbol-star",  "#000000", "", null);
+    assertEquals("#000000", action.getIconColorStyle());
+    action = BadgeAction.createBadge("symbol-star",  "var(--yellow)", "", null);
+    assertEquals("var(--yellow)", action.getIconColorStyle());
+    action = BadgeAction.createBadge("symbol-star",  "jenkins-!-color-blue", "", null);
+    assertNull(action.getIconColorStyle());
+    action = BadgeAction.createBadge("symbol-star",  "blue", "", null);
+    assertNull(action.getIconColorStyle());
+    action = BadgeAction.createBadge("symbol-star",  "teal", "", null);
+    assertEquals("teal", action.getIconColorStyle());
+  }
+
 }

@@ -7,7 +7,6 @@
     <ul>
       <li><code>addBadge icon: 'symbol-star', text: 'A star', color: 'yellow'</code></li>
       <li><code>addBadge icon: 'symbol-star', text: 'A star', color: 'dark-yellow'</code></li>
-      <li><code>addBadge icon: 'symbol-star', text: 'A star', color: 'var(--yellow)'</code></li>
       <li><code>addBadge icon: 'symbol-star', text: 'A star', color: 'jenkins-!-color-yellow'</code></li>
     </ul>
   </p>
@@ -22,11 +21,11 @@
   </p>
 
   <p>
-    The plugin also supports CSS colors.
+    The plugin also supports CSS colors for icons not from the Jenkins symbol library.
     For example, the following are all valid references to CSS colors:
     <ul>
-      <li><code>addBadge icon: 'symbol-star', text: 'A star', color: '#7fffd4'</code></li>
-      <li><code>addBadge icon: 'symbol-star', text: 'A star', color: 'rgb(0, 0, 256)'</code></li>
+      <li><code>addBadge icon: '/path/to/icon.svg', text: 'A star', color: '#7fffd4'</code></li>
+      <li><code>addBadge icon: '/path/to/icon.svg', text: 'A star', color: 'rgb(0, 0, 256)'</code></li>
     </ul>
   </p>
 

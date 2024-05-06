@@ -191,6 +191,10 @@ public class BadgeAction extends AbstractBadgeAction {
     return borderColor;
   }
 
+  /**
+   * Get the class value for the icon element.
+   * @return string of css class names to add or empty string if no class to add.
+   */
   public String getIconClass() {
     List<String> classes = new LinkedList<>();
     if (isJenkinsSymbolRef(this.iconPath)) {
@@ -201,14 +205,26 @@ public class BadgeAction extends AbstractBadgeAction {
       if (this.color.startsWith("jenkins-!-")) {
         classes.add(this.color);
       } else {
-        String cls = getJenkinsColorClass(this.color);
-        if (cls != null) {
-          classes.add(cls);
+        String colorClass = getJenkinsColorClass(this.color);
+        if (colorClass != null) {
+          classes.add(colorClass);
         }
       }
     }
 
     return String.join(" ", classes);
+  }
+
+  /**
+   * Get the color value for the {@code style} attribute of the icon element.
+   * @return {@code null} if color not set or color is a Jenkins color class.
+   */
+  public String getIconColorStyle() {
+    if (this.color != null && !this.color.startsWith("jenkins-!-") && getJenkinsColorClass(this.color) == null) {
+        return this.color;
+    }
+
+    return null;
   }
 
   @Exported

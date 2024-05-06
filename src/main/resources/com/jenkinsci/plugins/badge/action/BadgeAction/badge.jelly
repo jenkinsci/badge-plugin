@@ -24,38 +24,45 @@ THE SOFTWARE.
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" xmlns:st="jelly:stapler">
 
-<j:if test="${it.iconPath != null &amp;&amp; it.link == null}">
-  <l:icon src="${it.iconPath}" class="${it.iconClass}" htmlTooltip="${it.text}" />
-</j:if>
+  <j:if test="${it.iconPath != null}">
+    <j:set var="badgeStyle" value=""/>
+    <j:if test="${it.iconColorStyle != null}">
+      <j:set var="badgeStyle" value="${badgeStyle};color: ${it.iconColorStyle};"/>
+    </j:if>
 
-<j:if test="${it.iconPath != null &amp;&amp; it.link != null}">
-  <a href="${it.link}"><l:icon src="${it.iconPath}" class="${it.iconClass}" htmlTooltip="${it.text}" /></a>
-</j:if>
+    <j:if test="${it.link == null}">
+      <l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" />
+    </j:if>
 
-<j:if test="${it.iconPath == null}">
-  <st:adjunct includes="com.jenkinsci.plugins.badge.assets"/>
-  <j:set var="badgeStyle" value=""/>
-  <j:set var="badgeClass" value="badge-shortText"/>
-  <j:if test="${it.border != null}">
-    <j:set var="badgeStyle" value="${badgeStyle};border: ${it.border} solid ${it.borderColor}"/>
-  </j:if>
-  <j:if test="${it.background != null}">
-    <j:set var="badgeStyle" value="${badgeStyle};background: ${it.background}"/>
-  </j:if>
-  <j:if test="${it.background == null}">
-    <j:set var="badgeClass" value="${badgeClass} badge-shortText--default-background"/>
-  </j:if>
-  <j:if test="${it.color != null &amp;&amp; !it.color.startsWith('jenkins-!-')}">
-    <j:set var="badgeStyle" value="${badgeStyle};color: ${it.color};"/>
+    <j:if test="${it.link != null}">
+      <a href="${it.link}"><l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" /></a>
+    </j:if>
   </j:if>
 
-  <j:if test="${it.link == null}">
-    <div style="${badgeStyle}" class="${it.iconClass} ${badgeClass}">${it.text}</div>
-  </j:if>
+  <j:if test="${it.iconPath == null}">
+    <st:adjunct includes="com.jenkinsci.plugins.badge.assets"/>
+    <j:set var="badgeStyle" value=""/>
+    <j:set var="badgeClass" value="badge-shortText"/>
+    <j:if test="${it.border != null}">
+      <j:set var="badgeStyle" value="${badgeStyle};border: ${it.border} solid ${it.borderColor}"/>
+    </j:if>
+    <j:if test="${it.background != null}">
+      <j:set var="badgeStyle" value="${badgeStyle};background: ${it.background}"/>
+    </j:if>
+    <j:if test="${it.background == null}">
+      <j:set var="badgeClass" value="${badgeClass} badge-shortText--default-background"/>
+    </j:if>
+    <j:if test="${it.iconColorStyle != null}">
+      <j:set var="badgeStyle" value="${badgeStyle};color: ${it.iconColorStyle};"/>
+    </j:if>
 
-  <j:if test="${it.link != null}">
-    <a href="${it.link}"><span style="${badgeStyle}" class="${it.iconClass} ${badgeClass}">${it.text}</span></a>
+    <j:if test="${it.link == null}">
+      <div style="${badgeStyle}" class="${it.iconClass} ${badgeClass}">${it.text}</div>
+    </j:if>
+
+    <j:if test="${it.link != null}">
+      <a href="${it.link}"><span style="${badgeStyle}" class="${it.iconClass} ${badgeClass}">${it.text}</span></a>
+    </j:if>
   </j:if>
-</j:if>
 
 </j:jelly>

@@ -30,7 +30,7 @@ addBadge(icon: <icon>, text: <text>)
  *
  * icon: The icon for this badge
  * text: The text for this badge
- * color: (optional) The Jenkins palette/semantic color name or CSS color of the badge icon symbol
+ * color: (optional) The Jenkins palette/semantic color name of the badge icon symbol
  * id: (optional) Badge identifier. Selectively delete badges by id.
  * link: (optional) The link to be added to this badge
  */
@@ -314,20 +314,33 @@ addBadge(icon: "/static/8361d0d6/images/16x16/help.png", text: "help")
 
 Colors may reference [Jenkins palette colors or variables](https://weekly.ci.jenkins.io/design-library/Colors/).
 
+`symbol` badges **must** reference a named color from the Jenkins palette.
 ```groovy
-# jenkins palette colors
+// jenkins palette colors
 addBadge(icon: 'symbol-star', text: 'A star', color: 'yellow')
 addBadge(icon: 'symbol-star', text: 'A star', color: 'dark-yellow')
-addBadge(icon: 'symbol-star', text: 'A star', color: 'var(--yellow)')
 addBadge(icon: 'symbol-star', text: 'A star', color: 'jenkins-!-color-yellow')
 
-# jenkins semantic colors
+// jenkins semantic colors
 addBadge(icon: 'symbol-star', text: 'A star', color: 'warning')
 addBadge(icon: 'symbol-star', text: 'A star', color: 'success')
+addBadge(icon: 'symbol-star', text: 'A star', color: 'jenkins-!-warning-color')
+```
 
-# css colors
-addBadge(icon: 'symbol-star', text: 'A star', color: '#ffff00')
-addBadge(icon: 'symbol-star', text: 'A star', color: 'rgb(239, 245, 66)')
+Short text badges may use additional css color styles.
+```groovy
+// jenkins palette colors
+addShortText(text: 'ok', color: 'green')
+addShortText(text: 'oj', color: 'jenkins-!-color-green')
+
+// jenkins semantic colors
+addShortText(text: 'ok', color: 'success')
+addShortText(text: 'ok', color: 'jenkins-!-success-color')
+
+// css colors
+addShortText(text: 'ok', color: '#42f557')
+addShortText(text: 'ok', color: 'rgb(66, 245, 87)')
+addShortText(text: 'ok', color: 'var(--green)') // jenkins css vars
 ```
 
 ## Allow HTML in Badge and Summary
