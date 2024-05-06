@@ -51,7 +51,7 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
   }
 
   @DataBoundSetter
-  @OptionalParam(name = "color", description = "The Jenkins palette/semantic color name of the badge icon symbol")
+  @OptionalParam(description = "The Jenkins palette/semantic color name of the badge icon symbol")
   public void setColor(String color) {
     getBadge().setColor(color);
   }
