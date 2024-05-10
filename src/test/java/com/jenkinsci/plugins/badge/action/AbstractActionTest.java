@@ -8,20 +8,8 @@ class AbstractActionTest {
 
     @Test
     void isJenkinsSymbolRef() {
-        assertTrue(AbstractAction.isJenkinsSymbolRef("symbol-information-circle-outline"));
+        assertTrue(AbstractAction.isJenkinsSymbolRef("symbol-cube"));
         assertFalse(AbstractAction.isJenkinsSymbolRef("info.gif"));
-    }
-
-    @Test
-    void getJenkinsSymbolIconPath() {
-        assertNull(AbstractAction.getJenkinsSymbolIconPath(null));
-        assertEquals(
-                AbstractAction.getJenkinsSymbolIconPath("symbol-information-circle-outline"),
-                "symbol-information-circle-outline plugin-ionicons-api");
-        assertEquals(
-                AbstractAction.getJenkinsSymbolIconPath("symbol-information-circle-outline plugin-ionicons-api"),
-                "symbol-information-circle-outline plugin-ionicons-api");
-        assertEquals(AbstractAction.getJenkinsSymbolIconPath("info.gif"), "info.gif");
     }
 
     @Test

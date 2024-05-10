@@ -30,7 +30,6 @@ import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,10 +61,6 @@ public class BadgeSummaryAction extends AbstractAction {
 
   @Exported
   public String getIconPath() {
-    if (isJenkinsSymbolRef(this.iconPath)) {
-      return getJenkinsSymbolIconPath(iconPath);
-    }
-
     return iconPath;
   }
 

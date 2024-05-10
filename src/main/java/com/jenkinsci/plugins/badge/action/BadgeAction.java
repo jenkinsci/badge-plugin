@@ -26,6 +26,7 @@ package com.jenkinsci.plugins.badge.action;
 import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
 import hudson.model.Hudson;
+import io.jenkins.plugins.ionicons.Ionicons;
 import jenkins.model.Jenkins;
 import org.kohsuke.stapler.Stapler;
 import org.kohsuke.stapler.StaplerRequest;
@@ -99,7 +100,7 @@ public class BadgeAction extends AbstractBadgeAction {
   }
 
   public static BadgeAction createInfoBadge(String text, String link) throws IllegalArgumentException {
-    return createBadge("symbol-information-circle", "jenkins-!-color-blue", text, link);
+    return createBadge(Ionicons.getIconClassName("information-circle"), "jenkins-!-color-blue", text, link);
   }
 
   public static BadgeAction createWarningBadge(String text) throws IllegalArgumentException {
@@ -107,7 +108,7 @@ public class BadgeAction extends AbstractBadgeAction {
   }
 
   public static BadgeAction createWarningBadge(String text, String link) throws IllegalArgumentException {
-    return createBadge("symbol-warning", "jenkins-!-warning-color", text, link);
+    return createBadge(Ionicons.getIconClassName("warning"), "jenkins-!-warning-color", text, link);
   }
 
   public static BadgeAction createErrorBadge(String text) throws IllegalArgumentException {
@@ -115,7 +116,7 @@ public class BadgeAction extends AbstractBadgeAction {
   }
 
   public static BadgeAction createErrorBadge(String text, String link) throws IllegalArgumentException {
-    return createBadge("symbol-remove-circle", "jenkins-!-error-color", text, link);
+    return createBadge(Ionicons.getIconClassName("remove-circle"), "jenkins-!-error-color", text, link);
   }
 
   protected void validate() throws IllegalArgumentException {
@@ -251,7 +252,7 @@ public class BadgeAction extends AbstractBadgeAction {
     }
 
     if (isJenkinsSymbolRef(icon)) {
-      return getJenkinsSymbolIconPath(icon);
+      return icon;
     }
 
     Jenkins jenkins = Jenkins.getInstanceOrNull();

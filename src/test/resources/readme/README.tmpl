@@ -101,10 +101,14 @@ Removes summaries
 
 ## Icons
 
-Icons can reference [Jenkins Symbols](https://weekly.ci.jenkins.io/design-library/Symbols/), including all the [symbols provided by the ionicons-api-plugin](https://ionic.io/ionicons).
+Icons can reference [Jenkins Symbols](https://weekly.ci.jenkins.io/design-library/Symbols/), including all the symbols provided by the [ionicons-api-plugin](https://plugins.jenkins.io/ionicons-api).
+
+More symbols can be referenced by installing additional plugins, such as [font-awesome-api-plugin](https://plugins.jenkins.io/font-awesome-api) or [custom-folder-icon-plugin](https://plugins.jenkins.io/custom-folder-icon).
 
 ```groovy
-addBadge(icon: 'symbol-star', text: 'a starred build')
+addBadge(icon: 'symbol-cube', text: 'a cubed build')
+addBadge(icon: 'symbol-star plugin-ionicons-api', text: 'a starred build')
+addBadge(icon: 'symbol-symbolName plugin-yourArtifactId', text: 'another icon build')
 ```
 
 In addition to the default [16x16](https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16) icons offered by Jenkins, badge plugin provides the following icons:
@@ -126,14 +130,14 @@ Colors may reference [Jenkins palette colors or variables](https://weekly.ci.jen
 `symbol` badges **must** reference a named color from the Jenkins palette.
 ```groovy
 // jenkins palette colors
-addBadge(icon: 'symbol-star', text: 'A star', color: 'yellow')
-addBadge(icon: 'symbol-star', text: 'A star', color: 'dark-yellow')
-addBadge(icon: 'symbol-star', text: 'A star', color: 'jenkins-!-color-yellow')
+addBadge(icon: 'symbol-star plugin-ionicons-api', text: 'A star', color: 'yellow')
+addBadge(icon: 'symbol-star plugin-ionicons-api', text: 'A star', color: 'dark-yellow')
+addBadge(icon: 'symbol-star plugin-ionicons-api', text: 'A star', color: 'jenkins-!-color-yellow')
 
 // jenkins semantic colors
-addBadge(icon: 'symbol-star', text: 'A star', color: 'warning')
-addBadge(icon: 'symbol-star', text: 'A star', color: 'success')
-addBadge(icon: 'symbol-star', text: 'A star', color: 'jenkins-!-warning-color')
+addBadge(icon: 'symbol-star plugin-ionicons-api', text: 'A star', color: 'warning')
+addBadge(icon: 'symbol-star plugin-ionicons-api', text: 'A star', color: 'success')
+addBadge(icon: 'symbol-star plugin-ionicons-api', text: 'A star', color: 'jenkins-!-warning-color')
 ```
 
 Short text badges may use additional css color styles.

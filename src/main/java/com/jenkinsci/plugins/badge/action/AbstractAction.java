@@ -55,21 +55,6 @@ public abstract class AbstractAction implements Action, Serializable {
   }
 
   /**
-   * If the given icon reference is a Jenkins symbol append the ionicons plugin class to the icon reference
-   * if not already included.
-   * @param icon icon reference
-   * @return icon reference with ionicons plugin class
-   */
-  @CheckForNull
-  static String getJenkinsSymbolIconPath(@Nullable String icon) {
-    if (isJenkinsSymbolRef(icon) && !icon.contains("plugin-ionicons-api")) {
-      return icon + " plugin-ionicons-api";
-    }
-
-    return icon;
-  }
-
-  /**
    * Get the Jenkins color class for the given color reference. Returns {@code null} if the color is not a
    * known Jenkins palette color or semantic color.
    * @param color color reference

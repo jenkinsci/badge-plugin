@@ -23,7 +23,6 @@ public class BadgeActionTest {
 
     assertEquals(Hudson.RESOURCE_PATH + "/images/16x16/http.png", BadgeAction.getIconPath("http.png"));
 
-    assertEquals("symbol-information-circle-outline plugin-ionicons-api", BadgeAction.getIconPath("symbol-information-circle-outline"));
     assertEquals("symbol-information-circle-outline plugin-ionicons-api", BadgeAction.getIconPath("symbol-information-circle-outline plugin-ionicons-api"));
   }
 
