@@ -26,6 +26,8 @@ package com.jenkinsci.plugins.badge.action;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.Hudson;
 import org.junit.jupiter.api.Test;
@@ -109,5 +111,27 @@ class BadgeActionTest {
         assertFalse(action.isTextOnly());
         assertEquals("", action.getDisplayName());
         assertEquals("", action.getUrlName());
+    }
+
+    @Test
+    void createShortText(@SuppressWarnings("unused") JenkinsRule r) {
+        BadgeAction action = BadgeAction.createShortText("This is a short text badge");
+        assertNull(action.getIconFileName());
+        assertTrue(action.isTextOnly());
+        assertEquals("", action.getDisplayName());
+        assertEquals("", action.getUrlName());
+    }
+
+    @Test
+    void createBadgeWithInvalidLink(@SuppressWarnings("unused") JenkinsRule r) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            BadgeAction.createBadge("info.gif", "Link in badge", "invalid-link");
+        });
+    }
+
+    @Test
+    void createBadgeWithNullLink(@SuppressWarnings("unused") JenkinsRule r) {
+        BadgeAction action = BadgeAction.createBadge("info.gif", "Link in badge", null);
+        assertNull(action.getLink());
     }
 }
