@@ -125,9 +125,22 @@ class BadgeActionTest {
 
     @Test
     void createBadgeWithInvalidLink(@SuppressWarnings("unused") JenkinsRule r) {
+        String invalidLink = "invalid-link";
+
+        // Exception thrown for invalid link by default
         assertThrows(IllegalArgumentException.class, () -> {
-            BadgeAction.createBadge("info.gif", "Link in badge", "invalid-link");
+            BadgeAction.createBadge("info.gif", "Link in badge", invalidLink);
         });
+
+        boolean defaultValue = BadgePlugin.get().isDisableFormatHTML();
+
+        // Exception not thrown if HTMl formatting is disabled
+        BadgePlugin.get().setDisableFormatHTML(true);
+        BadgeAction action = BadgeAction.createBadge("info.gif", "Link in badge", invalidLink);
+        assertEquals(invalidLink, action.getLink());
+
+        // Restore the default, do not disable HTML formatting
+        BadgePlugin.get().setDisableFormatHTML(defaultValue);
     }
 
     @Test
