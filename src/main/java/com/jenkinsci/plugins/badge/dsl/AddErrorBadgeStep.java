@@ -35,38 +35,37 @@ import org.kohsuke.stapler.DataBoundConstructor;
  */
 public class AddErrorBadgeStep extends AbstractAddBadgeStep {
 
-  /**
-   * @param text The text for this error badge
-   */
-  @DataBoundConstructor
-  public AddErrorBadgeStep(String text) {
-    super(null, text);
-  }
-
-  @Extension
-  public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
-
-    @Override
-    public String getFunctionName() {
-      return "addErrorBadge";
+    /**
+     * @param text The text for this error badge
+     */
+    @DataBoundConstructor
+    public AddErrorBadgeStep(String text) {
+        super(null, text);
     }
 
-    @NonNull
-    @Override
-    public String getDisplayName() {
-      return "Add Error Badge";
+    @Extension
+    public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
+
+        @Override
+        public String getFunctionName() {
+            return "addErrorBadge";
+        }
+
+        @NonNull
+        @Override
+        public String getDisplayName() {
+            return "Add Error Badge";
+        }
     }
-  }
 
-  @Override
-  public StepExecution start(StepContext context) {
-    return new Execution(getBadge(), getId(), context) {
+    @Override
+    public StepExecution start(StepContext context) {
+        return new Execution(getBadge(), getId(), context) {
 
-      @Override
-      protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
-        return BadgeAction.createErrorBadge(badge.getText(), badge.getLink());
-      }
-    };
-  }
-
+            @Override
+            protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
+                return BadgeAction.createErrorBadge(badge.getText(), badge.getLink());
+            }
+        };
+    }
 }

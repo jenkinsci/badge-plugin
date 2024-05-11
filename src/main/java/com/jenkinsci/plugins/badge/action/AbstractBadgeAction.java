@@ -28,5 +28,4 @@ import hudson.model.BuildBadgeAction;
 /**
  * An abstract badge action providing a badge id
  */
-public abstract class AbstractBadgeAction extends AbstractAction implements BuildBadgeAction {
-}
+public abstract class AbstractBadgeAction extends AbstractAction implements BuildBadgeAction {}

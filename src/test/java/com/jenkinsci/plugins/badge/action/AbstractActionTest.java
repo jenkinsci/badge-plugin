@@ -1,10 +1,10 @@
 package com.jenkinsci.plugins.badge.action;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @WithJenkins
 class AbstractActionTest {

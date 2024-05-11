@@ -23,48 +23,46 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
 import hudson.model.BuildBadgeAction;
+import java.util.List;
+import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-
 class AddHtmlBadgeStepTest extends AbstractBadgeTest {
 
-  @Test
-  void addHtmlBadge(JenkinsRule r) throws Exception {
-    String html = UUID.randomUUID().toString();
-    testAddHtmlBadge(r, html, html);
-  }
+    @Test
+    void addHtmlBadge(JenkinsRule r) throws Exception {
+        String html = UUID.randomUUID().toString();
+        testAddHtmlBadge(r, html, html);
+    }
 
-  @Test
-  void addHtmlBadge_remove_script(JenkinsRule r) throws Exception {
-    String uuid = UUID.randomUUID().toString();
-    String html = uuid + "<script>alert('exploit!');</script>";
-    testAddHtmlBadge(r, html, uuid);
-  }
+    @Test
+    void addHtmlBadge_remove_script(JenkinsRule r) throws Exception {
+        String uuid = UUID.randomUUID().toString();
+        String html = uuid + "<script>alert('exploit!');</script>";
+        testAddHtmlBadge(r, html, uuid);
+    }
 
-  private void testAddHtmlBadge(JenkinsRule r, String html, String expected) throws Exception {
-    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+    private void testAddHtmlBadge(JenkinsRule r, String html, String expected) throws Exception {
+        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
 
-    String script = "addHtmlBadge(\"" + html + "\")";
+        String script = "addHtmlBadge(\"" + html + "\")";
 
-    p.setDefinition(new CpsFlowDefinition(script, true));
-    WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+        p.setDefinition(new CpsFlowDefinition(script, true));
+        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
-    List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-    assertEquals(1, badgeActions.size());
+        List<BuildBadgeAction> badgeActions = b.getBadgeActions();
+        assertEquals(1, badgeActions.size());
 
-    HtmlBadgeAction action = (HtmlBadgeAction) badgeActions.get(0);
-    assertEquals(expected, action.getHtml());
-    assertEquals(html, action.getRawHtml());
-  }
+        HtmlBadgeAction action = (HtmlBadgeAction) badgeActions.get(0);
+        assertEquals(expected, action.getHtml());
+        assertEquals(html, action.getRawHtml());
+    }
 }

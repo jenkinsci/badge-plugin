@@ -24,55 +24,54 @@
 package com.jenkinsci.plugins.badge.action;
 
 import com.jenkinsci.plugins.badge.BadgePlugin;
-import org.kohsuke.stapler.export.Exported;
-import org.kohsuke.stapler.export.ExportedBean;
-
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.kohsuke.stapler.export.Exported;
+import org.kohsuke.stapler.export.ExportedBean;
 
 @ExportedBean(defaultVisibility = 2)
 public class HtmlBadgeAction extends AbstractBadgeAction {
-  private static final long serialVersionUID = 1L;
-  private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
 
-  private final String html;
+    private final String html;
 
-  private HtmlBadgeAction(String html) {
-    this.html = html;
-  }
-
-  public static HtmlBadgeAction createHtmlBadge(String html) {
-    return new HtmlBadgeAction(html);
-  }
-
-  /* Action methods */
-  public String getUrlName() {
-    return "";
-  }
-
-  public String getDisplayName() {
-    return "";
-  }
-
-  public String getIconFileName() {
-    return null;
-  }
-
-  public String getRawHtml() {
-    return html;
-  }
-
-  @Exported
-  public String getHtml() {
-    if (BadgePlugin.get().isDisableFormatHTML()) {
-      return html;
+    private HtmlBadgeAction(String html) {
+        this.html = html;
     }
-    try {
-      return BadgePlugin.get().translate(html);
-    } catch (IOException e) {
-      LOGGER.log(Level.WARNING, "Error preparing html content for ui", e);
-      return "<b><font color=\"red\">ERROR</font></b>";
+
+    public static HtmlBadgeAction createHtmlBadge(String html) {
+        return new HtmlBadgeAction(html);
     }
-  }
+
+    /* Action methods */
+    public String getUrlName() {
+        return "";
+    }
+
+    public String getDisplayName() {
+        return "";
+    }
+
+    public String getIconFileName() {
+        return null;
+    }
+
+    public String getRawHtml() {
+        return html;
+    }
+
+    @Exported
+    public String getHtml() {
+        if (BadgePlugin.get().isDisableFormatHTML()) {
+            return html;
+        }
+        try {
+            return BadgePlugin.get().translate(html);
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Error preparing html content for ui", e);
+            return "<b><font color=\"red\">ERROR</font></b>";
+        }
+    }
 }

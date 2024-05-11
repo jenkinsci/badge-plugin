@@ -23,69 +23,69 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import hudson.model.BuildBadgeAction;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-
 class ShortTextStepTest extends AbstractBadgeTest {
 
-  @Test
-  void addShortText(JenkinsRule r) throws Exception {
-    String text = UUID.randomUUID().toString();
-    String color = UUID.randomUUID().toString();
-    String background = UUID.randomUUID().toString();
-    Integer border = new Random().nextInt();
-    String borderColor = UUID.randomUUID().toString();
-    String link = "http://" + UUID.randomUUID();
+    @Test
+    void addShortText(JenkinsRule r) throws Exception {
+        String text = UUID.randomUUID().toString();
+        String color = UUID.randomUUID().toString();
+        String background = UUID.randomUUID().toString();
+        Integer border = new Random().nextInt();
+        String borderColor = UUID.randomUUID().toString();
+        String link = "http://" + UUID.randomUUID();
 
-    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-    p.setDefinition(new CpsFlowDefinition("addShortText(text:\"" + text + "\",color:\"" + color + "\", background:\"" + background + "\", border:" + border + ", borderColor:\""
-            + borderColor + "\", link:\"" + link + "\")", true));
-    WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        p.setDefinition(new CpsFlowDefinition(
+                "addShortText(text:\"" + text + "\",color:\"" + color + "\", background:\"" + background + "\", border:"
+                        + border + ", borderColor:\"" + borderColor + "\", link:\"" + link + "\")",
+                true));
+        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
-    List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-    assertEquals(1, badgeActions.size());
+        List<BuildBadgeAction> badgeActions = b.getBadgeActions();
+        assertEquals(1, badgeActions.size());
 
-    BadgeAction action = (BadgeAction) badgeActions.get(0);
-    assertEquals(text, action.getText());
-    assertEquals(color, action.getColor());
-    assertEquals(background, action.getBackground());
-    assertEquals(borderColor, action.getBorderColor());
-    assertEquals(border + "px", action.getBorder());
-    assertNull(action.getIconPath());
-    assertEquals(link, action.getLink());
-  }
+        BadgeAction action = (BadgeAction) badgeActions.get(0);
+        assertEquals(text, action.getText());
+        assertEquals(color, action.getColor());
+        assertEquals(background, action.getBackground());
+        assertEquals(borderColor, action.getBorderColor());
+        assertEquals(border + "px", action.getBorder());
+        assertNull(action.getIconPath());
+        assertEquals(link, action.getLink());
+    }
 
-  @Test
-  void addShortText_minimal(JenkinsRule r) throws Exception {
-    String text = UUID.randomUUID().toString();
+    @Test
+    void addShortText_minimal(JenkinsRule r) throws Exception {
+        String text = UUID.randomUUID().toString();
 
-    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-    p.setDefinition(new CpsFlowDefinition("addShortText(text:\"" + text + "\")", true));
-    WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        p.setDefinition(new CpsFlowDefinition("addShortText(text:\"" + text + "\")", true));
+        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
-    List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-    assertEquals(1, badgeActions.size());
+        List<BuildBadgeAction> badgeActions = b.getBadgeActions();
+        assertEquals(1, badgeActions.size());
 
-    BadgeAction action = (BadgeAction) badgeActions.get(0);
-    assertEquals(text, action.getText());
-    assertNull(action.getColor());
-    assertNull(action.getBackground());
-    assertNull(action.getBorderColor());
-    assertNull(action.getBorder());
-    assertNull(action.getIconPath());
-    assertNull(action.getLink());
-  }
+        BadgeAction action = (BadgeAction) badgeActions.get(0);
+        assertEquals(text, action.getText());
+        assertNull(action.getColor());
+        assertNull(action.getBackground());
+        assertNull(action.getBorderColor());
+        assertNull(action.getBorder());
+        assertNull(action.getIconPath());
+        assertNull(action.getLink());
+    }
 }

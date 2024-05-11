@@ -38,65 +38,63 @@ import org.kohsuke.stapler.DataBoundConstructor;
  */
 public class AddHtmlBadgeStep extends AbstractStep {
 
-  private final String html;
+    private final String html;
 
-  /**
-   *
-   * @param html The html content to be used for this badge
-   */
-  @DataBoundConstructor
-  public AddHtmlBadgeStep(String html) {
-    this.html = html;
-  }
-
-  public String getHtml() {
-    return html;
-  }
-
-  @Override
-  public StepExecution start(StepContext context) {
-    return new Execution(html, getId(), context);
-  }
-
-  @Extension
-  public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
-
-    @Override
-    public String getFunctionName() {
-      return "addHtmlBadge";
+    /**
+     *
+     * @param html The html content to be used for this badge
+     */
+    @DataBoundConstructor
+    public AddHtmlBadgeStep(String html) {
+        this.html = html;
     }
 
-    @NonNull
-    @Override
-    public String getDisplayName() {
-      return "Add a html badge Text";
-    }
-
-  }
-
-  public static class Execution extends SynchronousStepExecution<Void> {
-
-    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private transient final String html;
-    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private transient final String id;
-
-    Execution(String html, String id, StepContext context) {
-      super(context);
-      this.html = html;
-      this.id = id;
+    public String getHtml() {
+        return html;
     }
 
     @Override
-    protected Void run() throws Exception {
-      HtmlBadgeAction htmlBadge = HtmlBadgeAction.createHtmlBadge(html);
-      htmlBadge.setId(id);
-      getContext().get(Run.class).addAction(htmlBadge);
-      return null;
+    public StepExecution start(StepContext context) {
+        return new Execution(html, getId(), context);
     }
 
-    private static final long serialVersionUID = 1L;
+    @Extension
+    public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
 
-  }
+        @Override
+        public String getFunctionName() {
+            return "addHtmlBadge";
+        }
 
+        @NonNull
+        @Override
+        public String getDisplayName() {
+            return "Add a html badge Text";
+        }
+    }
+
+    public static class Execution extends SynchronousStepExecution<Void> {
+
+        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+        private final transient String html;
+
+        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+        private final transient String id;
+
+        Execution(String html, String id, StepContext context) {
+            super(context);
+            this.html = html;
+            this.id = id;
+        }
+
+        @Override
+        protected Void run() throws Exception {
+            HtmlBadgeAction htmlBadge = HtmlBadgeAction.createHtmlBadge(html);
+            htmlBadge.setId(id);
+            getContext().get(Run.class).addAction(htmlBadge);
+            return null;
+        }
+
+        private static final long serialVersionUID = 1L;
+    }
 }

@@ -23,86 +23,85 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
+import static java.util.UUID.randomUUID;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
+import java.util.List;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-import java.util.List;
-
-import static java.util.UUID.randomUUID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-
 class CreateSummaryStepTest extends AbstractBadgeTest {
 
-  @Test
-  void createSummary_plain(JenkinsRule r) throws Exception {
-    String text = randomUUID().toString();
-    BadgeSummaryAction action = createSummary(r, "summary.appendText('" + text + "')");
-    assertEquals(text, action.getText());
-  }
+    @Test
+    void createSummary_plain(JenkinsRule r) throws Exception {
+        String text = randomUUID().toString();
+        BadgeSummaryAction action = createSummary(r, "summary.appendText('" + text + "')");
+        assertEquals(text, action.getText());
+    }
 
-  @Test
-  void createSummary_html_unescaped(JenkinsRule r) throws Exception {
-    String text = randomUUID().toString();
-    BadgeSummaryAction action = createSummary(r, "summary.appendText('<ul><li>" + text + "</li></ul>', false)");
-    assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
-  }
+    @Test
+    void createSummary_html_unescaped(JenkinsRule r) throws Exception {
+        String text = randomUUID().toString();
+        BadgeSummaryAction action = createSummary(r, "summary.appendText('<ul><li>" + text + "</li></ul>', false)");
+        assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
+    }
 
-  @Test
-  void createSummary_html_unescaped_remove_script(JenkinsRule r) throws Exception {
-    String text = randomUUID().toString();
-    String html = "<ul><li>" + text + "</li></ul><script>alert(\"exploit!\");</script>";
-    BadgeSummaryAction action = createSummary(r, "summary.appendText('" + html + "', false);");
-    assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
-    assertEquals(html, action.getRawText());
-  }
+    @Test
+    void createSummary_html_unescaped_remove_script(JenkinsRule r) throws Exception {
+        String text = randomUUID().toString();
+        String html = "<ul><li>" + text + "</li></ul><script>alert(\"exploit!\");</script>";
+        BadgeSummaryAction action = createSummary(r, "summary.appendText('" + html + "', false);");
+        assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
+        assertEquals(html, action.getRawText());
+    }
 
-  @Test
-  void createSummary_html_escaped(JenkinsRule r) throws Exception {
-    String text = randomUUID().toString();
-    BadgeSummaryAction action = createSummary(r, "summary.appendText('<ul><li>" + text + "</li></ul>', true)");
-    assertEquals("&lt;ul&gt;&lt;li&gt;" + text + "&lt;/li&gt;&lt;/ul&gt;", action.getText());
-  }
+    @Test
+    void createSummary_html_escaped(JenkinsRule r) throws Exception {
+        String text = randomUUID().toString();
+        BadgeSummaryAction action = createSummary(r, "summary.appendText('<ul><li>" + text + "</li></ul>', true)");
+        assertEquals("&lt;ul&gt;&lt;li&gt;" + text + "&lt;/li&gt;&lt;/ul&gt;", action.getText());
+    }
 
-  @Test
-  void createSummary_all(JenkinsRule r) throws Exception {
-    String text = randomUUID().toString();
-    BadgeSummaryAction action = createSummary(r, "summary.appendText('" + text + "', false, true, true, 'grey')");
-    assertEquals("<b><i>" + text + "</i></b>", action.getText());
-  }
+    @Test
+    void createSummary_all(JenkinsRule r) throws Exception {
+        String text = randomUUID().toString();
+        BadgeSummaryAction action = createSummary(r, "summary.appendText('" + text + "', false, true, true, 'grey')");
+        assertEquals("<b><i>" + text + "</i></b>", action.getText());
+    }
 
-  @Test
-  void createSummary_with_text(JenkinsRule r) throws Exception {
-    String icon = randomUUID().toString();
-    String text = randomUUID().toString();
+    @Test
+    void createSummary_with_text(JenkinsRule r) throws Exception {
+        String icon = randomUUID().toString();
+        String text = randomUUID().toString();
 
-    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-    p.setDefinition(new CpsFlowDefinition("def summary = createSummary(icon:\"" + icon + "\", text:\"" + text + "\")", true));
-    WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
-    List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
-    assertEquals(1, summaryActions.size());
+        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        p.setDefinition(new CpsFlowDefinition(
+                "def summary = createSummary(icon:\"" + icon + "\", text:\"" + text + "\")", true));
+        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+        List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
+        assertEquals(1, summaryActions.size());
 
-    BadgeSummaryAction action = summaryActions.get(0);
-    assertTrue(action.getIconPath().endsWith(icon));
-    assertEquals(text, action.getText());
-  }
+        BadgeSummaryAction action = summaryActions.get(0);
+        assertTrue(action.getIconPath().endsWith(icon));
+        assertEquals(text, action.getText());
+    }
 
-  private BadgeSummaryAction createSummary(JenkinsRule r, String script) throws Exception {
-    String icon = randomUUID().toString();
+    private BadgeSummaryAction createSummary(JenkinsRule r, String script) throws Exception {
+        String icon = randomUUID().toString();
 
-    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-    p.setDefinition(new CpsFlowDefinition("def summary = createSummary(\"" + icon + "\")\n" + script, true));
-    WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
-    List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
-    assertEquals(1, summaryActions.size());
+        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        p.setDefinition(new CpsFlowDefinition("def summary = createSummary(\"" + icon + "\")\n" + script, true));
+        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+        List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
+        assertEquals(1, summaryActions.size());
 
-    BadgeSummaryAction action = summaryActions.get(0);
-    assertTrue(action.getIconPath().endsWith(icon));
-    return action;
-  }
+        BadgeSummaryAction action = summaryActions.get(0);
+        assertTrue(action.getIconPath().endsWith(icon));
+        return action;
+    }
 }

@@ -25,8 +25,5 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
-
 @WithJenkins
-abstract class AbstractBadgeTest {
-
-}
+abstract class AbstractBadgeTest {}
