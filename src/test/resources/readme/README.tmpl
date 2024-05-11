@@ -1,5 +1,13 @@
 # Badge plugin
 
+[![Build Status](https://ci.jenkins.io/job/Plugins/job/badge-plugin/job/master/badge/icon)](https://ci.jenkins.io/job/Plugins/job/badge-plugin/job/master/)
+[![Codecov Coverage](https://codecov.io/gh/jenkinsci/badge-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/jenkinsci/badge-plugin)
+[![Jenkins Security Scan](https://github.com/jenkinsci/badge-plugin/actions/workflows/jenkins-security-scan.yml/badge.svg)](https://github.com/jenkinsci/badge-plugin/actions/workflows/jenkins-security-scan.yml)
+
+[![Installations](https://img.shields.io/jenkins/plugin/i/badge.svg?color=blue&label=installations)](https://stats.jenkins.io/pluginversions/badge.html)
+[![Contributors](https://img.shields.io/github/contributors/jenkinsci/badge-plugin.svg?color=blue)](https://github.com/jenkinsci/badge-plugin/graphs/contributors)
+[![Changelog](https://img.shields.io/github/release/jenkinsci/badge-plugin.svg?label=changelog)](https://github.com/jenkinsci/badge-plugin/releases/latest)
+
 Jenkins plugin to add badges and build summary entries from a pipeline.
 
 This plugin was forked from the [Groovy Postbuild Plugin](https://plugins.jenkins.io/groovy-postbuild) which will in future use the API from this plugin.
