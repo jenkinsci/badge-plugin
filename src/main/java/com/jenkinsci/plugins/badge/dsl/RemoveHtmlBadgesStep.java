@@ -34,31 +34,26 @@ import org.kohsuke.stapler.DataBoundConstructor;
  */
 public class RemoveHtmlBadgesStep extends AbstractRemoveBadgesStep {
 
-
-  @DataBoundConstructor
-  public RemoveHtmlBadgesStep() {
-  }
-
-  @Override
-  protected Class<? extends AbstractBadgeAction> getActionClass() {
-    return HtmlBadgeAction.class;
-  }
-
-  @Extension
-  public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
+    @DataBoundConstructor
+    public RemoveHtmlBadgesStep() {}
 
     @Override
-    public String getFunctionName() {
-      return "removeHtmlBadges";
+    protected Class<? extends AbstractBadgeAction> getActionClass() {
+        return HtmlBadgeAction.class;
     }
 
-    @NonNull
-    @Override
-    public String getDisplayName() {
-      return "Remove Html Badges";
+    @Extension
+    public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
+
+        @Override
+        public String getFunctionName() {
+            return "removeHtmlBadges";
+        }
+
+        @NonNull
+        @Override
+        public String getDisplayName() {
+            return "Remove Html Badges";
+        }
     }
-
-  }
-
-
 }

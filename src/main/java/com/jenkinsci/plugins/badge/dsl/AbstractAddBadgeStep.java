@@ -26,114 +26,112 @@ package com.jenkinsci.plugins.badge.dsl;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.model.Run;
+import java.io.Serializable;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundSetter;
-
-import java.io.Serializable;
 
 /**
  * Abstract class to add badges.
  */
 public abstract class AbstractAddBadgeStep extends AbstractStep {
 
-  private final Badge badge;
+    private final Badge badge;
 
-  /**
-   * @param icon The icon for this badge
-   * @param text The text for this badge
-   */
-  public AbstractAddBadgeStep(String icon, String text) {
-    this.badge = new Badge(icon, text);
-  }
-
-  public String getIcon() {
-    return badge.getIcon();
-  }
-
-  public String getText() {
-    return badge.getText();
-  }
-
-  public String getLink() {
-    return badge.getLink();
-  }
-
-  /**
-   * @param link The link to be added to this badge
-   */
-  @DataBoundSetter
-  public void setLink(String link) {
-    badge.setLink(link);
-  }
-
-  protected Badge getBadge() {
-    return badge;
-  }
-
-  protected static class Badge implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    private final String icon;
-    private final String text;
-    private String link;
-    private String color;
-
-    private Badge(String icon, String text) {
-      this.icon = icon;
-      this.text = text;
+    /**
+     * @param icon The icon for this badge
+     * @param text The text for this badge
+     */
+    public AbstractAddBadgeStep(String icon, String text) {
+        this.badge = new Badge(icon, text);
     }
 
-    protected String getIcon() {
-      return icon;
+    public String getIcon() {
+        return badge.getIcon();
     }
 
-    protected String getText() {
-      return text;
+    public String getText() {
+        return badge.getText();
     }
 
-    protected String getLink() {
-      return link;
+    public String getLink() {
+        return badge.getLink();
     }
 
+    /**
+     * @param link The link to be added to this badge
+     */
+    @DataBoundSetter
     public void setLink(String link) {
-      this.link = link;
+        badge.setLink(link);
     }
 
-    protected String getColor() {
-      return color;
+    protected Badge getBadge() {
+        return badge;
     }
 
-    public void setColor(String color) {
-      this.color = color;
+    protected static class Badge implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private final String icon;
+        private final String text;
+        private String link;
+        private String color;
+
+        private Badge(String icon, String text) {
+            this.icon = icon;
+            this.text = text;
+        }
+
+        protected String getIcon() {
+            return icon;
+        }
+
+        protected String getText() {
+            return text;
+        }
+
+        protected String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
+        protected String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
     }
-  }
 
-  static abstract class Execution extends SynchronousStepExecution<Void> {
+    abstract static class Execution extends SynchronousStepExecution<Void> {
 
-    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private transient final Badge badge;
-    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private transient final String id;
+        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+        private final transient Badge badge;
 
-    Execution(Badge badge, String id, StepContext context) {
-      super(context);
-      this.badge = badge;
-      this.id = id;
+        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+        private final transient String id;
+
+        Execution(Badge badge, String id, StepContext context) {
+            super(context);
+            this.badge = badge;
+            this.id = id;
+        }
+
+        @Override
+        protected Void run() throws Exception {
+            BadgeAction action = newBatchAction(badge);
+            action.setId(id);
+            getContext().get(Run.class).addAction(action);
+            return null;
+        }
+
+        protected abstract BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException;
+
+        private static final long serialVersionUID = 1L;
     }
-
-    @Override
-    protected Void run() throws Exception {
-      BadgeAction action = newBatchAction(badge);
-      action.setId(id);
-      getContext().get(Run.class).addAction(action);
-      return null;
-    }
-
-    protected abstract BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException;
-
-    private static final long serialVersionUID = 1L;
-
-  }
-
 }

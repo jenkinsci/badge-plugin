@@ -23,55 +23,52 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
+import java.util.List;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-
 class RemoveBadgesStepTest extends AbstractBadgeTest {
 
-  @Test
-  void removeBadges_by_id(JenkinsRule r) throws Exception {
-    removeBadges(r, "addInfoBadge(text: 'a'", "removeBadges(id:'a')", "b");
-  }
-
-  @Test
-  void removeBadges_all(JenkinsRule r) throws Exception {
-    removeBadges(r, "addInfoBadge(text: 'a'", "removeBadges()");
-  }
-
-  @Test
-  void removeHtmlBadges_by_id(JenkinsRule r) throws Exception {
-    removeBadges(r, "addHtmlBadge(html: 'a'", "removeHtmlBadges(id:'a')", "b");
-  }
-
-  @Test
-  void removeHtmlBadges_all(JenkinsRule r) throws Exception {
-    removeBadges(r, "addHtmlBadge(html: 'a'", "removeHtmlBadges()");
-  }
-
-  private void removeBadges(JenkinsRule r, String badgeScriptPrefix, String removeScript, String... remainingBadgeIds) throws Exception {
-    WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-    String script = badgeScriptPrefix + ", id: 'a')\n" +
-        badgeScriptPrefix + ", id: 'b')\n" +
-        removeScript;
-
-    p.setDefinition(new CpsFlowDefinition(script, true));
-    WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
-
-    List<AbstractBadgeAction> badgeActions = b.getActions(AbstractBadgeAction.class);
-
-    assertEquals(remainingBadgeIds.length, badgeActions.size());
-
-    for (int i = 0; i < remainingBadgeIds.length; i++) {
-      assertEquals(remainingBadgeIds[i], badgeActions.get(i).getId());
+    @Test
+    void removeBadges_by_id(JenkinsRule r) throws Exception {
+        removeBadges(r, "addInfoBadge(text: 'a'", "removeBadges(id:'a')", "b");
     }
-  }
+
+    @Test
+    void removeBadges_all(JenkinsRule r) throws Exception {
+        removeBadges(r, "addInfoBadge(text: 'a'", "removeBadges()");
+    }
+
+    @Test
+    void removeHtmlBadges_by_id(JenkinsRule r) throws Exception {
+        removeBadges(r, "addHtmlBadge(html: 'a'", "removeHtmlBadges(id:'a')", "b");
+    }
+
+    @Test
+    void removeHtmlBadges_all(JenkinsRule r) throws Exception {
+        removeBadges(r, "addHtmlBadge(html: 'a'", "removeHtmlBadges()");
+    }
+
+    private void removeBadges(JenkinsRule r, String badgeScriptPrefix, String removeScript, String... remainingBadgeIds)
+            throws Exception {
+        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        String script = badgeScriptPrefix + ", id: 'a')\n" + badgeScriptPrefix + ", id: 'b')\n" + removeScript;
+
+        p.setDefinition(new CpsFlowDefinition(script, true));
+        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+
+        List<AbstractBadgeAction> badgeActions = b.getActions(AbstractBadgeAction.class);
+
+        assertEquals(remainingBadgeIds.length, badgeActions.size());
+
+        for (int i = 0; i < remainingBadgeIds.length; i++) {
+            assertEquals(remainingBadgeIds[i], badgeActions.get(i).getId());
+        }
+    }
 }

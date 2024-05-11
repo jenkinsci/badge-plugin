@@ -30,18 +30,17 @@ import org.kohsuke.stapler.DataBoundSetter;
  * An abstract Step implementation providing an id for the step.
  */
 abstract class AbstractStep extends Step {
-  private String id;
+    private String id;
 
-  /**
-   * @param id Badge identifier. Selectively delete badges by id.
-   */
-  @DataBoundSetter
-  public void setId(String id) {
-    this.id = id;
-  }
+    /**
+     * @param id Badge identifier. Selectively delete badges by id.
+     */
+    @DataBoundSetter
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public String getId() {
-    return id;
-  }
+    public String getId() {
+        return id;
+    }
 }
-

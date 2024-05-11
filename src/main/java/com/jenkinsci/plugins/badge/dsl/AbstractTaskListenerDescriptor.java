@@ -24,17 +24,16 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import hudson.model.TaskListener;
-import org.jenkinsci.plugins.workflow.steps.StepDescriptor;
-
 import java.util.HashSet;
 import java.util.Set;
+import org.jenkinsci.plugins.workflow.steps.StepDescriptor;
 
 abstract class AbstractTaskListenerDescriptor extends StepDescriptor {
 
-  @Override
-  public Set<Class<?>> getRequiredContext() {
-    Set<Class<?>> set = new HashSet<>();
-    set.add(TaskListener.class);
-    return set;
-  }
+    @Override
+    public Set<Class<?>> getRequiredContext() {
+        Set<Class<?>> set = new HashSet<>();
+        set.add(TaskListener.class);
+        return set;
+    }
 }

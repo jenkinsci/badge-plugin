@@ -28,6 +28,7 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
+import java.io.Serializable;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
@@ -35,190 +36,192 @@ import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
-import java.io.Serializable;
-
 /**
  * Create a short text.
  */
 public class AddShortTextStep extends Step {
 
-  private final ShortText shortText;
+    private final ShortText shortText;
 
-  /**
-   * @param text The text to add fot this badge
-   */
-  @DataBoundConstructor
-  public AddShortTextStep(String text) {
-    this.shortText = new ShortText(text);
-  }
-
-  public String getText() {
-    return shortText.getText();
-  }
-
-  public String getColor() {
-    return shortText.getColor();
-  }
-
-  /**
-   * @param color The color for this short text
-   */
-  @DataBoundSetter
-  public void setColor(String color) {
-    this.shortText.setColor(color);
-  }
-
-  public String getBackground() {
-    return shortText.getBackground();
-  }
-
-  /**
-   * @param background The background-color for this short text
-   */
-  @DataBoundSetter
-  public void setBackground(String background) {
-    this.shortText.setBackground(background);
-  }
-
-  public Integer getBorder() {
-    return shortText.getBorder();
-  }
-
-  /**
-   * @param border The border width for this short text
-   */
-  @DataBoundSetter
-  public void setBorder(Integer border) {
-    this.shortText.setBorder(border);
-  }
-
-  public String getBorderColor() {
-    return shortText.getBorderColor();
-  }
-
-  /**
-   * @param borderColor The order color for this short text
-   */
-  @DataBoundSetter
-  public void setBorderColor(String borderColor) {
-    this.shortText.setBorderColor(borderColor);
-  }
-
-  /**
-   * @param link The link for this short text
-   */
-  @DataBoundSetter
-  public void setLink(String link) {
-    this.shortText.setLink(link);
-  }
-
-  public String getLink() {
-    return this.shortText.getLink();
-  }
-
-  @Override
-  public StepExecution start(StepContext context) {
-    return new Execution(shortText, context);
-  }
-
-  @Extension
-  public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
-
-    @Override
-    public String getFunctionName() {
-      return "addShortText";
+    /**
+     * @param text The text to add fot this badge
+     */
+    @DataBoundConstructor
+    public AddShortTextStep(String text) {
+        this.shortText = new ShortText(text);
     }
 
-    @NonNull
-    @Override
-    public String getDisplayName() {
-      return "Add Short Text";
+    public String getText() {
+        return shortText.getText();
     }
 
-  }
-
-  private static class ShortText implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    private final String text;
-    private String color;
-    private String background;
-    private Integer border;
-    private String borderColor;
-    private String link;
-
-    public ShortText(String text) {
-      this.text = text;
+    public String getColor() {
+        return shortText.getColor();
     }
 
-    private String getText() {
-      return text;
-    }
-
-    private String getColor() {
-      return color;
-    }
-
+    /**
+     * @param color The color for this short text
+     */
+    @DataBoundSetter
     public void setColor(String color) {
-      this.color = color;
+        this.shortText.setColor(color);
     }
 
-    private String getBackground() {
-      return background;
+    public String getBackground() {
+        return shortText.getBackground();
     }
 
+    /**
+     * @param background The background-color for this short text
+     */
+    @DataBoundSetter
     public void setBackground(String background) {
-      this.background = background;
+        this.shortText.setBackground(background);
     }
 
-    private Integer getBorder() {
-      return border;
+    public Integer getBorder() {
+        return shortText.getBorder();
     }
 
+    /**
+     * @param border The border width for this short text
+     */
+    @DataBoundSetter
     public void setBorder(Integer border) {
-      this.border = border;
+        this.shortText.setBorder(border);
     }
 
-    private String getBorderColor() {
-      return borderColor;
+    public String getBorderColor() {
+        return shortText.getBorderColor();
     }
 
+    /**
+     * @param borderColor The order color for this short text
+     */
+    @DataBoundSetter
     public void setBorderColor(String borderColor) {
-      this.borderColor = borderColor;
+        this.shortText.setBorderColor(borderColor);
     }
 
-    private String getBorderString() {
-      return border == null ? null : border + "px";
+    /**
+     * @param link The link for this short text
+     */
+    @DataBoundSetter
+    public void setLink(String link) {
+        this.shortText.setLink(link);
     }
 
     public String getLink() {
-      return link;
-    }
-
-    public void setLink(String link) {
-      this.link = link;
-    }
-  }
-
-  public static class Execution extends SynchronousStepExecution<Void> {
-
-    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private transient final ShortText shortText;
-
-    Execution(ShortText shortText, StepContext context) {
-      super(context);
-      this.shortText = shortText;
+        return this.shortText.getLink();
     }
 
     @Override
-    protected Void run() throws Exception {
-      getContext().get(Run.class).addAction(BadgeAction.createShortText(shortText.getText(),
-          shortText.getColor(), shortText.getBackground(), shortText.getBorderString(), shortText.getBorderColor(), shortText.link));
-      return null;
+    public StepExecution start(StepContext context) {
+        return new Execution(shortText, context);
     }
 
-    private static final long serialVersionUID = 1L;
+    @Extension
+    public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
 
-  }
+        @Override
+        public String getFunctionName() {
+            return "addShortText";
+        }
 
+        @NonNull
+        @Override
+        public String getDisplayName() {
+            return "Add Short Text";
+        }
+    }
+
+    private static class ShortText implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private final String text;
+        private String color;
+        private String background;
+        private Integer border;
+        private String borderColor;
+        private String link;
+
+        public ShortText(String text) {
+            this.text = text;
+        }
+
+        private String getText() {
+            return text;
+        }
+
+        private String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        private String getBackground() {
+            return background;
+        }
+
+        public void setBackground(String background) {
+            this.background = background;
+        }
+
+        private Integer getBorder() {
+            return border;
+        }
+
+        public void setBorder(Integer border) {
+            this.border = border;
+        }
+
+        private String getBorderColor() {
+            return borderColor;
+        }
+
+        public void setBorderColor(String borderColor) {
+            this.borderColor = borderColor;
+        }
+
+        private String getBorderString() {
+            return border == null ? null : border + "px";
+        }
+
+        public String getLink() {
+            return link;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+    }
+
+    public static class Execution extends SynchronousStepExecution<Void> {
+
+        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+        private final transient ShortText shortText;
+
+        Execution(ShortText shortText, StepContext context) {
+            super(context);
+            this.shortText = shortText;
+        }
+
+        @Override
+        protected Void run() throws Exception {
+            getContext()
+                    .get(Run.class)
+                    .addAction(BadgeAction.createShortText(
+                            shortText.getText(),
+                            shortText.getColor(),
+                            shortText.getBackground(),
+                            shortText.getBorderString(),
+                            shortText.getBorderColor(),
+                            shortText.link));
+            return null;
+        }
+
+        private static final long serialVersionUID = 1L;
+    }
 }

@@ -23,41 +23,39 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import hudson.model.Action;
 import hudson.model.BuildBadgeAction;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-
 class ClassHierarchyTest {
 
-  @Test
-  void badgeSummaryAction() {
-    assertTrue(Action.class.isAssignableFrom(BadgeSummaryAction.class));
-    assertTrue(AbstractAction.class.isAssignableFrom(BadgeSummaryAction.class));
+    @Test
+    void badgeSummaryAction() {
+        assertTrue(Action.class.isAssignableFrom(BadgeSummaryAction.class));
+        assertTrue(AbstractAction.class.isAssignableFrom(BadgeSummaryAction.class));
 
-    assertFalse(BuildBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class));
-    assertFalse(AbstractBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class));
-  }
+        assertFalse(BuildBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class));
+        assertFalse(AbstractBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class));
+    }
 
-  @Test
-  void badgeAction() {
-    assertTrue(Action.class.isAssignableFrom(BadgeAction.class));
-    assertTrue(AbstractAction.class.isAssignableFrom(BadgeAction.class));
+    @Test
+    void badgeAction() {
+        assertTrue(Action.class.isAssignableFrom(BadgeAction.class));
+        assertTrue(AbstractAction.class.isAssignableFrom(BadgeAction.class));
 
-    assertTrue(BuildBadgeAction.class.isAssignableFrom(BadgeAction.class));
-    assertTrue(BuildBadgeAction.class.isAssignableFrom(BadgeAction.class));
-  }
+        assertTrue(BuildBadgeAction.class.isAssignableFrom(BadgeAction.class));
+        assertTrue(BuildBadgeAction.class.isAssignableFrom(BadgeAction.class));
+    }
 
-  @Test
-  void htmlBadgeAction() {
-    assertTrue(Action.class.isAssignableFrom(HtmlBadgeAction.class));
-    assertTrue(AbstractAction.class.isAssignableFrom(HtmlBadgeAction.class));
+    @Test
+    void htmlBadgeAction() {
+        assertTrue(Action.class.isAssignableFrom(HtmlBadgeAction.class));
+        assertTrue(AbstractAction.class.isAssignableFrom(HtmlBadgeAction.class));
 
-    assertTrue(BuildBadgeAction.class.isAssignableFrom(HtmlBadgeAction.class));
-    assertTrue(BuildBadgeAction.class.isAssignableFrom(HtmlBadgeAction.class));
-  }
-
+        assertTrue(BuildBadgeAction.class.isAssignableFrom(HtmlBadgeAction.class));
+        assertTrue(BuildBadgeAction.class.isAssignableFrom(HtmlBadgeAction.class));
+    }
 }

@@ -27,240 +27,243 @@ import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
 import hudson.model.Hudson;
 import io.jenkins.plugins.ionicons.Ionicons;
-import jenkins.model.Jenkins;
-import org.kohsuke.stapler.Stapler;
-import org.kohsuke.stapler.StaplerRequest;
-import org.kohsuke.stapler.export.Exported;
-import org.kohsuke.stapler.export.ExportedBean;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jenkins.model.Jenkins;
+import org.kohsuke.stapler.Stapler;
+import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.export.Exported;
+import org.kohsuke.stapler.export.ExportedBean;
 
 @ExportedBean(defaultVisibility = 2)
 public class BadgeAction extends AbstractBadgeAction {
-  private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
-  private static final long serialVersionUID = 1L;
-  private final String iconPath;
-  private final String text;
-  private String color;
-  private String background;
-  private String border;
-  private String borderColor;
-  private String link;
+    private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
+    private static final long serialVersionUID = 1L;
+    private final String iconPath;
+    private final String text;
+    private String color;
+    private String background;
+    private String border;
+    private String borderColor;
+    private String link;
 
-  private BadgeAction(String iconPath, String text) {
-    this.iconPath = iconPath;
-    this.text = text;
-  }
-
-  public static BadgeAction createBadge(String icon, String text) {
-    return new BadgeAction(getIconPath(icon), text);
-  }
-
-  public static BadgeAction createBadge(String icon, String text, String link) throws IllegalArgumentException {
-    BadgeAction action = new BadgeAction(getIconPath(icon), text);
-    action.link = link;
-    action.validate();
-    return action;
-  }
-
-  public static BadgeAction createBadge(String icon, String color, String text, String link) throws IllegalArgumentException {
-    BadgeAction action = new BadgeAction(getIconPath(icon), text);
-    action.link = link;
-    action.color = color;
-    action.validate();
-    return action;
-  }
-
-  public static BadgeAction createShortText(String text) {
-    return new BadgeAction(null, text);
-  }
-
-
-  public static BadgeAction createShortText(String text, String color, String background, String border, String borderColor) {
-    return createShortText(text, color, background, border, borderColor, null);
-  }
-
-  public static BadgeAction createShortText(String text, String color, String background, String border, String borderColor, String link) {
-    BadgeAction action = new BadgeAction(null, text);
-    action.color = color;
-    action.background = background;
-    action.border = border;
-    action.borderColor = borderColor;
-    action.link = link;
-    return action;
-  }
-
-  public static BadgeAction createInfoBadge(String text) throws IllegalArgumentException {
-    return createInfoBadge(text, null);
-  }
-
-  public static BadgeAction createInfoBadge(String text, String link) throws IllegalArgumentException {
-    return createBadge(Ionicons.getIconClassName("information-circle"), "jenkins-!-color-blue", text, link);
-  }
-
-  public static BadgeAction createWarningBadge(String text) throws IllegalArgumentException {
-    return createWarningBadge(text, null);
-  }
-
-  public static BadgeAction createWarningBadge(String text, String link) throws IllegalArgumentException {
-    return createBadge(Ionicons.getIconClassName("warning"), "jenkins-!-warning-color", text, link);
-  }
-
-  public static BadgeAction createErrorBadge(String text) throws IllegalArgumentException {
-    return createErrorBadge(text, null);
-  }
-
-  public static BadgeAction createErrorBadge(String text, String link) throws IllegalArgumentException {
-    return createBadge(Ionicons.getIconClassName("remove-circle"), "jenkins-!-error-color", text, link);
-  }
-
-  protected void validate() throws IllegalArgumentException {
-    if (BadgePlugin.get().isDisableFormatHTML()) {
-      return;
+    private BadgeAction(String iconPath, String text) {
+        this.iconPath = iconPath;
+        this.text = text;
     }
 
-    if (link != null && !link.startsWith("/") && !link.matches("^https?:.*") && !link.matches("^mailto:.*")) {
-      throw new IllegalArgumentException("Invalid link '" + link + "'for badge action with text '" + text + "'");
-    }
-  }
-
-  /* Action methods */
-  public String getUrlName() {
-    return "";
-  }
-
-  public String getDisplayName() {
-    return "";
-  }
-
-  public String getIconFileName() {
-    return null;
-  }
-
-  @Exported
-  public boolean isTextOnly() {
-    return (iconPath == null);
-  }
-
-  @Exported
-  public String getIconPath() {
-    // add the context path to the path variable if the image starts with /
-    if (iconPath != null && iconPath.startsWith("/")) {
-      StaplerRequest currentRequest = Stapler.getCurrentRequest();
-      if (currentRequest != null && !iconPath.startsWith(currentRequest.getContextPath())) {
-        return currentRequest.getContextPath() + iconPath;
-      }
-    }
-    return iconPath;
-  }
-
-  @Exported
-  public String getText() {
-    if (BadgePlugin.get().isDisableFormatHTML()) {
-      return text;
-    }
-    try {
-      return BadgePlugin.get().translate(text);
-    } catch (IOException e) {
-      LOGGER.log(Level.WARNING, "Error preparing badge text for ui", e);
-      return "<b><font color=\"red\">ERROR</font></b>";
-    }
-  }
-
-  @Exported
-  public String getColor() {
-    return color;
-  }
-
-  @Exported
-  public String getBackground() {
-    return background;
-  }
-
-  @Exported
-  public String getBorder() {
-    return border;
-  }
-
-  @Exported
-  public String getBorderColor() {
-    return borderColor;
-  }
-
-  /**
-   * Get the class value for the icon element.
-   * @return string of css class names to add or empty string if no class to add.
-   */
-  public String getIconClass() {
-    List<String> classes = new LinkedList<>();
-    if (isJenkinsSymbolRef(this.iconPath)) {
-      classes.add("icon-sm");
+    public static BadgeAction createBadge(String icon, String text) {
+        return new BadgeAction(getIconPath(icon), text);
     }
 
-    if (this.color != null) {
-      if (this.color.startsWith("jenkins-!-")) {
-        classes.add(this.color);
-      } else {
-        String colorClass = getJenkinsColorClass(this.color);
-        if (colorClass != null) {
-          classes.add(colorClass);
+    public static BadgeAction createBadge(String icon, String text, String link) throws IllegalArgumentException {
+        BadgeAction action = new BadgeAction(getIconPath(icon), text);
+        action.link = link;
+        action.validate();
+        return action;
+    }
+
+    public static BadgeAction createBadge(String icon, String color, String text, String link)
+            throws IllegalArgumentException {
+        BadgeAction action = new BadgeAction(getIconPath(icon), text);
+        action.link = link;
+        action.color = color;
+        action.validate();
+        return action;
+    }
+
+    public static BadgeAction createShortText(String text) {
+        return new BadgeAction(null, text);
+    }
+
+    public static BadgeAction createShortText(
+            String text, String color, String background, String border, String borderColor) {
+        return createShortText(text, color, background, border, borderColor, null);
+    }
+
+    public static BadgeAction createShortText(
+            String text, String color, String background, String border, String borderColor, String link) {
+        BadgeAction action = new BadgeAction(null, text);
+        action.color = color;
+        action.background = background;
+        action.border = border;
+        action.borderColor = borderColor;
+        action.link = link;
+        return action;
+    }
+
+    public static BadgeAction createInfoBadge(String text) throws IllegalArgumentException {
+        return createInfoBadge(text, null);
+    }
+
+    public static BadgeAction createInfoBadge(String text, String link) throws IllegalArgumentException {
+        return createBadge(Ionicons.getIconClassName("information-circle"), "jenkins-!-color-blue", text, link);
+    }
+
+    public static BadgeAction createWarningBadge(String text) throws IllegalArgumentException {
+        return createWarningBadge(text, null);
+    }
+
+    public static BadgeAction createWarningBadge(String text, String link) throws IllegalArgumentException {
+        return createBadge(Ionicons.getIconClassName("warning"), "jenkins-!-warning-color", text, link);
+    }
+
+    public static BadgeAction createErrorBadge(String text) throws IllegalArgumentException {
+        return createErrorBadge(text, null);
+    }
+
+    public static BadgeAction createErrorBadge(String text, String link) throws IllegalArgumentException {
+        return createBadge(Ionicons.getIconClassName("remove-circle"), "jenkins-!-error-color", text, link);
+    }
+
+    protected void validate() throws IllegalArgumentException {
+        if (BadgePlugin.get().isDisableFormatHTML()) {
+            return;
         }
-      }
+
+        if (link != null && !link.startsWith("/") && !link.matches("^https?:.*") && !link.matches("^mailto:.*")) {
+            throw new IllegalArgumentException("Invalid link '" + link + "'for badge action with text '" + text + "'");
+        }
     }
 
-    return String.join(" ", classes);
-  }
-
-  /**
-   * Get the color value for the {@code style} attribute of the icon element.
-   * @return {@code null} if color not set or color is a Jenkins color class.
-   */
-  public String getIconColorStyle() {
-    if (this.color != null && !this.color.startsWith("jenkins-!-") && getJenkinsColorClass(this.color) == null) {
-        return this.color;
+    /* Action methods */
+    public String getUrlName() {
+        return "";
     }
 
-    return null;
-  }
-
-  @Exported
-  public String getLink() {
-    if (link == null || BadgePlugin.get().isDisableFormatHTML()) {
-      return link;
+    public String getDisplayName() {
+        return "";
     }
 
-    if (link.startsWith("/") || link.matches("^https?:.*") || link.matches("^mailto:.*")) {
-      return link;
-    }
-    LOGGER.log(Level.WARNING, "Error invalid link value: '" + link + "'");
-
-    return null;
-  }
-
-  public static String getIconPath(String icon) {
-    if (icon == null) {
-      return null;
+    public String getIconFileName() {
+        return null;
     }
 
-    if (icon.startsWith("/") || icon.matches("^https?:.*")) {
-      return icon;
+    @Exported
+    public boolean isTextOnly() {
+        return (iconPath == null);
     }
 
-    if (isJenkinsSymbolRef(icon)) {
-      return icon;
+    @Exported
+    public String getIconPath() {
+        // add the context path to the path variable if the image starts with /
+        if (iconPath != null && iconPath.startsWith("/")) {
+            StaplerRequest currentRequest = Stapler.getCurrentRequest();
+            if (currentRequest != null && !iconPath.startsWith(currentRequest.getContextPath())) {
+                return currentRequest.getContextPath() + iconPath;
+            }
+        }
+        return iconPath;
     }
 
-    Jenkins jenkins = Jenkins.getInstanceOrNull();
+    @Exported
+    public String getText() {
+        if (BadgePlugin.get().isDisableFormatHTML()) {
+            return text;
+        }
+        try {
+            return BadgePlugin.get().translate(text);
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Error preparing badge text for ui", e);
+            return "<b><font color=\"red\">ERROR</font></b>";
+        }
+    }
 
-    // Try plugin images dir, fallback to Hudson images dir
-    PluginWrapper wrapper = jenkins != null ? jenkins.getPluginManager().getPlugin("badge") : null;
-    boolean pluginIconExists = (wrapper != null) && new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists();
-    return pluginIconExists ? "/plugin/" + wrapper.getShortName() + "/images/" + icon : Hudson.RESOURCE_PATH + "/images/16x16/" + icon;
-  }
+    @Exported
+    public String getColor() {
+        return color;
+    }
 
+    @Exported
+    public String getBackground() {
+        return background;
+    }
+
+    @Exported
+    public String getBorder() {
+        return border;
+    }
+
+    @Exported
+    public String getBorderColor() {
+        return borderColor;
+    }
+
+    /**
+     * Get the class value for the icon element.
+     * @return string of css class names to add or empty string if no class to add.
+     */
+    public String getIconClass() {
+        List<String> classes = new LinkedList<>();
+        if (isJenkinsSymbolRef(this.iconPath)) {
+            classes.add("icon-sm");
+        }
+
+        if (this.color != null) {
+            if (this.color.startsWith("jenkins-!-")) {
+                classes.add(this.color);
+            } else {
+                String colorClass = getJenkinsColorClass(this.color);
+                if (colorClass != null) {
+                    classes.add(colorClass);
+                }
+            }
+        }
+
+        return String.join(" ", classes);
+    }
+
+    /**
+     * Get the color value for the {@code style} attribute of the icon element.
+     * @return {@code null} if color not set or color is a Jenkins color class.
+     */
+    public String getIconColorStyle() {
+        if (this.color != null && !this.color.startsWith("jenkins-!-") && getJenkinsColorClass(this.color) == null) {
+            return this.color;
+        }
+
+        return null;
+    }
+
+    @Exported
+    public String getLink() {
+        if (link == null || BadgePlugin.get().isDisableFormatHTML()) {
+            return link;
+        }
+
+        if (link.startsWith("/") || link.matches("^https?:.*") || link.matches("^mailto:.*")) {
+            return link;
+        }
+        LOGGER.log(Level.WARNING, "Error invalid link value: '" + link + "'");
+
+        return null;
+    }
+
+    public static String getIconPath(String icon) {
+        if (icon == null) {
+            return null;
+        }
+
+        if (icon.startsWith("/") || icon.matches("^https?:.*")) {
+            return icon;
+        }
+
+        if (isJenkinsSymbolRef(icon)) {
+            return icon;
+        }
+
+        Jenkins jenkins = Jenkins.getInstanceOrNull();
+
+        // Try plugin images dir, fallback to Hudson images dir
+        PluginWrapper wrapper = jenkins != null ? jenkins.getPluginManager().getPlugin("badge") : null;
+        boolean pluginIconExists =
+                (wrapper != null) && new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists();
+        return pluginIconExists
+                ? "/plugin/" + wrapper.getShortName() + "/images/" + icon
+                : Hudson.RESOURCE_PATH + "/images/16x16/" + icon;
+    }
 }

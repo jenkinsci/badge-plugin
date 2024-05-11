@@ -24,100 +24,98 @@
 package com.jenkinsci.plugins.badge.action;
 
 import com.jenkinsci.plugins.badge.BadgePlugin;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-
 @ExportedBean(defaultVisibility = 2)
 public class BadgeSummaryAction extends AbstractAction {
-  private static final long serialVersionUID = 1L;
-  private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
+    private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
 
-  private final String iconPath;
-  private String summaryText = "";
+    private final String iconPath;
+    private String summaryText = "";
 
-  public BadgeSummaryAction(String iconPath) {
-    this.iconPath = iconPath;
-  }
-
-  /* Action methods */
-  public String getUrlName() {
-    return "";
-  }
-
-  public String getDisplayName() {
-    return "";
-  }
-
-  public String getIconFileName() {
-    return null;
-  }
-
-  @Exported
-  public String getIconPath() {
-    return iconPath;
-  }
-
-  public String getRawText() {
-    return summaryText;
-  }
-
-  @Exported
-  public String getText() {
-    if (BadgePlugin.get().isDisableFormatHTML()) {
-      return summaryText;
+    public BadgeSummaryAction(String iconPath) {
+        this.iconPath = iconPath;
     }
-    try {
-      return BadgePlugin.get().translate(summaryText);
-    } catch (IOException e) {
-      LOGGER.log(Level.WARNING, "Error preparing summary text for ui", e);
-      return "<b><font color=\"red\">ERROR</font></b>";
-    }
-  }
 
-  @Whitelisted
-  public void appendText(String text) {
-    appendText(text, false);
-  }
+    /* Action methods */
+    public String getUrlName() {
+        return "";
+    }
 
-  @Whitelisted
-  public void appendText(String text, boolean escapeHtml) {
-    if (escapeHtml) {
-      text = StringEscapeUtils.escapeHtml(text);
+    public String getDisplayName() {
+        return "";
     }
-    summaryText += text;
-  }
 
-  @Whitelisted
-  public void appendText(String text, boolean escapeHtml, boolean bold, boolean italic, String color) {
-    String closeTags = "";
-    if (bold) {
-      summaryText += "<b>";
-      closeTags += "</b>";
+    public String getIconFileName() {
+        return null;
     }
-    if (italic) {
-      summaryText += "<i>";
-      closeTags += "</i>";
+
+    @Exported
+    public String getIconPath() {
+        return iconPath;
     }
-    if (color != null) {
-      String cls = getJenkinsColorClass(color);
-      if (cls != null) {
-        summaryText += "<span class=\"" + StringEscapeUtils.escapeHtml(cls) + "\">";
-        closeTags += "</span>";
-      } else {
-        summaryText += "<font color=\"" + StringEscapeUtils.escapeHtml(color) + "\">";
-        closeTags += "</font>";
-      }
+
+    public String getRawText() {
+        return summaryText;
     }
-    if (escapeHtml) {
-      text = StringEscapeUtils.escapeHtml(text);
+
+    @Exported
+    public String getText() {
+        if (BadgePlugin.get().isDisableFormatHTML()) {
+            return summaryText;
+        }
+        try {
+            return BadgePlugin.get().translate(summaryText);
+        } catch (IOException e) {
+            LOGGER.log(Level.WARNING, "Error preparing summary text for ui", e);
+            return "<b><font color=\"red\">ERROR</font></b>";
+        }
     }
-    summaryText += text + closeTags;
-  }
+
+    @Whitelisted
+    public void appendText(String text) {
+        appendText(text, false);
+    }
+
+    @Whitelisted
+    public void appendText(String text, boolean escapeHtml) {
+        if (escapeHtml) {
+            text = StringEscapeUtils.escapeHtml(text);
+        }
+        summaryText += text;
+    }
+
+    @Whitelisted
+    public void appendText(String text, boolean escapeHtml, boolean bold, boolean italic, String color) {
+        String closeTags = "";
+        if (bold) {
+            summaryText += "<b>";
+            closeTags += "</b>";
+        }
+        if (italic) {
+            summaryText += "<i>";
+            closeTags += "</i>";
+        }
+        if (color != null) {
+            String cls = getJenkinsColorClass(color);
+            if (cls != null) {
+                summaryText += "<span class=\"" + StringEscapeUtils.escapeHtml(cls) + "\">";
+                closeTags += "</span>";
+            } else {
+                summaryText += "<font color=\"" + StringEscapeUtils.escapeHtml(color) + "\">";
+                closeTags += "</font>";
+            }
+        }
+        if (escapeHtml) {
+            text = StringEscapeUtils.escapeHtml(text);
+        }
+        summaryText += text + closeTags;
+    }
 }

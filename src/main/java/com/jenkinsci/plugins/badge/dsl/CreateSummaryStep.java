@@ -40,83 +40,82 @@ import org.kohsuke.stapler.DataBoundSetter;
  */
 public class CreateSummaryStep extends AbstractStep {
 
-  private final String icon;
-  private String text;
+    private final String icon;
+    private String text;
 
-  /**
-   * @param icon "The icon for this summary"
-   */
-  @DataBoundConstructor
-  public CreateSummaryStep(String icon) {
-    this.icon = icon;
-  }
-
-  public String getIcon() {
-    return icon;
-  }
-
-  public String getText() {
-    return text;
-  }
-
-  /**
-   * @param text "The title text for this summary"
-   */
-  @DataBoundSetter
-  public void setText(String text) {
-    this.text = text;
-  }
-
-  @Override
-  public StepExecution start(StepContext context) {
-    return new Execution(icon, text, getId(), context);
-  }
-
-  @Extension
-  public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
-
-    @Override
-    public String getFunctionName() {
-      return "createSummary";
+    /**
+     * @param icon "The icon for this summary"
+     */
+    @DataBoundConstructor
+    public CreateSummaryStep(String icon) {
+        this.icon = icon;
     }
 
-    @NonNull
-    @Override
-    public String getDisplayName() {
-      return "Create Summary";
+    public String getIcon() {
+        return icon;
     }
 
-  }
+    public String getText() {
+        return text;
+    }
 
-  public static class Execution extends SynchronousStepExecution<BadgeSummaryAction> {
-
-    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private transient final String icon;
-    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private transient final String text;
-    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private final String id;
-
-    Execution(String icon, String text, String id, StepContext context) {
-      super(context);
-      this.icon = icon;
-      this.text = text;
-      this.id = id;
+    /**
+     * @param text "The title text for this summary"
+     */
+    @DataBoundSetter
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
-    protected BadgeSummaryAction run() throws Exception {
-      BadgeSummaryAction action = new BadgeSummaryAction(icon);
-      if (StringUtils.isNotBlank(text)) {
-        action.appendText(text);
-      }
-      action.setId(id);
-      getContext().get(Run.class).addAction(action);
-      return action;
+    public StepExecution start(StepContext context) {
+        return new Execution(icon, text, getId(), context);
     }
 
-    private static final long serialVersionUID = 1L;
+    @Extension
+    public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
 
-  }
+        @Override
+        public String getFunctionName() {
+            return "createSummary";
+        }
 
+        @NonNull
+        @Override
+        public String getDisplayName() {
+            return "Create Summary";
+        }
+    }
+
+    public static class Execution extends SynchronousStepExecution<BadgeSummaryAction> {
+
+        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+        private final transient String icon;
+
+        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+        private final transient String text;
+
+        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+        private final String id;
+
+        Execution(String icon, String text, String id, StepContext context) {
+            super(context);
+            this.icon = icon;
+            this.text = text;
+            this.id = id;
+        }
+
+        @Override
+        protected BadgeSummaryAction run() throws Exception {
+            BadgeSummaryAction action = new BadgeSummaryAction(icon);
+            if (StringUtils.isNotBlank(text)) {
+                action.appendText(text);
+            }
+            action.setId(id);
+            getContext().get(Run.class).addAction(action);
+            return action;
+        }
+
+        private static final long serialVersionUID = 1L;
+    }
 }

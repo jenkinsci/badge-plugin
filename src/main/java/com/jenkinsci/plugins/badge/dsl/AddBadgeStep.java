@@ -36,52 +36,50 @@ import org.kohsuke.stapler.DataBoundSetter;
  */
 public class AddBadgeStep extends AbstractAddBadgeStep {
 
-  /**
-   * @param icon The icon for this badge
-   * @param text The text for this badge
-   */
-  @DataBoundConstructor
-  public AddBadgeStep(String icon, String text) {
-    super(icon, text);
-  }
-
-  public String getColor() {
-    return getBadge().getColor();
-  }
-
-  /**
-   * @param color The Jenkins palette/semantic color name of the badge icon symbol
-   */
-  @DataBoundSetter
-  public void setColor(String color) {
-    getBadge().setColor(color);
-  }
-
-  @Override
-  public StepExecution start(StepContext context) {
-    return new Execution(getBadge(), getId(), context) {
-
-      @Override
-      protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
-        return BadgeAction.createBadge(badge.getIcon(), badge.getColor(), badge.getText(), badge.getLink());
-      }
-    };
-  }
-
-  @Extension
-  public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
-
-    @Override
-    public String getFunctionName() {
-      return "addBadge";
+    /**
+     * @param icon The icon for this badge
+     * @param text The text for this badge
+     */
+    @DataBoundConstructor
+    public AddBadgeStep(String icon, String text) {
+        super(icon, text);
     }
 
-    @NonNull
-    @Override
-    public String getDisplayName() {
-      return "Add Badge";
+    public String getColor() {
+        return getBadge().getColor();
     }
 
-  }
+    /**
+     * @param color The Jenkins palette/semantic color name of the badge icon symbol
+     */
+    @DataBoundSetter
+    public void setColor(String color) {
+        getBadge().setColor(color);
+    }
 
+    @Override
+    public StepExecution start(StepContext context) {
+        return new Execution(getBadge(), getId(), context) {
+
+            @Override
+            protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
+                return BadgeAction.createBadge(badge.getIcon(), badge.getColor(), badge.getText(), badge.getLink());
+            }
+        };
+    }
+
+    @Extension
+    public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
+
+        @Override
+        public String getFunctionName() {
+            return "addBadge";
+        }
+
+        @NonNull
+        @Override
+        public String getDisplayName() {
+            return "Add Badge";
+        }
+    }
 }
