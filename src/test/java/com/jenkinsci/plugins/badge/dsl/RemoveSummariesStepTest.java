@@ -27,27 +27,27 @@ import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 import java.util.List;
 
 import static java.util.UUID.randomUUID;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RemoveSummariesStepTest extends AbstractBadgeTest {
+class RemoveSummariesStepTest extends AbstractBadgeTest {
 
   @Test
-  public void removeSummaries_by_id() throws Exception {
-    removeSummaries("removeSummaries(id:'a')", "b");
+  void removeSummaries_by_id(JenkinsRule r) throws Exception {
+    removeSummaries(r, "removeSummaries(id:'a')", "b");
   }
 
   @Test
-  public void removeSummaries_all() throws Exception {
-    removeSummaries("removeSummaries()");
+  void removeSummaries_all(JenkinsRule r) throws Exception {
+    removeSummaries(r, "removeSummaries()");
   }
 
-
-  private void removeSummaries(String removeScript, String... remainingBadgeIds) throws Exception {
+  private void removeSummaries(JenkinsRule r, String removeScript, String... remainingBadgeIds) throws Exception {
     String icon = randomUUID().toString();
 
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");

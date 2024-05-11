@@ -27,35 +27,37 @@ import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RemoveBadgesStepTest extends AbstractBadgeTest {
+
+class RemoveBadgesStepTest extends AbstractBadgeTest {
 
   @Test
-  public void removeBadges_by_id() throws Exception {
-    removeBadges("addInfoBadge(text: 'a'", "removeBadges(id:'a')", "b");
+  void removeBadges_by_id(JenkinsRule r) throws Exception {
+    removeBadges(r, "addInfoBadge(text: 'a'", "removeBadges(id:'a')", "b");
   }
 
   @Test
-  public void removeBadges_all() throws Exception {
-    removeBadges("addInfoBadge(text: 'a'", "removeBadges()");
+  void removeBadges_all(JenkinsRule r) throws Exception {
+    removeBadges(r, "addInfoBadge(text: 'a'", "removeBadges()");
   }
 
   @Test
-  public void removeHtmlBadges_by_id() throws Exception {
-    removeBadges("addHtmlBadge(html: 'a'", "removeHtmlBadges(id:'a')", "b");
+  void removeHtmlBadges_by_id(JenkinsRule r) throws Exception {
+    removeBadges(r, "addHtmlBadge(html: 'a'", "removeHtmlBadges(id:'a')", "b");
   }
 
   @Test
-  public void removeHtmlBadges_all() throws Exception {
-    removeBadges("addHtmlBadge(html: 'a'", "removeHtmlBadges()");
+  void removeHtmlBadges_all(JenkinsRule r) throws Exception {
+    removeBadges(r, "addHtmlBadge(html: 'a'", "removeHtmlBadges()");
   }
 
-  private void removeBadges(String badgeScriptPrefix, String removeScript, String... remainingBadgeIds) throws Exception {
+  private void removeBadges(JenkinsRule r, String badgeScriptPrefix, String removeScript, String... remainingBadgeIds) throws Exception {
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
     String script = badgeScriptPrefix + ", id: 'a')\n" +
         badgeScriptPrefix + ", id: 'b')\n" +
@@ -71,6 +73,5 @@ public class RemoveBadgesStepTest extends AbstractBadgeTest {
     for (int i = 0; i < remainingBadgeIds.length; i++) {
       assertEquals(remainingBadgeIds[i], badgeActions.get(i).getId());
     }
-
   }
 }

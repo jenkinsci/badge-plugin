@@ -28,30 +28,31 @@ import hudson.model.BuildBadgeAction;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AddHtmlBadgeStepTest extends AbstractBadgeTest {
+
+class AddHtmlBadgeStepTest extends AbstractBadgeTest {
 
   @Test
-  public void addHtmlBadge() throws Exception {
+  void addHtmlBadge(JenkinsRule r) throws Exception {
     String html = UUID.randomUUID().toString();
-    testAddHtmlBadge(html, html);
+    testAddHtmlBadge(r, html, html);
   }
 
   @Test
-  public void addHtmlBadge_remove_script() throws Exception {
+  void addHtmlBadge_remove_script(JenkinsRule r) throws Exception {
     String uuid = UUID.randomUUID().toString();
     String html = uuid + "<script>alert('exploit!');</script>";
-    testAddHtmlBadge(html, uuid);
+    testAddHtmlBadge(r, html, uuid);
   }
 
-
-  private void testAddHtmlBadge(String html, String expected) throws Exception {
+  private void testAddHtmlBadge(JenkinsRule r, String html, String expected) throws Exception {
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
 
     String script = "addHtmlBadge(\"" + html + "\")";
