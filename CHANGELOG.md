@@ -1,6 +1,6 @@
 # Change Log
 
-Starting with version **1.11** the Change Log can be found in the [GitHub Releases](https://github.com/jenkinsci/badge-plugin/releases).
+Starting with version **1.10** the Change Log can be found in the [GitHub Releases](https://github.com/jenkinsci/badge-plugin/releases).
 
 ## [badge-1.10](https://github.com/jenkinsci/badge-plugin/tree/badge-1.10) (2024-05-11)
 
