@@ -34,7 +34,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 /**
  * Add an error badge.
  */
-public class AddInfoBadgeStep extends AddBadgeStep {
+public class AddInfoBadgeStep extends AbstractAddBadgeStep {
 
   @DataBoundConstructor
   public AddInfoBadgeStep(@Param(name = "text", description = "The info text for this badge") String text) {

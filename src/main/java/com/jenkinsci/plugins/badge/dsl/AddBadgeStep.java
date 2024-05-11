@@ -27,7 +27,6 @@ import com.jenkinsci.plugins.badge.action.BadgeAction;
 import com.jenkinsci.plugins.badge.annotations.OptionalParam;
 import com.jenkinsci.plugins.badge.annotations.Param;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
@@ -36,46 +35,36 @@ import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
-import java.io.Serializable;
-
 /**
  * Add a badge.
  */
-public class AddBadgeStep extends AbstractStep {
-
-  private final Badge badge;
+public class AddBadgeStep extends AbstractAddBadgeStep {
 
   @DataBoundConstructor
   public AddBadgeStep(@Param(name = "icon", description = "The icon for this badge") String icon,
                       @Param(name = "text", description = "The text for this badge") String text) {
-    this.badge = new Badge(icon, text);
+    super(icon, text);
   }
 
-  public String getIcon() {
-    return badge.getIcon();
-  }
-
-  public String getText() {
-    return badge.getText();
-  }
-
-  public String getLink() {
-    return badge.getLink();
+  public String getColor() {
+    return getBadge().getColor();
   }
 
   @DataBoundSetter
-  @OptionalParam(description = "The link to be added to this badge")
-  public void setLink(String link) {
-    badge.setLink(link);
+  @OptionalParam(description = "The Jenkins palette/semantic color name of the badge icon symbol")
+  public void setColor(String color) {
+    getBadge().setColor(color);
   }
 
   @Override
   public StepExecution start(StepContext context) {
-    return new Execution(badge, getId(), context);
-  }
+    return new Execution(getBadge(), getId(), context) {
 
-  protected Badge getBadge() {
-    return badge;
+      @Override
+      protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
+        return BadgeAction.createBadge(badge.getIcon(), badge.getColor(), badge.getText(), badge.getLink());
+      }
+    };
   }
 
   @Extension
@@ -91,64 +80,6 @@ public class AddBadgeStep extends AbstractStep {
     public String getDisplayName() {
       return "Add Badge";
     }
-
-  }
-
-  protected static class Badge implements Serializable {
-    private static final long serialVersionUID = 1L;
-
-    private final String icon;
-    private final String text;
-    private String link;
-
-    private Badge(String icon, String text) {
-      this.icon = icon;
-      this.text = text;
-    }
-
-    protected String getIcon() {
-      return icon;
-    }
-
-    protected String getText() {
-      return text;
-    }
-
-    protected String getLink() {
-      return link;
-    }
-
-    public void setLink(String link) {
-      this.link = link;
-    }
-  }
-
-  public static class Execution extends SynchronousStepExecution<Void> {
-
-    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private transient final Badge badge;
-    @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-    private transient final String id;
-
-    Execution(Badge badge, String id, StepContext context) {
-      super(context);
-      this.badge = badge;
-      this.id = id;
-    }
-
-    @Override
-    protected Void run() throws Exception {
-      BadgeAction action = newBatchAction(badge);
-      action.setId(id);
-      getContext().get(Run.class).addAction(action);
-      return null;
-    }
-
-    protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
-      return BadgeAction.createBadge(badge.getIcon(), badge.getText(), badge.getLink());
-    }
-
-    private static final long serialVersionUID = 1L;
 
   }
 

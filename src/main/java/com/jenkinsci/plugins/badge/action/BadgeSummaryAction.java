@@ -96,27 +96,28 @@ public class BadgeSummaryAction extends AbstractAction {
 
   @Whitelisted
   public void appendText(String text, boolean escapeHtml, boolean bold, boolean italic, String color) {
+    String closeTags = "";
     if (bold) {
       summaryText += "<b>";
+      closeTags += "</b>";
     }
     if (italic) {
       summaryText += "<i>";
+      closeTags += "</i>";
     }
     if (color != null) {
-      summaryText += "<font color=\"" + color + "\">";
+      String cls = getJenkinsColorClass(color);
+      if (cls != null) {
+        summaryText += "<span class=\"" + StringEscapeUtils.escapeHtml(cls) + "\">";
+        closeTags += "</span>";
+      } else {
+        summaryText += "<font color=\"" + StringEscapeUtils.escapeHtml(color) + "\">";
+        closeTags += "</font>";
+      }
     }
     if (escapeHtml) {
       text = StringEscapeUtils.escapeHtml(text);
     }
-    summaryText += text;
-    if (color != null) {
-      summaryText += "</font>";
-    }
-    if (italic) {
-      summaryText += "</i>";
-    }
-    if (bold) {
-      summaryText += "</b>";
-    }
+    summaryText += text + closeTags;
   }
 }
