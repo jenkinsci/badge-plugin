@@ -124,6 +124,14 @@ class BadgeActionTest {
     }
 
     @Test
+    void createShortTextWithAllArgs(@SuppressWarnings("unused") JenkinsRule r) {
+        BadgeAction action = BadgeAction.createShortText("Short text badge", "red", "black", "blue", "green", "/link");
+        assertEquals("/link", action.getLink());
+        assertNull(action.getIconFileName());
+        assertTrue(action.isTextOnly());
+    }
+
+    @Test
     void createBadgeWithInvalidLink(@SuppressWarnings("unused") JenkinsRule r) {
         String invalidLink = "invalid-link";
 
