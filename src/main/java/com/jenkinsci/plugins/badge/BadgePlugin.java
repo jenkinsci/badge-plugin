@@ -35,6 +35,7 @@ import jenkins.model.GlobalConfiguration;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
+import org.kohsuke.stapler.interceptor.RequirePOST;
 
 import java.io.IOException;
 import java.util.List;
@@ -78,10 +79,12 @@ public class BadgePlugin extends GlobalConfiguration {
     save();
   }
 
+  @RequirePOST
   public void doRemoveBadges(StaplerRequest req, StaplerResponse rsp) throws IOException {
     removeActions(BadgeAction.class, req, rsp);
   }
 
+  @RequirePOST
   public void doRemoveSummaries(StaplerRequest req, StaplerResponse rsp) throws IOException {
     removeActions(BadgeSummaryAction.class, req, rsp);
   }
@@ -101,10 +104,12 @@ public class BadgePlugin extends GlobalConfiguration {
     }
   }
 
+  @RequirePOST
   public void doRemoveBadge(StaplerRequest req, StaplerResponse rsp) throws IOException {
     removeAction(BadgeAction.class, req, rsp);
   }
 
+  @RequirePOST
   public void doRemoveSummary(StaplerRequest req, StaplerResponse rsp) throws IOException {
     removeAction(BadgeSummaryAction.class, req, rsp);
   }
