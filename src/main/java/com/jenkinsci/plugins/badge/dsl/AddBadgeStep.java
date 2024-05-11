@@ -24,14 +24,10 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
-import com.jenkinsci.plugins.badge.annotations.OptionalParam;
-import com.jenkinsci.plugins.badge.annotations.Param;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import hudson.model.Run;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
-import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
@@ -40,9 +36,12 @@ import org.kohsuke.stapler.DataBoundSetter;
  */
 public class AddBadgeStep extends AbstractAddBadgeStep {
 
+  /**
+   * @param icon The icon for this badge
+   * @param text The text for this badge
+   */
   @DataBoundConstructor
-  public AddBadgeStep(@Param(name = "icon", description = "The icon for this badge") String icon,
-                      @Param(name = "text", description = "The text for this badge") String text) {
+  public AddBadgeStep(String icon, String text) {
     super(icon, text);
   }
 
@@ -50,8 +49,10 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
     return getBadge().getColor();
   }
 
+  /**
+   * @param color The Jenkins palette/semantic color name of the badge icon symbol
+   */
   @DataBoundSetter
-  @OptionalParam(description = "The Jenkins palette/semantic color name of the badge icon symbol")
   public void setColor(String color) {
     getBadge().setColor(color);
   }

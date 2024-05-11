@@ -23,7 +23,6 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.annotations.OptionalParam;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.kohsuke.stapler.DataBoundSetter;
 
@@ -33,8 +32,10 @@ import org.kohsuke.stapler.DataBoundSetter;
 abstract class AbstractStep extends Step {
   private String id;
 
+  /**
+   * @param id Badge identifier. Selectively delete badges by id.
+   */
   @DataBoundSetter
-  @OptionalParam(description = "Badge identifier. Selectively delete badges by id.")
   public void setId(String id) {
     this.id = id;
   }
