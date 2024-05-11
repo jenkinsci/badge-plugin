@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2004-2010, Sun Microsystems, Inc., Serban Iordache
+ * Copyright (c) 2024, Badge Plugin Authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,6 @@ public class AddHtmlBadgeStep extends AbstractStep {
     private final String html;
 
     /**
-     *
      * @param html The html content to be used for this badge
      */
     @DataBoundConstructor
@@ -75,6 +74,8 @@ public class AddHtmlBadgeStep extends AbstractStep {
 
     public static class Execution extends SynchronousStepExecution<Void> {
 
+        private static final long serialVersionUID = 1L;
+
         @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
         private final transient String html;
 
@@ -94,7 +95,5 @@ public class AddHtmlBadgeStep extends AbstractStep {
             getContext().get(Run.class).addAction(htmlBadge);
             return null;
         }
-
-        private static final long serialVersionUID = 1L;
     }
 }

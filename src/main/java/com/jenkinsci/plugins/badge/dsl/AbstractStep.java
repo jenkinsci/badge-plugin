@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2004-2010, Sun Microsystems, Inc., Serban Iordache
+ * Copyright (c) 2024, Badge Plugin Authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@ import org.kohsuke.stapler.DataBoundSetter;
  * An abstract Step implementation providing an id for the step.
  */
 abstract class AbstractStep extends Step {
+
     private String id;
 
     /**

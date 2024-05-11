@@ -131,7 +131,5 @@ public abstract class AbstractAddBadgeStep extends AbstractStep {
         }
 
         protected abstract BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException;
-
-        private static final long serialVersionUID = 1L;
     }
 }

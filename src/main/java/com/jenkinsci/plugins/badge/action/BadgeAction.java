@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2004-2010, Sun Microsystems, Inc., Serban Iordache
+ * Copyright (c) 2024, Badge Plugin Authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,7 +25,6 @@ package com.jenkinsci.plugins.badge.action;
 
 import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
-import hudson.model.Hudson;
 import io.jenkins.plugins.ionicons.Ionicons;
 import java.io.File;
 import java.io.IOException;
@@ -41,8 +40,9 @@ import org.kohsuke.stapler.export.ExportedBean;
 
 @ExportedBean(defaultVisibility = 2)
 public class BadgeAction extends AbstractBadgeAction {
-    private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
+
     private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(BadgeAction.class.getName());
     private final String iconPath;
     private final String text;
     private String color;
@@ -238,7 +238,7 @@ public class BadgeAction extends AbstractBadgeAction {
         if (link.startsWith("/") || link.matches("^https?:.*") || link.matches("^mailto:.*")) {
             return link;
         }
-        LOGGER.log(Level.WARNING, "Error invalid link value: '" + link + "'");
+        LOGGER.log(Level.WARNING, "Error invalid link value: '{}'", link);
 
         return null;
     }
@@ -264,6 +264,6 @@ public class BadgeAction extends AbstractBadgeAction {
                 (wrapper != null) && new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists();
         return pluginIconExists
                 ? "/plugin/" + wrapper.getShortName() + "/images/" + icon
-                : Hudson.RESOURCE_PATH + "/images/16x16/" + icon;
+                : Jenkins.RESOURCE_PATH + "/images/16x16/" + icon;
     }
 }
