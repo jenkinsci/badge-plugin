@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2004-2010, Sun Microsystems, Inc., Serban Iordache
+ * Copyright (c) 2024, Badge Plugin Authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,6 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.AbstractAction;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.model.Action;
 import hudson.model.Run;
 import java.io.IOException;
@@ -45,10 +44,9 @@ abstract class AbstractRemoveBadgesStep extends AbstractStep {
 
     public static class Execution extends SynchronousStepExecution<Void> {
 
-        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-        private final Class<? extends AbstractAction> actionClass;
+        private static final long serialVersionUID = 1L;
 
-        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
+        private final Class<? extends AbstractAction> actionClass;
         private final String id;
 
         Execution(StepContext context, Class<? extends AbstractAction> actionClass, String id) {
@@ -70,7 +68,5 @@ abstract class AbstractRemoveBadgesStep extends AbstractStep {
             return actionClass.isAssignableFrom(a.getClass())
                     && (id == null || id.equals(((AbstractAction) a).getId()));
         }
-
-        private static final long serialVersionUID = 1L;
     }
 }

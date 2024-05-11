@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2004-2010, Sun Microsystems, Inc., Serban Iordache
+ * Copyright (c) 2024, Badge Plugin Authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,7 @@ public class CreateSummaryStep extends AbstractStep {
     private String text;
 
     /**
-     * @param icon "The icon for this summary"
+     * @param icon The icon for this summary
      */
     @DataBoundConstructor
     public CreateSummaryStep(String icon) {
@@ -60,7 +60,7 @@ public class CreateSummaryStep extends AbstractStep {
     }
 
     /**
-     * @param text "The title text for this summary"
+     * @param text The title text for this summary
      */
     @DataBoundSetter
     public void setText(String text) {
@@ -89,6 +89,8 @@ public class CreateSummaryStep extends AbstractStep {
 
     public static class Execution extends SynchronousStepExecution<BadgeSummaryAction> {
 
+        private static final long serialVersionUID = 1L;
+
         @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
         private final transient String icon;
 
@@ -115,7 +117,5 @@ public class CreateSummaryStep extends AbstractStep {
             getContext().get(Run.class).addAction(action);
             return action;
         }
-
-        private static final long serialVersionUID = 1L;
     }
 }

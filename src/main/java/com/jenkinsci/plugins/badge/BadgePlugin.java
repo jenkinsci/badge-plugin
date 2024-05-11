@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2004-2010, Sun Microsystems, Inc., Serban Iordache
+ * Copyright (c) 2024, Badge Plugin Authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -42,16 +42,9 @@ import org.kohsuke.stapler.interceptor.RequirePOST;
 @Extension
 public class BadgePlugin extends GlobalConfiguration {
 
-    /**
-     * @return the singleton instance
-     */
-    public static BadgePlugin get() {
-        return GlobalConfiguration.all().get(BadgePlugin.class);
-    }
+    private final RawHtmlMarkupFormatter formatter = new RawHtmlMarkupFormatter(false);
 
     private boolean disableFormatHTML;
-
-    private final RawHtmlMarkupFormatter formatter = new RawHtmlMarkupFormatter(false);
 
     @SuppressFBWarnings(
             value = "MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR",
@@ -62,7 +55,14 @@ public class BadgePlugin extends GlobalConfiguration {
     }
 
     /**
-     * @return the whether HTML formatting is disabled or not
+     * @return the singleton instance
+     */
+    public static BadgePlugin get() {
+        return GlobalConfiguration.all().get(BadgePlugin.class);
+    }
+
+    /**
+     * @return whether HTML formatting is disabled or not
      */
     public boolean isDisableFormatHTML() {
         return disableFormatHTML;

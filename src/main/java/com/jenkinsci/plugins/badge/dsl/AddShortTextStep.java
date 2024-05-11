@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2004-2010, Sun Microsystems, Inc., Serban Iordache
+ * Copyright (c) 2024, Badge Plugin Authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -136,6 +136,7 @@ public class AddShortTextStep extends Step {
     }
 
     private static class ShortText implements Serializable {
+
         private static final long serialVersionUID = 1L;
 
         private final String text;
@@ -200,6 +201,8 @@ public class AddShortTextStep extends Step {
 
     public static class Execution extends SynchronousStepExecution<Void> {
 
+        private static final long serialVersionUID = 1L;
+
         @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
         private final transient ShortText shortText;
 
@@ -221,7 +224,5 @@ public class AddShortTextStep extends Step {
                             shortText.link));
             return null;
         }
-
-        private static final long serialVersionUID = 1L;
     }
 }
