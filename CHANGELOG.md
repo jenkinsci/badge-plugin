@@ -1,8 +1,24 @@
 # Change Log
 
-## Unreleasd
+Starting with version **1.11** the Change Log can be found in the [GitHub Releases](https://github.com/jenkinsci/badge-plugin/releases).
 
-[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.8...master)
+## [badge-1.10](https://github.com/jenkinsci/badge-plugin/tree/badge-1.10) (2024-05-11)
+
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.9...badge-1.10)
+
+**Closed issues:**
+
+- Can't removeBadge(id) for a createSummary(icon, id, txt) entry [\#45](https://github.com/jenkinsci/badge-plugin/issues/45)
+
+**Merged pull requests:**
+
+- Require Jenkins 2.426.3 or newer [\#132](https://github.com/jenkinsci/badge-plugin/pull/132)
+- Remove unused commons-validator dependency [\#131](https://github.com/jenkinsci/badge-plugin/pull/131)
+- Support design library symbols and colors [\#130](https://github.com/jenkinsci/badge-plugin/pull/130)
+
+## [badge-1.9](https://github.com/jenkinsci/badge-plugin/tree/badge-1.9) (2020-10-25)
+
+[Full Changelog](https://github.com/jenkinsci/badge-plugin/compare/badge-1.8...badge-1.9)
 
 ## [badge-1.8](https://github.com/jenkinsci/badge-plugin/tree/badge-1.8) (2018-12-15)
 
@@ -10,7 +26,7 @@
 
 **Closed issues:**
 
-- Createsummary removes some html tags [\#18](https://github.com/jenkinsci/badge-plugin/issues/18)
+- Create summary removes some html tags [\#18](https://github.com/jenkinsci/badge-plugin/issues/18)
 
 **Merged pull requests:**
 
