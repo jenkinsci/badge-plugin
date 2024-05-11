@@ -95,7 +95,7 @@ class BadgeActionTest {
 
     @Test
     void createWarningBadge(@SuppressWarnings("unused") JenkinsRule r) {
-        BadgeAction action = BadgeAction.createInfoBadge("This is a warning badge");
+        BadgeAction action = BadgeAction.createWarningBadge("This is a warning badge");
         assertNull(action.getIconFileName());
         assertFalse(action.isTextOnly());
         assertEquals("", action.getDisplayName());
