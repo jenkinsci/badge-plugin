@@ -2,20 +2,19 @@ package com.jenkinsci.plugins.badge.action;
 
 
 import hudson.model.Hudson;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class BadgeActionTest {
 
-  @Rule
-  public JenkinsRule r = new JenkinsRule();
+@WithJenkins
+class BadgeActionTest {
 
   @Test
-  public void getIconPath() {
+  void getIconPath(@SuppressWarnings("unused") JenkinsRule r) {
     assertNull(BadgeAction.getIconPath(null));
     assertEquals("/icon.png", BadgeAction.getIconPath("/icon.png"));
     assertEquals("http://foo.com/icon.png", BadgeAction.getIconPath("http://foo.com/icon.png"));
@@ -27,35 +26,35 @@ public class BadgeActionTest {
   }
 
   @Test
-  public void getIconClass() {
+  void getIconClass(@SuppressWarnings("unused") JenkinsRule r) {
     BadgeAction action = BadgeAction.createBadge("info.gif", "text");
     assertEquals("", action.getIconClass());
-    action = BadgeAction.createBadge("symbol-star", "text");
+    action = BadgeAction.createBadge("symbol-star plugin-ionicons-api", "text");
     assertEquals("icon-sm", action.getIconClass());
-    action = BadgeAction.createBadge("symbol-star",  "#000000", "", null);
+    action = BadgeAction.createBadge("symbol-star plugin-ionicons-api",  "#000000", "", null);
     assertEquals("icon-sm", action.getIconClass());
-    action = BadgeAction.createBadge("symbol-star",  "blue", "", null);
+    action = BadgeAction.createBadge("symbol-star plugin-ionicons-api",  "blue", "", null);
     assertEquals("icon-sm jenkins-!-color-blue", action.getIconClass());
     action = BadgeAction.createBadge("/foo/symbol-star.gif",  "blue", "", null);
     assertEquals("jenkins-!-color-blue", action.getIconClass());
     // teal is not in the palette
-    action = BadgeAction.createBadge("symbol-star",  "teal", "", null);
+    action = BadgeAction.createBadge("symbol-star plugin-ionicons-api",  "teal", "", null);
     assertEquals("icon-sm", action.getIconClass());
   }
 
   @Test
-  public void getIconColorStyle() {
+  void getIconColorStyle(@SuppressWarnings("unused") JenkinsRule r) {
     BadgeAction action = BadgeAction.createBadge("info.gif", "text");
     assertNull(action.getIconColorStyle());
-    action = BadgeAction.createBadge("symbol-star",  "#000000", "", null);
+    action = BadgeAction.createBadge("symbol-star plugin-ionicons-api",  "#000000", "", null);
     assertEquals("#000000", action.getIconColorStyle());
-    action = BadgeAction.createBadge("symbol-star",  "var(--yellow)", "", null);
+    action = BadgeAction.createBadge("symbol-star plugin-ionicons-api",  "var(--yellow)", "", null);
     assertEquals("var(--yellow)", action.getIconColorStyle());
-    action = BadgeAction.createBadge("symbol-star",  "jenkins-!-color-blue", "", null);
+    action = BadgeAction.createBadge("symbol-star plugin-ionicons-api",  "jenkins-!-color-blue", "", null);
     assertNull(action.getIconColorStyle());
-    action = BadgeAction.createBadge("symbol-star",  "blue", "", null);
+    action = BadgeAction.createBadge("symbol-star plugin-ionicons-api",  "blue", "", null);
     assertNull(action.getIconColorStyle());
-    action = BadgeAction.createBadge("symbol-star",  "teal", "", null);
+    action = BadgeAction.createBadge("symbol-star plugin-ionicons-api",  "teal", "", null);
     assertEquals("teal", action.getIconColorStyle());
   }
 

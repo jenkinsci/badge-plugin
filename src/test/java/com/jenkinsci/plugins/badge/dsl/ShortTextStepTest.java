@@ -24,24 +24,25 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
-import hudson.model.Action;
 import hudson.model.BuildBadgeAction;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ShortTextStepTest extends AbstractBadgeTest {
+
+class ShortTextStepTest extends AbstractBadgeTest {
 
   @Test
-  public void addShortText() throws Exception {
+  void addShortText(JenkinsRule r) throws Exception {
     String text = UUID.randomUUID().toString();
     String color = UUID.randomUUID().toString();
     String background = UUID.randomUUID().toString();
@@ -54,7 +55,6 @@ public class ShortTextStepTest extends AbstractBadgeTest {
             + borderColor + "\", link:\"" + link + "\")", true));
     WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
-    List<? extends Action> allActions = b.getAllActions();
     List<BuildBadgeAction> badgeActions = b.getBadgeActions();
     assertEquals(1, badgeActions.size());
 
@@ -69,7 +69,7 @@ public class ShortTextStepTest extends AbstractBadgeTest {
   }
 
   @Test
-  public void addShortText_minimal() throws Exception {
+  void addShortText_minimal(JenkinsRule r) throws Exception {
     String text = UUID.randomUUID().toString();
 
     WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
