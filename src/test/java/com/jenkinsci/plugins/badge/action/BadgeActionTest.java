@@ -1,6 +1,7 @@
 package com.jenkinsci.plugins.badge.action;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import hudson.model.Hudson;
@@ -37,6 +38,8 @@ class BadgeActionTest {
         assertEquals("icon-sm jenkins-!-color-blue", action.getIconClass());
         action = BadgeAction.createBadge("/foo/symbol-star.gif", "blue", "", null);
         assertEquals("jenkins-!-color-blue", action.getIconClass());
+        action = BadgeAction.createBadge("symbol-star plugin-ionicons-api", "jenkins-!-color-red", "", null);
+        assertEquals("icon-sm jenkins-!-color-red", action.getIconClass());
         // teal is not in the palette
         action = BadgeAction.createBadge("symbol-star plugin-ionicons-api", "teal", "", null);
         assertEquals("icon-sm", action.getIconClass());
@@ -56,5 +59,32 @@ class BadgeActionTest {
         assertNull(action.getIconColorStyle());
         action = BadgeAction.createBadge("symbol-star plugin-ionicons-api", "teal", "", null);
         assertEquals("teal", action.getIconColorStyle());
+    }
+
+    @Test
+    void createInfoBadge(@SuppressWarnings("unused") JenkinsRule r) {
+        BadgeAction action = BadgeAction.createInfoBadge("This is an info badge");
+        assertNull(action.getIconFileName());
+        assertFalse(action.isTextOnly());
+        assertEquals("", action.getDisplayName());
+        assertEquals("", action.getUrlName());
+    }
+
+    @Test
+    void createWarningBadge(@SuppressWarnings("unused") JenkinsRule r) {
+        BadgeAction action = BadgeAction.createInfoBadge("This is a warning badge");
+        assertNull(action.getIconFileName());
+        assertFalse(action.isTextOnly());
+        assertEquals("", action.getDisplayName());
+        assertEquals("", action.getUrlName());
+    }
+
+    @Test
+    void createErrorBadge(@SuppressWarnings("unused") JenkinsRule r) {
+        BadgeAction action = BadgeAction.createErrorBadge("This is an error badge");
+        assertNull(action.getIconFileName());
+        assertFalse(action.isTextOnly());
+        assertEquals("", action.getDisplayName());
+        assertEquals("", action.getUrlName());
     }
 }
