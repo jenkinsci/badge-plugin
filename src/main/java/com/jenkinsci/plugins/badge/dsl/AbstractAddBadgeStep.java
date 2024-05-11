@@ -23,20 +23,14 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import java.io.Serializable;
-
 import com.jenkinsci.plugins.badge.action.BadgeAction;
-import com.jenkinsci.plugins.badge.annotations.OptionalParam;
-import com.jenkinsci.plugins.badge.annotations.Param;
-import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import hudson.Extension;
 import hudson.model.Run;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
-import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
-import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
+
+import java.io.Serializable;
 
 /**
  * Abstract class to add badges.
@@ -45,8 +39,11 @@ public abstract class AbstractAddBadgeStep extends AbstractStep {
 
   private final Badge badge;
 
-  public AbstractAddBadgeStep(@Param(name = "icon", description = "The icon for this badge") String icon,
-                              @Param(name = "text", description = "The text for this badge") String text) {
+  /**
+   * @param icon The icon for this badge
+   * @param text The text for this badge
+   */
+  public AbstractAddBadgeStep(String icon, String text) {
     this.badge = new Badge(icon, text);
   }
 
@@ -62,8 +59,10 @@ public abstract class AbstractAddBadgeStep extends AbstractStep {
     return badge.getLink();
   }
 
+  /**
+   * @param link The link to be added to this badge
+   */
   @DataBoundSetter
-  @OptionalParam(description = "The link to be added to this badge")
   public void setLink(String link) {
     badge.setLink(link);
   }

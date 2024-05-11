@@ -24,7 +24,6 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
-import com.jenkinsci.plugins.badge.annotations.Param;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
@@ -41,8 +40,12 @@ public class AddHtmlBadgeStep extends AbstractStep {
 
   private final String html;
 
+  /**
+   *
+   * @param html The html content to be used for this badge
+   */
   @DataBoundConstructor
-  public AddHtmlBadgeStep(@Param(name = "html", description = "The html content to be used for this badge") String html) {
+  public AddHtmlBadgeStep(String html) {
     this.html = html;
   }
 

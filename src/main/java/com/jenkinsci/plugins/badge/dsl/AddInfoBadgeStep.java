@@ -24,7 +24,6 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
-import com.jenkinsci.plugins.badge.annotations.Param;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
@@ -36,8 +35,11 @@ import org.kohsuke.stapler.DataBoundConstructor;
  */
 public class AddInfoBadgeStep extends AbstractAddBadgeStep {
 
+  /**
+   * @param text The info text for this badge
+   */
   @DataBoundConstructor
-  public AddInfoBadgeStep(@Param(name = "text", description = "The info text for this badge") String text) {
+  public AddInfoBadgeStep(String text) {
     super(null, text);
   }
 

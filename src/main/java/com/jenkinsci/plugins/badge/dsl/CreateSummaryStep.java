@@ -24,8 +24,6 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
-import com.jenkinsci.plugins.badge.annotations.OptionalParam;
-import com.jenkinsci.plugins.badge.annotations.Param;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
@@ -45,8 +43,11 @@ public class CreateSummaryStep extends AbstractStep {
   private final String icon;
   private String text;
 
+  /**
+   * @param icon "The icon for this summary"
+   */
   @DataBoundConstructor
-  public CreateSummaryStep(@Param(name = "icon", description = "The icon for this summary") String icon) {
+  public CreateSummaryStep(String icon) {
     this.icon = icon;
   }
 
@@ -58,8 +59,10 @@ public class CreateSummaryStep extends AbstractStep {
     return text;
   }
 
+  /**
+   * @param text "The title text for this summary"
+   */
   @DataBoundSetter
-  @OptionalParam(description = "The title text for this summary")
   public void setText(String text) {
     this.text = text;
   }
