@@ -33,7 +33,7 @@ THE SOFTWARE.
     </j:if>
 
     <!-- Symbols do not need height or width -->
-    <j:if test="${it.iconPath.indexOf('symbol-') == 0}">
+    <j:if test="${it.iconPath.startsWith('symbol-')}">
       <j:if test="${it.link == null}">
         <l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" />
       </j:if>
@@ -44,7 +44,7 @@ THE SOFTWARE.
     </j:if>
 
     <!-- Icons that are not symbols need height and width -->
-    <j:if test="${it.iconPath.indexOf('symbol-') != 0}">
+    <j:if test="${!it.iconPath.startsWith('symbol-')}">
       <j:if test="${it.link == null}">
         <l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" height="16" width="16" />
       </j:if>
