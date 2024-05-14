@@ -33,26 +33,30 @@ THE SOFTWARE.
     </j:if>
 
     <!-- Symbols do not need height or width -->
-    <j:if test="${it.iconPath.startsWith('symbol-')}">
-      <j:if test="${it.link == null}">
-        <l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" />
-      </j:if>
+    <j:choose>
+      <j:when test="${it.iconPath.startsWith('symbol-')}">
+        <j:choose>
+          <j:when test="${it.link == null}">
+            <l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" />
+          </j:when>
+          <j:otherwise>
+            <a href="${it.link}"><l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" /></a>
+          </j:otherwise>
+        </j:choose>
+      </j:when>
 
-      <j:if test="${it.link != null}">
-        <a href="${it.link}"><l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" /></a>
-      </j:if>
-    </j:if>
-
-    <!-- Icons that are not symbols need height and width -->
-    <j:if test="${!it.iconPath.startsWith('symbol-')}">
-      <j:if test="${it.link == null}">
-        <l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" height="16" width="16" />
-      </j:if>
-
-      <j:if test="${it.link != null}">
-        <a href="${it.link}"><l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" height="16" width="16" /></a>
-      </j:if>
-    </j:if>
+      <!-- Icons that are not symbols need height and width -->
+      <j:otherwise>
+        <j:choose>
+          <j:when test="${it.link == null}">
+            <l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" height="16" width="16" />
+          </j:when>
+          <j:otherwise>
+            <a href="${it.link}"><l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" height="16" width="16" /></a>
+          </j:otherwise>
+        </j:choose>
+      </j:otherwise>
+    </j:choose>
 
   </j:if>
 
