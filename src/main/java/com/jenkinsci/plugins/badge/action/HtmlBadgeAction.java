@@ -24,6 +24,7 @@
 package com.jenkinsci.plugins.badge.action;
 
 import com.jenkinsci.plugins.badge.BadgePlugin;
+import hudson.markup.RawHtmlMarkupFormatter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,7 +70,7 @@ public class HtmlBadgeAction extends AbstractBadgeAction {
             return html;
         }
         try {
-            return BadgePlugin.get().translate(html);
+            return RawHtmlMarkupFormatter.INSTANCE.translate(html);
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, "Error preparing html content for ui", e);
             return "<b><font color=\"red\">ERROR</font></b>";

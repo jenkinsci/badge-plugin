@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
 The MIT License
 
- Copyright (c) 2024, Badge Plugin Authors
+Copyright (c) 2024, Badge Plugin Authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -->
 
-<?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-    <f:section title="Badge Plugin">
-       <f:entry title="Disable Safe HTML Formatter" help="${descriptor.getHelpFile('formatter')}">
-         <f:checkbox name="disableFormatHTML" field="disableFormatHTML" default="false" value="${disableFormatHTML}"/>
-       </f:entry>
-    </f:section>
-</j:jelly>
+<div>
+    If checked, HTML in badges and summaries will not be sanitized and may contain potentially unsafe elements like <code>&lt;script&gt;</code>.
+</div>
