@@ -23,42 +23,28 @@
  */
 package com.jenkinsci.plugins.badge;
 
-import com.jenkinsci.plugins.badge.action.BadgeAction;
-import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import hudson.markup.RawHtmlMarkupFormatter;
-import hudson.model.Action;
-import hudson.model.Job;
-import hudson.model.Run;
-import java.io.IOException;
-import java.util.List;
+import hudson.model.PersistentDescriptor;
 import jenkins.model.GlobalConfiguration;
+import jenkins.model.GlobalConfigurationCategory;
 import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.StaplerRequest;
-import org.kohsuke.stapler.StaplerResponse;
-import org.kohsuke.stapler.interceptor.RequirePOST;
 
 @Extension
-public class BadgePlugin extends GlobalConfiguration {
-
-    private final RawHtmlMarkupFormatter formatter = new RawHtmlMarkupFormatter(false);
+public class BadgePlugin extends GlobalConfiguration implements PersistentDescriptor {
 
     private boolean disableFormatHTML;
-
-    @SuppressFBWarnings(
-            value = "MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR",
-            justification = "Common pattern in Jenkins constructors")
-    public BadgePlugin() {
-        // When Jenkins is restarted, load any saved configuration from disk.
-        load();
-    }
 
     /**
      * @return the singleton instance
      */
-    public static BadgePlugin get() {
-        return GlobalConfiguration.all().get(BadgePlugin.class);
+    public static @NonNull BadgePlugin get() {
+        return GlobalConfiguration.all().getInstance(BadgePlugin.class);
+    }
+
+    @Override
+    public @NonNull GlobalConfigurationCategory getCategory() {
+        return GlobalConfigurationCategory.get(GlobalConfigurationCategory.Security.class);
     }
 
     /**
@@ -77,72 +63,5 @@ public class BadgePlugin extends GlobalConfiguration {
     public void setDisableFormatHTML(boolean disableFormatHTML) {
         this.disableFormatHTML = disableFormatHTML;
         save();
-    }
-
-    @RequirePOST
-    public void doRemoveBadges(StaplerRequest req, StaplerResponse rsp) throws IOException {
-        removeActions(BadgeAction.class, req, rsp);
-    }
-
-    @RequirePOST
-    public void doRemoveSummaries(StaplerRequest req, StaplerResponse rsp) throws IOException {
-        removeActions(BadgeSummaryAction.class, req, rsp);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void removeActions(Class type, StaplerRequest req, StaplerResponse rsp) throws IOException {
-        req.findAncestorObject(Job.class).checkPermission(Run.UPDATE);
-        Run<?, ?> run = req.findAncestorObject(Run.class);
-        if (run != null) {
-            List<? extends Action> actions = run.getAllActions();
-            List<Action> groovyActions = run.getActions(type);
-            for (Action action : groovyActions) {
-                actions.remove(action);
-            }
-            run.save();
-            rsp.sendRedirect(
-                    req.getRequestURI().substring(0, req.getRequestURI().indexOf("parent/parent")));
-        }
-    }
-
-    @RequirePOST
-    public void doRemoveBadge(StaplerRequest req, StaplerResponse rsp) throws IOException {
-        removeAction(BadgeAction.class, req, rsp);
-    }
-
-    @RequirePOST
-    public void doRemoveSummary(StaplerRequest req, StaplerResponse rsp) throws IOException {
-        removeAction(BadgeSummaryAction.class, req, rsp);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void removeAction(Class type, StaplerRequest req, StaplerResponse rsp) throws IOException {
-        String index = req.getParameter("index");
-        if (index == null) {
-            throw new IOException("Missing parameter 'index'.");
-        }
-        int idx;
-        try {
-            idx = Integer.parseInt(index);
-        } catch (NumberFormatException e) {
-            throw new IOException("Invalid index: " + index);
-        }
-        req.findAncestorObject(Job.class).checkPermission(Run.UPDATE);
-        Run<?, ?> run = req.findAncestorObject(Run.class);
-        if (run != null) {
-            List<? extends Action> actions = run.getAllActions();
-            List<? extends Action> groovyActions = run.getActions(type);
-            if (idx < 0 || idx >= groovyActions.size()) {
-                throw new IOException("Index out of range: " + idx);
-            }
-            actions.remove(groovyActions.get(idx));
-            run.save();
-            rsp.sendRedirect(
-                    req.getRequestURI().substring(0, req.getRequestURI().indexOf("parent/parent")));
-        }
-    }
-
-    public String translate(String text) throws IOException {
-        return formatter.translate(text);
     }
 }

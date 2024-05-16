@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge.action;
 
 import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
+import hudson.markup.RawHtmlMarkupFormatter;
 import io.jenkins.plugins.ionicons.Ionicons;
 import java.io.File;
 import java.io.IOException;
@@ -166,7 +167,7 @@ public class BadgeAction extends AbstractBadgeAction {
             return text;
         }
         try {
-            return BadgePlugin.get().translate(text);
+            return RawHtmlMarkupFormatter.INSTANCE.translate(text);
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, "Error preparing badge text for ui", e);
             return "<b><font color=\"red\">ERROR</font></b>";
