@@ -55,7 +55,7 @@ class BadgeActionTest {
     @Test
     void getIconClass(@SuppressWarnings("unused") JenkinsRule r) {
         BadgeAction action = BadgeAction.createBadge("info.gif", "text");
-        assertEquals("", action.getIconClass());
+        assertEquals("icon-sm", action.getIconClass());
         action = BadgeAction.createBadge("symbol-star plugin-ionicons-api", "text");
         assertEquals("icon-sm", action.getIconClass());
         action = BadgeAction.createBadge("symbol-star plugin-ionicons-api", "#000000", "", null);
@@ -63,7 +63,7 @@ class BadgeActionTest {
         action = BadgeAction.createBadge("symbol-star plugin-ionicons-api", "blue", "", null);
         assertEquals("icon-sm jenkins-!-color-blue", action.getIconClass());
         action = BadgeAction.createBadge("/foo/symbol-star.gif", "blue", "", null);
-        assertEquals("jenkins-!-color-blue", action.getIconClass());
+        assertEquals("icon-sm jenkins-!-color-blue", action.getIconClass());
         action = BadgeAction.createBadge("symbol-star plugin-ionicons-api", "jenkins-!-color-red", "", null);
         assertEquals("icon-sm jenkins-!-color-red", action.getIconClass());
         // teal is not in the palette

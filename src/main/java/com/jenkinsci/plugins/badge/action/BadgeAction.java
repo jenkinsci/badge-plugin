@@ -200,9 +200,7 @@ public class BadgeAction extends AbstractBadgeAction {
      */
     public String getIconClass() {
         List<String> classes = new LinkedList<>();
-        if (isJenkinsSymbolRef(this.iconPath)) {
-            classes.add("icon-sm");
-        }
+        classes.add("icon-sm"); // control icon image size
 
         if (this.color != null) {
             if (this.color.startsWith("jenkins-!-")) {
