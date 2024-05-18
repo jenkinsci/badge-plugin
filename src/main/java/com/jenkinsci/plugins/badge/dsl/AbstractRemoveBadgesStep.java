@@ -23,36 +23,48 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.AbstractAction;
+import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import hudson.model.Action;
 import hudson.model.Run;
 import java.io.IOException;
+import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 
 /**
- * Abstract class to remove badges
+ * Abstract class to remove badges.
  */
-abstract class AbstractRemoveBadgesStep extends AbstractStep {
-    @Override
-    public StepExecution start(StepContext context) {
-        return new Execution(context, getActionClass(), getId());
+abstract class AbstractRemoveBadgesStep extends Step {
+
+    private final String id;
+
+    protected AbstractRemoveBadgesStep(String id) {
+        this.id = id;
     }
 
-    protected abstract Class<? extends AbstractAction> getActionClass();
+    protected String getId() {
+        return id;
+    }
+
+    protected abstract Class<? extends AbstractBadgeAction> getActionClass();
+
+    @Override
+    public StepExecution start(StepContext context) {
+        return new Execution(getId(), getActionClass(), context);
+    }
 
     public static class Execution extends SynchronousStepExecution<Void> {
 
         private static final long serialVersionUID = 1L;
 
-        private final Class<? extends AbstractAction> actionClass;
         private final String id;
+        private final Class<? extends AbstractBadgeAction> actionClass;
 
-        Execution(StepContext context, Class<? extends AbstractAction> actionClass, String id) {
+        Execution(String id, Class<? extends AbstractBadgeAction> actionClass, StepContext context) {
             super(context);
-            this.actionClass = actionClass;
             this.id = id;
+            this.actionClass = actionClass;
         }
 
         @Override
@@ -66,7 +78,7 @@ abstract class AbstractRemoveBadgesStep extends AbstractStep {
 
         private boolean matches(Action a) {
             return actionClass.isAssignableFrom(a.getClass())
-                    && (id == null || id.equals(((AbstractAction) a).getId()));
+                    && (id == null || id.equals(((AbstractBadgeAction) a).getId()));
         }
     }
 }

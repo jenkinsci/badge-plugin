@@ -24,6 +24,7 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import hudson.model.BuildBadgeAction;
@@ -35,29 +36,55 @@ import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-class AddBadgeStepTest extends AbstractAddBadgeStepTest {
+class AddErrorBadgeStepTest extends AddBadgeStepTest {
 
+    @Override
     @Test
-    void add(JenkinsRule r) throws Exception {
-        runJob(r, false);
+    void icon(JenkinsRule r) {
+        AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link");
+        assertEquals("symbol-remove-circle plugin-ionicons-api", step.getIcon());
+
+        step = createStep("id", "", "text", "cssClass", "style", "link");
+        assertEquals("symbol-remove-circle plugin-ionicons-api", step.getIcon());
+
+        step = createStep("id", "icon", "text", "cssClass", "style", "link");
+        assertEquals("symbol-remove-circle plugin-ionicons-api", step.getIcon());
     }
 
+    @Override
     @Test
-    void addInNode(JenkinsRule r) throws Exception {
-        runJob(r, true);
+    void cssClass(JenkinsRule r) {
+        AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link");
+        assertNull(step.getCssClass());
+
+        step = createStep("id", "icon", "text", "", "style", "link");
+        assertNull(step.getCssClass());
+
+        step = createStep("id", "icon", "text", "cssClass", "style", "link");
+        assertNull(step.getCssClass());
     }
 
+    @Override
+    @Test
+    void style(JenkinsRule r) {
+        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link");
+        assertEquals("color: var(--error-color)", step.getStyle());
+
+        step = createStep("id", "icon", "text", "cssClass", "", "link");
+        assertEquals("color: var(--error-color)", step.getStyle());
+
+        step = createStep("id", "icon", "text", "cssClass", "style", "link");
+        assertEquals("color: var(--error-color)", step.getStyle());
+    }
+
+    @Override
     protected void runJob(JenkinsRule r, boolean inNode) throws Exception {
         String id = UUID.randomUUID().toString();
-        String icon = "symbol-rocket plugin-ionicons-api";
         String text = "Test Text";
-        String cssClass = "icon-md";
-        String style = "color: green";
         String link = "https://jenkins.io";
         WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
-        String script = "addBadge id: '" + id + "', icon: '" + icon + "',  text: '" + text + "', cssClass: '" + cssClass
-                + "', style: '" + style + "', link: '" + link + "'";
+        String script = "addErrorBadge id: '" + id + "', text: '" + text + "', link: '" + link + "'";
         if (inNode) {
             script = "node() { " + script + " }";
         }
@@ -70,16 +97,16 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
         assertEquals(id, action.getId());
-        assertEquals(icon, action.getIcon());
+        assertEquals("symbol-remove-circle plugin-ionicons-api", action.getIcon());
         assertEquals(text, action.getText());
-        assertEquals(cssClass, action.getCssClass());
-        assertEquals(style, action.getStyle());
+        assertEquals(null, action.getCssClass());
+        assertEquals("color: var(--error-color)", action.getStyle());
         assertEquals(link, action.getLink());
     }
 
     @Override
     protected AbstractAddBadgeStep createStep(
             String id, String icon, String text, String cssClass, String style, String link) {
-        return new AddBadgeStep(id, icon, text, cssClass, style, link);
+        return new AddErrorBadgeStep(id, text, link);
     }
 }

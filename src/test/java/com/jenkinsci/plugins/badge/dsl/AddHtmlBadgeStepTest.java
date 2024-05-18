@@ -35,9 +35,11 @@ import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
+@WithJenkins
 @Deprecated(since = "2.0", forRemoval = true)
-class AddHtmlBadgeStepTest extends AbstractBadgeTest {
+class AddHtmlBadgeStepTest {
 
     @Test
     void addHtmlBadge(JenkinsRule r) throws Exception {

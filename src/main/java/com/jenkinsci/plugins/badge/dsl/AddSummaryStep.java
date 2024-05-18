@@ -23,25 +23,33 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
-import com.jenkinsci.plugins.badge.action.BadgeAction;
+import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import org.jenkinsci.plugins.workflow.steps.StepContext;
+import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
- * Removes all badges or the badges with a given id.
+ * Create a summary text.
  */
-public class RemoveBadgesStep extends AbstractRemoveBadgesStep {
+public class AddSummaryStep extends AddBadgeStep {
 
     @DataBoundConstructor
-    public RemoveBadgesStep(String id) {
-        super(id);
+    public AddSummaryStep(String id, String icon, String text, String cssClass, String style, String link) {
+        super(id, icon, text, cssClass, style, link);
     }
 
     @Override
-    protected Class<? extends AbstractBadgeAction> getActionClass() {
-        return BadgeAction.class;
+    public StepExecution start(StepContext context) {
+        return new Execution(getId(), getIcon(), getText(), getCssClass(), getStyle(), getLink(), context) {
+
+            @Override
+            protected BadgeSummaryAction newAction(
+                    String id, String icon, String text, String cssClass, String style, String link) {
+                return new BadgeSummaryAction(id, icon, text, cssClass, style, link);
+            }
+        };
     }
 
     @Extension
@@ -49,13 +57,13 @@ public class RemoveBadgesStep extends AbstractRemoveBadgesStep {
 
         @Override
         public String getFunctionName() {
-            return "removeBadges";
+            return "addSummary";
         }
 
         @NonNull
         @Override
         public String getDisplayName() {
-            return "Remove Badges";
+            return "Add Summary";
         }
     }
 }

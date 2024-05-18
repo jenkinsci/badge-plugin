@@ -29,14 +29,13 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
 import hudson.model.TaskListener;
+import java.io.PrintStream;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-
-import java.io.PrintStream;
 
 /**
  * Create a html badge.
@@ -47,24 +46,13 @@ import java.io.PrintStream;
 public class AddHtmlBadgeStep extends Step {
 
     private String id;
-
     private final String html;
 
-    /**
-     * @param html The html content to be used for this badge
-     */
     @DataBoundConstructor
     public AddHtmlBadgeStep(String html) {
         this.html = html;
     }
 
-    public String getHtml() {
-        return html;
-    }
-
-    /**
-     * @param id Badge identifier. Selectively delete badges by id.
-     */
     @DataBoundSetter
     public void setId(String id) {
         this.id = id;
@@ -72,6 +60,10 @@ public class AddHtmlBadgeStep extends Step {
 
     public String getId() {
         return id;
+    }
+
+    public String getHtml() {
+        return html;
     }
 
     @Override
@@ -91,7 +83,7 @@ public class AddHtmlBadgeStep extends Step {
         @NonNull
         @Override
         public String getDisplayName() {
-            return "Add a HTML badge";
+            return "Add a HTML Badge";
         }
     }
 

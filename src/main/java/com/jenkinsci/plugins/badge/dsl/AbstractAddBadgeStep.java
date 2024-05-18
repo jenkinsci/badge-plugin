@@ -23,113 +23,87 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.BadgeAction;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import hudson.model.Run;
-import java.io.Serializable;
+import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
-import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Abstract class to add badges.
  */
-public abstract class AbstractAddBadgeStep extends AbstractStep {
+public abstract class AbstractAddBadgeStep extends Step {
 
-    private final Badge badge;
+    private final String id;
+    private final String icon;
+    private final String text;
+    private final String cssClass;
+    private final String style;
+    private final String link;
 
-    /**
-     * @param icon The icon for this badge
-     * @param text The text for this badge
-     */
-    public AbstractAddBadgeStep(String icon, String text) {
-        this.badge = new Badge(icon, text);
+    protected AbstractAddBadgeStep(String id, String icon, String text, String cssClass, String style, String link) {
+        this.id = id;
+        this.icon = icon;
+        this.text = text;
+        this.cssClass = cssClass;
+        this.style = style;
+        this.link = link;
     }
 
-    public String getIcon() {
-        return badge.getIcon();
+    protected String getId() {
+        return id;
     }
 
-    public String getText() {
-        return badge.getText();
+    protected String getIcon() {
+        return icon;
     }
 
-    public String getLink() {
-        return badge.getLink();
+    protected String getText() {
+        return text;
     }
 
-    /**
-     * @param link The link to be added to this badge
-     */
-    @DataBoundSetter
-    public void setLink(String link) {
-        badge.setLink(link);
+    protected String getCssClass() {
+        return cssClass;
     }
 
-    protected Badge getBadge() {
-        return badge;
+    protected String getStyle() {
+        return style;
     }
 
-    protected static class Badge implements Serializable {
+    protected String getLink() {
+        return link;
+    }
+
+    abstract static class Execution extends SynchronousStepExecution<AbstractBadgeAction> {
+
         private static final long serialVersionUID = 1L;
 
+        private final String id;
         private final String icon;
         private final String text;
-        private String link;
-        private String color;
+        private final String cssClass;
+        private final String style;
+        private final String link;
 
-        private Badge(String icon, String text) {
+        Execution(
+                String id, String icon, String text, String cssClass, String style, String link, StepContext context) {
+            super(context);
+            this.id = id;
             this.icon = icon;
             this.text = text;
-        }
-
-        protected String getIcon() {
-            return icon;
-        }
-
-        protected String getText() {
-            return text;
-        }
-
-        protected String getLink() {
-            return link;
-        }
-
-        public void setLink(String link) {
+            this.cssClass = cssClass;
+            this.style = style;
             this.link = link;
         }
 
-        protected String getColor() {
-            return color;
-        }
-
-        public void setColor(String color) {
-            this.color = color;
-        }
-    }
-
-    abstract static class Execution extends SynchronousStepExecution<Void> {
-
-        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-        private final transient Badge badge;
-
-        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-        private final transient String id;
-
-        Execution(Badge badge, String id, StepContext context) {
-            super(context);
-            this.badge = badge;
-            this.id = id;
-        }
-
         @Override
-        protected Void run() throws Exception {
-            BadgeAction action = newBatchAction(badge);
-            action.setId(id);
+        protected AbstractBadgeAction run() throws Exception {
+            AbstractBadgeAction action = newAction(id, icon, text, cssClass, style, link);
             getContext().get(Run.class).addAction(action);
-            return null;
+            return action;
         }
 
-        protected abstract BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException;
+        protected abstract AbstractBadgeAction newAction(
+                String id, String icon, String text, String cssClass, String style, String link);
     }
 }

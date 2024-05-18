@@ -25,49 +25,50 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import hudson.model.BuildBadgeAction;
+import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import java.util.List;
 import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
-@WithJenkins
-class RemoveBadgesStepTest {
+class AddSummaryStepTest extends AddBadgeStepTest {
 
-    @Test
-    void removeById(JenkinsRule r) throws Exception {
+    @Override
+    protected void runJob(JenkinsRule r, boolean inNode) throws Exception {
         String id = UUID.randomUUID().toString();
-        runJob(r, id, "removeBadges id: '" + id + "'", 0);
-    }
-
-    @Test
-    void removeAll(JenkinsRule r) throws Exception {
-        String id = UUID.randomUUID().toString();
-        runJob(r, id, "removeBadges()", 0);
-    }
-
-    @Test
-    void removeInvalidId(JenkinsRule r) throws Exception {
-        String id = UUID.randomUUID().toString();
-        runJob(r, id, "removeBadges id: '" + UUID.randomUUID() + "'", 1);
-    }
-
-    private static void runJob(JenkinsRule r, String id, String removalScript, int expected) throws Exception {
+        String icon = "symbol-rocket plugin-ionicons-api";
         String text = "Test Text";
+        String cssClass = "icon-md";
+        String style = "color: green";
         String link = "https://jenkins.io";
         WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
-        String script = "addBadge id: '" + id + "', text: '" + text + "', link: '" + link + "'\n";
-        script += removalScript;
+        String script = "addSummary id: '" + id + "', icon: '" + icon + "',  text: '" + text + "', cssClass: '"
+                + cssClass + "', style: '" + style + "', link: '" + link + "'";
+        if (inNode) {
+            script = "node() { " + script + " }";
+        }
 
         project.setDefinition(new CpsFlowDefinition(script, true));
         WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
 
-        List<BuildBadgeAction> badgeActions = run.getBadgeActions();
-        assertEquals(expected, badgeActions.size());
+        List<BadgeSummaryAction> summaryActions = run.getActions(BadgeSummaryAction.class);
+        assertEquals(1, summaryActions.size());
+
+        BadgeSummaryAction action = summaryActions.get(0);
+        assertEquals(id, action.getId());
+        assertEquals(icon, action.getIcon());
+        assertEquals(text, action.getText());
+        assertEquals(cssClass, action.getCssClass());
+        assertEquals(style, action.getStyle());
+        assertEquals(link, action.getLink());
+    }
+
+    @Override
+    protected AbstractAddBadgeStep createStep(
+            String id, String icon, String text, String cssClass, String style, String link) {
+        return new AddSummaryStep(id, icon, text, cssClass, style, link);
     }
 }

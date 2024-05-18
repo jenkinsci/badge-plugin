@@ -23,44 +23,53 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import java.util.List;
+import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
-class RemoveSummariesStepTest extends AbstractBadgeTest {
+@WithJenkins
+class RemoveSummariesStepTest {
 
     @Test
-    void removeSummaries_by_id(JenkinsRule r) throws Exception {
-        removeSummaries(r, "removeSummaries(id:'a')", "b");
+    void removeById(JenkinsRule r) throws Exception {
+        String id = UUID.randomUUID().toString();
+        runJob(r, id, "removeSummaries id: '" + id + "'", 0);
     }
 
     @Test
-    void removeSummaries_all(JenkinsRule r) throws Exception {
-        removeSummaries(r, "removeSummaries()");
+    void removeAll(JenkinsRule r) throws Exception {
+        String id = UUID.randomUUID().toString();
+        runJob(r, id, "removeSummaries()", 0);
     }
 
-    private void removeSummaries(JenkinsRule r, String removeScript, String... remainingBadgeIds) throws Exception {
-        String icon = randomUUID().toString();
+    @Test
+    void removeInvalidId(JenkinsRule r) throws Exception {
+        String id = UUID.randomUUID().toString();
+        runJob(r, id, "removeSummaries id: '" + UUID.randomUUID() + "'", 1);
+    }
 
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-        p.setDefinition(new CpsFlowDefinition(
-                "def summaryA = createSummary(id:'a', icon:\"" + icon + "\")\n"
-                        + "def summaryB = createSummary(id:'b', icon:\"" + icon + "\")\n"
-                        + removeScript,
-                true));
-        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
-        List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
-        assertEquals(remainingBadgeIds.length, summaryActions.size());
+    private static void runJob(JenkinsRule r, String id, String removalScript, int expected) throws Exception {
+        String icon = "symbol-rocket plugin-ionicons-api";
+        String text = "Test Text";
+        String link = "https://jenkins.io";
+        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
-        for (int i = 0; i < remainingBadgeIds.length; i++) {
-            assertEquals(remainingBadgeIds[i], summaryActions.get(i).getId());
-        }
+        String script =
+                "addSummary id: '" + id + "', icon: '" + icon + "', text: '" + text + "', link: '" + link + "'\n";
+        script += removalScript;
+
+        project.setDefinition(new CpsFlowDefinition(script, true));
+        WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
+
+        List<BadgeSummaryAction> summaryActions = run.getActions(BadgeSummaryAction.class);
+        assertEquals(expected, summaryActions.size());
     }
 }

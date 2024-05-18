@@ -23,13 +23,12 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import hudson.model.Action;
+import hudson.model.BuildBadgeAction;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import hudson.model.Action;
-import hudson.model.BuildBadgeAction;
 import jenkins.model.Jenkins;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
@@ -45,7 +44,6 @@ public class HtmlBadgeAction implements BuildBadgeAction, Action, Serializable {
     private static final Logger LOGGER = Logger.getLogger(HtmlBadgeAction.class.getName());
 
     private String id;
-
     private final String html;
 
     private HtmlBadgeAction(String html) {
@@ -54,23 +52,6 @@ public class HtmlBadgeAction implements BuildBadgeAction, Action, Serializable {
 
     public static HtmlBadgeAction createHtmlBadge(String html) {
         return new HtmlBadgeAction(html);
-    }
-
-    /* Action methods */
-    public String getUrlName() {
-        return "";
-    }
-
-    public String getDisplayName() {
-        return "";
-    }
-
-    public String getIconFileName() {
-        return null;
-    }
-
-    public String getRawHtml() {
-        return html;
     }
 
     public void setId(String id) {
@@ -90,5 +71,24 @@ public class HtmlBadgeAction implements BuildBadgeAction, Action, Serializable {
             LOGGER.log(Level.WARNING, "Error preparing html content for ui", e);
             return "<b><font color=\"red\">ERROR</font></b>";
         }
+    }
+
+    public String getRawHtml() {
+        return html;
+    }
+
+    @Override
+    public String getUrlName() {
+        return "";
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "";
+    }
+
+    @Override
+    public String getIconFileName() {
+        return null;
     }
 }

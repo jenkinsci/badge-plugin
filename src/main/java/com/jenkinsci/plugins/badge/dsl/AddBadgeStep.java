@@ -29,41 +29,25 @@ import hudson.Extension;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Add a badge.
  */
 public class AddBadgeStep extends AbstractAddBadgeStep {
 
-    /**
-     * @param icon The icon for this badge
-     * @param text The text for this badge
-     */
     @DataBoundConstructor
-    public AddBadgeStep(String icon, String text) {
-        super(icon, text);
-    }
-
-    public String getColor() {
-        return getBadge().getColor();
-    }
-
-    /**
-     * @param color The Jenkins palette/semantic color name of the badge icon symbol
-     */
-    @DataBoundSetter
-    public void setColor(String color) {
-        getBadge().setColor(color);
+    public AddBadgeStep(String id, String icon, String text, String cssClass, String style, String link) {
+        super(id, icon, text, cssClass, style, link);
     }
 
     @Override
     public StepExecution start(StepContext context) {
-        return new Execution(getBadge(), getId(), context) {
+        return new Execution(getId(), getIcon(), getText(), getCssClass(), getStyle(), getLink(), context) {
 
             @Override
-            protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
-                return BadgeAction.createBadge(badge.getIcon(), badge.getColor(), badge.getText(), badge.getLink());
+            protected BadgeAction newAction(
+                    String id, String icon, String text, String cssClass, String style, String link) {
+                return new BadgeAction(id, icon, text, cssClass, style, link);
             }
         };
     }

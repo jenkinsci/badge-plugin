@@ -23,14 +23,16 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+class BadgeSummaryActionTest extends AbstractBadgeActionTest {
 
-import hudson.model.Action;
-import hudson.model.BuildBadgeAction;
-import org.junit.jupiter.api.Test;
+    @Override
+    protected AbstractBadgeAction createAction(
+            String id, String icon, String text, String cssClass, String style, String link) {
+        return new BadgeSummaryAction(id, icon, text, cssClass, style, link);
+    }
 
-class ClassHierarchyTest {
-
-
+    @Override
+    protected String getDisplayName() {
+        return "Badge Summary Action";
+    }
 }

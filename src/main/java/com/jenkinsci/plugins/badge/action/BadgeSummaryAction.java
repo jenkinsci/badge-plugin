@@ -23,99 +23,59 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import hudson.markup.RawHtmlMarkupFormatter;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
-import org.kohsuke.stapler.export.Exported;
-import org.kohsuke.stapler.export.ExportedBean;
 
-@ExportedBean(defaultVisibility = 2)
-public class BadgeSummaryAction extends AbstractAction {
+/**
+ * Common action for build summaries.
+ */
+public class BadgeSummaryAction extends AbstractBadgeAction {
 
-    private static final long serialVersionUID = 1L;
-    private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
-
-    private final String iconPath;
-    private String summaryText = "";
-
-    public BadgeSummaryAction(String iconPath) {
-        this.iconPath = iconPath;
+    public BadgeSummaryAction(String id, String icon, String text, String cssClass, String style, String link) {
+        super(id, icon, text, cssClass, style, link);
     }
 
-    /* Action methods */
-    public String getUrlName() {
-        return "";
-    }
-
+    @Override
     public String getDisplayName() {
-        return "";
-    }
-
-    public String getIconFileName() {
-        return null;
-    }
-
-    @Exported
-    public String getIconPath() {
-        return iconPath;
-    }
-
-    public String getRawText() {
-        return summaryText;
-    }
-
-    @Exported
-    public String getText() {
-        try {
-            return Jenkins.get().getMarkupFormatter().translate(summaryText);
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Error preparing summary text for ui", e);
-            return "<b><font color=\"red\">ERROR</font></b>";
-        }
+        return "Badge Summary Action";
     }
 
     @Whitelisted
+    @Deprecated(since = "2.0", forRemoval = true)
     public void appendText(String text) {
         appendText(text, false);
     }
 
     @Whitelisted
+    @Deprecated(since = "2.0", forRemoval = true)
     public void appendText(String text, boolean escapeHtml) {
         if (escapeHtml) {
             text = StringEscapeUtils.escapeHtml(text);
         }
-        summaryText += text;
+        setText(StringUtils.defaultString(getText()) + text);
     }
 
     @Whitelisted
+    @Deprecated(since = "2.0", forRemoval = true)
     public void appendText(String text, boolean escapeHtml, boolean bold, boolean italic, String color) {
+        String startTags = "";
         String closeTags = "";
         if (bold) {
-            summaryText += "<b>";
+            startTags += "<b>";
             closeTags += "</b>";
         }
         if (italic) {
-            summaryText += "<i>";
+            startTags += "<i>";
             closeTags += "</i>";
         }
         if (color != null) {
-            String cls = getJenkinsColorClass(color);
-            if (cls != null) {
-                summaryText += "<span class=\"" + StringEscapeUtils.escapeHtml(cls) + "\">";
-                closeTags += "</span>";
-            } else {
-                summaryText += "<font color=\"" + StringEscapeUtils.escapeHtml(color) + "\">";
-                closeTags += "</font>";
-            }
+            startTags += "<font color=\"" + StringEscapeUtils.escapeHtml(color) + "\">";
+            closeTags += "</font>";
         }
         if (escapeHtml) {
             text = StringEscapeUtils.escapeHtml(text);
         }
-        summaryText += text + closeTags;
+        setText(startTags + text + closeTags);
     }
 }

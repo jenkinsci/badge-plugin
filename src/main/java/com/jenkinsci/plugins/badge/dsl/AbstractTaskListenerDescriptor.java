@@ -28,6 +28,9 @@ import java.util.HashSet;
 import java.util.Set;
 import org.jenkinsci.plugins.workflow.steps.StepDescriptor;
 
+/**
+ * Abstract task listener.
+ */
 abstract class AbstractTaskListenerDescriptor extends StepDescriptor {
 
     @Override

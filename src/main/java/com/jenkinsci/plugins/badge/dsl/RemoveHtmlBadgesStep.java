@@ -23,22 +23,20 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.AbstractAction;
 import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.model.Action;
 import hudson.model.Run;
 import hudson.model.TaskListener;
+import java.io.IOException;
+import java.io.PrintStream;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-
-import java.io.IOException;
-import java.io.PrintStream;
 
 /**
  * Removes all html badges or the badges with a given id.
@@ -53,9 +51,6 @@ public class RemoveHtmlBadgesStep extends Step {
     @DataBoundConstructor
     public RemoveHtmlBadgesStep() {}
 
-    /**
-     * @param id Badge identifier. Selectively delete badges by id.
-     */
     @DataBoundSetter
     public void setId(String id) {
         this.id = id;
@@ -80,7 +75,7 @@ public class RemoveHtmlBadgesStep extends Step {
         @NonNull
         @Override
         public String getDisplayName() {
-            return "Remove HTML badges";
+            return "Remove HTML Badges";
         }
     }
 
@@ -93,8 +88,8 @@ public class RemoveHtmlBadgesStep extends Step {
 
         private static final long serialVersionUID = 1L;
 
-        private final Class<HtmlBadgeAction> actionClass;
         private final String id;
+        private final Class<HtmlBadgeAction> actionClass;
 
         Execution(StepContext context, Class<HtmlBadgeAction> actionClass, String id) {
             super(context);
@@ -111,7 +106,8 @@ public class RemoveHtmlBadgesStep extends Step {
 
             TaskListener listener = getContext().get(TaskListener.class);
             PrintStream logger = listener.getLogger();
-            logger.println("Step 'removeHtmlBadges' is deprecated - please consider using 'removeBadges' instead.");
+            logger.println(
+                    "Step 'removeHtmlBadges' is deprecated - please consider using 'addBadges' and 'removeBadges' instead.");
 
             return null;
         }

@@ -28,11 +28,9 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
-
+import hudson.model.TaskListener;
 import java.io.PrintStream;
 import java.io.Serializable;
-
-import hudson.model.TaskListener;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
@@ -50,9 +48,6 @@ public class AddShortTextStep extends Step {
 
     private final ShortText shortText;
 
-    /**
-     * @param text The text to add fot this badge
-     */
     @DataBoundConstructor
     public AddShortTextStep(String text) {
         this.shortText = new ShortText(text);
@@ -66,9 +61,6 @@ public class AddShortTextStep extends Step {
         return shortText.getColor();
     }
 
-    /**
-     * @param color The color for this short text
-     */
     @DataBoundSetter
     public void setColor(String color) {
         this.shortText.setColor(color);
@@ -78,9 +70,6 @@ public class AddShortTextStep extends Step {
         return shortText.getBackground();
     }
 
-    /**
-     * @param background The background-color for this short text
-     */
     @DataBoundSetter
     public void setBackground(String background) {
         this.shortText.setBackground(background);
@@ -90,9 +79,6 @@ public class AddShortTextStep extends Step {
         return shortText.getBorder();
     }
 
-    /**
-     * @param border The border width for this short text
-     */
     @DataBoundSetter
     public void setBorder(Integer border) {
         this.shortText.setBorder(border);
@@ -102,17 +88,11 @@ public class AddShortTextStep extends Step {
         return shortText.getBorderColor();
     }
 
-    /**
-     * @param borderColor The order color for this short text
-     */
     @DataBoundSetter
     public void setBorderColor(String borderColor) {
         this.shortText.setBorderColor(borderColor);
     }
 
-    /**
-     * @param link The link for this short text
-     */
     @DataBoundSetter
     public void setLink(String link) {
         this.shortText.setLink(link);
@@ -223,29 +203,20 @@ public class AddShortTextStep extends Step {
 
         @Override
         protected Void run() throws Exception {
-            BadgeAction action = new BadgeAction(null, shortText.getText());
-            action.setColor(shortText.getColor());
-            action.setBackground(shortText.getBackground());
-            action.setBorder(shortText.getBorderString());
-            action.setBorderColor(shortText.getBorderColor());
-            action.setLink(shortText.getLink());
-
             // translate old styling to new field
             String style = "";
-            if(shortText.getBorderString() != null ) {
+            if (shortText.getBorderString() != null) {
                 style += "border: " + shortText.getBorderString() + " solid " + shortText.getBorderColor() + ";";
             }
-            if(shortText.getBackground() != null ) {
+            if (shortText.getBackground() != null) {
                 style += "background: " + shortText.getBackground() + ";";
             }
-            if(shortText.getColor() != null) {
+            if (shortText.getColor() != null) {
                 style += "color: " + shortText.getColor() + ";";
             }
-            action.setStyle(style);
-            
-            getContext()
-                    .get(Run.class)
-                    .addAction(action);
+
+            BadgeAction action = new BadgeAction(null, null, shortText.getText(), null, style, shortText.getLink());
+            getContext().get(Run.class).addAction(action);
 
             TaskListener listener = getContext().get(TaskListener.class);
             PrintStream logger = listener.getLogger();

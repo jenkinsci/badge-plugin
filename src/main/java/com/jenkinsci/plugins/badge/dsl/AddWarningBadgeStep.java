@@ -23,24 +23,19 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import org.jenkinsci.plugins.workflow.steps.StepContext;
-import org.jenkinsci.plugins.workflow.steps.StepExecution;
+import io.jenkins.plugins.ionicons.Ionicons;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
  * Add an error badge.
  */
-public class AddWarningBadgeStep extends AbstractAddBadgeStep {
+public class AddWarningBadgeStep extends AddBadgeStep {
 
-    /**
-     * @param text The text for this warning badge
-     */
     @DataBoundConstructor
-    public AddWarningBadgeStep(String text) {
-        super(null, text);
+    public AddWarningBadgeStep(String id, String text, String link) {
+        super(id, Ionicons.getIconClassName("warning"), text, null, "color: var(--warning-color)", link);
     }
 
     @Extension
@@ -56,16 +51,5 @@ public class AddWarningBadgeStep extends AbstractAddBadgeStep {
         public String getDisplayName() {
             return "Add Warning Badge";
         }
-    }
-
-    @Override
-    public StepExecution start(StepContext context) {
-        return new Execution(getBadge(), getId(), context) {
-
-            @Override
-            protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
-                return BadgeAction.createWarningBadge(badge.getText(), badge.getLink());
-            }
-        };
     }
 }

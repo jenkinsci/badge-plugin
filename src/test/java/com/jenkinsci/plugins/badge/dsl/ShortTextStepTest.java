@@ -36,9 +36,11 @@ import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
+@WithJenkins
 @Deprecated(since = "2.0", forRemoval = true)
-class ShortTextStepTest extends AbstractBadgeTest {
+class ShortTextStepTest {
 
     @Test
     void addShortText(JenkinsRule r) throws Exception {
@@ -61,11 +63,7 @@ class ShortTextStepTest extends AbstractBadgeTest {
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
         assertEquals(text, action.getText());
-        assertEquals(color, action.getColor());
-        assertEquals(background, action.getBackground());
-        assertEquals(borderColor, action.getBorderColor());
-        assertEquals(border + "px", action.getBorder());
-        assertNull(action.getIconPath());
+        assertNull(action.getIcon());
         assertEquals(link, action.getLink());
     }
 
@@ -82,11 +80,7 @@ class ShortTextStepTest extends AbstractBadgeTest {
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
         assertEquals(text, action.getText());
-        assertNull(action.getColor());
-        assertNull(action.getBackground());
-        assertNull(action.getBorderColor());
-        assertNull(action.getBorder());
-        assertNull(action.getIconPath());
+        assertNull(action.getIcon());
         assertNull(action.getLink());
     }
 }
