@@ -66,6 +66,8 @@ class BadgeActionTest {
         assertEquals("icon-sm jenkins-!-color-blue", action.getIconClass());
         action = BadgeAction.createBadge("symbol-star plugin-ionicons-api", "jenkins-!-color-red", "", null);
         assertEquals("icon-sm jenkins-!-color-red", action.getIconClass());
+        action = BadgeAction.createShortText("Short text");
+        assertEquals("", action.getIconClass()); // Short text must not set icon-sm class
         // teal is not in the palette
         action = BadgeAction.createBadge("symbol-star plugin-ionicons-api", "teal", "", null);
         assertEquals("icon-sm", action.getIconClass());
