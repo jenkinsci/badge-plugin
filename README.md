@@ -362,3 +362,14 @@ Manage Jenkins -> Configure System -> Badge Plugin
 
 ![alt text](src/doc/config.png "Config")
 
+## Configuration as Code Sample
+
+The [configuration as code plugin](https://plugins.jenkins.io/configuration-as-code/) can define the markup formatter configuration for the badge plugin.
+Markup formatter sanitization is enabled by default.
+The configuration as code setup for that default setting is:
+
+```yaml
+security:
+  badgePlugin:
+    disableFormatHTML: false
+```
