@@ -1,0 +1,59 @@
+<div>
+    <p>
+        Adds one or more summaries to the current Pipeline build.
+        Summaries are symbols or icons with an optional text message and an optional clickable hyperlink.
+        Summaries are often used to provide a visual indicator of additional status information about a Pipeline build.
+        Summaries added by <code>addSummary</code> are displayed in the build overview of the Pipeline job.
+    </p>
+
+    <p>
+        The plugin supports symbols from the <a href="https://ionic.io/ionicons">ionicons library</a> through the <a href="https://plugins.jenkins.io/ionicons-api/">ionicons-api-plugin</a>.
+        More symbols can be added by installing additional plugins, such as <a href="https://plugins.jenkins.io/font-awesome-api">font-awesome-api-plugin</a> or <a href="https://plugins.jenkins.io/custom-folder-icon">custom-folder-icon-plugin</a>.
+        Symbols are referenced as "symbol-<i>icon-name</i> plugin-<i>plugin-name</i>".
+        For example, the following are all valid references to symbols from the ionicons library:
+    <ul>
+        <li><code>addSummary icon: 'symbol-alert-circle-outline plugin-ionicons-api', text: 'This is an alert symbol'</code></li>
+        <li><code>addSummary icon: 'symbol-bar-chart-filled plugin-ionicons-api', text: 'This is a bar chart symbol'</code></li>
+        <li><code>addSummary icon: 'symbol-battery-half-sharp plugin-ionicons-api', text: 'This is a half filled battery symbol'</code></li>
+    </ul>
+    </p>
+
+    <p>
+        The plugin allows you to also reference images from within Jenkins as well as relative and remote URL:
+    <ul>
+        <li><code>addSummary icon: '/jenkins.png', text: 'This is a relative image'</code></li>
+        <li><code>addSummary icon: 'https://foo.bar/icon.png', text: 'This is a remote icon'</code></li>
+        <li><code>addSummary icon: 'blue.png', text: 'This is a icon from Jenkins'</code></li>
+    </ul>
+    </p>
+
+    <p>
+        The plugin includes icons as GIF images and also supports the <a href="https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16">16x16 icons</a> that are offered by Jenkins.
+        These icons are listed in the <a href="https://plugins.jenkins.io/badge/#plugin-content-icons">plugin documentation</a> and are referenced as "<i>image-name</i>.gif".
+        For example, the following are all valid references to icons included with the plugin:
+    <ul>
+        <li><code>addSummary icon: 'completed.gif', text: 'This is a completed symbol'</code></li>
+        <li><code>addSummary icon: 'success.gif', text: 'This is a success icon'</code></li>
+        <li><code>addSummary icon: 'warning.gif', text: 'This is a warning icon'</code></li>
+    </ul>
+    </p>
+
+    <strong><a id="summary-with-completed">Example: Summary with completed icon</a></strong>
+    <p>
+        The following example adds a "completed" checkmark icon with the text, "This is completed":
+        <pre><code>addSummary icon: 'completed.gif', text: 'This is completed'</code></pre>
+    </p>
+
+    <strong><a id="summary-with-alarm">Example: Summary with alarm symbol</a></strong>
+    <p>
+        The following example adds an alarm symbol with the text, "This is alarming":
+        <pre><code>addSummary icon: 'symbol-alarm-outline plugin-ionicons-api', text: 'This is alarming'</code></pre>
+    </p>
+
+    <strong><a id="summary-with-red-bug-and-link">Example: Summary with red bug symbol</a></strong>
+    <p>
+        The following example adds a red bug badge symbol the text, "This is a red bug with a link", and a link:
+        <pre><code>addSummary icon: 'symbol-bug plugin-ionicons-api', text: 'This is a red bug with a link', style: 'color: red', link: 'https://issues.jenkins.io/browse/JENKINS-59646'</code></pre>
+    </p>
+
+</div>

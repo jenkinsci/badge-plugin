@@ -28,17 +28,26 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
+import hudson.model.TaskListener;
 import org.apache.commons.lang.StringUtils;
+import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 
+import java.io.PrintStream;
+
 /**
  * Create a summary text.
+ *
+ * @deprecated replaced by {@link AddBadgeStep}.
  */
-public class CreateSummaryStep extends AbstractStep {
+@Deprecated(since = "2.0", forRemoval = true)
+public class CreateSummaryStep extends Step {
+
+    private String id;
 
     private final String icon;
     private String text;
@@ -49,6 +58,18 @@ public class CreateSummaryStep extends AbstractStep {
     @DataBoundConstructor
     public CreateSummaryStep(String icon) {
         this.icon = icon;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @param id Badge identifier. Selectively delete badges by id.
+     */
+    @DataBoundSetter
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getIcon() {
@@ -73,6 +94,7 @@ public class CreateSummaryStep extends AbstractStep {
     }
 
     @Extension
+    @Deprecated(since = "2.0", forRemoval = true)
     public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
 
         @Override
@@ -87,6 +109,7 @@ public class CreateSummaryStep extends AbstractStep {
         }
     }
 
+    @Deprecated(since = "2.0", forRemoval = true)
     public static class Execution extends SynchronousStepExecution<BadgeSummaryAction> {
 
         private static final long serialVersionUID = 1L;
@@ -115,6 +138,11 @@ public class CreateSummaryStep extends AbstractStep {
             }
             action.setId(id);
             getContext().get(Run.class).addAction(action);
+
+            TaskListener listener = getContext().get(TaskListener.class);
+            PrintStream logger = listener.getLogger();
+            logger.println("Step 'createSummary' is deprecated - please consider using 'addSummary' instead.");
+
             return action;
         }
     }

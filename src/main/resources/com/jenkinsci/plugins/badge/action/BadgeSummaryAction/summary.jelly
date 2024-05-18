@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
- Copyright (c) 2024, Badge Plugin Authors
+Copyright (c) 2024, Badge Plugin Authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,11 @@ THE SOFTWARE.
 
 <?jelly escape-by-default='false'?>
 <j:jelly xmlns:j="jelly:core" xmlns:t="/lib/hudson">
-<j:if test="${it.iconPath != null}">
-  <t:summary icon="${it.iconPath}">
-    ${it.text}
-  </t:summary>
-</j:if>
+    <j:if test="${it.icon != null &amp;&amp; it.icon != ''}">
+        <t:summary icon="${it.icon}" href="${it.link}">
+            <span class="{it.cssClass}" style="${it.style}">
+                ${it.text}
+            </span>
+        </t:summary>
+    </j:if>
 </j:jelly>

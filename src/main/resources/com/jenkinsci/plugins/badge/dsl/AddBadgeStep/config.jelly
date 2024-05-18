@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
- Copyright (c) 2024, Badge Plugin Authors
+Copyright (c) 2024, Badge Plugin Authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -25,19 +25,22 @@ THE SOFTWARE.
 
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+    <f:entry field="id" title="Id (optional)">
+        <f:textbox/>
+    </f:entry>
     <f:entry field="icon" title="Icon">
         <f:textbox/>
     </f:entry>
     <f:entry field="text" title="Text">
         <f:textbox/>
     </f:entry>
+    <f:entry field="cssClass" title="CSS Class">
+        <f:textbox/>
+    </f:entry>
+    <f:entry field="style" title="CSS Style">
+        <f:textbox/>
+    </f:entry>
     <f:entry field="link" title="Link">
-        <f:textbox/>
-    </f:entry>
-    <f:entry field="id" title="Id">
-        <f:textbox/>
-    </f:entry>
-    <f:entry field="color`" title="Color">
         <f:textbox/>
     </f:entry>
 </j:jelly>

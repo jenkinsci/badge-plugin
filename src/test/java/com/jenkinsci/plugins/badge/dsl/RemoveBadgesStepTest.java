@@ -45,15 +45,6 @@ class RemoveBadgesStepTest extends AbstractBadgeTest {
         removeBadges(r, "addInfoBadge(text: 'a'", "removeBadges()");
     }
 
-    @Test
-    void removeHtmlBadges_by_id(JenkinsRule r) throws Exception {
-        removeBadges(r, "addHtmlBadge(html: 'a'", "removeHtmlBadges(id:'a')", "b");
-    }
-
-    @Test
-    void removeHtmlBadges_all(JenkinsRule r) throws Exception {
-        removeBadges(r, "addHtmlBadge(html: 'a'", "removeHtmlBadges()");
-    }
 
     private void removeBadges(JenkinsRule r, String badgeScriptPrefix, String removeScript, String... remainingBadgeIds)
             throws Exception {

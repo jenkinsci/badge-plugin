@@ -29,12 +29,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import java.util.List;
+
+import hudson.markup.RawHtmlMarkupFormatter;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
+@Deprecated(since = "2.0", forRemoval = true)
 class CreateSummaryStepTest extends AbstractBadgeTest {
 
     @Test
@@ -46,6 +49,7 @@ class CreateSummaryStepTest extends AbstractBadgeTest {
 
     @Test
     void createSummary_html_unescaped(JenkinsRule r) throws Exception {
+        r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
         BadgeSummaryAction action = createSummary(r, "summary.appendText('<ul><li>" + text + "</li></ul>', false)");
         assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
@@ -53,6 +57,7 @@ class CreateSummaryStepTest extends AbstractBadgeTest {
 
     @Test
     void createSummary_html_unescaped_remove_script(JenkinsRule r) throws Exception {
+        r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
         String html = "<ul><li>" + text + "</li></ul><script>alert(\"exploit!\");</script>";
         BadgeSummaryAction action = createSummary(r, "summary.appendText('" + html + "', false);");
@@ -62,6 +67,7 @@ class CreateSummaryStepTest extends AbstractBadgeTest {
 
     @Test
     void createSummary_html_escaped(JenkinsRule r) throws Exception {
+        r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
         BadgeSummaryAction action = createSummary(r, "summary.appendText('<ul><li>" + text + "</li></ul>', true)");
         assertEquals("&lt;ul&gt;&lt;li&gt;" + text + "&lt;/li&gt;&lt;/ul&gt;", action.getText());
@@ -69,6 +75,7 @@ class CreateSummaryStepTest extends AbstractBadgeTest {
 
     @Test
     void createSummary_all(JenkinsRule r) throws Exception {
+        r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
         BadgeSummaryAction action = createSummary(r, "summary.appendText('" + text + "', false, true, true, 'grey')");
         assertEquals("<b><i>" + text + "</i></b>", action.getText());

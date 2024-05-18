@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.model.Hudson;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -117,63 +116,10 @@ class BadgeActionTest {
     }
 
     @Test
-    void createShortText(@SuppressWarnings("unused") JenkinsRule r) {
-        BadgeAction action = BadgeAction.createShortText("This is a short text badge");
-        assertNull(action.getIconFileName());
-        assertTrue(action.isTextOnly());
-        assertEquals("", action.getDisplayName());
-        assertEquals("", action.getUrlName());
-    }
-
-    @Test
-    void createShortTextWithAllArgs(@SuppressWarnings("unused") JenkinsRule r) {
-        BadgeAction action = BadgeAction.createShortText("Short text badge", "red", "black", "blue", "green", "/link");
-        assertEquals("/link", action.getLink());
-        assertNull(action.getIconFileName());
-        assertTrue(action.isTextOnly());
-    }
-
-    @Test
-    void createBadgeWithInvalidLink(@SuppressWarnings("unused") JenkinsRule r) {
-        String invalidLink = "invalid-link";
-
-        // Exception thrown for invalid link by default
-        assertThrows(IllegalArgumentException.class, () -> {
-            BadgeAction.createBadge("info.gif", "Link in badge", invalidLink);
-        });
-
-        boolean defaultValue = BadgePlugin.get().isDisableFormatHTML();
-
-        // Exception not thrown if HTMl formatting is disabled
-        BadgePlugin.get().setDisableFormatHTML(true);
-        BadgeAction action = BadgeAction.createBadge("info.gif", "Link in badge", invalidLink);
-        assertEquals(invalidLink, action.getLink());
-
-        // Restore the default, do not disable HTML formatting
-        BadgePlugin.get().setDisableFormatHTML(defaultValue);
-    }
-
-    @Test
     void createBadgeWithNullLink(@SuppressWarnings("unused") JenkinsRule r) {
         BadgeAction action = BadgeAction.createBadge("info.gif", "Link in badge", null);
         assertNull(action.getLink());
     }
 
-    @Test
-    void getTextWithHTMLFormatDisabled(@SuppressWarnings("unused") JenkinsRule r) {
-        boolean defaultValue = BadgePlugin.get().isDisableFormatHTML();
-        String expectedText = "Error badge text";
-        String javaScript = "<script>alert('abc');</script>";
 
-        // JavaScript discarded when formatHTML is enabled (the default)
-        BadgeAction action = BadgeAction.createErrorBadge(expectedText + javaScript);
-        assertEquals(expectedText, action.getText());
-
-        // JavaScript retained when formatHTML is disabled
-        BadgePlugin.get().setDisableFormatHTML(true);
-        assertEquals(expectedText + javaScript, action.getText());
-
-        // Restore the default, do not disable HTML formatting
-        BadgePlugin.get().setDisableFormatHTML(defaultValue);
-    }
 }
