@@ -28,7 +28,11 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
+
+import java.io.PrintStream;
 import java.io.Serializable;
+
+import hudson.model.TaskListener;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
@@ -38,7 +42,10 @@ import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Create a short text.
+ *
+ * @deprecated replaced by {@link AddBadgeStep}.
  */
+@Deprecated(since = "2.0", forRemoval = true)
 public class AddShortTextStep extends Step {
 
     private final ShortText shortText;
@@ -121,6 +128,7 @@ public class AddShortTextStep extends Step {
     }
 
     @Extension
+    @Deprecated(since = "2.0", forRemoval = true)
     public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
 
         @Override
@@ -135,6 +143,7 @@ public class AddShortTextStep extends Step {
         }
     }
 
+    @Deprecated(since = "2.0", forRemoval = true)
     private static class ShortText implements Serializable {
 
         private static final long serialVersionUID = 1L;
@@ -199,6 +208,7 @@ public class AddShortTextStep extends Step {
         }
     }
 
+    @Deprecated(since = "2.0", forRemoval = true)
     public static class Execution extends SynchronousStepExecution<Void> {
 
         private static final long serialVersionUID = 1L;
@@ -213,15 +223,34 @@ public class AddShortTextStep extends Step {
 
         @Override
         protected Void run() throws Exception {
+            BadgeAction action = new BadgeAction(null, shortText.getText());
+            action.setColor(shortText.getColor());
+            action.setBackground(shortText.getBackground());
+            action.setBorder(shortText.getBorderString());
+            action.setBorderColor(shortText.getBorderColor());
+            action.setLink(shortText.getLink());
+
+            // translate old styling to new field
+            String style = "";
+            if(shortText.getBorderString() != null ) {
+                style += "border: " + shortText.getBorderString() + " solid " + shortText.getBorderColor() + ";";
+            }
+            if(shortText.getBackground() != null ) {
+                style += "background: " + shortText.getBackground() + ";";
+            }
+            if(shortText.getColor() != null) {
+                style += "color: " + shortText.getColor() + ";";
+            }
+            action.setStyle(style);
+            
             getContext()
                     .get(Run.class)
-                    .addAction(BadgeAction.createShortText(
-                            shortText.getText(),
-                            shortText.getColor(),
-                            shortText.getBackground(),
-                            shortText.getBorderString(),
-                            shortText.getBorderColor(),
-                            shortText.link));
+                    .addAction(action);
+
+            TaskListener listener = getContext().get(TaskListener.class);
+            PrintStream logger = listener.getLogger();
+            logger.println("Step 'addShortText' is deprecated - please consider using 'addBadge' instead.");
+
             return null;
         }
     }

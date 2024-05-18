@@ -37,6 +37,7 @@ import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
+@Deprecated(since = "2.0", forRemoval = true)
 class ShortTextStepTest extends AbstractBadgeTest {
 
     @Test

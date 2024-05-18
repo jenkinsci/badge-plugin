@@ -26,6 +26,7 @@ package com.jenkinsci.plugins.badge.dsl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
+import hudson.markup.RawHtmlMarkupFormatter;
 import hudson.model.BuildBadgeAction;
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +36,7 @@ import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
+@Deprecated(since = "2.0", forRemoval = true)
 class AddHtmlBadgeStepTest extends AbstractBadgeTest {
 
     @Test
@@ -45,6 +47,7 @@ class AddHtmlBadgeStepTest extends AbstractBadgeTest {
 
     @Test
     void addHtmlBadge_remove_script(JenkinsRule r) throws Exception {
+        r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String uuid = UUID.randomUUID().toString();
         String html = uuid + "<script>alert('exploit!');</script>";
         testAddHtmlBadge(r, html, uuid);

@@ -28,15 +28,25 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
+import hudson.model.TaskListener;
+import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
+
+import java.io.PrintStream;
 
 /**
- * Create a short text.
+ * Create a html badge.
+ *
+ * @deprecated replaced by {@link AddBadgeStep}.
  */
-public class AddHtmlBadgeStep extends AbstractStep {
+@Deprecated(since = "2.0", forRemoval = true)
+public class AddHtmlBadgeStep extends Step {
+
+    private String id;
 
     private final String html;
 
@@ -52,12 +62,25 @@ public class AddHtmlBadgeStep extends AbstractStep {
         return html;
     }
 
+    /**
+     * @param id Badge identifier. Selectively delete badges by id.
+     */
+    @DataBoundSetter
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     @Override
     public StepExecution start(StepContext context) {
         return new Execution(html, getId(), context);
     }
 
     @Extension
+    @Deprecated(since = "2.0", forRemoval = true)
     public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
 
         @Override
@@ -68,10 +91,11 @@ public class AddHtmlBadgeStep extends AbstractStep {
         @NonNull
         @Override
         public String getDisplayName() {
-            return "Add a html badge Text";
+            return "Add a HTML badge";
         }
     }
 
+    @Deprecated(since = "2.0", forRemoval = true)
     public static class Execution extends SynchronousStepExecution<Void> {
 
         private static final long serialVersionUID = 1L;
@@ -93,6 +117,11 @@ public class AddHtmlBadgeStep extends AbstractStep {
             HtmlBadgeAction htmlBadge = HtmlBadgeAction.createHtmlBadge(html);
             htmlBadge.setId(id);
             getContext().get(Run.class).addAction(htmlBadge);
+
+            TaskListener listener = getContext().get(TaskListener.class);
+            PrintStream logger = listener.getLogger();
+            logger.println("Step 'addHtmlBadge' is deprecated - please consider using 'addBadge' instead.");
+
             return null;
         }
     }

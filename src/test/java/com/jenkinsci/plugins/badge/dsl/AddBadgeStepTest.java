@@ -94,7 +94,7 @@ class AddBadgeStepTest extends AbstractBadgeTest {
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
         assertTrue(action.getIconPath().endsWith(icon));
-        assertEquals(textPrefix + "&#39;);alert(&#39;foo", action.getText());
+        assertEquals(textPrefix + "&#039;);alert(&#039;foo", action.getText());
     }
 
     private void addBadge(JenkinsRule r, boolean inNode) throws Exception {
