@@ -23,11 +23,12 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.markup.RawHtmlMarkupFormatter;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.kohsuke.stapler.export.Exported;
@@ -70,11 +71,8 @@ public class BadgeSummaryAction extends AbstractAction {
 
     @Exported
     public String getText() {
-        if (BadgePlugin.get().isDisableFormatHTML()) {
-            return summaryText;
-        }
         try {
-            return RawHtmlMarkupFormatter.INSTANCE.translate(summaryText);
+            return Jenkins.get().getMarkupFormatter().translate(summaryText);
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, "Error preparing summary text for ui", e);
             return "<b><font color=\"red\">ERROR</font></b>";

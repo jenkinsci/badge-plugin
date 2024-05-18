@@ -23,9 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import com.jenkinsci.plugins.badge.BadgePlugin;
 import hudson.PluginWrapper;
-import hudson.markup.RawHtmlMarkupFormatter;
 import io.jenkins.plugins.ionicons.Ionicons;
 import java.io.File;
 import java.io.IOException;
@@ -46,13 +44,14 @@ public class BadgeAction extends AbstractBadgeAction {
     private static final Logger LOGGER = Logger.getLogger(BadgeAction.class.getName());
     private final String iconPath;
     private final String text;
+    private String style;
     private String color;
     private String background;
     private String border;
     private String borderColor;
     private String link;
 
-    private BadgeAction(String iconPath, String text) {
+    public BadgeAction(String iconPath, String text) {
         this.iconPath = iconPath;
         this.text = text;
     }
@@ -74,26 +73,6 @@ public class BadgeAction extends AbstractBadgeAction {
         action.link = link;
         action.color = color;
         action.validate();
-        return action;
-    }
-
-    public static BadgeAction createShortText(String text) {
-        return new BadgeAction(null, text);
-    }
-
-    public static BadgeAction createShortText(
-            String text, String color, String background, String border, String borderColor) {
-        return createShortText(text, color, background, border, borderColor, null);
-    }
-
-    public static BadgeAction createShortText(
-            String text, String color, String background, String border, String borderColor, String link) {
-        BadgeAction action = new BadgeAction(null, text);
-        action.color = color;
-        action.background = background;
-        action.border = border;
-        action.borderColor = borderColor;
-        action.link = link;
         return action;
     }
 
@@ -122,10 +101,6 @@ public class BadgeAction extends AbstractBadgeAction {
     }
 
     protected void validate() throws IllegalArgumentException {
-        if (BadgePlugin.get().isDisableFormatHTML()) {
-            return;
-        }
-
         if (link != null && !link.startsWith("/") && !link.matches("^https?:.*") && !link.matches("^mailto:.*")) {
             throw new IllegalArgumentException("Invalid link '" + link + "'for badge action with text '" + text + "'");
         }
@@ -163,15 +138,36 @@ public class BadgeAction extends AbstractBadgeAction {
 
     @Exported
     public String getText() {
-        if (BadgePlugin.get().isDisableFormatHTML()) {
-            return text;
-        }
         try {
-            return RawHtmlMarkupFormatter.INSTANCE.translate(text);
+            return Jenkins.get().getMarkupFormatter().translate(text);
         } catch (IOException e) {
             LOGGER.log(Level.WARNING, "Error preparing badge text for ui", e);
             return "<b><font color=\"red\">ERROR</font></b>";
         }
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setBackground(String background) {
+        this.background = background;
+    }
+
+    public void setBorder(String border) {
+        this.border = border;
+    }
+
+    public void setBorderColor(String borderColor) {
+        this.borderColor = borderColor;
     }
 
     @Exported
@@ -232,11 +228,7 @@ public class BadgeAction extends AbstractBadgeAction {
 
     @Exported
     public String getLink() {
-        if (link == null || BadgePlugin.get().isDisableFormatHTML()) {
-            return link;
-        }
-
-        if (link.startsWith("/") || link.matches("^https?:.*") || link.matches("^mailto:.*")) {
+        if (link == null || link.startsWith("/") || link.matches("^https?:.*") || link.matches("^mailto:.*")) {
             return link;
         }
         LOGGER.log(Level.WARNING, "Error invalid link value: '{}'", link);
@@ -257,10 +249,8 @@ public class BadgeAction extends AbstractBadgeAction {
             return icon;
         }
 
-        Jenkins jenkins = Jenkins.getInstanceOrNull();
-
         // Try plugin images dir, fallback to Hudson images dir
-        PluginWrapper wrapper = jenkins != null ? jenkins.getPluginManager().getPlugin("badge") : null;
+        PluginWrapper wrapper = Jenkins.get().getPluginManager().getPlugin("badge");
         boolean pluginIconExists =
                 (wrapper != null) && new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists();
         return pluginIconExists
