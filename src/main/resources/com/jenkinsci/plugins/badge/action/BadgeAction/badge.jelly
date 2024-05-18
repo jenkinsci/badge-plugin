@@ -29,16 +29,17 @@ THE SOFTWARE.
   <j:if test="${it.iconPath != null}">
     <j:set var="badgeStyle" value=""/>
     <j:if test="${it.iconColorStyle != null}">
-      <j:set var="badgeStyle" value="${badgeStyle};color: ${it.iconColorStyle};"/>
+      <j:set var="badgeStyle" value="color: ${it.iconColorStyle};"/>
     </j:if>
 
-    <j:if test="${it.link == null}">
-      <l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" />
-    </j:if>
-
-    <j:if test="${it.link != null}">
-      <a href="${it.link}"><l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" /></a>
-    </j:if>
+    <j:choose>
+      <j:when test="${it.link == null}">
+        <l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" />
+      </j:when>
+      <j:otherwise>
+        <a href="${it.link}"><l:icon src="${it.iconPath}" class="${it.iconClass}" style="${badgeStyle}" htmlTooltip="${it.text}" /></a>
+      </j:otherwise>
+    </j:choose>
   </j:if>
 
   <j:if test="${it.iconPath == null}">
@@ -59,13 +60,14 @@ THE SOFTWARE.
       <j:set var="badgeStyle" value="${badgeStyle};color: ${it.iconColorStyle};"/>
     </j:if>
 
-    <j:if test="${it.link == null}">
-      <div style="${badgeStyle}" class="${it.iconClass} ${badgeClass}">${it.text}</div>
-    </j:if>
-
-    <j:if test="${it.link != null}">
-      <a href="${it.link}"><span style="${badgeStyle}" class="${it.iconClass} ${badgeClass}">${it.text}</span></a>
-    </j:if>
+    <j:choose>
+      <j:when test="${it.link == null}">
+        <span style="${badgeStyle}" class="${it.iconClass} ${badgeClass}">${it.text}</span>
+      </j:when>
+      <j:otherwise>
+        <a href="${it.link}"><span style="${badgeStyle}" class="${it.iconClass} ${badgeClass}">${it.text}</span></a>
+      </j:otherwise>
+    </j:choose>
   </j:if>
 
 </j:jelly>
