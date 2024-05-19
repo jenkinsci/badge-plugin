@@ -26,9 +26,11 @@ package com.jenkinsci.plugins.badge.dsl;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Add a badge.
@@ -38,6 +40,16 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
     @DataBoundConstructor
     public AddBadgeStep(String id, String icon, String text, String cssClass, String style, String link) {
         super(id, icon, text, cssClass, style, link);
+    }
+
+    /**
+     * @deprecated replaced by {@link #setStyle(String)}.
+     */
+    @DataBoundSetter
+    @Deprecated(since = "2.0", forRemoval = true)
+    public void setColor(String color) {
+        // translate old color to new field
+        setStyle("color: " + color + ";" + StringUtils.defaultString(getStyle()));
     }
 
     @Override

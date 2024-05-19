@@ -35,11 +35,11 @@ import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 public abstract class AbstractAddBadgeStep extends Step {
 
     private final String id;
-    private final String icon;
-    private final String text;
-    private final String cssClass;
-    private final String style;
-    private final String link;
+    private String icon;
+    private String text;
+    private String cssClass;
+    private String style;
+    private String link;
 
     protected AbstractAddBadgeStep(String id, String icon, String text, String cssClass, String style, String link) {
         this.id = id;
@@ -58,20 +58,40 @@ public abstract class AbstractAddBadgeStep extends Step {
         return icon;
     }
 
+    protected void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     protected String getText() {
         return text;
+    }
+
+    protected void setText(String text) {
+        this.text = text;
     }
 
     protected String getCssClass() {
         return cssClass;
     }
 
+    protected void setCssClass(String cssClass) {
+        this.cssClass = cssClass;
+    }
+
     protected String getStyle() {
         return style;
     }
 
+    protected void setStyle(String style) {
+        this.style = style;
+    }
+
     protected String getLink() {
         return link;
+    }
+
+    protected void setLink(String link) {
+        this.link = link;
     }
 
     abstract static class Execution extends SynchronousStepExecution<AbstractBadgeAction> {
