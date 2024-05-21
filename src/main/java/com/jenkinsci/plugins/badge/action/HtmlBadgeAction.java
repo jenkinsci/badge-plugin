@@ -67,9 +67,9 @@ public class HtmlBadgeAction implements BuildBadgeAction, Action, Serializable {
     public String getHtml() {
         try {
             return Jenkins.get().getMarkupFormatter().translate(html);
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Error preparing html content for ui", e);
-            return "<b><font color=\"red\">ERROR</font></b>";
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "Error preparing HTML content for UI", ex);
+            return "<b><font color=\"var(--error-color)\">Error preparing HTML content for UI</font></b>";
         }
     }
 

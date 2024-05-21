@@ -109,8 +109,8 @@ public abstract class AbstractBadgeAction implements Action {
 
         try {
             return Jenkins.get().getMarkupFormatter().translate(text);
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Error preparing badge text for UI", e);
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "Error preparing badge text for UI", ex);
             return "<b><font color=\"var(--error-color)\">Error preparing badge text for UI</font></b>";
         }
     }
@@ -149,7 +149,7 @@ public abstract class AbstractBadgeAction implements Action {
             return link;
         }
 
-        LOGGER.log(Level.WARNING, "Error invalid link value: '{}'", link);
+        LOGGER.log(Level.WARNING, "Invalid link value: '{}' - ignoring it", link);
         return null;
     }
 
