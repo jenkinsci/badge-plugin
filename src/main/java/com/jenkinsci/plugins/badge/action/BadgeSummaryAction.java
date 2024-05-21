@@ -78,4 +78,24 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
         }
         setText(startTags + text + closeTags);
     }
+
+    // LEGACY CODE
+    @Deprecated(since = "2.0", forRemoval = true)
+    private transient String summaryText;
+
+    /**
+     * Translates pre 2.0 build.xml to latest format for backwards compatibility.
+     * @return this instance
+     */
+    @Override
+    protected Object readResolve() {
+        super.readResolve();
+
+        // field renamed
+        if (summaryText != null) {
+            setText(summaryText);
+        }
+
+        return this;
+    }
 }

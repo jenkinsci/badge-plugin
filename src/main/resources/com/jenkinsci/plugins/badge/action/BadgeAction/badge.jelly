@@ -31,9 +31,11 @@ THE SOFTWARE.
             <j:choose>
                 <!-- icon with link -->
                 <j:when test="${it.link != null &amp;&amp; it.link != ''}">
-                    <a href="${it.link}" class="${it.cssClass}" style="${it.style}">
-                        <l:icon class="icon-sm" src="${it.icon}" alt="${it.text}" htmlTooltip="${it.text}"/>
-                    </a>
+                    <span>
+                        <a href="${it.link}" class="${it.cssClass}" style="${it.style}">
+                            <l:icon class="icon-sm" src="${it.icon}" alt="${it.text}" htmlTooltip="${it.text}"/>
+                        </a>
+                    </span>
                 </j:when>
                 <!-- icon without link -->
                 <j:otherwise>
@@ -46,13 +48,14 @@ THE SOFTWARE.
         <j:otherwise>
             <!-- text -->
             <j:if test="${it.text != null &amp;&amp; it.text != ''}">
-
                 <j:choose>
                     <!-- text with link -->
                     <j:when test="${it.link != null &amp;&amp; it.link != ''}">
-                        <a href="${it.link}" class="${it.cssClass}" style="${it.style}">
-                            ${it.text}
-                        </a>
+                        <span>
+                            <a href="${it.link}" class="${it.cssClass}" style="${it.style}">
+                                ${it.text}
+                            </a>
+                        </span>
                     </j:when>
                     <!-- text without link -->
                     <j:otherwise>

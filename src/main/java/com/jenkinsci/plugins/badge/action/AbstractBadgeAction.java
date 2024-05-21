@@ -46,8 +46,8 @@ public abstract class AbstractBadgeAction implements Action {
     private final String id;
     private String icon;
     private String text;
-    private String style;
     private String cssClass;
+    private String style;
     private String link;
 
     /**
@@ -161,5 +161,55 @@ public abstract class AbstractBadgeAction implements Action {
     @Override
     public String getUrlName() {
         return "";
+    }
+
+    // LEGACY CODE
+    @Deprecated(since = "2.0", forRemoval = true)
+    private transient String iconPath;
+
+    @Deprecated(since = "2.0", forRemoval = true)
+    private transient String color;
+
+    @Deprecated(since = "2.0", forRemoval = true)
+    private transient String background;
+
+    @Deprecated(since = "2.0", forRemoval = true)
+    private transient String border;
+
+    @Deprecated(since = "2.0", forRemoval = true)
+    private transient String borderColor;
+
+    /**
+     * Translates pre 2.0 build.xml to latest format for backwards compatibility.
+     * @return this instance
+     */
+    protected Object readResolve() {
+        // field renamed - see AbstractBadgeAction
+        if (iconPath != null) {
+            setIcon(iconPath);
+        }
+
+        // field reworked - see AddShortTextStep
+        String style = "";
+        if (border != null) {
+            style += "border: " + border + " solid " + (borderColor != null ? borderColor : "") + ";";
+        }
+        if (background != null) {
+            style += "background: " + background + ";";
+        }
+        if (color != null) {
+            if (color.startsWith("jenkins-!-color")) {
+                style += "color: var(--" + color.replaceFirst("jenkins-!-color-", "") + ");";
+            } else if (color.startsWith("jenkins-!-")) {
+                style += "color: var(--" + color.replaceFirst("jenkins-!-", "") + ");";
+            } else {
+                style += "color: " + color + ";";
+            }
+        }
+        if (!style.isEmpty()) {
+            setStyle(style);
+        }
+
+        return this;
     }
 }

@@ -206,13 +206,20 @@ public class AddShortTextStep extends Step {
             // translate old styling to new field
             String style = "";
             if (shortText.getBorderString() != null) {
-                style += "border: " + shortText.getBorderString() + " solid " + shortText.getBorderColor() + ";";
+                style += "border: " + shortText.getBorderString() + " solid "
+                        + (shortText.getBorderColor() != null ? shortText.getBorderColor() : "") + ";";
             }
             if (shortText.getBackground() != null) {
                 style += "background: " + shortText.getBackground() + ";";
             }
             if (shortText.getColor() != null) {
-                style += "color: " + shortText.getColor() + ";";
+                if (shortText.getColor().startsWith("jenkins-!-color")) {
+                    style += "color: var(--" + shortText.getColor().replaceFirst("jenkins-!-color", "") + ");";
+                } else if (shortText.getColor().startsWith("jenkins-!-")) {
+                    style += "color: var(--" + shortText.getColor().replaceFirst("jenkins-!-", "") + ");";
+                } else {
+                    style += "color: " + shortText.getColor() + ";";
+                }
             }
 
             BadgeAction action = new BadgeAction(null, null, shortText.getText(), null, style, shortText.getLink());
