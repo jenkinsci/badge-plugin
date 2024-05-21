@@ -26,13 +26,6 @@ package com.jenkinsci.plugins.badge.dsl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.jenkinsci.plugins.badge.action.BadgeAction;
-import hudson.model.BuildBadgeAction;
-import java.util.List;
-import java.util.UUID;
-import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
-import org.jenkinsci.plugins.workflow.job.WorkflowJob;
-import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
@@ -75,33 +68,6 @@ class AddInfoBadgeStepTest extends AddBadgeStepTest {
 
         step = createStep("id", "icon", "text", "cssClass", "style", "link");
         assertEquals("color: var(--blue)", step.getStyle());
-    }
-
-    @Override
-    protected void runJob(JenkinsRule r, boolean inNode) throws Exception {
-        String id = UUID.randomUUID().toString();
-        String text = "Test Text";
-        String link = "https://jenkins.io";
-        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
-
-        String script = "addInfoBadge id: '" + id + "', text: '" + text + "', link: '" + link + "'";
-        if (inNode) {
-            script = "node() { " + script + " }";
-        }
-
-        project.setDefinition(new CpsFlowDefinition(script, true));
-        WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
-
-        List<BuildBadgeAction> badgeActions = run.getBadgeActions();
-        assertEquals(1, badgeActions.size());
-
-        BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertEquals(id, action.getId());
-        assertEquals("symbol-information-circle plugin-ionicons-api", action.getIcon());
-        assertEquals(text, action.getText());
-        assertEquals(null, action.getCssClass());
-        assertEquals("color: var(--blue)", action.getStyle());
-        assertEquals(link, action.getLink());
     }
 
     @Override

@@ -25,6 +25,9 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import hudson.model.Run;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
@@ -92,6 +95,32 @@ public abstract class AbstractAddBadgeStep extends Step {
 
     protected void setLink(String link) {
         this.link = link;
+    }
+
+    @Override
+    public String toString() {
+        List<String> fields = new ArrayList<>();
+
+        if (getId() != null) {
+            fields.add("id: '" + getId() + "'");
+        }
+        if (getIcon() != null) {
+            fields.add("icon: '" + getIcon() + "'");
+        }
+        if (getText() != null) {
+            fields.add("text: '" + getText() + "'");
+        }
+        if (getCssClass() != null) {
+            fields.add("cssClass: '" + getCssClass() + "'");
+        }
+        if (getStyle() != null) {
+            fields.add("style: '" + getStyle() + "'");
+        }
+        if (getLink() != null) {
+            fields.add("link: '" + getLink() + "'");
+        }
+
+        return getDescriptor().getFunctionName() + "(" + StringUtils.join(fields, ", ") + ")";
     }
 
     abstract static class Execution extends SynchronousStepExecution<AbstractBadgeAction> {

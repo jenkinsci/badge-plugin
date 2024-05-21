@@ -36,38 +36,58 @@ import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 @WithJenkins
-class RemoveBadgesStepTest {
+class RemoveBadgesStepTest extends AbstractRemoveBadgeStepTest {
 
     @Test
     void removeById(JenkinsRule r) throws Exception {
-        String id = UUID.randomUUID().toString();
-        runJob(r, id, "removeBadges id: '" + id + "'", 0);
+        String badgeId = UUID.randomUUID().toString();
+        AbstractAddBadgeStep addStep = createAddStep(badgeId);
+        AbstractRemoveBadgesStep removeStep = createRemoveStep(badgeId);
+        runRemoveJob(r, addStep, removeStep, 0);
     }
 
     @Test
     void removeAll(JenkinsRule r) throws Exception {
-        String id = UUID.randomUUID().toString();
-        runJob(r, id, "removeBadges()", 0);
+        String badgeId = UUID.randomUUID().toString();
+        AbstractAddBadgeStep addStep = createAddStep(badgeId);
+        AbstractRemoveBadgesStep removeStep = createRemoveStep(null);
+        runRemoveJob(r, addStep, removeStep, 0);
     }
 
     @Test
     void removeInvalidId(JenkinsRule r) throws Exception {
-        String id = UUID.randomUUID().toString();
-        runJob(r, id, "removeBadges id: '" + UUID.randomUUID() + "'", 1);
+        String badgeId = UUID.randomUUID().toString();
+        AbstractAddBadgeStep addStep = createAddStep(badgeId);
+        AbstractRemoveBadgesStep removeStep = createRemoveStep(UUID.randomUUID().toString());
+        runRemoveJob(r, addStep, removeStep, 1);
     }
 
-    private static void runJob(JenkinsRule r, String id, String removalScript, int expected) throws Exception {
-        String text = "Test Text";
-        String link = "https://jenkins.io";
+    protected void runRemoveJob(
+            JenkinsRule r, AbstractAddBadgeStep addStep, AbstractRemoveBadgesStep removeStep, int expected)
+            throws Exception {
         WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
-        String script = "addBadge id: '" + id + "', text: '" + text + "', link: '" + link + "'\n";
-        script += removalScript;
+        String script = addStep.toString() + "\n";
+        script += removeStep.toString();
 
         project.setDefinition(new CpsFlowDefinition(script, true));
         WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
 
+        assertActionExists(run, expected);
+    }
+
+    protected void assertActionExists(WorkflowRun run, int expected) {
         List<BuildBadgeAction> badgeActions = run.getBadgeActions();
         assertEquals(expected, badgeActions.size());
+    }
+
+    protected AbstractAddBadgeStep createAddStep(String id) {
+        return new AddBadgeStep(
+                id, "symbol-rocket plugin-ionicons-api", "Test Text", "icon-md", "color: green", "https://jenkins.io");
+    }
+
+    @Override
+    protected AbstractRemoveBadgesStep createRemoveStep(String id) {
+        return new RemoveBadgesStep(id);
     }
 }

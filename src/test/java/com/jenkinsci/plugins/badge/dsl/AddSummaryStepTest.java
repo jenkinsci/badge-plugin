@@ -27,43 +27,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import java.util.List;
-import java.util.UUID;
-import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
-import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.jvnet.hudson.test.JenkinsRule;
 
 class AddSummaryStepTest extends AddBadgeStepTest {
 
     @Override
-    protected void runJob(JenkinsRule r, boolean inNode) throws Exception {
-        String id = UUID.randomUUID().toString();
-        String icon = "symbol-rocket plugin-ionicons-api";
-        String text = "Test Text";
-        String cssClass = "icon-md";
-        String style = "color: green";
-        String link = "https://jenkins.io";
-        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
-
-        String script = "addSummary id: '" + id + "', icon: '" + icon + "',  text: '" + text + "', cssClass: '"
-                + cssClass + "', style: '" + style + "', link: '" + link + "'";
-        if (inNode) {
-            script = "node() { " + script + " }";
-        }
-
-        project.setDefinition(new CpsFlowDefinition(script, true));
-        WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
-
+    protected void assertFields(AbstractAddBadgeStep step, WorkflowRun run) {
         List<BadgeSummaryAction> summaryActions = run.getActions(BadgeSummaryAction.class);
         assertEquals(1, summaryActions.size());
 
         BadgeSummaryAction action = summaryActions.get(0);
-        assertEquals(id, action.getId());
-        assertEquals(icon, action.getIcon());
-        assertEquals(text, action.getText());
-        assertEquals(cssClass, action.getCssClass());
-        assertEquals(style, action.getStyle());
-        assertEquals(link, action.getLink());
+        assertEquals(step.getId(), action.getId());
+        assertEquals(step.getIcon(), action.getIcon());
+        assertEquals(step.getText(), action.getText());
+        assertEquals(step.getCssClass(), action.getCssClass());
+        assertEquals(step.getStyle(), action.getStyle());
+        assertEquals(step.getLink(), action.getLink());
     }
 
     @Override

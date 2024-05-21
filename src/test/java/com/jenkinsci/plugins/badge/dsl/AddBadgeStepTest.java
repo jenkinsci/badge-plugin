@@ -24,6 +24,7 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import hudson.model.BuildBadgeAction;
@@ -39,25 +40,56 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
 
     @Test
     void add(JenkinsRule r) throws Exception {
-        runJob(r, false);
+        AbstractAddBadgeStep step = createStep(
+                UUID.randomUUID().toString(),
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io");
+        runAddJob(r, step, false);
     }
 
     @Test
     void addInNode(JenkinsRule r) throws Exception {
-        runJob(r, true);
+        AbstractAddBadgeStep step = createStep(
+                UUID.randomUUID().toString(),
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io");
+        runAddJob(r, step, true);
     }
 
-    protected void runJob(JenkinsRule r, boolean inNode) throws Exception {
-        String id = UUID.randomUUID().toString();
-        String icon = "symbol-rocket plugin-ionicons-api";
-        String text = "Test Text";
-        String cssClass = "icon-md";
-        String style = "color: green";
-        String link = "https://jenkins.io";
+    @Test
+    void modify(JenkinsRule r) throws Exception {
+        AbstractAddBadgeStep step = createStep(
+                UUID.randomUUID().toString(),
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io");
+        runModifyJob(r, step, false);
+    }
+
+    @Test
+    void modifyInNode(JenkinsRule r) throws Exception {
+        AbstractAddBadgeStep step = createStep(
+                UUID.randomUUID().toString(),
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io");
+        runModifyJob(r, step, true);
+    }
+
+    protected void runAddJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode) throws Exception {
         WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
-        String script = "addBadge id: '" + id + "', icon: '" + icon + "',  text: '" + text + "', cssClass: '" + cssClass
-                + "', style: '" + style + "', link: '" + link + "'";
+        String script = step.toString();
         if (inNode) {
             script = "node() { " + script + " }";
         }
@@ -65,16 +97,42 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         project.setDefinition(new CpsFlowDefinition(script, true));
         WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
 
+        assertFields(step, run);
+    }
+
+    protected void runModifyJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode) throws Exception {
+        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
+
+        String actualText = step.getText();
+        step.setText(UUID.randomUUID().toString());
+        assertNotEquals(actualText, step.getText());
+
+        String script = "def badge = " + step + "\n";
+        script += "badge.setText('" + actualText + "')";
+        if (inNode) {
+            script = "node() { " + script + " }";
+        }
+
+        project.setDefinition(new CpsFlowDefinition(script, true));
+        WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
+
+        step.setText(actualText);
+        assertEquals(actualText, step.getText());
+
+        assertFields(step, run);
+    }
+
+    protected void assertFields(AbstractAddBadgeStep step, WorkflowRun run) {
         List<BuildBadgeAction> badgeActions = run.getBadgeActions();
         assertEquals(1, badgeActions.size());
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertEquals(id, action.getId());
-        assertEquals(icon, action.getIcon());
-        assertEquals(text, action.getText());
-        assertEquals(cssClass, action.getCssClass());
-        assertEquals(style, action.getStyle());
-        assertEquals(link, action.getLink());
+        assertEquals(step.getId(), action.getId());
+        assertEquals(step.getIcon(), action.getIcon());
+        assertEquals(step.getText(), action.getText());
+        assertEquals(step.getCssClass(), action.getCssClass());
+        assertEquals(step.getStyle(), action.getStyle());
+        assertEquals(step.getLink(), action.getLink());
     }
 
     @Override

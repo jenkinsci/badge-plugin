@@ -26,6 +26,9 @@ package com.jenkinsci.plugins.badge.dsl;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import io.jenkins.plugins.ionicons.Ionicons;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
@@ -36,6 +39,23 @@ public class AddErrorBadgeStep extends AddBadgeStep {
     @DataBoundConstructor
     public AddErrorBadgeStep(String id, String text, String link) {
         super(id, Ionicons.getIconClassName("remove-circle"), text, null, "color: var(--error-color)", link);
+    }
+
+    @Override
+    public String toString() {
+        List<String> fields = new ArrayList<>();
+
+        if (getId() != null) {
+            fields.add("id: '" + getId() + "'");
+        }
+        if (getText() != null) {
+            fields.add("text: '" + getText() + "'");
+        }
+        if (getLink() != null) {
+            fields.add("link: '" + getLink() + "'");
+        }
+
+        return getDescriptor().getFunctionName() + "(" + StringUtils.join(fields, ", ") + ")";
     }
 
     @Extension

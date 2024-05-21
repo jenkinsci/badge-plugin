@@ -24,29 +24,38 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
-import java.util.List;
-import org.jenkinsci.plugins.workflow.job.WorkflowRun;
+import org.junit.jupiter.api.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 @WithJenkins
-class RemoveSummariesStepTest extends RemoveBadgesStepTest {
+abstract class AbstractRemoveBadgeStepTest {
 
-    @Override
-    protected void assertActionExists(WorkflowRun run, int expected) {
-        List<BadgeSummaryAction> summaryActions = run.getActions(BadgeSummaryAction.class);
-        assertEquals(expected, summaryActions.size());
+    @Test
+    void id(@SuppressWarnings("unused") JenkinsRule r) {
+        AbstractRemoveBadgesStep step = createRemoveStep(null);
+        assertNull(step.getId());
+
+        step = createRemoveStep("id");
+        assertEquals("id", step.getId());
+
+        step = createRemoveStep("");
+        assertEquals("", step.getId());
     }
 
-    @Override
-    protected AbstractAddBadgeStep createAddStep(String id) {
-        return new AddSummaryStep(
-                id, "symbol-rocket plugin-ionicons-api", "Test Text", "icon-md", "color: green", "https://jenkins.io");
+    @Test
+    void toString(@SuppressWarnings("unused") JenkinsRule r) {
+        AbstractRemoveBadgesStep step = createRemoveStep("id");
+        assertNotNull(step.toString());
+        assertEquals(step.getDescriptor().getFunctionName() + "(id: '" + step.getId() + "')", step.toString());
+
+        step = createRemoveStep(null);
+        assertNotNull(step.toString());
+        assertEquals(step.getDescriptor().getFunctionName() + "()", step.toString());
     }
 
-    @Override
-    protected AbstractRemoveBadgesStep createRemoveStep(String id) {
-        return new RemoveSummariesStep(id);
-    }
+    protected abstract AbstractRemoveBadgesStep createRemoveStep(String id);
 }
