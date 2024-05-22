@@ -183,6 +183,7 @@ public abstract class AbstractBadgeAction implements Action {
      * Translates pre 2.0 build.xml to latest format for backwards compatibility.
      * @return this instance
      */
+    @Deprecated(since = "2.0", forRemoval = true)
     protected Object readResolve() {
         // field renamed - see AbstractBadgeAction
         if (iconPath != null) {

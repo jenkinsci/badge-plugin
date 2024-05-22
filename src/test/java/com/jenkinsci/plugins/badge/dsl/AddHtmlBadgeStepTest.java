@@ -24,6 +24,7 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
 import hudson.markup.RawHtmlMarkupFormatter;
@@ -40,6 +41,26 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @WithJenkins
 @Deprecated(since = "2.0", forRemoval = true)
 class AddHtmlBadgeStepTest {
+
+    @Test
+    void id() {
+        AddHtmlBadgeStep step = new AddHtmlBadgeStep(null);
+        assertNull(step.getId());
+
+        String id = UUID.randomUUID().toString();
+        step.setId(id);
+        assertEquals(id, step.getId());
+    }
+
+    @Test
+    void html() {
+        AddHtmlBadgeStep step = new AddHtmlBadgeStep(null);
+        assertNull(step.getHtml());
+
+        String html = UUID.randomUUID().toString();
+        step = new AddHtmlBadgeStep(html);
+        assertEquals(html, step.getHtml());
+    }
 
     @Test
     void addHtmlBadge(JenkinsRule r) throws Exception {

@@ -76,7 +76,7 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
         if (escapeHtml) {
             text = StringEscapeUtils.escapeHtml(text);
         }
-        setText(startTags + text + closeTags);
+        setText(StringUtils.defaultString(getText()) + startTags + text + closeTags);
     }
 
     // LEGACY CODE
@@ -88,6 +88,7 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
      * @return this instance
      */
     @Override
+    @Deprecated(since = "2.0", forRemoval = true)
     protected Object readResolve() {
         super.readResolve();
 

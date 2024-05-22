@@ -25,11 +25,13 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import hudson.markup.RawHtmlMarkupFormatter;
 import java.util.List;
+import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
@@ -40,6 +42,36 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @WithJenkins
 @Deprecated(since = "2.0", forRemoval = true)
 class CreateSummaryStepTest {
+
+    @Test
+    void id(@SuppressWarnings("unused") JenkinsRule r) {
+        CreateSummaryStep step = new CreateSummaryStep(null);
+        assertNull(step.getId());
+
+        String id = UUID.randomUUID().toString();
+        step.setId(id);
+        assertEquals(id, step.getId());
+    }
+
+    @Test
+    void icon(@SuppressWarnings("unused") JenkinsRule r) {
+        CreateSummaryStep step = new CreateSummaryStep(null);
+        assertNull(step.getIcon());
+
+        String icon = UUID.randomUUID().toString();
+        step = new CreateSummaryStep(icon);
+        assertEquals(icon, step.getIcon());
+    }
+
+    @Test
+    void text(@SuppressWarnings("unused") JenkinsRule r) {
+        CreateSummaryStep step = new CreateSummaryStep(null);
+        assertNull(step.getText());
+
+        String text = UUID.randomUUID().toString();
+        step.setText(text);
+        assertEquals(text, step.getText());
+    }
 
     @Test
     void createSummary_plain(JenkinsRule r) throws Exception {

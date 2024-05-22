@@ -49,7 +49,17 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
     @Deprecated(since = "2.0", forRemoval = true)
     public void setColor(String color) {
         // translate old color to new field
-        setStyle("color: " + color + ";" + StringUtils.defaultString(getStyle()));
+        if (color != null) {
+            String newStyle = "";
+            if (color.startsWith("jenkins-!-color")) {
+                newStyle += "color: var(--" + color.replaceFirst("jenkins-!-color-", "") + ");";
+            } else if (color.startsWith("jenkins-!-")) {
+                newStyle += "color: var(--" + color.replaceFirst("jenkins-!-", "") + ");";
+            } else {
+                newStyle += "color: " + color + ";";
+            }
+            setStyle(newStyle + StringUtils.defaultString(getStyle()));
+        }
     }
 
     @Override
