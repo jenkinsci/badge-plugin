@@ -1,0 +1,173 @@
+= Change Log
+
+Starting with version *1.10* the Change Log can be found in the https://github.com/jenkinsci/badge-plugin/releases[GitHub Releases].
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.10[badge-1.10] (2024-05-11)
+
+https://github.com/jenkinsci/badge-plugin/compare/badge-1.9...badge-1.10[Full Changelog]
+
+*Closed issues:*
+
+* Can't removeBadge(id) for a createSummary(icon, id, txt) entry https://github.com/jenkinsci/badge-plugin/issues/45[#45]
+
+*Merged pull requests:*
+
+* Require Jenkins 2.426.3 or newer https://github.com/jenkinsci/badge-plugin/pull/132[#132]
+* Remove unused commons-validator dependency https://github.com/jenkinsci/badge-plugin/pull/131[#131]
+* Support design library symbols and colors https://github.com/jenkinsci/badge-plugin/pull/130[#130]
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.9[badge-1.9] (2020-10-25)
+
+https://github.com/jenkinsci/badge-plugin/compare/badge-1.8...badge-1.9[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.8[badge-1.8] (2018-12-15)
+
+https://github.com/jenkinsci/badge-plugin/compare/badge-1.7...badge-1.8[Full Changelog]
+
+*Closed issues:*
+
+* Create summary removes some html tags https://github.com/jenkinsci/badge-plugin/issues/18[#18]
+
+*Merged pull requests:*
+
+* add global config https://github.com/jenkinsci/badge-plugin/pull/20[#20]
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.7[badge-1.7] (2018-12-15)
+
+https://github.com/jenkinsci/badge-plugin/compare/badge-1.6...badge-1.7[Full Changelog]
+
+*Closed issues:*
+
+* Allow external icons https://github.com/jenkinsci/badge-plugin/issues/16[#16]
+* link on addErrorBadge not working https://github.com/jenkinsci/badge-plugin/issues/17[#17]
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.6[badge-1.6] (2018-10-07)
+
+https://github.com/jenkinsci/badge-plugin/compare/badge-1.5...badge-1.6[Full Changelog]
+
+*Closed issues:*
+
+* Multiple ShortText created by Badge plugin failed to wrapped in build history pane https://github.com/jenkinsci/badge-plugin/commit/e3ab5a7f9b11d9553042e8cde9ccf7c635a8f69c[SECURITY-906] / https://issues.jenkins-ci.org/browse/JENKINS-52287[JENKINS-52287]
+* using icon from other plugins https://github.com/jenkinsci/badge-plugin/issues/12[#12]
+* no public field ‘link’ (or getter method) found in class com.jenkinsci.plugins.badge.dsl.AddShortTextStep https://issues.jenkins-ci.org/browse/JENKINS-53841[JENKINS-53841]
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.5[badge-1.5] (2018-06-18)
+
+https://github.com/jenkinsci/badge-plugin/compare/badge-1.4...badge-1.5[Full Changelog]
+
+*Closed issues:*
+
+* Badge Plugin stored and displayed user-provided HTML for badges and summaries unprocessed, allowing users with the ability to control badge content to store malicious HTML to be displayed within Jenkins. https://github.com/jenkinsci/badge-plugin/commit/63a7744cef33338e62898576a50bcc521d76ba9f[SECURITY-906] / https://jenkins.io/security/advisory/2018-06-25/#SECURITY-906[Jenkins Security Advisory 2018-06-25]
+
+* No page found 'badge.jelly' for class com.jenkinsci.plugins.badge.action.BadgeSummaryAction https://github.com/jenkinsci/badge-plugin/issues/6[#6]
+
+*Merged pull requests:*
+
+* fix one char typo border vs. order https://github.com/jenkinsci/badge-plugin/pull/9[#9] (https://github.com/balihb[balihb])
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.4[badge-1.4] (2018-04-04)
+
+https://github.com/jenkinsci/badge-plugin/compare/badge-1.3...badge-1.4[Full Changelog]
+
+*Merged pull requests:*
+
+* fix action hierarchy https://github.com/jenkinsci/badge-plugin/pull/7[#7] (https://github.com/bakito[bakito])
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.3[badge-1.3] (2018-04-03)
+
+https://github.com/jenkinsci/badge-plugin/compare/badge-1.2...badge-1.3[Full Changelog]
+
+*Closed issues:*
+
+* Adding removeBadge(icon) and removeAllBadges() methods to remove existing badges https://github.com/jenkinsci/badge-plugin/issues/4[#4]
+* Is it possible to add link in the addShortText dsl? https://github.com/jenkinsci/badge-plugin/issues/2[#2]
+
+*Merged pull requests:*
+
+* Adding removeBadge(icon) and removeAllBadges() methods to remove existing badges https://github.com/jenkinsci/badge-plugin/pull/5[#5] (https://github.com/bakito[bakito])
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.2[badge-1.2] (2018-02-27)
+
+https://github.com/jenkinsci/badge-plugin/compare/badge-1.1...badge-1.2[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.1[badge-1.1] (2018-02-23)
+
+https://github.com/jenkinsci/badge-plugin/compare/badge-1.0...badge-1.1[Full Changelog]
+
+*Closed issues:*
+
+* BuildBadgeAction and BadgeSummaryAction need to be serializable https://github.com/jenkinsci/badge-plugin/issues/1[#1]
+
+== https://github.com/jenkinsci/badge-plugin/tree/badge-1.0[badge-1.0] (2018-02-21)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-2.3.1...badge-1.0[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-2.3.1[groovy-postbuild-2.3.1] (2016-02-07)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-2.3...groovy-postbuild-2.3.1[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-2.3[groovy-postbuild-2.3] (2015-12-27)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-2.2.2...groovy-postbuild-2.3[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-2.2.2[groovy-postbuild-2.2.2] (2015-10-17)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-2.2.1...groovy-postbuild-2.2.2[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-2.2.1[groovy-postbuild-2.2.1] (2015-08-17)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-2.2...groovy-postbuild-2.2.1[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-2.2[groovy-postbuild-2.2] (2014-12-19)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-2.1...groovy-postbuild-2.2[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-2.1[groovy-postbuild-2.1] (2014-10-25)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-2.0...groovy-postbuild-2.1[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-2.0[groovy-postbuild-2.0] (2014-09-21)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.10...groovy-postbuild-2.0[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.10[groovy-postbuild-1.10] (2014-07-26)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.9...groovy-postbuild-1.10[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.9[groovy-postbuild-1.9] (2014-04-28)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.8...groovy-postbuild-1.9[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.8[groovy-postbuild-1.8] (2012-08-22)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.7...groovy-postbuild-1.8[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.7[groovy-postbuild-1.7] (2012-05-02)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.6...groovy-postbuild-1.7[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.6[groovy-postbuild-1.6] (2012-02-10)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.5...groovy-postbuild-1.6[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.5[groovy-postbuild-1.5] (2011-11-04)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.4...groovy-postbuild-1.5[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.4[groovy-postbuild-1.4] (2011-04-09)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.3...groovy-postbuild-1.4[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.3[groovy-postbuild-1.3] (2010-03-29)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.2...groovy-postbuild-1.3[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.2[groovy-postbuild-1.2] (2010-03-26)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.1...groovy-postbuild-1.2[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.1[groovy-postbuild-1.1] (2010-02-09)
+
+https://github.com/jenkinsci/badge-plugin/compare/groovy-postbuild-1.0...groovy-postbuild-1.1[Full Changelog]
+
+== https://github.com/jenkinsci/badge-plugin/tree/groovy-postbuild-1.0[groovy-postbuild-1.0] (2010-01-26)
