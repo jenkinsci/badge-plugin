@@ -32,6 +32,8 @@ import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
  */
 public class BadgeSummaryAction extends AbstractBadgeAction {
 
+    private static final long serialVersionUID = 1L;
+
     public BadgeSummaryAction(String id, String icon, String text, String cssClass, String style, String link) {
         super(id, icon, text, cssClass, style, link);
     }

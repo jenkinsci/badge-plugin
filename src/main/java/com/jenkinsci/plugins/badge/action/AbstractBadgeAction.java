@@ -28,6 +28,7 @@ import hudson.PluginWrapper;
 import hudson.model.Action;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +40,9 @@ import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
  * An abstract action providing an id amongst other fields to build a badge.
  * Most of the implementation resides in this class in order to be shared with badges and summaries.
  */
-public abstract class AbstractBadgeAction implements Action {
+public abstract class AbstractBadgeAction implements Action, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = Logger.getLogger(AbstractBadgeAction.class.getName());
 

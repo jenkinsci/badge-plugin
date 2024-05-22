@@ -30,6 +30,8 @@ import hudson.model.BuildBadgeAction;
  */
 public class BadgeAction extends AbstractBadgeAction implements BuildBadgeAction {
 
+    private static final long serialVersionUID = 1L;
+
     public BadgeAction(String id, String icon, String text, String cssClass, String style, String link) {
         super(id, icon, text, cssClass, style, link);
     }
