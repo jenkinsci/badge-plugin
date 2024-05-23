@@ -41,13 +41,13 @@ image::images/badge.png[Badge,height="250",align="center"]
 
 ==== addBadge
 
-This is the central pipeline step that allows user to add custom badges to their builds.
+This is the central pipeline step that allows users to add custom badges to their builds.
 A badge can either be an icon or text that can optionally be formatted as HTML rather than plain text.
 Users can also add links to the badges as well as styling to get the desired visual results.
 
 ===== Examples
 
-See https://www.jenkins.io/doc/pipeline/steps/badge/#addbadge-add-badge[Jenkins Pipeline Steps Reference] for a detailed descriptions of the supported parameters.
+See https://www.jenkins.io/doc/pipeline/steps/badge/#addbadge-add-badge[Jenkins Pipeline Steps Reference] for detailed descriptions of the supported parameters.
 
 [source,groovy]
 ----
@@ -75,11 +75,11 @@ image::images/examples/addBadge.png[AddBadge,height="250",align="center",title="
 
 ==== addInfoBadge
 
-A convenience pipeline step that adds an `info` icon alongside a text and optional link.
+A convenience pipeline step that adds an `info` icon alongside a tooltip text and optional link.
 
 ===== Examples
 
-See https://www.jenkins.io/doc/pipeline/steps/badge/#addinfobadge-add-info-badge[Jenkins Pipeline Steps Reference] for a detailed descriptions of the supported parameters.
+See https://www.jenkins.io/doc/pipeline/steps/badge/#addinfobadge-add-info-badge[Jenkins Pipeline Steps Reference] for detailed descriptions of the supported parameters.
 
 [source,groovy]
 ----
@@ -98,11 +98,11 @@ image::images/examples/addInfoBadge.png[AddInfoBadge,height="250",align="center"
 
 ==== addWarningBadge
 
-A convenience pipeline step that adds a `warning` icon alongside a text and optional link.
+A convenience pipeline step that adds a `warning` icon alongside a tooltip text and optional link.
 
 ===== Examples
 
-See https://www.jenkins.io/doc/pipeline/steps/badge/#addwarningbadge-add-warning-badge[Jenkins Pipeline Steps Reference] for a detailed descriptions of the supported parameters.
+See https://www.jenkins.io/doc/pipeline/steps/badge/#addwarningbadge-add-warning-badge[Jenkins Pipeline Steps Reference] for detailed descriptions of the supported parameters.
 
 [source,groovy]
 ----
@@ -116,11 +116,11 @@ image::images/examples/addWarningBadge.png[AddWarningBadge,height="250",align="c
 
 ==== addErrorBadge
 
-A convenience pipeline step that adds an `error` icon alongside a text and optional link.
+A convenience pipeline step that adds an `error` icon alongside a tooltip text and optional link.
 
 ===== Examples
 
-See https://www.jenkins.io/doc/pipeline/steps/badge/#adderrorbadge-add-error-badge[Jenkins Pipeline Steps Reference] for a detailed descriptions of the supported parameters.
+See https://www.jenkins.io/doc/pipeline/steps/badge/#adderrorbadge-add-error-badge[Jenkins Pipeline Steps Reference] for detailed descriptions of the supported parameters.
 
 [source,groovy]
 ----
@@ -144,7 +144,7 @@ Users can also add links to the summary as well as styling to get the desired vi
 
 ===== Examples
 
-See https://www.jenkins.io/doc/pipeline/steps/badge/#addsummary-add-summary[Jenkins Pipeline Steps Reference] for a detailed descriptions of the supported parameters.
+See https://www.jenkins.io/doc/pipeline/steps/badge/#addsummary-add-summary[Jenkins Pipeline Steps Reference] for detailed descriptions of the supported parameters.
 
 [source,groovy]
 ----
