@@ -201,14 +201,14 @@ Puts a badge with a short text
 /**
  * minimal params
  *
- * text: The text to add fot this badge
+ * text: The text to add for this badge
  */
 addShortText(text: <text>)
 
 /**
  * all params
  *
- * text: The text to add fot this badge
+ * text: The text to add for this badge
  * background: (optional) The background-color for this short text
  * border: (optional) The border width for this short text
  * borderColor: (optional) The order color for this short text
