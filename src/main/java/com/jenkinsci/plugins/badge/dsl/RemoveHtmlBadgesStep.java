@@ -29,7 +29,6 @@ import hudson.Extension;
 import hudson.model.Action;
 import hudson.model.Run;
 import hudson.model.TaskListener;
-import java.io.IOException;
 import java.io.PrintStream;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
@@ -98,11 +97,9 @@ public class RemoveHtmlBadgesStep extends Step {
         }
 
         @Override
-        protected Void run() throws IOException, InterruptedException {
+        protected Void run() throws Exception {
             Run<?, ?> run = getContext().get(Run.class);
-            if (run != null) {
-                run.getAllActions().stream().filter(this::matches).forEach(run::removeAction);
-            }
+            run.getAllActions().stream().filter(this::matches).forEach(run::removeAction);
 
             TaskListener listener = getContext().get(TaskListener.class);
             PrintStream logger = listener.getLogger();

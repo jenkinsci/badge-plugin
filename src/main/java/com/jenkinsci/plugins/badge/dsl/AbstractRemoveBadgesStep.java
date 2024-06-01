@@ -26,7 +26,6 @@ package com.jenkinsci.plugins.badge.dsl;
 import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import hudson.model.Action;
 import hudson.model.Run;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -82,11 +81,9 @@ abstract class AbstractRemoveBadgesStep extends Step {
         }
 
         @Override
-        protected Void run() throws IOException, InterruptedException {
+        protected Void run() throws Exception {
             Run<?, ?> run = getContext().get(Run.class);
-            if (run != null) {
-                run.getAllActions().stream().filter(this::matches).forEach(run::removeAction);
-            }
+            run.getAllActions().stream().filter(this::matches).forEach(run::removeAction);
             return null;
         }
 
