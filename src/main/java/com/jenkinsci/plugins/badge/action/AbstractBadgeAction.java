@@ -183,6 +183,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
     private transient String borderColor;
 
     /**
+     * @deprecated kept for backwards compatibility.
      * Translates pre 2.0 build.xml to latest format for backwards compatibility.
      * @return this instance
      */
