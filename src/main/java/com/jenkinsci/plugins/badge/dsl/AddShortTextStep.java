@@ -204,11 +204,8 @@ public class AddShortTextStep extends Step {
         @Override
         protected Void run() throws Exception {
             // translate old styling to new field
-            String style = "";
-            if (shortText.getBorderString() != null) {
-                style += "border: " + shortText.getBorderString() + " solid "
-                        + (shortText.getBorderColor() != null ? shortText.getBorderColor() : "") + ";";
-            }
+            String style = "border: " + (shortText.getBorderString() != null ? shortText.getBorderString() : "")
+                    + " solid " + (shortText.getBorderColor() != null ? shortText.getBorderColor() : "") + ";";
             if (shortText.getBackground() != null) {
                 style += "background: " + shortText.getBackground() + ";";
             }
