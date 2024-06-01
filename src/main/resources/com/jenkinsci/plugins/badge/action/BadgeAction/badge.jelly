@@ -24,12 +24,12 @@ THE SOFTWARE.
 -->
 
 <?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" xmlns:st="jelly:stapler">
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
 
   <j:if test="${it.iconPath != null}">
-    <j:set var="badgeStyle" value=""/>
+    <j:set var="badgeStyle" value="width: 16px; height: 16px;"/>
     <j:if test="${it.iconColorStyle != null}">
-      <j:set var="badgeStyle" value="color: ${it.iconColorStyle};"/>
+      <j:set var="badgeStyle" value="${badgeStyle} color: ${it.iconColorStyle};"/>
     </j:if>
 
     <j:choose>
@@ -43,29 +43,23 @@ THE SOFTWARE.
   </j:if>
 
   <j:if test="${it.iconPath == null}">
-    <j:set var="badgeStyle" value="border: solid"/>
-    <j:set var="badgeClass" value="badge-shortText"/>
+    <j:set var="badgeStyle" value="border: solid;"/>
     <j:if test="${it.border != null}">
-      <j:set var="badgeStyle" value="border: ${it.border} solid ${it.borderColor}"/>
+      <j:set var="badgeStyle" value="border: ${it.border} solid ${it.borderColor};"/>
     </j:if>
-    <j:choose>
-      <j:when test="${it.background == null}">
-        <j:set var="badgeClass" value="${badgeClass} badge-shortText--default-background"/>
-      </j:when>
-      <j:otherwise>
-        <j:set var="badgeStyle" value="${badgeStyle};background: ${it.background}"/>
-      </j:otherwise>
-    </j:choose>
+    <j:if test="${it.background != null}">
+      <j:set var="badgeStyle" value="${badgeStyle} background: ${it.background};"/>
+    </j:if>
     <j:if test="${it.iconColorStyle != null}">
-      <j:set var="badgeStyle" value="${badgeStyle};color: ${it.iconColorStyle};"/>
+      <j:set var="badgeStyle" value="${badgeStyle} color: ${it.iconColorStyle};"/>
     </j:if>
 
     <j:choose>
       <j:when test="${it.link == null}">
-        <span style="${badgeStyle}" class="${it.iconClass} ${badgeClass}">${it.text}</span>
+        <span style="${badgeStyle}" class="${it.iconClass}">${it.text}</span>
       </j:when>
       <j:otherwise>
-        <a href="${it.link}"><span style="${badgeStyle}" class="${it.iconClass} ${badgeClass}">${it.text}</span></a>
+        <a href="${it.link}"><span style="${badgeStyle}" class="${it.iconClass}">${it.text}</span></a>
       </j:otherwise>
     </j:choose>
   </j:if>
