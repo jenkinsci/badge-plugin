@@ -9,12 +9,14 @@
     <p>
         The plugin supports symbols from the <a href="https://ionic.io/ionicons">ionicons library</a> through the <a href="https://plugins.jenkins.io/ionicons-api/">ionicons-api-plugin</a>.
         More symbols can be added by installing additional plugins, such as <a href="https://plugins.jenkins.io/font-awesome-api">font-awesome-api-plugin</a> or <a href="https://plugins.jenkins.io/custom-folder-icon">custom-folder-icon-plugin</a>.
-        Symbols are referenced as "symbol-<i>icon-name</i> plugin-<i>plugin-name</i>".
-        For example, the following are all valid references to symbols from the ionicons library:
+        Symbols from plugins are referenced as "symbol-<i>icon-name</i> plugin-<i>plugin-name</i>" and Jenkins Core icons as "icon-<i>icon-name</i>" or "symbol-<i>icon-name</i>".
+        For example, the following are all valid references to symbols:
     <ul>
         <li><code>addBadge icon: 'symbol-alert-circle-outline plugin-ionicons-api', text: 'This is an alert symbol'</code></li>
         <li><code>addBadge icon: 'symbol-bar-chart-filled plugin-ionicons-api', text: 'This is a bar chart symbol'</code></li>
         <li><code>addBadge icon: 'symbol-battery-half-sharp plugin-ionicons-api', text: 'This is a half filled battery symbol'</code></li>
+        <li><code>addBadge icon: 'symbol-cube', text: 'This is a Jenkins Core symbol'</code></li>
+        <li><code>addBadge icon: 'icon-gear', text: 'This is a Jenkins Core icon'</code></li>
     </ul>
     </p>
 

@@ -5,20 +5,20 @@
         Symbols from plugins are referenced as "symbol-<i>icon-name</i> plugin-<i>plugin-name</i>" and Jenkins Core icons as "icon-<i>icon-name</i>" or "symbol-<i>icon-name</i>".
         For example, the following are all valid references to symbols:
         <ul>
-            <li><code>addBadge icon: 'symbol-alert-circle-outline plugin-ionicons-api', text: 'This is an alert symbol'</code></li>
-            <li><code>addBadge icon: 'symbol-bar-chart-filled plugin-ionicons-api', text: 'This is a bar chart symbol'</code></li>
-            <li><code>addBadge icon: 'symbol-battery-half-sharp plugin-ionicons-api', text: 'This is a half filled battery symbol'</code></li>
-            <li><code>addBadge icon: 'symbol-cube', text: 'This is a Jenkins Core symbol'</code></li>
-            <li><code>addBadge icon: 'icon-gear', text: 'This is a Jenkins Core icon'</code></li>
+            <li><code>addSummary icon: 'symbol-alert-circle-outline plugin-ionicons-api', text: 'This is an alert symbol'</code></li>
+            <li><code>addSummary icon: 'symbol-bar-chart-filled plugin-ionicons-api', text: 'This is a bar chart symbol'</code></li>
+            <li><code>addSummary icon: 'symbol-battery-half-sharp plugin-ionicons-api', text: 'This is a half filled battery symbol'</code></li>
+            <li><code>addSummary icon: 'symbol-cube', text: 'This is a Jenkins Core symbol'</code></li>
+            <li><code>addSummary icon: 'icon-gear', text: 'This is a Jenkins Core icon'</code></li>
         </ul>
     </p>
 
     <p>
         The plugin allows you to also reference images from within Jenkins as well as relative and remote URL:
     <ul>
-        <li><code>addBadge icon: '/jenkins.png', text: 'This is a relative image'</code></li>
-        <li><code>addBadge icon: 'https://foo.bar/icon.png', text: 'This is a remote icon'</code></li>
-        <li><code>addBadge icon: 'blue.png', text: 'This is a icon from Jenkins'</code></li>
+        <li><code>addSummary icon: '/jenkins.png', text: 'This is a relative image'</code></li>
+        <li><code>addSummary icon: 'https://foo.bar/icon.png', text: 'This is a remote icon'</code></li>
+        <li><code>addSummary icon: 'blue.png', text: 'This is a icon from Jenkins'</code></li>
     </ul>
     </p>
 
@@ -27,9 +27,9 @@
         These icons are listed in the <a href="https://plugins.jenkins.io/badge/#plugin-content-icons">plugin documentation</a> and are referenced as "<i>image-name</i>.gif".
         For example, the following are all valid references to icons included with the plugin:
         <ul>
-            <li><code>addBadge icon: 'completed.gif', text: 'This is a completed symbol'</code></li>
-            <li><code>addBadge icon: 'success.gif', text: 'This is a success icon'</code></li>
-            <li><code>addBadge icon: 'warning.gif', text: 'This is a warning icon'</code></li>
+            <li><code>addSummary icon: 'completed.gif', text: 'This is a completed symbol'</code></li>
+            <li><code>addSummary icon: 'success.gif', text: 'This is a success icon'</code></li>
+            <li><code>addSummary icon: 'warning.gif', text: 'This is a warning icon'</code></li>
         </ul>
     </p>
 </div>

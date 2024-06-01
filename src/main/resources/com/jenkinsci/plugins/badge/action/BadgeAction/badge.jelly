@@ -33,14 +33,14 @@ THE SOFTWARE.
                 <j:when test="${it.link != null &amp;&amp; it.link != ''}">
                     <span>
                         <a href="${it.link}" class="${it.cssClass}" style="${it.style}">
-                            <l:icon class="icon-sm" src="${it.icon}" alt="${it.text}" htmlTooltip="${it.text}"/>
+                            <l:icon class="icon-sm" style="width: 16px; height: 16px;" src="${it.icon}" alt="${it.text}" htmlTooltip="${it.text}"/>
                         </a>
                     </span>
                 </j:when>
                 <!-- icon without link -->
                 <j:otherwise>
                     <span class="${it.cssClass}" style="${it.style}">
-                        <l:icon class="icon-sm" src="${it.icon}" alt="${it.text}" htmlTooltip="${it.text}"/>
+                        <l:icon class="icon-sm" style="width: 16px; height: 16px;" src="${it.icon}" alt="${it.text}" htmlTooltip="${it.text}"/>
                     </span>
                 </j:otherwise>
             </j:choose>

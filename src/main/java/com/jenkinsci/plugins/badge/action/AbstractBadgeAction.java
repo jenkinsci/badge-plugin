@@ -86,6 +86,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
         if (StringUtils.isEmpty(icon)
                 || icon.startsWith("/")
                 || icon.startsWith("symbol-")
+                || icon.startsWith("icon-")
                 || icon.matches("^https?://.*")) {
             return icon;
         }

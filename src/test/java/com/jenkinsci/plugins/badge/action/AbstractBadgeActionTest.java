@@ -72,6 +72,12 @@ abstract class AbstractBadgeActionTest {
         action.setIcon("symbol-rocket plugin-ionicons-api");
         assertEquals("symbol-rocket plugin-ionicons-api", action.getIcon());
 
+        action.setIcon("symbol-cube");
+        assertEquals("symbol-cube", action.getIcon());
+
+        action.setIcon("icon-gear");
+        assertEquals("icon-gear", action.getIcon());
+
         action.setIcon("https://host.domain/icon.png");
         assertEquals("https://host.domain/icon.png", action.getIcon());
 
