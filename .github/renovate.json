@@ -1,0 +1,27 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "automerge": true,
+  "extends": [
+    "config:base",
+    ":semanticCommitsDisabled"
+  ],
+  "reviewers": [
+    "team:badge-plugin-developers"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "rebaseWhen": "conflicted",
+  "regexManagers": [
+    {
+      "fileMatch": [
+        ".mvn/extensions.xml"
+      ],
+      "matchStrings": [
+        "<version>(?<currentValue>.*?)<\/version>"
+      ],
+      "depNameTemplate": "io.jenkins.tools.incrementals:git-changelist-maven-extension",
+      "datasourceTemplate": "maven"
+    }
+  ]
+}
