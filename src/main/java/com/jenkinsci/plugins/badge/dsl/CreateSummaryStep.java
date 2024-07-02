@@ -25,10 +25,12 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
+import hudson.model.TaskListener;
+import java.io.PrintStream;
 import org.apache.commons.lang.StringUtils;
+import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
@@ -37,18 +39,28 @@ import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Create a summary text.
+ *
+ * @deprecated replaced by {@link AddBadgeStep}.
  */
-public class CreateSummaryStep extends AbstractStep {
+@Deprecated(since = "2.0", forRemoval = true)
+public class CreateSummaryStep extends Step {
 
+    private String id;
     private final String icon;
     private String text;
 
-    /**
-     * @param icon The icon for this summary
-     */
     @DataBoundConstructor
     public CreateSummaryStep(String icon) {
         this.icon = icon;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    @DataBoundSetter
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getIcon() {
@@ -59,9 +71,6 @@ public class CreateSummaryStep extends AbstractStep {
         return text;
     }
 
-    /**
-     * @param text The title text for this summary
-     */
     @DataBoundSetter
     public void setText(String text) {
         this.text = text;
@@ -73,6 +82,7 @@ public class CreateSummaryStep extends AbstractStep {
     }
 
     @Extension
+    @Deprecated(since = "2.0", forRemoval = true)
     public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
 
         @Override
@@ -87,18 +97,14 @@ public class CreateSummaryStep extends AbstractStep {
         }
     }
 
+    @Deprecated(since = "2.0", forRemoval = true)
     public static class Execution extends SynchronousStepExecution<BadgeSummaryAction> {
 
         private static final long serialVersionUID = 1L;
 
-        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-        private final transient String icon;
-
-        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
-        private final transient String text;
-
-        @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
         private final String id;
+        private final String icon;
+        private final String text;
 
         Execution(String icon, String text, String id, StepContext context) {
             super(context);
@@ -109,12 +115,16 @@ public class CreateSummaryStep extends AbstractStep {
 
         @Override
         protected BadgeSummaryAction run() throws Exception {
-            BadgeSummaryAction action = new BadgeSummaryAction(icon);
+            BadgeSummaryAction action = new BadgeSummaryAction(id, icon, null, null, null, null);
             if (StringUtils.isNotBlank(text)) {
                 action.appendText(text);
             }
-            action.setId(id);
             getContext().get(Run.class).addAction(action);
+
+            TaskListener listener = getContext().get(TaskListener.class);
+            PrintStream logger = listener.getLogger();
+            logger.println("Step 'createSummary' is deprecated - please consider using 'addSummary' instead.");
+
             return action;
         }
     }

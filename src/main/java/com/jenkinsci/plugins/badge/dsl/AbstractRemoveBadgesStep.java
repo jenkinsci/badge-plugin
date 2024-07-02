@@ -23,50 +23,73 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.AbstractAction;
+import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import hudson.model.Action;
 import hudson.model.Run;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.lang.StringUtils;
+import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 
 /**
- * Abstract class to remove badges
+ * Abstract class to remove badges.
  */
-abstract class AbstractRemoveBadgesStep extends AbstractStep {
-    @Override
-    public StepExecution start(StepContext context) {
-        return new Execution(context, getActionClass(), getId());
+abstract class AbstractRemoveBadgesStep extends Step {
+
+    private final String id;
+
+    protected AbstractRemoveBadgesStep(String id) {
+        this.id = id;
     }
 
-    protected abstract Class<? extends AbstractAction> getActionClass();
+    protected String getId() {
+        return id;
+    }
+
+    protected abstract Class<? extends AbstractBadgeAction> getActionClass();
+
+    @Override
+    public String toString() {
+        List<String> fields = new ArrayList<>();
+
+        if (getId() != null) {
+            fields.add("id: '" + getId() + "'");
+        }
+
+        return getDescriptor().getFunctionName() + "(" + StringUtils.join(fields, ", ") + ")";
+    }
+
+    @Override
+    public StepExecution start(StepContext context) {
+        return new Execution(getId(), getActionClass(), context);
+    }
 
     public static class Execution extends SynchronousStepExecution<Void> {
 
         private static final long serialVersionUID = 1L;
 
-        private final Class<? extends AbstractAction> actionClass;
         private final String id;
+        private final Class<? extends AbstractBadgeAction> actionClass;
 
-        Execution(StepContext context, Class<? extends AbstractAction> actionClass, String id) {
+        Execution(String id, Class<? extends AbstractBadgeAction> actionClass, StepContext context) {
             super(context);
-            this.actionClass = actionClass;
             this.id = id;
+            this.actionClass = actionClass;
         }
 
         @Override
-        protected Void run() throws IOException, InterruptedException {
+        protected Void run() throws Exception {
             Run<?, ?> run = getContext().get(Run.class);
-            if (run != null) {
-                run.getAllActions().stream().filter(this::matches).forEach(run::removeAction);
-            }
+            run.getAllActions().stream().filter(this::matches).forEach(run::removeAction);
             return null;
         }
 
         private boolean matches(Action a) {
             return actionClass.isAssignableFrom(a.getClass())
-                    && (id == null || id.equals(((AbstractAction) a).getId()));
+                    && (id == null || id.equals(((AbstractBadgeAction) a).getId()));
         }
     }
 }

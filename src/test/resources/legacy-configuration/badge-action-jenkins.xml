@@ -1,0 +1,3 @@
+<com.jenkinsci.plugins.badge.action.BadgeAction plugin="badge@1.12">
+    <color>jenkins-!-value-color</color>
+</com.jenkinsci.plugins.badge.action.BadgeAction>

@@ -1,0 +1,5 @@
+<com.jenkinsci.plugins.badge.action.BadgeAction plugin="badge@1.12">
+    <color>color</color>
+    <background>background</background>
+    <border>border</border>
+</com.jenkinsci.plugins.badge.action.BadgeAction>

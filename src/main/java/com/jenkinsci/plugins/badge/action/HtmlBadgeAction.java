@@ -23,20 +23,27 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import com.jenkinsci.plugins.badge.BadgePlugin;
-import hudson.markup.RawHtmlMarkupFormatter;
+import hudson.model.Action;
+import hudson.model.BuildBadgeAction;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import jenkins.model.Jenkins;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
+/**
+ *  @deprecated replaced by {@link BadgeAction}.
+ */
 @ExportedBean(defaultVisibility = 2)
-public class HtmlBadgeAction extends AbstractBadgeAction {
+@Deprecated(since = "2.0", forRemoval = true)
+public class HtmlBadgeAction implements BuildBadgeAction, Action, Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(HtmlBadgeAction.class.getName());
 
+    private String id;
     private final String html;
 
     private HtmlBadgeAction(String html) {
@@ -47,33 +54,41 @@ public class HtmlBadgeAction extends AbstractBadgeAction {
         return new HtmlBadgeAction(html);
     }
 
-    /* Action methods */
-    public String getUrlName() {
-        return "";
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getDisplayName() {
-        return "";
+    @Exported
+    public String getId() {
+        return id;
     }
 
-    public String getIconFileName() {
-        return null;
+    @Exported
+    public String getHtml() {
+        try {
+            return Jenkins.get().getMarkupFormatter().translate(html);
+        } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "Error preparing HTML content for UI", ex);
+            return "<b><font color=\"var(--error-color)\">Error preparing HTML content for UI</font></b>";
+        }
     }
 
     public String getRawHtml() {
         return html;
     }
 
-    @Exported
-    public String getHtml() {
-        if (BadgePlugin.get().isDisableFormatHTML()) {
-            return html;
-        }
-        try {
-            return RawHtmlMarkupFormatter.INSTANCE.translate(html);
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Error preparing html content for ui", e);
-            return "<b><font color=\"red\">ERROR</font></b>";
-        }
+    @Override
+    public String getUrlName() {
+        return "";
+    }
+
+    @Override
+    public String getDisplayName() {
+        return "";
+    }
+
+    @Override
+    public String getIconFileName() {
+        return null;
     }
 }
