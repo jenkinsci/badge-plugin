@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>4.85</version>
+    <version>4.86</version>
   </parent>
   <groupId>org.jenkins-ci.plugins</groupId>
   <artifactId>badge</artifactId>
@@ -49,7 +49,7 @@
   </scm>
 
   <properties>
-    <jenkins.version>2.426.3</jenkins.version>
+    <jenkins.version>2.440.3</jenkins.version>
     <revision>2.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/badge-plugin</gitHubRepo>
@@ -62,8 +62,8 @@
     <dependencies>
       <dependency>
         <groupId>io.jenkins.tools.bom</groupId>
-        <artifactId>bom-2.426.x</artifactId>
-        <version>3208.vb_21177d4b_cd9</version>
+        <artifactId>bom-2.440.x</artifactId>
+        <version>3221.ve8f7b_fdd149d</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
