@@ -23,44 +23,30 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static java.util.UUID.randomUUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import java.util.List;
-import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
-import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
-import org.junit.jupiter.api.Test;
-import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
-class RemoveSummariesStepTest extends AbstractBadgeTest {
+@WithJenkins
+class RemoveSummariesStepTest extends RemoveBadgesStepTest {
 
-    @Test
-    void removeSummaries_by_id(JenkinsRule r) throws Exception {
-        removeSummaries(r, "removeSummaries(id:'a')", "b");
+    @Override
+    protected void assertActionExists(WorkflowRun run, int expected) {
+        List<BadgeSummaryAction> summaryActions = run.getActions(BadgeSummaryAction.class);
+        assertEquals(expected, summaryActions.size());
     }
 
-    @Test
-    void removeSummaries_all(JenkinsRule r) throws Exception {
-        removeSummaries(r, "removeSummaries()");
+    @Override
+    protected AbstractAddBadgeStep createAddStep(String id) {
+        return new AddSummaryStep(
+                id, "symbol-rocket plugin-ionicons-api", "Test Text", "icon-md", "color: green", "https://jenkins.io");
     }
 
-    private void removeSummaries(JenkinsRule r, String removeScript, String... remainingBadgeIds) throws Exception {
-        String icon = randomUUID().toString();
-
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-        p.setDefinition(new CpsFlowDefinition(
-                "def summaryA = createSummary(id:'a', icon:\"" + icon + "\")\n"
-                        + "def summaryB = createSummary(id:'b', icon:\"" + icon + "\")\n"
-                        + removeScript,
-                true));
-        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
-        List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
-        assertEquals(remainingBadgeIds.length, summaryActions.size());
-
-        for (int i = 0; i < remainingBadgeIds.length; i++) {
-            assertEquals(remainingBadgeIds[i], summaryActions.get(i).getId());
-        }
+    @Override
+    protected AbstractRemoveBadgesStep createRemoveStep(String id) {
+        return new RemoveSummariesStep(id);
     }
 }

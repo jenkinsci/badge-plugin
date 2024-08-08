@@ -1,18 +1,20 @@
 <div>
-  <p>
-    Adds a warning badge to the current Pipeline build.
-    A warning badge uses the "warning" symbol with a text message.
-    Badges added by <code>addWarningBadge</code> are displayed in the build history of the Pipeline job.
-  </p>
+    <p>
+        Adds one or more error badges to the current Pipeline build.
+        Warning badges text messages with an icon and an optional clickable hyperlink.
+        Warning badges are often used to provide a visual indicator of additional status information about a Pipeline build.
+        Warning badges added by <code>addWarningBadge</code> are displayed in the build history of the Pipeline job.
+    </p>
 
-  <p>
-    The <a href="https://www.jenkins.io/redirect/pipeline-snippet-generator"><strong>Pipeline Syntax Snippet Generator</strong></a> guides the user to select badge options and provides online help for the options.
-  </p>
+    <strong><a id="badge-with-text">Example: Badge with text</a></strong>
+    <p>
+        The following example adds a warning badge with the text, "This is alarming":
+        <pre><code>addWarningBadge text: 'This is alarming'</code></pre>
+    </p>
 
-  <strong><a id="badge-with-warning">Example: Badge with a warning</a></strong>
-  <p>
-    The following example adds a "warning" symbol with the text, "This is a warning":
-    <pre><code>addWarningBadge text: 'This is a warning'</code></pre>
-  </p>
-
+    <strong><a id="badge-with-text-and-link">Example: Badge with text and link</a></strong>
+    <p>
+        The following example adds a warning badge with the text, "This is alarming" and a link:
+        <pre><code>addWarningBadge text: 'This is alarming', link: 'https://issues.jenkins.io/browse/JENKINS-59646'</code></pre>
+    </p>
 </div>

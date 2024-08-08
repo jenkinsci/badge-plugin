@@ -25,50 +25,69 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
+import hudson.model.BuildBadgeAction;
 import java.util.List;
+import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
-class RemoveBadgesStepTest extends AbstractBadgeTest {
+@WithJenkins
+class RemoveBadgesStepTest extends AbstractRemoveBadgeStepTest {
 
     @Test
-    void removeBadges_by_id(JenkinsRule r) throws Exception {
-        removeBadges(r, "addInfoBadge(text: 'a'", "removeBadges(id:'a')", "b");
+    void removeById(JenkinsRule r) throws Exception {
+        String badgeId = UUID.randomUUID().toString();
+        AbstractAddBadgeStep addStep = createAddStep(badgeId);
+        AbstractRemoveBadgesStep removeStep = createRemoveStep(badgeId);
+        runRemoveJob(r, addStep, removeStep, 0);
     }
 
     @Test
-    void removeBadges_all(JenkinsRule r) throws Exception {
-        removeBadges(r, "addInfoBadge(text: 'a'", "removeBadges()");
+    void removeAll(JenkinsRule r) throws Exception {
+        String badgeId = UUID.randomUUID().toString();
+        AbstractAddBadgeStep addStep = createAddStep(badgeId);
+        AbstractRemoveBadgesStep removeStep = createRemoveStep(null);
+        runRemoveJob(r, addStep, removeStep, 0);
     }
 
     @Test
-    void removeHtmlBadges_by_id(JenkinsRule r) throws Exception {
-        removeBadges(r, "addHtmlBadge(html: 'a'", "removeHtmlBadges(id:'a')", "b");
+    void removeInvalidId(JenkinsRule r) throws Exception {
+        String badgeId = UUID.randomUUID().toString();
+        AbstractAddBadgeStep addStep = createAddStep(badgeId);
+        AbstractRemoveBadgesStep removeStep = createRemoveStep(UUID.randomUUID().toString());
+        runRemoveJob(r, addStep, removeStep, 1);
     }
 
-    @Test
-    void removeHtmlBadges_all(JenkinsRule r) throws Exception {
-        removeBadges(r, "addHtmlBadge(html: 'a'", "removeHtmlBadges()");
-    }
-
-    private void removeBadges(JenkinsRule r, String badgeScriptPrefix, String removeScript, String... remainingBadgeIds)
+    protected void runRemoveJob(
+            JenkinsRule r, AbstractAddBadgeStep addStep, AbstractRemoveBadgesStep removeStep, int expected)
             throws Exception {
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-        String script = badgeScriptPrefix + ", id: 'a')\n" + badgeScriptPrefix + ", id: 'b')\n" + removeScript;
+        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
-        p.setDefinition(new CpsFlowDefinition(script, true));
-        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+        String script = addStep.toString() + "\n";
+        script += removeStep.toString();
 
-        List<AbstractBadgeAction> badgeActions = b.getActions(AbstractBadgeAction.class);
+        project.setDefinition(new CpsFlowDefinition(script, true));
+        WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
 
-        assertEquals(remainingBadgeIds.length, badgeActions.size());
+        assertActionExists(run, expected);
+    }
 
-        for (int i = 0; i < remainingBadgeIds.length; i++) {
-            assertEquals(remainingBadgeIds[i], badgeActions.get(i).getId());
-        }
+    protected void assertActionExists(WorkflowRun run, int expected) {
+        List<BuildBadgeAction> badgeActions = run.getBadgeActions();
+        assertEquals(expected, badgeActions.size());
+    }
+
+    protected AbstractAddBadgeStep createAddStep(String id) {
+        return new AddBadgeStep(
+                id, "symbol-rocket plugin-ionicons-api", "Test Text", "icon-md", "color: green", "https://jenkins.io");
+    }
+
+    @Override
+    protected AbstractRemoveBadgesStep createRemoveStep(String id) {
+        return new RemoveBadgesStep(id);
     }
 }

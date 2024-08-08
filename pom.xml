@@ -50,12 +50,13 @@
 
   <properties>
     <jenkins.version>2.440.3</jenkins.version>
-    <revision>1.14</revision>
+    <revision>2.0</revision>
     <changelist>-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/badge-plugin</gitHubRepo>
     <spotbugs.effort>Max</spotbugs.effort>
     <spotbugs.threshold>Low</spotbugs.threshold>
     <spotless.check.skip>false</spotless.check.skip>
+    <hpi.compatibleSinceVersion>2.0</hpi.compatibleSinceVersion>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -75,10 +76,6 @@
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins</groupId>
-      <artifactId>antisamy-markup-formatter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.jenkins-ci.plugins</groupId>
       <artifactId>script-security</artifactId>
     </dependency>
     <dependency>
@@ -88,6 +85,11 @@
     <dependency>
       <groupId>org.jenkins-ci.plugins.workflow</groupId>
       <artifactId>workflow-step-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>antisamy-markup-formatter</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.jenkins-ci.plugins.workflow</groupId>

@@ -1,18 +1,20 @@
 <div>
-  <p>
-    Adds an error badge to the current Pipeline build.
-    An error badge uses the "error" symbol with a text message.
-    Badges added by <code>addErrorBadge</code> are displayed in the build history of the Pipeline job.
-  </p>
+    <p>
+        Adds one or more error badges to the current Pipeline build.
+        Error badges text messages with an icon and an optional clickable hyperlink.
+        Error badges are often used to provide a visual indicator of additional status information about a Pipeline build.
+        Error badges added by <code>addErrorBadge</code> are displayed in the build history of the Pipeline job.
+    </p>
 
-  <p>
-    The <a href="https://www.jenkins.io/redirect/pipeline-snippet-generator"><strong>Pipeline Syntax Snippet Generator</strong></a> guides the user to select badge options and provides online help for the options.
-  </p>
+    <strong><a id="badge-with-text">Example: Badge with text</a></strong>
+    <p>
+        The following example adds an error badge with the text, "This is alarming":
+        <pre><code>addErrorBadge text: 'This is alarming'</code></pre>
+    </p>
 
-  <strong><a id="badge-with-error">Example: Badge with an error</a></strong>
-  <p>
-    The following example adds an "error" symbol with the text, "This is an error":
-    <pre><code>addErrorBadge text: 'This is an error'</code></pre>
-  </p>
-
+    <strong><a id="badge-with-text-and-link">Example: Badge with text and link</a></strong>
+    <p>
+        The following example adds an error badge with the text, "This is alarming" and a link:
+        <pre><code>addErrorBadge text: 'This is alarming', link: 'https://issues.jenkins.io/browse/JENKINS-59646'</code></pre>
+    </p>
 </div>

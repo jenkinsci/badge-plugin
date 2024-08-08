@@ -1,0 +1,3 @@
+<com.jenkinsci.plugins.badge.action.BadgeSummaryAction plugin="badge@1.12">
+    <summaryText>summaryText</summaryText>
+</com.jenkinsci.plugins.badge.action.BadgeSummaryAction>
