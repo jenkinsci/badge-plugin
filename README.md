@@ -294,6 +294,7 @@ More symbols can be referenced by installing additional plugins, such as [font-a
 ```groovy
 addBadge(icon: 'symbol-cube', text: 'a cubed build')
 addBadge(icon: 'symbol-star plugin-ionicons-api', text: 'a starred build')
+addBadge(icon: 'symbol-brands/git plugin-font-awesome-api', text: 'the git logo')
 addBadge(icon: 'symbol-symbolName plugin-yourArtifactId', text: 'another icon build')
 ```
 
