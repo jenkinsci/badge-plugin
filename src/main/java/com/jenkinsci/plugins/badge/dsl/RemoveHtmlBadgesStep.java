@@ -23,22 +23,43 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import hudson.model.Action;
+import hudson.model.Run;
+import hudson.model.TaskListener;
+import java.io.PrintStream;
+import org.jenkinsci.plugins.workflow.steps.Step;
+import org.jenkinsci.plugins.workflow.steps.StepContext;
+import org.jenkinsci.plugins.workflow.steps.StepExecution;
+import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Removes all html badges or the badges with a given id.
+ *
+ * @deprecated replaced by {@link RemoveBadgesStep}.
  */
-public class RemoveHtmlBadgesStep extends AbstractRemoveBadgesStep {
+@Deprecated(since = "2.0", forRemoval = true)
+public class RemoveHtmlBadgesStep extends Step {
+
+    private String id;
 
     @DataBoundConstructor
     public RemoveHtmlBadgesStep() {}
 
-    @Override
-    protected Class<? extends AbstractBadgeAction> getActionClass() {
+    @DataBoundSetter
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    protected Class<HtmlBadgeAction> getActionClass() {
         return HtmlBadgeAction.class;
     }
 
@@ -53,7 +74,44 @@ public class RemoveHtmlBadgesStep extends AbstractRemoveBadgesStep {
         @NonNull
         @Override
         public String getDisplayName() {
-            return "Remove Html Badges";
+            return "Remove HTML Badges";
+        }
+    }
+
+    @Override
+    public StepExecution start(StepContext context) {
+        return new Execution(context, getActionClass(), getId());
+    }
+
+    public static class Execution extends SynchronousStepExecution<Void> {
+
+        private static final long serialVersionUID = 1L;
+
+        private final String id;
+        private final Class<HtmlBadgeAction> actionClass;
+
+        Execution(StepContext context, Class<HtmlBadgeAction> actionClass, String id) {
+            super(context);
+            this.actionClass = actionClass;
+            this.id = id;
+        }
+
+        @Override
+        protected Void run() throws Exception {
+            Run<?, ?> run = getContext().get(Run.class);
+            run.getAllActions().stream().filter(this::matches).forEach(run::removeAction);
+
+            TaskListener listener = getContext().get(TaskListener.class);
+            PrintStream logger = listener.getLogger();
+            logger.println(
+                    "Step 'removeHtmlBadges' is deprecated - please consider using 'addBadges' and 'removeBadges' instead.");
+
+            return null;
+        }
+
+        private boolean matches(Action a) {
+            return actionClass.isAssignableFrom(a.getClass())
+                    && (id == null || id.equals(((HtmlBadgeAction) a).getId()));
         }
     }
 }

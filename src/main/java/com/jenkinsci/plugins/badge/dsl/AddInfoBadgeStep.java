@@ -23,24 +23,39 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import org.jenkinsci.plugins.workflow.steps.StepContext;
-import org.jenkinsci.plugins.workflow.steps.StepExecution;
+import io.jenkins.plugins.ionicons.Ionicons;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
  * Add an error badge.
  */
-public class AddInfoBadgeStep extends AbstractAddBadgeStep {
+public class AddInfoBadgeStep extends AddBadgeStep {
 
-    /**
-     * @param text The info text for this badge
-     */
     @DataBoundConstructor
-    public AddInfoBadgeStep(String text) {
-        super(null, text);
+    public AddInfoBadgeStep(String id, String text, String link) {
+        super(id, Ionicons.getIconClassName("information-circle"), text, null, "color: var(--blue)", link);
+    }
+
+    @Override
+    public String toString() {
+        List<String> fields = new ArrayList<>();
+
+        if (getId() != null) {
+            fields.add("id: '" + getId() + "'");
+        }
+        if (getText() != null) {
+            fields.add("text: '" + getText() + "'");
+        }
+        if (getLink() != null) {
+            fields.add("link: '" + getLink() + "'");
+        }
+
+        return getDescriptor().getFunctionName() + "(" + StringUtils.join(fields, ", ") + ")";
     }
 
     @Extension
@@ -56,16 +71,5 @@ public class AddInfoBadgeStep extends AbstractAddBadgeStep {
         public String getDisplayName() {
             return "Add Info Badge";
         }
-    }
-
-    @Override
-    public StepExecution start(StepContext context) {
-        return new Execution(getBadge(), getId(), context) {
-
-            @Override
-            protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
-                return BadgeAction.createInfoBadge(badge.getText(), badge.getLink());
-            }
-        };
     }
 }

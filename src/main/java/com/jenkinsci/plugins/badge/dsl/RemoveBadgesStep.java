@@ -35,7 +35,9 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class RemoveBadgesStep extends AbstractRemoveBadgesStep {
 
     @DataBoundConstructor
-    public RemoveBadgesStep() {}
+    public RemoveBadgesStep(String id) {
+        super(id);
+    }
 
     @Override
     protected Class<? extends AbstractBadgeAction> getActionClass() {

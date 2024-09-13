@@ -28,6 +28,8 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.Extension;
 import hudson.model.Run;
+import hudson.model.TaskListener;
+import java.io.PrintStream;
 import java.io.Serializable;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
@@ -38,14 +40,14 @@ import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Create a short text.
+ *
+ * @deprecated replaced by {@link AddBadgeStep}.
  */
+@Deprecated(since = "2.0", forRemoval = true)
 public class AddShortTextStep extends Step {
 
     private final ShortText shortText;
 
-    /**
-     * @param text The text to add fot this badge
-     */
     @DataBoundConstructor
     public AddShortTextStep(String text) {
         this.shortText = new ShortText(text);
@@ -59,9 +61,6 @@ public class AddShortTextStep extends Step {
         return shortText.getColor();
     }
 
-    /**
-     * @param color The color for this short text
-     */
     @DataBoundSetter
     public void setColor(String color) {
         this.shortText.setColor(color);
@@ -71,9 +70,6 @@ public class AddShortTextStep extends Step {
         return shortText.getBackground();
     }
 
-    /**
-     * @param background The background-color for this short text
-     */
     @DataBoundSetter
     public void setBackground(String background) {
         this.shortText.setBackground(background);
@@ -83,9 +79,6 @@ public class AddShortTextStep extends Step {
         return shortText.getBorder();
     }
 
-    /**
-     * @param border The border width for this short text
-     */
     @DataBoundSetter
     public void setBorder(Integer border) {
         this.shortText.setBorder(border);
@@ -95,17 +88,11 @@ public class AddShortTextStep extends Step {
         return shortText.getBorderColor();
     }
 
-    /**
-     * @param borderColor The order color for this short text
-     */
     @DataBoundSetter
     public void setBorderColor(String borderColor) {
         this.shortText.setBorderColor(borderColor);
     }
 
-    /**
-     * @param link The link for this short text
-     */
     @DataBoundSetter
     public void setLink(String link) {
         this.shortText.setLink(link);
@@ -121,6 +108,7 @@ public class AddShortTextStep extends Step {
     }
 
     @Extension
+    @Deprecated(since = "2.0", forRemoval = true)
     public static class DescriptorImpl extends AbstractTaskListenerDescriptor {
 
         @Override
@@ -135,6 +123,7 @@ public class AddShortTextStep extends Step {
         }
     }
 
+    @Deprecated(since = "2.0", forRemoval = true)
     private static class ShortText implements Serializable {
 
         private static final long serialVersionUID = 1L;
@@ -199,6 +188,7 @@ public class AddShortTextStep extends Step {
         }
     }
 
+    @Deprecated(since = "2.0", forRemoval = true)
     public static class Execution extends SynchronousStepExecution<Void> {
 
         private static final long serialVersionUID = 1L;
@@ -213,15 +203,29 @@ public class AddShortTextStep extends Step {
 
         @Override
         protected Void run() throws Exception {
-            getContext()
-                    .get(Run.class)
-                    .addAction(BadgeAction.createShortText(
-                            shortText.getText(),
-                            shortText.getColor(),
-                            shortText.getBackground(),
-                            shortText.getBorderString(),
-                            shortText.getBorderColor(),
-                            shortText.link));
+            // translate old styling to new field
+            String style = "border: " + (shortText.getBorderString() != null ? shortText.getBorderString() : "")
+                    + " solid " + (shortText.getBorderColor() != null ? shortText.getBorderColor() : "") + ";";
+            if (shortText.getBackground() != null) {
+                style += "background: " + shortText.getBackground() + ";";
+            }
+            if (shortText.getColor() != null) {
+                if (shortText.getColor().startsWith("jenkins-!-color")) {
+                    style += "color: var(--" + shortText.getColor().replaceFirst("jenkins-!-color", "") + ");";
+                } else if (shortText.getColor().startsWith("jenkins-!-")) {
+                    style += "color: var(--" + shortText.getColor().replaceFirst("jenkins-!-", "") + ");";
+                } else {
+                    style += "color: " + shortText.getColor() + ";";
+                }
+            }
+
+            BadgeAction action = new BadgeAction(null, null, shortText.getText(), null, style, shortText.getLink());
+            getContext().get(Run.class).addAction(action);
+
+            TaskListener listener = getContext().get(TaskListener.class);
+            PrintStream logger = listener.getLogger();
+            logger.println("Step 'addShortText' is deprecated - please consider using 'addBadge' instead.");
+
             return null;
         }
     }

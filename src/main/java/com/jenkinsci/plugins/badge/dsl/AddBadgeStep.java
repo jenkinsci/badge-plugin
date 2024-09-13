@@ -26,6 +26,7 @@ package com.jenkinsci.plugins.badge.dsl;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -36,34 +37,39 @@ import org.kohsuke.stapler.DataBoundSetter;
  */
 public class AddBadgeStep extends AbstractAddBadgeStep {
 
-    /**
-     * @param icon The icon for this badge
-     * @param text The text for this badge
-     */
     @DataBoundConstructor
-    public AddBadgeStep(String icon, String text) {
-        super(icon, text);
-    }
-
-    public String getColor() {
-        return getBadge().getColor();
+    public AddBadgeStep(String id, String icon, String text, String cssClass, String style, String link) {
+        super(id, icon, text, cssClass, style, link);
     }
 
     /**
-     * @param color The Jenkins palette/semantic color name of the badge icon symbol
+     * @deprecated replaced by {@link #setStyle(String)}.
      */
     @DataBoundSetter
+    @Deprecated(since = "2.0", forRemoval = true)
     public void setColor(String color) {
-        getBadge().setColor(color);
+        // translate old color to new field
+        if (color != null) {
+            String newStyle = "";
+            if (color.startsWith("jenkins-!-color")) {
+                newStyle += "color: var(--" + color.replaceFirst("jenkins-!-color-", "") + ");";
+            } else if (color.startsWith("jenkins-!-")) {
+                newStyle += "color: var(--" + color.replaceFirst("jenkins-!-", "") + ");";
+            } else {
+                newStyle += "color: " + color + ";";
+            }
+            setStyle(newStyle + StringUtils.defaultString(getStyle()));
+        }
     }
 
     @Override
     public StepExecution start(StepContext context) {
-        return new Execution(getBadge(), getId(), context) {
+        return new Execution(getId(), getIcon(), getText(), getCssClass(), getStyle(), getLink(), context) {
 
             @Override
-            protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
-                return BadgeAction.createBadge(badge.getIcon(), badge.getColor(), badge.getText(), badge.getLink());
+            protected BadgeAction newAction(
+                    String id, String icon, String text, String cssClass, String style, String link) {
+                return new BadgeAction(id, icon, text, cssClass, style, link);
             }
         };
     }

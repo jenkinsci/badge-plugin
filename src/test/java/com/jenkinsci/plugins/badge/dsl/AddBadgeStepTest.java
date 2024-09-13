@@ -23,11 +23,11 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import hudson.model.BuildBadgeAction;
-import hudson.model.Result;
 import java.util.List;
 import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
@@ -36,114 +36,108 @@ import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-class AddBadgeStepTest extends AbstractBadgeTest {
+class AddBadgeStepTest extends AbstractAddBadgeStepTest {
 
     @Test
-    void addBadge(JenkinsRule r) throws Exception {
-        addBadge(r, false);
+    void add(JenkinsRule r) throws Exception {
+        AbstractAddBadgeStep step = createStep(
+                UUID.randomUUID().toString(),
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io");
+        runAddJob(r, step, false);
     }
 
     @Test
-    void addBadge_in_node(JenkinsRule r) throws Exception {
-        addBadge(r, true);
+    void addInNode(JenkinsRule r) throws Exception {
+        AbstractAddBadgeStep step = createStep(
+                UUID.randomUUID().toString(),
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io");
+        runAddJob(r, step, true);
     }
 
     @Test
-    void addInfoBadge(JenkinsRule r) throws Exception {
-        addStatusBadge(r, "addInfoBadge", "symbol-information-circle plugin-ionicons-api", false);
-        addStatusBadge(r, "addInfoBadge", "symbol-information-circle plugin-ionicons-api", true);
+    void modify(JenkinsRule r) throws Exception {
+        AbstractAddBadgeStep step = createStep(
+                UUID.randomUUID().toString(),
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io");
+        runModifyJob(r, step, false);
     }
 
     @Test
-    void addWarningBadge(JenkinsRule r) throws Exception {
-        addStatusBadge(r, "addWarningBadge", "symbol-warning plugin-ionicons-api", false);
-        addStatusBadge(r, "addWarningBadge", "symbol-warning plugin-ionicons-api", true);
+    void modifyInNode(JenkinsRule r) throws Exception {
+        AbstractAddBadgeStep step = createStep(
+                UUID.randomUUID().toString(),
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io");
+        runModifyJob(r, step, true);
     }
 
-    @Test
-    void addErrorBadge(JenkinsRule r) throws Exception {
-        addStatusBadge(r, "addErrorBadge", "symbol-remove-circle plugin-ionicons-api", false);
-        addStatusBadge(r, "addErrorBadge", "symbol-remove-circle plugin-ionicons-api", true);
-    }
+    protected void runAddJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode) throws Exception {
+        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
-    @Test
-    void addBadge_invalid_link(JenkinsRule r) throws Exception {
-        String icon = UUID.randomUUID().toString();
-        String text = UUID.randomUUID().toString();
-        String link = "javascript:" + UUID.randomUUID();
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-
-        String script = "addBadge(icon:\"" + icon + "\",  text:\"" + text + "\",  link:\"" + link + "\")";
-        p.setDefinition(new CpsFlowDefinition(script, true));
-        r.assertBuildStatus(Result.FAILURE, p.scheduleBuild2(0));
-    }
-
-    @Test
-    void addBadge_invalid_text(JenkinsRule r) throws Exception {
-        String icon = UUID.randomUUID().toString();
-        String textPrefix = UUID.randomUUID().toString();
-        String text = textPrefix + "');alert('foo";
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-
-        String script = "addBadge(icon: '" + icon + "',  text:\"" + text + "\")";
-        p.setDefinition(new CpsFlowDefinition(script, true));
-        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
-
-        List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-        assertEquals(1, badgeActions.size());
-
-        BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertTrue(action.getIconPath().endsWith(icon));
-        assertEquals(textPrefix + "&#39;);alert(&#39;foo", action.getText());
-    }
-
-    private void addBadge(JenkinsRule r, boolean inNode) throws Exception {
-        String icon = UUID.randomUUID().toString();
-        String text = UUID.randomUUID().toString();
-        String link = "https://" + UUID.randomUUID();
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
-
-        String script = "addBadge icon: '" + icon + "',  text: '" + text + "',  link: '" + link + "'";
+        String script = step.toString();
         if (inNode) {
-            script = "node() {" + script + "}";
+            script = "node() { " + script + " }";
         }
 
-        p.setDefinition(new CpsFlowDefinition(script, true));
-        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+        project.setDefinition(new CpsFlowDefinition(script, true));
+        WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
 
-        List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-        assertEquals(1, badgeActions.size());
-
-        BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertTrue(action.getIconPath().endsWith(icon));
-        assertEquals(text, action.getText());
-        assertEquals(link, action.getLink());
+        assertFields(step, run);
     }
 
-    private void addStatusBadge(JenkinsRule r, String functionName, String expectedIcon, boolean withLink)
-            throws Exception {
-        String text = UUID.randomUUID().toString();
-        String link = "mailto://" + UUID.randomUUID();
+    protected void runModifyJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode) throws Exception {
+        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, text);
-        String script = functionName + " text: '" + text + "'";
-        if (withLink) {
-            script += ",  link: '" + link + "'";
+        String actualText = step.getText();
+        step.setText(UUID.randomUUID().toString());
+        assertNotEquals(actualText, step.getText());
+
+        String script = "def badge = " + step + "\n";
+        script += "badge.setText('" + actualText + "')";
+        if (inNode) {
+            script = "node() { " + script + " }";
         }
 
-        p.setDefinition(new CpsFlowDefinition(script, true));
-        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+        project.setDefinition(new CpsFlowDefinition(script, true));
+        WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
 
-        List<BuildBadgeAction> badgeActions = b.getBadgeActions();
+        step.setText(actualText);
+        assertEquals(actualText, step.getText());
+
+        assertFields(step, run);
+    }
+
+    protected void assertFields(AbstractAddBadgeStep step, WorkflowRun run) {
+        List<BuildBadgeAction> badgeActions = run.getBadgeActions();
         assertEquals(1, badgeActions.size());
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertEquals(text, action.getText());
-        assertTrue(action.getIconPath().endsWith(expectedIcon));
-        if (withLink) {
-            assertEquals(link, action.getLink());
-        } else {
-            assertNull(action.getLink());
-        }
+        assertEquals(step.getId(), action.getId());
+        assertEquals(step.getIcon(), action.getIcon());
+        assertEquals(step.getText(), action.getText());
+        assertEquals(step.getCssClass(), action.getCssClass());
+        assertEquals(step.getStyle(), action.getStyle());
+        assertEquals(step.getLink(), action.getLink());
+    }
+
+    @Override
+    protected AbstractAddBadgeStep createStep(
+            String id, String icon, String text, String cssClass, String style, String link) {
+        return new AddBadgeStep(id, icon, text, cssClass, style, link);
     }
 }

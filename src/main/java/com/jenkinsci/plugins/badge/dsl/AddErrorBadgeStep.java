@@ -23,24 +23,39 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import org.jenkinsci.plugins.workflow.steps.StepContext;
-import org.jenkinsci.plugins.workflow.steps.StepExecution;
+import io.jenkins.plugins.ionicons.Ionicons;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
  * Add an error badge.
  */
-public class AddErrorBadgeStep extends AbstractAddBadgeStep {
+public class AddErrorBadgeStep extends AddBadgeStep {
 
-    /**
-     * @param text The text for this error badge
-     */
     @DataBoundConstructor
-    public AddErrorBadgeStep(String text) {
-        super(null, text);
+    public AddErrorBadgeStep(String id, String text, String link) {
+        super(id, Ionicons.getIconClassName("remove-circle"), text, null, "color: var(--error-color)", link);
+    }
+
+    @Override
+    public String toString() {
+        List<String> fields = new ArrayList<>();
+
+        if (getId() != null) {
+            fields.add("id: '" + getId() + "'");
+        }
+        if (getText() != null) {
+            fields.add("text: '" + getText() + "'");
+        }
+        if (getLink() != null) {
+            fields.add("link: '" + getLink() + "'");
+        }
+
+        return getDescriptor().getFunctionName() + "(" + StringUtils.join(fields, ", ") + ")";
     }
 
     @Extension
@@ -56,16 +71,5 @@ public class AddErrorBadgeStep extends AbstractAddBadgeStep {
         public String getDisplayName() {
             return "Add Error Badge";
         }
-    }
-
-    @Override
-    public StepExecution start(StepContext context) {
-        return new Execution(getBadge(), getId(), context) {
-
-            @Override
-            protected BadgeAction newBatchAction(Badge badge) throws IllegalArgumentException {
-                return BadgeAction.createErrorBadge(badge.getText(), badge.getLink());
-            }
-        };
     }
 }

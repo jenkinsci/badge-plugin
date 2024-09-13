@@ -23,7 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.AbstractAction;
+import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
@@ -35,10 +35,12 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class RemoveSummariesStep extends AbstractRemoveBadgesStep {
 
     @DataBoundConstructor
-    public RemoveSummariesStep() {}
+    public RemoveSummariesStep(String id) {
+        super(id);
+    }
 
     @Override
-    protected Class<? extends AbstractAction> getActionClass() {
+    protected Class<? extends AbstractBadgeAction> getActionClass() {
         return BadgeSummaryAction.class;
     }
 
