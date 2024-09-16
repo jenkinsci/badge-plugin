@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.jenkins-ci.plugins</groupId>
   <artifactId>badge</artifactId>
-  <version>2.0</version>
+  <version>${revision}${changelist}</version>
   <packaging>hpi</packaging>
 
   <name>Badge</name>
@@ -44,13 +44,13 @@
   <scm>
     <connection>scm:git:https://github.com/${gitHubRepo}.git</connection>
     <developerConnection>scm:git:git@github.com:${gitHubRepo}.git</developerConnection>
-    <tag>badge-2.0</tag>
+    <tag>${scmTag}</tag>
     <url>https://github.com/${gitHubRepo}</url>
   </scm>
 
   <properties>
     <jenkins.version>2.440.3</jenkins.version>
-    <revision>2.0</revision>
+    <revision>2.1</revision>
     <changelist>-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/badge-plugin</gitHubRepo>
     <spotbugs.effort>Max</spotbugs.effort>
