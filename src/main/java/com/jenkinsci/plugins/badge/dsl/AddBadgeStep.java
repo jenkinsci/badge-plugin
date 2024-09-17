@@ -38,7 +38,11 @@ import org.kohsuke.stapler.DataBoundSetter;
 public class AddBadgeStep extends AbstractAddBadgeStep {
 
     @DataBoundConstructor
-    public AddBadgeStep(String id, String icon, String text, String cssClass, String style, String link) {
+    public AddBadgeStep() {
+        this(null, null, null, null, null, null);
+    }
+
+    protected AddBadgeStep(String id, String icon, String text, String cssClass, String style, String link) {
         super(id, icon, text, cssClass, style, link);
     }
 

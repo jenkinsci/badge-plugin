@@ -33,6 +33,9 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 abstract class AbstractAddBadgeStepTest {
 
     @Test
+    abstract void defaultConstructor(@SuppressWarnings("unused") JenkinsRule r);
+
+    @Test
     void id(@SuppressWarnings("unused") JenkinsRule r) {
         AbstractAddBadgeStep step = createStep(null, "icon", "text", "cssClass", "style", "link");
         assertNull(step.getId());

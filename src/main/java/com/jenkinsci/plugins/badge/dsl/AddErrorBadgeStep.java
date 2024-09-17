@@ -37,7 +37,11 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class AddErrorBadgeStep extends AddBadgeStep {
 
     @DataBoundConstructor
-    public AddErrorBadgeStep(String id, String text, String link) {
+    public AddErrorBadgeStep() {
+        this(null, null, null);
+    }
+
+    protected AddErrorBadgeStep(String id, String text, String link) {
         super(id, Ionicons.getIconClassName("remove-circle"), text, null, "color: var(--error-color)", link);
     }
 

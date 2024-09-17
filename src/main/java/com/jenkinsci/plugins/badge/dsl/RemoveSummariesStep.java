@@ -35,7 +35,11 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class RemoveSummariesStep extends AbstractRemoveBadgesStep {
 
     @DataBoundConstructor
-    public RemoveSummariesStep(String id) {
+    public RemoveSummariesStep() {
+        this(null);
+    }
+
+    protected RemoveSummariesStep(String id) {
         super(id);
     }
 

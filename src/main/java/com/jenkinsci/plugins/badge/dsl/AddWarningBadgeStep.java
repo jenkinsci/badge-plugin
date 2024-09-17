@@ -37,7 +37,11 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class AddWarningBadgeStep extends AddBadgeStep {
 
     @DataBoundConstructor
-    public AddWarningBadgeStep(String id, String text, String link) {
+    public AddWarningBadgeStep() {
+        this(null, null, null);
+    }
+
+    protected AddWarningBadgeStep(String id, String text, String link) {
         super(id, Ionicons.getIconClassName("warning"), text, null, "color: var(--warning-color)", link);
     }
 

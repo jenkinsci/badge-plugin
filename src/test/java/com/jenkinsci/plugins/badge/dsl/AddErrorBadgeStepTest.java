@@ -33,6 +33,18 @@ class AddErrorBadgeStepTest extends AddBadgeStepTest {
 
     @Override
     @Test
+    void defaultConstructor(JenkinsRule r) {
+        AbstractAddBadgeStep step = new AddErrorBadgeStep();
+        assertNull(step.getId());
+        assertEquals("symbol-remove-circle plugin-ionicons-api", step.getIcon());
+        assertNull(step.getText());
+        assertNull(step.getCssClass());
+        assertEquals("color: var(--error-color)", step.getStyle());
+        assertNull(step.getLink());
+    }
+
+    @Override
+    @Test
     void icon(JenkinsRule r) {
         AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link");
         assertEquals("symbol-remove-circle plugin-ionicons-api", step.getIcon());
