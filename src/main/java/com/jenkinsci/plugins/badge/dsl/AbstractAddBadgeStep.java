@@ -31,13 +31,14 @@ import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
+import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Abstract class to add badges.
  */
 public abstract class AbstractAddBadgeStep extends Step {
 
-    private final String id;
+    private String id;
     private String icon;
     private String text;
     private String cssClass;
@@ -53,47 +54,57 @@ public abstract class AbstractAddBadgeStep extends Step {
         this.link = link;
     }
 
-    protected String getId() {
+    @DataBoundSetter
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
         return id;
     }
 
-    protected String getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    protected void setIcon(String icon) {
+    @DataBoundSetter
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 
-    protected String getText() {
+    public String getText() {
         return text;
     }
 
-    protected void setText(String text) {
+    @DataBoundSetter
+    public void setText(String text) {
         this.text = text;
     }
 
-    protected String getCssClass() {
+    public String getCssClass() {
         return cssClass;
     }
 
-    protected void setCssClass(String cssClass) {
+    @DataBoundSetter
+    public void setCssClass(String cssClass) {
         this.cssClass = cssClass;
     }
 
-    protected String getStyle() {
+    public String getStyle() {
         return style;
     }
 
-    protected void setStyle(String style) {
+    @DataBoundSetter
+    public void setStyle(String style) {
         this.style = style;
     }
 
-    protected String getLink() {
+    public String getLink() {
         return link;
     }
 
-    protected void setLink(String link) {
+    @DataBoundSetter
+    public void setLink(String link) {
         this.link = link;
     }
 

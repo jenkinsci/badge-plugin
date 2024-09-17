@@ -35,6 +35,9 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 abstract class AbstractRemoveBadgeStepTest {
 
     @Test
+    abstract void defaultConstructor(@SuppressWarnings("unused") JenkinsRule r);
+
+    @Test
     void id(@SuppressWarnings("unused") JenkinsRule r) {
         AbstractRemoveBadgesStep step = createRemoveStep(null);
         assertNull(step.getId());

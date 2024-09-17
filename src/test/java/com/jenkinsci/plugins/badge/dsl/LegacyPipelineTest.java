@@ -45,7 +45,7 @@ class LegacyPipelineTest {
 
     @Test
     void color(JenkinsRule r) throws Exception {
-        WorkflowRun run = runJon(r, "addBadge(color: 'red')");
+        WorkflowRun run = runJob(r, "addBadge(color: 'red')");
 
         List<BuildBadgeAction> badgeActions = run.getBadgeActions();
         assertEquals(1, badgeActions.size());
@@ -53,7 +53,7 @@ class LegacyPipelineTest {
         BadgeAction action = (BadgeAction) badgeActions.get(0);
         assertEquals("color: red;", action.getStyle());
 
-        run = runJon(r, "addBadge(color: 'jenkins-!-color-red')");
+        run = runJob(r, "addBadge(color: 'jenkins-!-color-red')");
 
         badgeActions = run.getBadgeActions();
         assertEquals(1, badgeActions.size());
@@ -61,7 +61,7 @@ class LegacyPipelineTest {
         action = (BadgeAction) badgeActions.get(0);
         assertEquals("color: var(--red);", action.getStyle());
 
-        run = runJon(r, "addBadge(color: 'jenkins-!-warning-color')");
+        run = runJob(r, "addBadge(color: 'jenkins-!-warning-color')");
 
         badgeActions = run.getBadgeActions();
         assertEquals(1, badgeActions.size());
@@ -69,7 +69,7 @@ class LegacyPipelineTest {
         action = (BadgeAction) badgeActions.get(0);
         assertEquals("color: var(--warning-color);", action.getStyle());
 
-        run = runJon(r, "addBadge(color: null)");
+        run = runJob(r, "addBadge(color: null)");
 
         badgeActions = run.getBadgeActions();
         assertEquals(1, badgeActions.size());
@@ -80,7 +80,7 @@ class LegacyPipelineTest {
 
     @Test
     void appendText(JenkinsRule r) throws Exception {
-        WorkflowRun run = runJon(r, "createSummary(text: 'Test Text')");
+        WorkflowRun run = runJob(r, "createSummary(text: 'Test Text')");
 
         List<BadgeSummaryAction> actions = run.getActions(BadgeSummaryAction.class);
         assertEquals(1, actions.size());
@@ -88,7 +88,7 @@ class LegacyPipelineTest {
         BadgeSummaryAction action = actions.get(0);
         assertEquals("Test Text", action.getText());
 
-        run = runJon(r, "def summary = createSummary(text: 'Test Text')\n" + "summary.appendText(' More Text', true)");
+        run = runJob(r, "def summary = createSummary(text: 'Test Text')\n" + "summary.appendText(' More Text', true)");
 
         actions = run.getActions(BadgeSummaryAction.class);
         assertEquals(1, actions.size());
@@ -96,7 +96,7 @@ class LegacyPipelineTest {
         action = actions.get(0);
         assertEquals("Test Text More Text", action.getText());
 
-        run = runJon(r, "def summary = createSummary(text: 'Test Text')\n" + "summary.appendText(' More Text', false)");
+        run = runJob(r, "def summary = createSummary(text: 'Test Text')\n" + "summary.appendText(' More Text', false)");
 
         actions = run.getActions(BadgeSummaryAction.class);
         assertEquals(1, actions.size());
@@ -104,7 +104,7 @@ class LegacyPipelineTest {
         action = actions.get(0);
         assertEquals("Test Text More Text", action.getText());
 
-        run = runJon(
+        run = runJob(
                 r,
                 "def summary = createSummary(text: 'Test Text')\n"
                         + "summary.appendText(' More Text', false, false, false, null)");
@@ -116,7 +116,7 @@ class LegacyPipelineTest {
         assertEquals("Test Text More Text", action.getText());
 
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
-        run = runJon(
+        run = runJob(
                 r,
                 "def summary = createSummary(text: 'Test Text')\n"
                         + "summary.appendText(' More Text', true, true, true, 'red')");
@@ -128,7 +128,7 @@ class LegacyPipelineTest {
         assertEquals("Test Text<b><i> More Text</i></b>", action.getText());
     }
 
-    private static WorkflowRun runJon(JenkinsRule r, String script) throws Exception {
+    private static WorkflowRun runJob(JenkinsRule r, String script) throws Exception {
         WorkflowJob project =
                 r.jenkins.createProject(WorkflowJob.class, UUID.randomUUID().toString());
         project.setDefinition(new CpsFlowDefinition(script, true));

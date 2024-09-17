@@ -33,19 +33,25 @@ import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.jenkinsci.plugins.workflow.steps.SynchronousStepExecution;
+import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Abstract class to remove badges.
  */
 abstract class AbstractRemoveBadgesStep extends Step {
 
-    private final String id;
+    private String id;
 
     protected AbstractRemoveBadgesStep(String id) {
         this.id = id;
     }
 
-    protected String getId() {
+    @DataBoundSetter
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
         return id;
     }
 

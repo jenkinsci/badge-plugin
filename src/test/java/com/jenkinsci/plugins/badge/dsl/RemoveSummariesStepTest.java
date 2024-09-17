@@ -24,14 +24,24 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import java.util.List;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
+import org.junit.jupiter.api.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 @WithJenkins
 class RemoveSummariesStepTest extends RemoveBadgesStepTest {
+
+    @Override
+    @Test
+    void defaultConstructor(JenkinsRule r) {
+        AbstractRemoveBadgesStep step = new RemoveSummariesStep();
+        assertNull(step.getId());
+    }
 
     @Override
     protected void assertActionExists(WorkflowRun run, int expected) {

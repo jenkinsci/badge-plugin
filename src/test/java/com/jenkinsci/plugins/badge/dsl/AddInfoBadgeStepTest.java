@@ -33,6 +33,18 @@ class AddInfoBadgeStepTest extends AddBadgeStepTest {
 
     @Override
     @Test
+    void defaultConstructor(JenkinsRule r) {
+        AbstractAddBadgeStep step = new AddInfoBadgeStep();
+        assertNull(step.getId());
+        assertEquals("symbol-information-circle plugin-ionicons-api", step.getIcon());
+        assertNull(step.getText());
+        assertNull(step.getCssClass());
+        assertEquals("color: var(--blue)", step.getStyle());
+        assertNull(step.getLink());
+    }
+
+    @Override
+    @Test
     void icon(JenkinsRule r) {
         AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link");
         assertEquals("symbol-information-circle plugin-ionicons-api", step.getIcon());

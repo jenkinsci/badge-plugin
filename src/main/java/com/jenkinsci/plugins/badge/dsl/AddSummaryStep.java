@@ -36,7 +36,11 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class AddSummaryStep extends AddBadgeStep {
 
     @DataBoundConstructor
-    public AddSummaryStep(String id, String icon, String text, String cssClass, String style, String link) {
+    public AddSummaryStep() {
+        this(null, null, null, null, null, null);
+    }
+
+    protected AddSummaryStep(String id, String icon, String text, String cssClass, String style, String link) {
         super(id, icon, text, cssClass, style, link);
     }
 

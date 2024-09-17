@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import hudson.model.BuildBadgeAction;
@@ -38,8 +39,20 @@ import org.jvnet.hudson.test.JenkinsRule;
 
 class AddBadgeStepTest extends AbstractAddBadgeStepTest {
 
+    @Override
     @Test
-    void add(JenkinsRule r) throws Exception {
+    void defaultConstructor(JenkinsRule r) {
+        AbstractAddBadgeStep step = new AddBadgeStep();
+        assertNull(step.getId());
+        assertNull(step.getIcon());
+        assertNull(step.getText());
+        assertNull(step.getCssClass());
+        assertNull(step.getStyle());
+        assertNull(step.getLink());
+    }
+
+    @Test
+    void addInScriptedPipeline(JenkinsRule r) throws Exception {
         AbstractAddBadgeStep step = createStep(
                 UUID.randomUUID().toString(),
                 "symbol-rocket plugin-ionicons-api",
@@ -47,11 +60,11 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "icon-md",
                 "color: green",
                 "https://jenkins.io");
-        runAddJob(r, step, false);
+        runAddJob(r, step, false, false);
     }
 
     @Test
-    void addInNode(JenkinsRule r) throws Exception {
+    void addInScriptedPipelineInNode(JenkinsRule r) throws Exception {
         AbstractAddBadgeStep step = createStep(
                 UUID.randomUUID().toString(),
                 "symbol-rocket plugin-ionicons-api",
@@ -59,11 +72,17 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "icon-md",
                 "color: green",
                 "https://jenkins.io");
-        runAddJob(r, step, true);
+        runAddJob(r, step, true, false);
     }
 
     @Test
-    void modify(JenkinsRule r) throws Exception {
+    void addInDeclarativePipeline(JenkinsRule r) throws Exception {
+        AbstractAddBadgeStep step = createStep(UUID.randomUUID().toString(), null, null, null, null, null);
+        runAddJob(r, step, false, true);
+    }
+
+    @Test
+    void modifyInScriptedPipeline(JenkinsRule r) throws Exception {
         AbstractAddBadgeStep step = createStep(
                 UUID.randomUUID().toString(),
                 "symbol-rocket plugin-ionicons-api",
@@ -71,11 +90,11 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "icon-md",
                 "color: green",
                 "https://jenkins.io");
-        runModifyJob(r, step, false);
+        runModifyJob(r, step, false, false);
     }
 
     @Test
-    void modifyInNode(JenkinsRule r) throws Exception {
+    void modifyInScriptedPipelineInNode(JenkinsRule r) throws Exception {
         AbstractAddBadgeStep step = createStep(
                 UUID.randomUUID().toString(),
                 "symbol-rocket plugin-ionicons-api",
@@ -83,15 +102,35 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "icon-md",
                 "color: green",
                 "https://jenkins.io");
-        runModifyJob(r, step, true);
+        runModifyJob(r, step, true, false);
     }
 
-    protected void runAddJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode) throws Exception {
+    @Test
+    void modifyInDeclarativePipeline(JenkinsRule r) throws Exception {
+        AbstractAddBadgeStep step = createStep(UUID.randomUUID().toString(), null, "Test Text", null, null, null);
+        runModifyJob(r, step, false, true);
+    }
+
+    protected void runAddJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode, boolean declarativePipeline)
+            throws Exception {
         WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
         String script = step.toString();
+
         if (inNode) {
             script = "node() { " + script + " }";
+        }
+
+        if (declarativePipeline) {
+            script = "pipeline {\n" + "   agent any\n"
+                    + "   stages {\n"
+                    + "        stage('Testing') {\n"
+                    + "            steps {\n"
+                    + "              " + script + "\n"
+                    + "            }\n"
+                    + "        }\n"
+                    + "    }\n"
+                    + "}\n";
         }
 
         project.setDefinition(new CpsFlowDefinition(script, true));
@@ -100,7 +139,8 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         assertFields(step, run);
     }
 
-    protected void runModifyJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode) throws Exception {
+    protected void runModifyJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode, boolean declarativePipeline)
+            throws Exception {
         WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
         String actualText = step.getText();
@@ -109,8 +149,23 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
 
         String script = "def badge = " + step + "\n";
         script += "badge.setText('" + actualText + "')";
+
         if (inNode) {
             script = "node() { " + script + " }";
+        }
+
+        if (declarativePipeline) {
+            script = "pipeline {\n" + "   agent any\n"
+                    + "   stages {\n"
+                    + "        stage('Testing') {\n"
+                    + "            steps {\n"
+                    + "                script {\n"
+                    + "                  " + script + "\n"
+                    + "                }\n"
+                    + "            }\n"
+                    + "        }\n"
+                    + "    }\n"
+                    + "}\n";
         }
 
         project.setDefinition(new CpsFlowDefinition(script, true));

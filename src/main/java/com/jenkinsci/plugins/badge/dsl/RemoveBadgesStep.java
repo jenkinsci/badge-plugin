@@ -35,7 +35,11 @@ import org.kohsuke.stapler.DataBoundConstructor;
 public class RemoveBadgesStep extends AbstractRemoveBadgesStep {
 
     @DataBoundConstructor
-    public RemoveBadgesStep(String id) {
+    public RemoveBadgesStep() {
+        this(null);
+    }
+
+    protected RemoveBadgesStep(String id) {
         super(id);
     }
 

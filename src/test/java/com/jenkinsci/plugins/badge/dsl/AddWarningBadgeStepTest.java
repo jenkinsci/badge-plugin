@@ -33,6 +33,18 @@ class AddWarningBadgeStepTest extends AddBadgeStepTest {
 
     @Override
     @Test
+    void defaultConstructor(JenkinsRule r) {
+        AbstractAddBadgeStep step = new AddWarningBadgeStep();
+        assertNull(step.getId());
+        assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
+        assertNull(step.getText());
+        assertNull(step.getCssClass());
+        assertEquals("color: var(--warning-color)", step.getStyle());
+        assertNull(step.getLink());
+    }
+
+    @Override
+    @Test
     void icon(@SuppressWarnings("unused") JenkinsRule r) {
         AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link");
         assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
