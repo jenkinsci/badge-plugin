@@ -85,6 +85,11 @@ public class AddHtmlBadgeStep extends Step {
         public String getDisplayName() {
             return "Add a HTML Badge";
         }
+
+        @Override
+        public boolean isAdvanced() {
+            return true;
+        }
     }
 
     @Deprecated(since = "2.0", forRemoval = true)

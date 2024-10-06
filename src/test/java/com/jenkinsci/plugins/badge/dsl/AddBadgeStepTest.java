@@ -52,6 +52,19 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
     }
 
     @Test
+    @Deprecated(since = "2.0", forRemoval = true)
+    void color(@SuppressWarnings("unused") JenkinsRule r) {
+        AddBadgeStep step = (AddBadgeStep) createStep("id", "icon", "text", "cssClass", null, "link");
+        assertNull(step.getColor());
+
+        step.setColor("");
+        assertEquals("", step.getColor());
+
+        step.setColor("style");
+        assertEquals("style", step.getColor());
+    }
+
+    @Test
     void addInScriptedPipeline(JenkinsRule r) throws Exception {
         AbstractAddBadgeStep step = createStep(
                 UUID.randomUUID().toString(),

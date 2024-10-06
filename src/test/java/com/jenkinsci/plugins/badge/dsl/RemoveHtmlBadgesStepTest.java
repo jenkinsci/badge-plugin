@@ -24,6 +24,7 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.BuildBadgeAction;
 import java.util.List;
@@ -61,6 +62,12 @@ class RemoveHtmlBadgesStepTest {
         AddHtmlBadgeStep addStep = createAddStep(badgeId);
         RemoveHtmlBadgesStep removeStep = createRemoveStep(UUID.randomUUID().toString());
         runRemoveJob(r, addStep, removeStep, 1);
+    }
+
+    @Test
+    void deprecated(@SuppressWarnings("unused") JenkinsRule r) {
+        RemoveHtmlBadgesStep removeStep = createRemoveStep(null);
+        assertTrue(removeStep.getDescriptor().isAdvanced());
     }
 
     private static void runRemoveJob(
