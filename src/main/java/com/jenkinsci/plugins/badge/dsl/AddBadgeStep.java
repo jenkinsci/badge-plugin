@@ -66,6 +66,15 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
         }
     }
 
+    /**
+     * @deprecated replaced by {@link #getStyle()}.
+     */
+    @Deprecated(since = "2.0", forRemoval = true)
+    public String getColor() {
+        // translate new field to color
+        return StringUtils.substringBetween(getStyle(), "color: ", ";");
+    }
+
     @Override
     public StepExecution start(StepContext context) {
         return new Execution(getId(), getIcon(), getText(), getCssClass(), getStyle(), getLink(), context) {

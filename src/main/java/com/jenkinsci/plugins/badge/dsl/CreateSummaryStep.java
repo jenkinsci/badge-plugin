@@ -95,6 +95,11 @@ public class CreateSummaryStep extends Step {
         public String getDisplayName() {
             return "Create Summary";
         }
+
+        @Override
+        public boolean isAdvanced() {
+            return true;
+        }
     }
 
     @Deprecated(since = "2.0", forRemoval = true)

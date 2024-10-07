@@ -74,6 +74,12 @@ class CreateSummaryStepTest {
     }
 
     @Test
+    void deprecated(@SuppressWarnings("unused") JenkinsRule r) {
+        CreateSummaryStep step = new CreateSummaryStep(null);
+        assertTrue(step.getDescriptor().isAdvanced());
+    }
+
+    @Test
     void createSummary_plain(JenkinsRule r) throws Exception {
         String text = randomUUID().toString();
         BadgeSummaryAction action = createSummary(r, "summary.appendText('" + text + "')");

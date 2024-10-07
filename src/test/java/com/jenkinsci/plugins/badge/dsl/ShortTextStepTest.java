@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import hudson.model.BuildBadgeAction;
@@ -95,6 +96,12 @@ class ShortTextStepTest {
 
         step.setLink("https://jenkins.io");
         assertEquals("https://jenkins.io", step.getLink());
+    }
+
+    @Test
+    void deprecated(@SuppressWarnings("unused") JenkinsRule r) {
+        AddShortTextStep step = new AddShortTextStep(null);
+        assertTrue(step.getDescriptor().isAdvanced());
     }
 
     @Test

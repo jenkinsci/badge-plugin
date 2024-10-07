@@ -121,6 +121,11 @@ public class AddShortTextStep extends Step {
         public String getDisplayName() {
             return "Add Short Text";
         }
+
+        @Override
+        public boolean isAdvanced() {
+            return true;
+        }
     }
 
     @Deprecated(since = "2.0", forRemoval = true)

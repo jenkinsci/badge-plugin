@@ -76,6 +76,11 @@ public class RemoveHtmlBadgesStep extends Step {
         public String getDisplayName() {
             return "Remove HTML Badges";
         }
+
+        @Override
+        public boolean isAdvanced() {
+            return true;
+        }
     }
 
     @Override
