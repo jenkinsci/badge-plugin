@@ -58,4 +58,15 @@
         <pre><code>addBadge icon: 'symbol-bug plugin-ionicons-api', text: 'This is a red bug with a link', style: 'color: red', link: 'https://issues.jenkins.io/browse/JENKINS-59646'</code></pre>
     </p>
 
+    <strong><a id="badge-text-with-css-class">Example: Text badge with CSS styles</a></strong>
+    <p>
+        The following example adds text only badge that uses included CSS styles:
+    <pre><code>
+    // Add shaded background color with rounded corners
+    addBadge text: 'ok', style: 'color: var(--success-color)', cssClass: 'badge-text--background'
+    // Add additional border around badge
+    addBadge text: '1.0.0', cssClass: 'badge-text--background badge-text--bordered'
+    </code></pre>
+    </p>
+
 </div>
