@@ -23,6 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
+import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
@@ -60,7 +61,7 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
             } else if (color.startsWith("jenkins-!-")) {
                 newStyle += "color: var(--" + color.replaceFirst("jenkins-!-", "") + ");";
             } else {
-                newStyle += "color: " + color + ";";
+                newStyle += "color: " + AbstractBadgeAction.getJenkinsColorStyle(color) + ";";
             }
             setStyle(newStyle + StringUtils.defaultString(getStyle()));
         }

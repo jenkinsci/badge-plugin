@@ -45,13 +45,29 @@ class LegacyPipelineTest {
 
     @Test
     void color(JenkinsRule r) throws Exception {
-        WorkflowRun run = runJob(r, "addBadge(color: 'red')");
+        WorkflowRun run = runJob(r, "addBadge(color: '#ff0000')");
 
         List<BuildBadgeAction> badgeActions = run.getBadgeActions();
         assertEquals(1, badgeActions.size());
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertEquals("color: red;", action.getStyle());
+        assertEquals("color: #ff0000;", action.getStyle());
+
+        run = runJob(r, "addBadge(color: 'tortoise')");
+
+        badgeActions = run.getBadgeActions();
+        assertEquals(1, badgeActions.size());
+
+        action = (BadgeAction) badgeActions.get(0);
+        assertEquals("color: tortoise;", action.getStyle());
+
+        run = runJob(r, "addBadge(color: 'red')");
+
+        badgeActions = run.getBadgeActions();
+        assertEquals(1, badgeActions.size());
+
+        action = (BadgeAction) badgeActions.get(0);
+        assertEquals("color: var(--red);", action.getStyle());
 
         run = runJob(r, "addBadge(color: 'jenkins-!-color-red')");
 
