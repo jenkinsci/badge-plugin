@@ -24,7 +24,7 @@ THE SOFTWARE.
 -->
 
 <?jelly escape-by-default='false'?>
-<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" xmlns:st="jelly:stapler">
     <j:choose>
         <!-- icon -->
         <j:when test="${it.icon != null &amp;&amp; it.icon != ''}">
@@ -48,6 +48,7 @@ THE SOFTWARE.
         <j:otherwise>
             <!-- text -->
             <j:if test="${it.text != null &amp;&amp; it.text != ''}">
+                <st:adjunct includes="com.jenkinsci.plugins.badge.assets"/>
                 <j:choose>
                     <!-- text with link -->
                     <j:when test="${it.link != null &amp;&amp; it.link != ''}">

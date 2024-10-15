@@ -1,0 +1,44 @@
+.badge-text--background {
+    display: inline-block;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0 0.4rem !important;
+    margin: 0 0.1rem 0 0;
+    text-decoration: none;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    position: relative;
+}
+
+.badge-text--background::before {
+    inset: -0px -0px;
+    border-radius: 6px;
+    background: currentColor;
+    opacity: .2;
+    content: "";
+    position: absolute;
+}
+
+.badge-text--background::after {
+    inset: -5px -0px;
+    box-shadow: 0 0 0 10px currentColor;
+    opacity: 0;
+    content: "";
+    position: absolute;
+}
+
+.badge-text--bordered {
+    display: inline-block;
+    border: 0.1rem solid currentColor;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0 0.2rem !important;
+    margin: 0 0.1rem 0 0;
+    text-decoration: none;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    position: relative;
+}
