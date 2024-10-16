@@ -23,6 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
+import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
@@ -220,7 +221,7 @@ public class AddShortTextStep extends Step {
                 } else if (shortText.getColor().startsWith("jenkins-!-")) {
                     style += "color: var(--" + shortText.getColor().replaceFirst("jenkins-!-", "") + ");";
                 } else {
-                    style += "color: " + shortText.getColor() + ";";
+                    style += "color: " + AbstractBadgeAction.getJenkinsColorStyle(shortText.getColor()) + ";";
                 }
             }
 
