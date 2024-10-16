@@ -23,19 +23,22 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import hudson.markup.RawHtmlMarkupFormatter;
 import hudson.model.BuildBadgeAction;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
@@ -45,53 +48,34 @@ class LegacyPipelineTest {
 
     @Test
     void color(JenkinsRule r) throws Exception {
-        WorkflowRun run = runJob(r, "addBadge(color: '#ff0000')");
+        Stream<List<String>> palette = Stream.of(
+                        "blue", "brown", "cyan", "green", "indigo", "orange", "pink", "purple", "red", "yellow",
+                        "white", "black")
+                .map(c -> Arrays.asList("'" + c + "'", "color: var(--" + c + ");"));
+        Stream<List<String>> semantic = Stream.of(
+                        "accent", "text", "error", "warning", "success", "destructive", "build", "danger", "info")
+                .map(c -> Arrays.asList("'" + c + "'", "color: var(--" + c + "-color);"));
+        Stream<List<String>> other = Stream.of(
+                Arrays.asList("'#ff0000'", "color: #ff0000;"),
+                Arrays.asList("'tortoise'", "color: tortoise;"),
+                Arrays.asList("'jenkins-!-color-red'", "color: var(--red);"),
+                Arrays.asList("'jenkins-!-warning-color'", "color: var(--warning-color);"),
+                Arrays.asList("null", null));
+        assertAll("palette", colorTests(r, palette));
+        assertAll("semantic", colorTests(r, semantic));
+        assertAll("other", colorTests(r, other));
+    }
 
-        List<BuildBadgeAction> badgeActions = run.getBadgeActions();
-        assertEquals(1, badgeActions.size());
+    private static Stream<Executable> colorTests(JenkinsRule r, Stream<List<String>> tests) {
+        return tests.map(params -> () -> {
+            WorkflowRun run = runJob(r, "addBadge(color: " + params.get(0) + ")");
 
-        BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertEquals("color: #ff0000;", action.getStyle());
+            List<BuildBadgeAction> badgeActions = run.getBadgeActions();
+            assertEquals(1, badgeActions.size());
 
-        run = runJob(r, "addBadge(color: 'tortoise')");
-
-        badgeActions = run.getBadgeActions();
-        assertEquals(1, badgeActions.size());
-
-        action = (BadgeAction) badgeActions.get(0);
-        assertEquals("color: tortoise;", action.getStyle());
-
-        run = runJob(r, "addBadge(color: 'red')");
-
-        badgeActions = run.getBadgeActions();
-        assertEquals(1, badgeActions.size());
-
-        action = (BadgeAction) badgeActions.get(0);
-        assertEquals("color: var(--red);", action.getStyle());
-
-        run = runJob(r, "addBadge(color: 'jenkins-!-color-red')");
-
-        badgeActions = run.getBadgeActions();
-        assertEquals(1, badgeActions.size());
-
-        action = (BadgeAction) badgeActions.get(0);
-        assertEquals("color: var(--red);", action.getStyle());
-
-        run = runJob(r, "addBadge(color: 'jenkins-!-warning-color')");
-
-        badgeActions = run.getBadgeActions();
-        assertEquals(1, badgeActions.size());
-
-        action = (BadgeAction) badgeActions.get(0);
-        assertEquals("color: var(--warning-color);", action.getStyle());
-
-        run = runJob(r, "addBadge(color: null)");
-
-        badgeActions = run.getBadgeActions();
-        assertEquals(1, badgeActions.size());
-
-        action = (BadgeAction) badgeActions.get(0);
-        assertNull(action.getStyle());
+            BadgeAction action = (BadgeAction) badgeActions.get(0);
+            assertEquals(params.get(1), action.getStyle());
+        });
     }
 
     @Test

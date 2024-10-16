@@ -236,7 +236,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
         } else if (color.startsWith("dark-") && color.length() > 5) {
             primary = color.substring(5);
         }
-        // https://github.com/jenkinsci/jenkins/blob/master/war/src/main/scss/abstracts/_theme.scss
+        // https://github.com/jenkinsci/jenkins/blob/master/src/main/scss/abstracts/_theme.scss
         switch (primary) {
                 // palette
             case "blue":
