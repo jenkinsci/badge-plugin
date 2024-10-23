@@ -35,6 +35,8 @@ import java.util.logging.Logger;
 import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.NoExternalUse;
 
 /**
  * An abstract action providing an id amongst other fields to build a badge.
@@ -209,7 +211,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
             } else if (color.startsWith("jenkins-!-")) {
                 style += "color: var(--" + color.replaceFirst("jenkins-!-", "") + ");";
             } else {
-                style += "color: " + color + ";";
+                style += "color: " + getJenkinsColorStyle(color) + ";";
             }
         }
         if (!style.isEmpty()) {
@@ -217,5 +219,52 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
         }
 
         return this;
+    }
+
+    /**
+     * Get the Jenkins color style for the given color reference. Returns {@code color} if the color is not a
+     * known Jenkins palette color or semantic color.
+     * @param color color reference
+     * @return jenkins color style variable
+     */
+    @NonNull
+    @Restricted(NoExternalUse.class)
+    public static String getJenkinsColorStyle(@NonNull String color) {
+        String primary = color;
+        if (color.startsWith("light-") && color.length() > 6) {
+            primary = color.substring(6);
+        } else if (color.startsWith("dark-") && color.length() > 5) {
+            primary = color.substring(5);
+        }
+        // https://github.com/jenkinsci/jenkins/blob/master/src/main/scss/abstracts/_theme.scss
+        switch (primary) {
+                // palette
+            case "blue":
+            case "brown":
+            case "cyan":
+            case "green":
+            case "indigo":
+            case "orange":
+            case "pink":
+            case "purple":
+            case "red":
+            case "yellow":
+            case "white":
+            case "black":
+                return "var(--" + color + ")";
+                // semantics
+            case "accent":
+            case "text":
+            case "error":
+            case "warning":
+            case "success":
+            case "destructive":
+            case "build":
+            case "danger":
+            case "info":
+                return "var(--" + color + "-color)";
+            default:
+                return color;
+        }
     }
 }
