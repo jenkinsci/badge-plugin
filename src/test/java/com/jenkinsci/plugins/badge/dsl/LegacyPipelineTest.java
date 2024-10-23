@@ -47,21 +47,35 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 class LegacyPipelineTest {
 
     @Test
-    void color(JenkinsRule r) throws Exception {
-        Stream<List<String>> palette = Stream.of(
-                        "blue", "brown", "cyan", "green", "indigo", "orange", "pink", "purple", "red", "yellow",
-                        "white", "black")
-                .map(c -> Arrays.asList("'" + c + "'", "color: var(--" + c + ");"));
-        Stream<List<String>> semantic = Stream.of(
-                        "accent", "text", "error", "warning", "success", "destructive", "build", "danger", "info")
-                .map(c -> Arrays.asList("'" + c + "'", "color: var(--" + c + "-color);"));
+    void color(JenkinsRule r) {
+        List<String> colors = Arrays.asList(
+                "blue", "brown", "cyan", "green", "indigo", "orange", "pink", "purple", "red", "yellow", "white",
+                "black");
+        Stream<List<String>> palette =
+                colors.stream().map(c -> Arrays.asList("'" + c + "'", "color: var(--" + c + ");"));
+        Stream<List<String>> paletteLight =
+                colors.stream().map(c -> Arrays.asList("'light-" + c + "'", "color: var(--light-" + c + ");"));
+        Stream<List<String>> paletteDark =
+                colors.stream().map(c -> Arrays.asList("'dark-" + c + "'", "color: var(--dark-" + c + ");"));
+
+        List<String> semantics = Arrays.asList(
+                "accent", "text", "error", "warning", "success", "destructive", "build", "danger", "info");
+        Stream<List<String>> semantic =
+                semantics.stream().map(c -> Arrays.asList("'" + c + "'", "color: var(--" + c + "-color);"));
+
         Stream<List<String>> other = Stream.of(
+                Arrays.asList("'light-'", "color: light-;"),
+                Arrays.asList("'dark-'", "color: dark-;"),
                 Arrays.asList("'#ff0000'", "color: #ff0000;"),
                 Arrays.asList("'tortoise'", "color: tortoise;"),
                 Arrays.asList("'jenkins-!-color-red'", "color: var(--red);"),
                 Arrays.asList("'jenkins-!-warning-color'", "color: var(--warning-color);"),
+                Arrays.asList("''", "color: ;"),
                 Arrays.asList("null", null));
+
         assertAll("palette", colorTests(r, palette));
+        assertAll("palette-light", colorTests(r, paletteLight));
+        assertAll("palette-dark", colorTests(r, paletteDark));
         assertAll("semantic", colorTests(r, semantic));
         assertAll("other", colorTests(r, other));
     }

@@ -257,9 +257,9 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
             case "text":
             case "error":
             case "warning":
+            case "success":
             case "destructive":
             case "build":
-            case "success":
             case "danger":
             case "info":
                 return "var(--" + color + "-color)";
