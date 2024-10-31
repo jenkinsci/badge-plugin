@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>4.88</version>
+    <version>5.2</version>
   </parent>
+
   <groupId>org.jenkins-ci.plugins</groupId>
   <artifactId>badge</artifactId>
   <version>${revision}${changelist}</version>
   <packaging>hpi</packaging>
 
   <name>Badge</name>
-  <url>https://github.com/jenkinsci/badge-plugin</url>
+  <description>Add Badges for a build and extend the build summary</description>
+  <url>https://github.com/${gitHubRepo}</url>
 
   <licenses>
     <license>
@@ -49,26 +52,30 @@
   </scm>
 
   <properties>
-    <jenkins.version>2.440.3</jenkins.version>
-    <revision>2.4</revision>
     <changelist>-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/badge-plugin</gitHubRepo>
+    <hpi.compatibleSinceVersion>2.0</hpi.compatibleSinceVersion>
+    <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
+    <jenkins.baseline>2.479</jenkins.baseline>
+    <jenkins.version>${jenkins.baseline}.1</jenkins.version>
+    <revision>2.4</revision>
     <spotbugs.effort>Max</spotbugs.effort>
     <spotbugs.threshold>Low</spotbugs.threshold>
     <spotless.check.skip>false</spotless.check.skip>
-    <hpi.compatibleSinceVersion>2.0</hpi.compatibleSinceVersion>
   </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
         <groupId>io.jenkins.tools.bom</groupId>
-        <artifactId>bom-2.440.x</artifactId>
-        <version>3435.v238d66a_043fb_</version>
+        <artifactId>bom-${jenkins.baseline}.x</artifactId>
+        <version>3559.vb_5b_81183b_d23</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>io.jenkins.plugins</groupId>
