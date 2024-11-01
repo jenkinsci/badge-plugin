@@ -23,6 +23,7 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import java.io.Serial;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
@@ -32,6 +33,7 @@ import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
  */
 public class BadgeSummaryAction extends AbstractBadgeAction {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public BadgeSummaryAction(String id, String icon, String text, String cssClass, String style, String link) {
