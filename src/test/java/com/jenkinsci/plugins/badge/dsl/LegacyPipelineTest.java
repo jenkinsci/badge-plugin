@@ -120,8 +120,10 @@ class LegacyPipelineTest {
 
         run = runJob(
                 r,
-                "def summary = createSummary(text: 'Test Text')\n"
-                        + "summary.appendText(' More Text', false, false, false, null)");
+                """
+                def summary = createSummary(text: 'Test Text')
+                summary.appendText(' More Text', false, false, false, null)
+                """);
 
         actions = run.getActions(BadgeSummaryAction.class);
         assertEquals(1, actions.size());
@@ -132,8 +134,10 @@ class LegacyPipelineTest {
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         run = runJob(
                 r,
-                "def summary = createSummary(text: 'Test Text')\n"
-                        + "summary.appendText(' More Text', true, true, true, 'red')");
+                """
+                def summary = createSummary(text: 'Test Text')
+                summary.appendText(' More Text', true, true, true, 'red')
+                """);
 
         actions = run.getActions(BadgeSummaryAction.class);
         assertEquals(1, actions.size());
