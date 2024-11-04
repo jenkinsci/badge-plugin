@@ -92,6 +92,7 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
      * Translates pre 2.0 build.xml to latest format for backwards compatibility.
      * @return this instance
      */
+    @Serial
     @Override
     @Deprecated(since = "2.0", forRemoval = true)
     protected Object readResolve() {
