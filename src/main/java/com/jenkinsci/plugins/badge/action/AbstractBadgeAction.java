@@ -192,6 +192,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
      * Translates pre 2.0 build.xml to latest format for backwards compatibility.
      * @return this instance
      */
+    @Serial
     @Deprecated(since = "2.0", forRemoval = true)
     protected Object readResolve() {
         // field renamed - see AbstractBadgeAction
@@ -239,34 +240,24 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
             primary = color.substring(5);
         }
         // https://github.com/jenkinsci/jenkins/blob/master/src/main/scss/abstracts/_theme.scss
-        switch (primary) {
+        return switch (primary) {
                 // palette
-            case "blue":
-            case "brown":
-            case "cyan":
-            case "green":
-            case "indigo":
-            case "orange":
-            case "pink":
-            case "purple":
-            case "red":
-            case "yellow":
-            case "white":
-            case "black":
-                return "var(--" + color + ")";
+            case "blue",
+                    "brown",
+                    "cyan",
+                    "green",
+                    "indigo",
+                    "orange",
+                    "pink",
+                    "purple",
+                    "red",
+                    "yellow",
+                    "white",
+                    "black" -> "var(--" + color + ")";
                 // semantics
-            case "accent":
-            case "text":
-            case "error":
-            case "warning":
-            case "success":
-            case "destructive":
-            case "build":
-            case "danger":
-            case "info":
-                return "var(--" + color + "-color)";
-            default:
-                return color;
-        }
+            case "accent", "text", "error", "warning", "success", "destructive", "build", "danger", "info" -> "var(--"
+                    + color + "-color)";
+            default -> color;
+        };
     }
 }

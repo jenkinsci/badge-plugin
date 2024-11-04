@@ -136,17 +136,21 @@ class RemoveBadgesStepTest extends AbstractRemoveBadgeStepTest {
         }
 
         if (declarativePipeline) {
-            script = "pipeline {\n" + "   agent any\n"
-                    + "   stages {\n"
-                    + "        stage('Testing') {\n"
-                    + "            steps {\n"
-                    + "                script {\n"
-                    + "                  " + script + "\n"
-                    + "                }\n"
-                    + "            }\n"
-                    + "        }\n"
-                    + "    }\n"
-                    + "}\n";
+            script =
+                    """
+            pipeline {
+                agent any
+                stages {
+                    stage('Testing') {
+                        steps {
+                            script {
+                                %s
+                            }
+                        }
+                    }
+                }
+            }"""
+                            .formatted(script);
         }
 
         project.setDefinition(new CpsFlowDefinition(script, true));

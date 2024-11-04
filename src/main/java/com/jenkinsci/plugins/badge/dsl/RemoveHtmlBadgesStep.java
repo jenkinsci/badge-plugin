@@ -30,6 +30,7 @@ import hudson.model.Action;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import java.io.PrintStream;
+import java.io.Serial;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
@@ -90,6 +91,7 @@ public class RemoveHtmlBadgesStep extends Step {
 
     public static class Execution extends SynchronousStepExecution<Void> {
 
+        @Serial
         private static final long serialVersionUID = 1L;
 
         private final String id;

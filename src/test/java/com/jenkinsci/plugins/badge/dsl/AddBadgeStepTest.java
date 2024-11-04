@@ -135,15 +135,20 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         }
 
         if (declarativePipeline) {
-            script = "pipeline {\n" + "   agent any\n"
-                    + "   stages {\n"
-                    + "        stage('Testing') {\n"
-                    + "            steps {\n"
-                    + "              " + script + "\n"
-                    + "            }\n"
-                    + "        }\n"
-                    + "    }\n"
-                    + "}\n";
+            script =
+                    """
+        pipeline {
+            agent any
+            stages {
+                stage('Testing') {
+                    steps {
+                        %s
+                    }
+                }
+            }
+        }
+        """
+                            .formatted(script);
         }
 
         project.setDefinition(new CpsFlowDefinition(script, true));
@@ -160,25 +165,32 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         step.setText(UUID.randomUUID().toString());
         assertNotEquals(actualText, step.getText());
 
-        String script = "def badge = " + step + "\n";
-        script += "badge.setText('" + actualText + "')";
+        String script = """
+        def badge = %s
+        badge.setText('%s')
+        """.formatted(step, actualText);
 
         if (inNode) {
             script = "node() { " + script + " }";
         }
 
         if (declarativePipeline) {
-            script = "pipeline {\n" + "   agent any\n"
-                    + "   stages {\n"
-                    + "        stage('Testing') {\n"
-                    + "            steps {\n"
-                    + "                script {\n"
-                    + "                  " + script + "\n"
-                    + "                }\n"
-                    + "            }\n"
-                    + "        }\n"
-                    + "    }\n"
-                    + "}\n";
+            script =
+                    """
+            pipeline {
+                agent any
+                stages {
+                    stage('Testing') {
+                        steps {
+                            script {
+                                %s
+                            }
+                        }
+                    }
+                }
+            }
+            """
+                            .formatted(script);
         }
 
         project.setDefinition(new CpsFlowDefinition(script, true));

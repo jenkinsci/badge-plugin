@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import hudson.model.Run;
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
@@ -136,6 +137,7 @@ public abstract class AbstractAddBadgeStep extends Step {
 
     abstract static class Execution extends SynchronousStepExecution<AbstractBadgeAction> {
 
+        @Serial
         private static final long serialVersionUID = 1L;
 
         private final String id;

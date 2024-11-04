@@ -109,7 +109,7 @@ class ShortTextStepTest {
         String text = UUID.randomUUID().toString();
         String color = UUID.randomUUID().toString();
         String background = UUID.randomUUID().toString();
-        Integer border = new Random().nextInt();
+        int border = new Random().nextInt();
         String borderColor = UUID.randomUUID().toString();
         String link = "http://" + UUID.randomUUID();
 
@@ -133,7 +133,7 @@ class ShortTextStepTest {
     void jenkinsColorStyle(JenkinsRule r) throws Exception {
         String text = UUID.randomUUID().toString();
         String color = "jenkins-!-color-red";
-        Integer border = 1;
+        int border = 1;
 
         WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
         p.setDefinition(new CpsFlowDefinition(
@@ -152,7 +152,7 @@ class ShortTextStepTest {
     void jenkinsWarningStyle(JenkinsRule r) throws Exception {
         String text = UUID.randomUUID().toString();
         String color = "jenkins-!-warning-color";
-        Integer border = 1;
+        int border = 1;
 
         WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
         p.setDefinition(new CpsFlowDefinition(

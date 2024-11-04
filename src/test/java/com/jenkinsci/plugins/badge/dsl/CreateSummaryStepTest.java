@@ -101,7 +101,6 @@ class CreateSummaryStepTest {
         String html = "<ul><li>" + text + "</li></ul><script>alert(\"exploit!\");</script>";
         BadgeSummaryAction action = createSummary(r, "summary.appendText('" + html + "', false);");
         assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
-        // assertEquals(html, action.getRawText());
     }
 
     @Test

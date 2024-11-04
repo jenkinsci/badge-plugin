@@ -30,6 +30,7 @@ import hudson.Extension;
 import hudson.model.Run;
 import hudson.model.TaskListener;
 import java.io.PrintStream;
+import java.io.Serial;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
@@ -95,6 +96,7 @@ public class AddHtmlBadgeStep extends Step {
     @Deprecated(since = "2.0", forRemoval = true)
     public static class Execution extends SynchronousStepExecution<Void> {
 
+        @Serial
         private static final long serialVersionUID = 1L;
 
         @SuppressFBWarnings(value = "SE_TRANSIENT_FIELD_NOT_RESTORED", justification = "Only used when starting.")
