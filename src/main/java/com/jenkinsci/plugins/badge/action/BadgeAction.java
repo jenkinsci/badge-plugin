@@ -24,12 +24,14 @@
 package com.jenkinsci.plugins.badge.action;
 
 import hudson.model.BuildBadgeAction;
+import java.io.Serial;
 
 /**
  * Common action for badges.
  */
 public class BadgeAction extends AbstractBadgeAction implements BuildBadgeAction {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public BadgeAction(String id, String icon, String text, String cssClass, String style, String link) {

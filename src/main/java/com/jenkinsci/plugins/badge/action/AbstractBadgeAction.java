@@ -28,6 +28,7 @@ import hudson.PluginWrapper;
 import hudson.model.Action;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -44,6 +45,7 @@ import org.kohsuke.accmod.restrictions.NoExternalUse;
  */
 public abstract class AbstractBadgeAction implements Action, Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = Logger.getLogger(AbstractBadgeAction.class.getName());

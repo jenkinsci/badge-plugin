@@ -26,6 +26,7 @@ package com.jenkinsci.plugins.badge.action;
 import hudson.model.Action;
 import hudson.model.BuildBadgeAction;
 import java.io.IOException;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +41,9 @@ import org.kohsuke.stapler.export.ExportedBean;
 @Deprecated(since = "2.0", forRemoval = true)
 public class HtmlBadgeAction implements BuildBadgeAction, Action, Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
+
     private static final Logger LOGGER = Logger.getLogger(HtmlBadgeAction.class.getName());
 
     private String id;
