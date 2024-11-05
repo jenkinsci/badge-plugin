@@ -1,13 +1,13 @@
 <div>
     <p>
-        The plugin supports symbols from the <a href="https://ionic.io/ionicons">ionicons library</a> through the <a href="https://plugins.jenkins.io/ionicons-api/">ionicons-api-plugin</a>.
-        More symbols can be added by installing additional plugins, such as <a href="https://plugins.jenkins.io/font-awesome-api">font-awesome-api-plugin</a> or <a href="https://plugins.jenkins.io/custom-folder-icon">custom-folder-icon-plugin</a>.
+        The plugin supports symbols from the <a href="https://plugins.jenkins.io/ionicons-api/">Ionicons API</a> as well as the <a href="https://plugins.jenkins.io/emoji-symbols-api/">Emoji Symbols API</a>.
+        More symbols can be added by installing additional plugins, such as <a href="https://plugins.jenkins.io/font-awesome-api/">Font Awesome API</a> or <a href="https://plugins.jenkins.io/oss-symbols-api/">IT Symbols API</a>.
         Symbols from plugins are referenced as "symbol-<i>icon-name</i> plugin-<i>plugin-name</i>" and Jenkins Core icons as "icon-<i>icon-name</i>" or "symbol-<i>icon-name</i>" - see <a href="https://weekly.ci.jenkins.io/design-library">Jenkins Design Library</a> for more details.
         For example, the following are all valid references to symbols:
         <ul>
             <li><code>addSummary icon: 'symbol-alert-circle-outline plugin-ionicons-api', text: 'This is an alert symbol'</code></li>
             <li><code>addSummary icon: 'symbol-bar-chart-filled plugin-ionicons-api', text: 'This is a bar chart symbol'</code></li>
-            <li><code>addSummary icon: 'symbol-battery-half-sharp plugin-ionicons-api', text: 'This is a half filled battery symbol'</code></li>
+            <li><code>addSummary icon: 'symbol-sloth plugin-emoji-symbols-api', text: 'This is a sloth symbol'</code></li>
             <li><code>addSummary icon: 'symbol-cube', text: 'This is a Jenkins Core symbol'</code></li>
             <li><code>addSummary icon: 'icon-gear', text: 'This is a Jenkins Core icon'</code></li>
         </ul>
@@ -27,9 +27,9 @@
         These icons are listed in the <a href="https://plugins.jenkins.io/badge/#plugin-content-icons">plugin documentation</a> and are referenced as "<i>image-name</i>.gif".
         For example, the following are all valid references to icons included with the plugin:
         <ul>
-            <li><code>addSummary icon: 'completed.gif', text: 'This is a completed symbol'</code></li>
-            <li><code>addSummary icon: 'success.gif', text: 'This is a success icon'</code></li>
-            <li><code>addSummary icon: 'warning.gif', text: 'This is a warning icon'</code></li>
+            <li><code>addSummary icon: 'aborted.gif', text: 'This is a aborted symbol'</code></li>
+            <li><code>addSummary icon: 'folder-open.gif', text: 'This is a folder icon'</code></li>
+            <li><code>addSummary icon: 'document_edit.gif', text: 'This is a document icon'</code></li>
         </ul>
     </p>
 </div>
