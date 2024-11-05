@@ -24,9 +24,9 @@
 package com.jenkinsci.plugins.badge.action;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import hudson.PluginWrapper;
 import hudson.model.Action;
-import java.io.File;
+import io.jenkins.plugins.emoji.symbols.Emojis;
+import io.jenkins.plugins.ionicons.Ionicons;
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
@@ -95,13 +95,24 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
             return icon;
         }
 
-        // try plugin images dir, fallback to Jenkins images dir
-        PluginWrapper wrapper = Jenkins.get().getPluginManager().getPlugin("badge");
-        boolean pluginIconExists =
-                (wrapper != null) && new File(wrapper.baseResourceURL.getPath() + "/images/" + icon).exists();
-        return pluginIconExists
-                ? "/plugin/" + wrapper.getShortName() + "/images/" + icon
-                : Jenkins.RESOURCE_PATH + "/images/16x16/" + icon;
+        // backwards compatible replacement for old GIFs
+        return switch (icon) {
+            case "completed.gif" -> "symbol-status-blue";
+            case "db_in.gif" -> Ionicons.getIconClassName("cloud-upload-outline");
+            case "db_out.gif" -> Ionicons.getIconClassName("cloud-download-outline");
+            case "delete.gif" -> "symbol-trash";
+            case "error.gif" -> "symbol-status-red";
+            case "folder.gif" -> "symbol-folder";
+            case "green.gif" -> Emojis.getIconClassName("green_square");
+            case "info.gif" -> "symbol-information-circle";
+            case "red.gif" -> Emojis.getIconClassName("red_square");
+            case "save.gif" -> Ionicons.getIconClassName("save-outline");
+            case "success.gif" -> "symbol-status-blue";
+            case "text.gif" -> "symbol-document-text";
+            case "warning.gif" -> "symbol-status-yellow";
+            case "yellow.gif" -> Emojis.getIconClassName("yellow_square");
+            default -> Jenkins.RESOURCE_PATH + "/images/16x16/" + icon;
+        };
     }
 
     @Whitelisted
