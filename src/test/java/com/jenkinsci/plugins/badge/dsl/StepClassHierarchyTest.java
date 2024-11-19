@@ -26,63 +26,72 @@ package com.jenkinsci.plugins.badge.dsl;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jenkinsci.plugins.workflow.steps.Step;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class StepClassHierarchyTest {
 
-    @Test
-    void abstractAddBadgeStep() {
-        assertTrue(Step.class.isAssignableFrom(AbstractAddBadgeStep.class));
+    @Nested
+    class Badge {
+
+        @Test
+        void abstractAddBadgeStep() {
+            assertTrue(Step.class.isAssignableFrom(AbstractAddBadgeStep.class));
+        }
+
+        @Test
+        void abstractRemoveBadgesStep() {
+            assertTrue(Step.class.isAssignableFrom(AbstractRemoveBadgesStep.class));
+        }
+
+        @Test
+        void addBadgeStep() {
+            assertTrue(Step.class.isAssignableFrom(AddBadgeStep.class));
+            assertTrue(AbstractAddBadgeStep.class.isAssignableFrom(AddBadgeStep.class));
+        }
+
+        @Test
+        void addErrorBadgeStep() {
+            assertTrue(Step.class.isAssignableFrom(AddErrorBadgeStep.class));
+            assertTrue(AbstractAddBadgeStep.class.isAssignableFrom(AddErrorBadgeStep.class));
+            assertTrue(AddBadgeStep.class.isAssignableFrom(AddErrorBadgeStep.class));
+        }
+
+        @Test
+        void addInfoBadgeStep() {
+            assertTrue(Step.class.isAssignableFrom(AddInfoBadgeStep.class));
+            assertTrue(AbstractAddBadgeStep.class.isAssignableFrom(AddInfoBadgeStep.class));
+            assertTrue(AddBadgeStep.class.isAssignableFrom(AddInfoBadgeStep.class));
+        }
+
+        @Test
+        void addWarningBadgeStep() {
+            assertTrue(Step.class.isAssignableFrom(AddWarningBadgeStep.class));
+            assertTrue(AbstractAddBadgeStep.class.isAssignableFrom(AddWarningBadgeStep.class));
+            assertTrue(AddBadgeStep.class.isAssignableFrom(AddWarningBadgeStep.class));
+        }
+
+        @Test
+        void removeBadgesStep() {
+            assertTrue(Step.class.isAssignableFrom(RemoveBadgesStep.class));
+            assertTrue(AbstractRemoveBadgesStep.class.isAssignableFrom(RemoveBadgesStep.class));
+        }
     }
 
-    @Test
-    void abstractRemoveBadgesStep() {
-        assertTrue(Step.class.isAssignableFrom(AbstractRemoveBadgesStep.class));
-    }
+    @Nested
+    class Summary {
 
-    @Test
-    void addBadgeStep() {
-        assertTrue(Step.class.isAssignableFrom(AddBadgeStep.class));
-        assertTrue(AbstractAddBadgeStep.class.isAssignableFrom(AddBadgeStep.class));
-    }
+        @Test
+        void addSummaryStep() {
+            assertTrue(Step.class.isAssignableFrom(AddSummaryStep.class));
+            assertTrue(AbstractAddBadgeStep.class.isAssignableFrom(AddSummaryStep.class));
+            assertTrue(AddBadgeStep.class.isAssignableFrom(AddSummaryStep.class));
+        }
 
-    @Test
-    void addErrorBadgeStep() {
-        assertTrue(Step.class.isAssignableFrom(AddErrorBadgeStep.class));
-        assertTrue(AbstractAddBadgeStep.class.isAssignableFrom(AddErrorBadgeStep.class));
-        assertTrue(AddBadgeStep.class.isAssignableFrom(AddErrorBadgeStep.class));
-    }
-
-    @Test
-    void addInfoBadgeStep() {
-        assertTrue(Step.class.isAssignableFrom(AddInfoBadgeStep.class));
-        assertTrue(AbstractAddBadgeStep.class.isAssignableFrom(AddInfoBadgeStep.class));
-        assertTrue(AddBadgeStep.class.isAssignableFrom(AddInfoBadgeStep.class));
-    }
-
-    @Test
-    void addSummaryStep() {
-        assertTrue(Step.class.isAssignableFrom(AddSummaryStep.class));
-        assertTrue(AbstractAddBadgeStep.class.isAssignableFrom(AddSummaryStep.class));
-        assertTrue(AddBadgeStep.class.isAssignableFrom(AddSummaryStep.class));
-    }
-
-    @Test
-    void addWarningBadgeStep() {
-        assertTrue(Step.class.isAssignableFrom(AddWarningBadgeStep.class));
-        assertTrue(AbstractAddBadgeStep.class.isAssignableFrom(AddWarningBadgeStep.class));
-        assertTrue(AddBadgeStep.class.isAssignableFrom(AddWarningBadgeStep.class));
-    }
-
-    @Test
-    void removeBadgesStep() {
-        assertTrue(Step.class.isAssignableFrom(RemoveBadgesStep.class));
-        assertTrue(AbstractRemoveBadgesStep.class.isAssignableFrom(RemoveBadgesStep.class));
-    }
-
-    @Test
-    void removeSummariesStep() {
-        assertTrue(Step.class.isAssignableFrom(RemoveSummariesStep.class));
-        assertTrue(AbstractRemoveBadgesStep.class.isAssignableFrom(RemoveSummariesStep.class));
+        @Test
+        void removeSummariesStep() {
+            assertTrue(Step.class.isAssignableFrom(RemoveSummariesStep.class));
+            assertTrue(AbstractRemoveBadgesStep.class.isAssignableFrom(RemoveSummariesStep.class));
+        }
     }
 }

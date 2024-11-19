@@ -24,6 +24,9 @@
 package com.jenkinsci.plugins.badge.action;
 
 import java.io.Serial;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
@@ -36,8 +39,23 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
+
     public BadgeSummaryAction(String id, String icon, String text, String cssClass, String style, String link) {
         super(id, icon, text, cssClass, style, link);
+    }
+
+    @Whitelisted
+    @Override
+    public String getIcon() {
+        String icon = super.getIcon();
+
+        if (StringUtils.isBlank(icon)) {
+            LOGGER.log(Level.WARNING, () -> "Invalid icon value: '" + icon + "' - using empty icon instead");
+            return Jenkins.RESOURCE_PATH + "/images/16x16/empty.png";
+        }
+
+        return icon;
     }
 
     @Override

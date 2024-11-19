@@ -25,11 +25,9 @@ THE SOFTWARE.
 
 <?jelly escape-by-default='false'?>
 <j:jelly xmlns:j="jelly:core" xmlns:t="/lib/hudson">
-    <j:if test="${it.icon != null &amp;&amp; it.icon != ''}">
-        <t:summary icon="${it.icon}" href="${it.link}">
-            <span class="${it.cssClass}" style="${it.style}">
-                ${it.text}
-            </span>
-        </t:summary>
-    </j:if>
+    <t:summary icon="${it.icon}" href="${it.link}">
+        <span class="${it.cssClass}" style="${it.style}">
+            ${it.text}
+        </span>
+    </t:summary>
 </j:jelly>
