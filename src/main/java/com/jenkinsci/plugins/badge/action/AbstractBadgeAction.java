@@ -87,7 +87,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
 
     @Whitelisted
     public String getIcon() {
-        if (StringUtils.isEmpty(icon)
+        if (StringUtils.isBlank(icon)
                 || icon.startsWith("/")
                 || icon.startsWith("symbol-")
                 || icon.startsWith("icon-")
@@ -122,7 +122,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
 
     @Whitelisted
     public String getText() {
-        if (StringUtils.isEmpty(text)) {
+        if (StringUtils.isBlank(text)) {
             return text;
         }
 
@@ -161,14 +161,14 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
 
     @Whitelisted
     public String getLink() {
-        if (StringUtils.isEmpty(link)
+        if (StringUtils.isBlank(link)
                 || link.startsWith("/")
                 || link.matches("^https?://.*")
                 || link.matches("^mailto:.*")) {
             return link;
         }
 
-        LOGGER.log(Level.WARNING, "Invalid link value: '{}' - ignoring it", link);
+        LOGGER.log(Level.WARNING, () -> "Invalid link value: '" + link + "' - ignoring it");
         return null;
     }
 
