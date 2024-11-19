@@ -28,6 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import java.util.List;
+import jenkins.model.Jenkins;
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -53,7 +55,11 @@ class AddSummaryStepTest extends AddBadgeStepTest {
 
         BadgeSummaryAction action = summaryActions.get(0);
         assertEquals(step.getId(), action.getId());
-        assertEquals(step.getIcon(), action.getIcon());
+        if (StringUtils.isEmpty(step.getIcon())) {
+            assertEquals(Jenkins.RESOURCE_PATH + "/images/16x16/empty.png", action.getIcon());
+        } else {
+            assertEquals(step.getIcon(), action.getIcon());
+        }
         assertEquals(step.getText(), action.getText());
         assertEquals(step.getCssClass(), action.getCssClass());
         assertEquals(step.getStyle(), action.getStyle());
