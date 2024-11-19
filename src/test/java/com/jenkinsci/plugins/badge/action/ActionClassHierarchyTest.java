@@ -28,27 +28,36 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import hudson.model.Action;
 import hudson.model.BuildBadgeAction;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 class ActionClassHierarchyTest {
 
-    @Test
-    void abstractBadgeAction() {
-        assertTrue(Action.class.isAssignableFrom(AbstractBadgeAction.class));
-        assertFalse(BuildBadgeAction.class.isAssignableFrom(AbstractBadgeAction.class));
+    @Nested
+    class Badge {
+
+        @Test
+        void abstractBadgeAction() {
+            assertTrue(Action.class.isAssignableFrom(AbstractBadgeAction.class));
+            assertFalse(BuildBadgeAction.class.isAssignableFrom(AbstractBadgeAction.class));
+        }
+
+        @Test
+        void badgeAction() {
+            assertTrue(Action.class.isAssignableFrom(BadgeAction.class));
+            assertTrue(BuildBadgeAction.class.isAssignableFrom(BadgeAction.class));
+            assertTrue(AbstractBadgeAction.class.isAssignableFrom(BadgeAction.class));
+        }
     }
 
-    @Test
-    void badgeAction() {
-        assertTrue(Action.class.isAssignableFrom(BadgeAction.class));
-        assertTrue(BuildBadgeAction.class.isAssignableFrom(BadgeAction.class));
-        assertTrue(AbstractBadgeAction.class.isAssignableFrom(BadgeAction.class));
-    }
+    @Nested
+    class Summary {
 
-    @Test
-    void badgeSummaryAction() {
-        assertTrue(Action.class.isAssignableFrom(BadgeSummaryAction.class));
-        assertFalse(BuildBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class));
-        assertTrue(AbstractBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class));
+        @Test
+        void badgeSummaryAction() {
+            assertTrue(Action.class.isAssignableFrom(BadgeSummaryAction.class));
+            assertFalse(BuildBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class));
+            assertTrue(AbstractBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class));
+        }
     }
 }

@@ -32,7 +32,7 @@ import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 @WithJenkins
-abstract class AbstractRemoveBadgeStepTest {
+abstract class AbstractRemoveBadgesStepTest {
 
     @Test
     abstract void defaultConstructor(@SuppressWarnings("unused") JenkinsRule r);
