@@ -12,7 +12,7 @@ jobs:
     name: Coverage on Ubuntu
     steps:
       - name: Set up JDK 17 and Maven
-        uses: s4u/setup-maven-action@v1.17.0
+        uses: s4u/setup-maven-action@v1.18.0
         with:
           java-distribution: 'temurin'
           java-version: '17'
