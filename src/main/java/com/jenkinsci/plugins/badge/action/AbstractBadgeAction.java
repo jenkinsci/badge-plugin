@@ -38,11 +38,14 @@ import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
+import org.kohsuke.stapler.export.Exported;
+import org.kohsuke.stapler.export.ExportedBean;
 
 /**
  * An abstract action providing an id amongst other fields to build a badge.
  * Most of the implementation resides in this class in order to be shared with badges and summaries.
  */
+@ExportedBean(defaultVisibility = 2)
 public abstract class AbstractBadgeAction implements Action, Serializable {
 
     @Serial
@@ -75,6 +78,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
         this.link = link;
     }
 
+    @Exported
     @Whitelisted
     public @NonNull String getId() {
         return id;
@@ -85,6 +89,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
         this.icon = icon;
     }
 
+    @Exported
     @Whitelisted
     public String getIcon() {
         if (StringUtils.isBlank(icon)
@@ -120,6 +125,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
         this.text = text;
     }
 
+    @Exported
     @Whitelisted
     public String getText() {
         if (StringUtils.isBlank(text)) {
@@ -139,6 +145,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
         this.cssClass = cssClass;
     }
 
+    @Exported
     @Whitelisted
     public String getCssClass() {
         return cssClass;
@@ -149,6 +156,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
         this.style = style;
     }
 
+    @Exported
     @Whitelisted
     public String getStyle() {
         return style;
@@ -159,6 +167,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
         this.link = link;
     }
 
+    @Exported
     @Whitelisted
     public String getLink() {
         if (StringUtils.isBlank(link)

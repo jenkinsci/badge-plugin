@@ -24,18 +24,31 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import hudson.model.BuildBadgeAction;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
+import javax.xml.parsers.DocumentBuilderFactory;
+import net.sf.json.JSONNull;
+import net.sf.json.JSONObject;
+import org.htmlunit.WebResponse;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 class AddBadgeStepTest extends AbstractAddBadgeStepTest {
 
@@ -124,8 +137,95 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         runModifyJob(r, step, false, true);
     }
 
-    protected void runAddJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode, boolean declarativePipeline)
-            throws Exception {
+    @Test
+    void exportedBean(JenkinsRule r) throws Exception {
+        AbstractAddBadgeStep step = createStep(
+                UUID.randomUUID().toString(),
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io");
+        WorkflowRun job = runAddJob(r, step, false, false);
+
+        WorkflowRun bean = assertInstanceOf(WorkflowRun.class, job.getApi().bean);
+        assertFields(step, bean);
+
+        AbstractBadgeAction action = bean.getAction(AbstractBadgeAction.class);
+
+        try (JenkinsRule.WebClient webClient = r.createWebClient()) {
+            // JSON
+            WebResponse response = webClient
+                    .goTo(job.getUrl() + "api/json", "application/json")
+                    .getWebResponse();
+            JSONObject json = JSONObject.fromObject(response.getContentAsString())
+                    .getJSONArray("actions")
+                    .getJSONObject(1);
+
+            Predicate<Object> nullable = value -> !(value instanceof JSONNull);
+
+            assertEquals(action.getClass().getName(), json.get("_class"));
+            assertEquals(action.getId(), json.get("id"));
+            assertEquals(
+                    action.getIcon(),
+                    Optional.of(json.get("icon")).filter(nullable).orElse(null));
+            assertEquals(
+                    action.getText(),
+                    Optional.of(json.get("text")).filter(nullable).orElse(null));
+            assertEquals(
+                    action.getCssClass(),
+                    Optional.of(json.get("cssClass")).filter(nullable).orElse(null));
+            assertEquals(
+                    action.getStyle(),
+                    Optional.of(json.get("style")).filter(nullable).orElse(null));
+            assertEquals(
+                    action.getLink(),
+                    Optional.of(json.get("link")).filter(nullable).orElse(null));
+
+            // XML
+            response = webClient
+                    .goTo(job.getUrl() + "api/xml?xpath=/*/action[2]", "application/xml")
+                    .getWebResponse();
+            Element xml = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder()
+                    .parse(new InputSource(response.getContentAsStream()))
+                    .getDocumentElement();
+
+            Node mockNode = mock(Node.class);
+            when(mockNode.getTextContent()).thenReturn(null);
+
+            assertEquals(action.getClass().getName(), xml.getAttribute("_class"));
+            assertEquals(action.getId(), xml.getElementsByTagName("id").item(0).getTextContent());
+            assertEquals(
+                    action.getIcon(),
+                    Optional.ofNullable(xml.getElementsByTagName("icon").item(0))
+                            .orElse(mockNode)
+                            .getTextContent());
+            assertEquals(
+                    action.getText(),
+                    Optional.ofNullable(xml.getElementsByTagName("text").item(0))
+                            .orElse(mockNode)
+                            .getTextContent());
+            assertEquals(
+                    action.getCssClass(),
+                    Optional.ofNullable(xml.getElementsByTagName("cssClass").item(0))
+                            .orElse(mockNode)
+                            .getTextContent());
+            assertEquals(
+                    action.getStyle(),
+                    Optional.ofNullable(xml.getElementsByTagName("style").item(0))
+                            .orElse(mockNode)
+                            .getTextContent());
+            assertEquals(
+                    action.getLink(),
+                    Optional.ofNullable(xml.getElementsByTagName("link").item(0))
+                            .orElse(mockNode)
+                            .getTextContent());
+        }
+    }
+
+    protected WorkflowRun runAddJob(
+            JenkinsRule r, AbstractAddBadgeStep step, boolean inNode, boolean declarativePipeline) throws Exception {
         WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
 
         String script = step.toString();
@@ -155,6 +255,8 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
 
         assertFields(step, run);
+
+        return run;
     }
 
     protected void runModifyJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode, boolean declarativePipeline)
