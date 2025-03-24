@@ -10,6 +10,7 @@ import org.htmlunit.html.DomElement;
 import org.htmlunit.html.HtmlPage;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -18,11 +19,18 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @WithJenkins
 class UITest {
 
+    private static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
+
     @Nested
     class Badge {
 
         @Test
-        void iconWithLink(JenkinsRule r) throws Throwable {
+        void iconWithLink() throws Throwable {
             AddBadgeStep step = new AddBadgeStep(
                     null,
                     "symbol-rocket plugin-ionicons-api",
@@ -30,7 +38,7 @@ class UITest {
                     "Test Class",
                     "Test Style",
                     "https://jenkins.io");
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
@@ -53,10 +61,10 @@ class UITest {
         }
 
         @Test
-        void iconWithoutLink(JenkinsRule r) throws Throwable {
+        void iconWithoutLink() throws Throwable {
             AddBadgeStep step = new AddBadgeStep(
                     null, "symbol-rocket plugin-ionicons-api", "Test Text", "Test Class", "Test Style", null);
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
@@ -78,10 +86,10 @@ class UITest {
         }
 
         @Test
-        void textWithLink(JenkinsRule r) throws Throwable {
+        void textWithLink() throws Throwable {
             AddBadgeStep step =
                     new AddBadgeStep(null, null, "Test Text", "Test Class", "Test Style", "https://jenkins.io");
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
@@ -101,9 +109,9 @@ class UITest {
         }
 
         @Test
-        void textWithoutLink(JenkinsRule r) throws Throwable {
+        void textWithoutLink() throws Throwable {
             AddBadgeStep step = new AddBadgeStep(null, null, "Test Text", "Test Class", "Test Style", null);
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
@@ -122,9 +130,9 @@ class UITest {
         }
 
         @Test
-        void info(JenkinsRule r) throws Throwable {
+        void info() throws Throwable {
             AddInfoBadgeStep step = new AddInfoBadgeStep(null, "Test Text", null);
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
@@ -145,9 +153,9 @@ class UITest {
         }
 
         @Test
-        void warning(JenkinsRule r) throws Throwable {
+        void warning() throws Throwable {
             AddWarningBadgeStep step = new AddWarningBadgeStep(null, "Test Text", null);
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
@@ -168,9 +176,9 @@ class UITest {
         }
 
         @Test
-        void error(JenkinsRule r) throws Throwable {
+        void error() throws Throwable {
             AddErrorBadgeStep step = new AddErrorBadgeStep(null, "Test Text", null);
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
@@ -191,7 +199,7 @@ class UITest {
         }
 
         @Test
-        void remove(JenkinsRule r) throws Throwable {
+        void remove() throws Throwable {
             AddBadgeStep addStep = new AddBadgeStep(
                     UUID.randomUUID().toString(),
                     "symbol-rocket plugin-ionicons-api",
@@ -200,7 +208,7 @@ class UITest {
                     "Test Style",
                     "https://jenkins.io");
             RemoveBadgesStep removeStep = new RemoveBadgesStep(addStep.getId());
-            WorkflowJob job = runJob(r, addStep, removeStep);
+            WorkflowJob job = runJob(addStep, removeStep);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
@@ -215,7 +223,7 @@ class UITest {
     class Summary {
 
         @Test
-        void iconWithTextWithLink(JenkinsRule r) throws Throwable {
+        void iconWithTextWithLink() throws Throwable {
             AddSummaryStep step = new AddSummaryStep(
                     null,
                     "symbol-rocket plugin-ionicons-api",
@@ -223,7 +231,7 @@ class UITest {
                     "Test Class",
                     "Test Style",
                     "https://jenkins.io");
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
@@ -247,10 +255,10 @@ class UITest {
         }
 
         @Test
-        void iconWithTextWithoutLink(JenkinsRule r) throws Throwable {
+        void iconWithTextWithoutLink() throws Throwable {
             AddSummaryStep step = new AddSummaryStep(
                     null, "symbol-rocket plugin-ionicons-api", "Test Text", "Test Class", "Test Style", null);
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
@@ -271,10 +279,10 @@ class UITest {
         }
 
         @Test
-        void iconWithoutTextWithoutLink(JenkinsRule r) throws Throwable {
+        void iconWithoutTextWithoutLink() throws Throwable {
             AddSummaryStep step = new AddSummaryStep(
                     null, "symbol-rocket plugin-ionicons-api", null, "Test Class", "Test Style", null);
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
@@ -295,10 +303,10 @@ class UITest {
         }
 
         @Test
-        void textWithoutIconWithLink(JenkinsRule r) throws Throwable {
+        void textWithoutIconWithLink() throws Throwable {
             AddSummaryStep step =
                     new AddSummaryStep(null, null, "Test Text", "Test Class", "Test Style", "https://jenkins.io");
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
@@ -323,9 +331,9 @@ class UITest {
         }
 
         @Test
-        void textWithoutIconWithoutLink(JenkinsRule r) throws Throwable {
+        void textWithoutIconWithoutLink() throws Throwable {
             AddSummaryStep step = new AddSummaryStep(null, null, "Test Text", "Test Class", "Test Style", null);
-            WorkflowJob job = runJob(r, step, null);
+            WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
@@ -347,7 +355,7 @@ class UITest {
         }
 
         @Test
-        void remove(JenkinsRule r) throws Throwable {
+        void remove() throws Throwable {
             AddSummaryStep addStep = new AddSummaryStep(
                     UUID.randomUUID().toString(),
                     "symbol-rocket plugin-ionicons-api",
@@ -356,7 +364,7 @@ class UITest {
                     "Test Style",
                     "https://jenkins.io");
             RemoveSummariesStep removeStep = new RemoveSummariesStep(addStep.getId());
-            WorkflowJob job = runJob(r, addStep, removeStep);
+            WorkflowJob job = runJob(addStep, removeStep);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
@@ -366,9 +374,9 @@ class UITest {
         }
     }
 
-    private static WorkflowJob runJob(JenkinsRule r, AbstractAddBadgeStep addStep, AbstractRemoveBadgesStep removeStep)
+    private static WorkflowJob runJob(AbstractAddBadgeStep addStep, AbstractRemoveBadgesStep removeStep)
             throws Exception {
-        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
+        WorkflowJob project = r.createProject(WorkflowJob.class);
 
         String script =
                 """

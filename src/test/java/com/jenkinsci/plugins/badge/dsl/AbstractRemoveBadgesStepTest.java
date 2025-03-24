@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -34,11 +35,18 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @WithJenkins
 abstract class AbstractRemoveBadgesStepTest {
 
-    @Test
-    abstract void defaultConstructor(@SuppressWarnings("unused") JenkinsRule r);
+    protected static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
 
     @Test
-    void id(@SuppressWarnings("unused") JenkinsRule r) {
+    abstract void defaultConstructor();
+
+    @Test
+    void id() {
         AbstractRemoveBadgesStep step = createRemoveStep(null);
         assertNull(step.getId());
 
@@ -50,7 +58,7 @@ abstract class AbstractRemoveBadgesStepTest {
     }
 
     @Test
-    void toString(@SuppressWarnings("unused") JenkinsRule r) {
+    void string() {
         AbstractRemoveBadgesStep step = createRemoveStep("id");
         assertNotNull(step.toString());
         assertEquals(step.getDescriptor().getFunctionName() + "(id: '" + step.getId() + "')", step.toString());

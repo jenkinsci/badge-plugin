@@ -25,6 +25,7 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -32,11 +33,18 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @WithJenkins
 abstract class AbstractAddBadgeStepTest {
 
-    @Test
-    abstract void defaultConstructor(@SuppressWarnings("unused") JenkinsRule r);
+    protected static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
 
     @Test
-    void id(@SuppressWarnings("unused") JenkinsRule r) {
+    abstract void defaultConstructor();
+
+    @Test
+    void id() {
         AbstractAddBadgeStep step = createStep(null, "icon", "text", "cssClass", "style", "link");
         assertNull(step.getId());
 
@@ -48,7 +56,7 @@ abstract class AbstractAddBadgeStepTest {
     }
 
     @Test
-    void icon(@SuppressWarnings("unused") JenkinsRule r) {
+    void icon() {
         AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link");
         assertNull(step.getIcon());
 
@@ -60,7 +68,7 @@ abstract class AbstractAddBadgeStepTest {
     }
 
     @Test
-    void text(@SuppressWarnings("unused") JenkinsRule r) {
+    void text() {
         AbstractAddBadgeStep step = createStep("id", "icon", null, "cssClass", "style", "link");
         assertNull(step.getText());
 
@@ -72,7 +80,7 @@ abstract class AbstractAddBadgeStepTest {
     }
 
     @Test
-    void cssClass(@SuppressWarnings("unused") JenkinsRule r) {
+    void cssClass() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link");
         assertNull(step.getCssClass());
 
@@ -84,7 +92,7 @@ abstract class AbstractAddBadgeStepTest {
     }
 
     @Test
-    void style(@SuppressWarnings("unused") JenkinsRule r) {
+    void style() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link");
         assertNull(step.getStyle());
 
@@ -96,7 +104,7 @@ abstract class AbstractAddBadgeStepTest {
     }
 
     @Test
-    void link(@SuppressWarnings("unused") JenkinsRule r) {
+    void link() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", "style", null);
         assertNull(step.getLink());
 
@@ -108,7 +116,7 @@ abstract class AbstractAddBadgeStepTest {
     }
 
     @Test
-    void toString(@SuppressWarnings("unused") JenkinsRule r) {
+    void string() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", "style", "link");
         assertNotNull(step.toString());
         assertTrue(step.toString().startsWith(step.getDescriptor().getFunctionName()));

@@ -29,13 +29,14 @@ import io.jenkins.plugins.emoji.symbols.Emojis;
 import io.jenkins.plugins.ionicons.Ionicons;
 import jenkins.model.Jenkins;
 import org.junit.jupiter.api.Test;
-import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
+@WithJenkins
 class BadgeSummaryActionTest extends AbstractBadgeActionTest {
 
     @Override
     @Test
-    void icon(@SuppressWarnings("unused") JenkinsRule r) {
+    void icon() {
         AbstractBadgeAction action = createAction("id", null, "text", "cssClass", "style", "link");
         assertEquals(Jenkins.RESOURCE_PATH + "/images/16x16/empty.png", action.getIcon());
 

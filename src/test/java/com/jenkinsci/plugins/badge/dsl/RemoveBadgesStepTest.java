@@ -33,7 +33,6 @@ import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 @WithJenkins
@@ -41,92 +40,91 @@ class RemoveBadgesStepTest extends AbstractRemoveBadgesStepTest {
 
     @Override
     @Test
-    void defaultConstructor(JenkinsRule r) {
+    void defaultConstructor() {
         AbstractRemoveBadgesStep step = new RemoveBadgesStep();
         assertNull(step.getId());
     }
 
     @Test
-    void removeByIdInScriptedPipeline(JenkinsRule r) throws Exception {
+    void removeByIdInScriptedPipeline() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AbstractAddBadgeStep addStep = createAddStep(badgeId);
         AbstractRemoveBadgesStep removeStep = createRemoveStep(badgeId);
-        runRemoveJob(r, addStep, removeStep, 0, false, false);
+        runRemoveJob(addStep, removeStep, 0, false, false);
     }
 
     @Test
-    void removeByIdInScriptedPipelineInNode(JenkinsRule r) throws Exception {
+    void removeByIdInScriptedPipelineInNode() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AbstractAddBadgeStep addStep = createAddStep(badgeId);
         AbstractRemoveBadgesStep removeStep = createRemoveStep(badgeId);
-        runRemoveJob(r, addStep, removeStep, 0, true, false);
+        runRemoveJob(addStep, removeStep, 0, true, false);
     }
 
     @Test
-    void removeByIdInDeclarativePipeline(JenkinsRule r) throws Exception {
+    void removeByIdInDeclarativePipeline() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AbstractAddBadgeStep addStep = createAddStep(badgeId);
         AbstractRemoveBadgesStep removeStep = createRemoveStep(badgeId);
-        runRemoveJob(r, addStep, removeStep, 0, false, true);
+        runRemoveJob(addStep, removeStep, 0, false, true);
     }
 
     @Test
-    void removeAllInScriptedPipeline(JenkinsRule r) throws Exception {
+    void removeAllInScriptedPipeline() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AbstractAddBadgeStep addStep = createAddStep(badgeId);
         AbstractRemoveBadgesStep removeStep = createRemoveStep(null);
-        runRemoveJob(r, addStep, removeStep, 0, false, false);
+        runRemoveJob(addStep, removeStep, 0, false, false);
     }
 
     @Test
-    void removeAllInScriptedPipelineInNode(JenkinsRule r) throws Exception {
+    void removeAllInScriptedPipelineInNode() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AbstractAddBadgeStep addStep = createAddStep(badgeId);
         AbstractRemoveBadgesStep removeStep = createRemoveStep(null);
-        runRemoveJob(r, addStep, removeStep, 0, true, false);
+        runRemoveJob(addStep, removeStep, 0, true, false);
     }
 
     @Test
-    void removeAllInDeclarativePipeline(JenkinsRule r) throws Exception {
+    void removeAllInDeclarativePipeline() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AbstractAddBadgeStep addStep = createAddStep(badgeId);
         AbstractRemoveBadgesStep removeStep = createRemoveStep(null);
-        runRemoveJob(r, addStep, removeStep, 0, false, true);
+        runRemoveJob(addStep, removeStep, 0, false, true);
     }
 
     @Test
-    void removeInvalidIdInScriptedPipeline(JenkinsRule r) throws Exception {
+    void removeInvalidIdInScriptedPipeline() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AbstractAddBadgeStep addStep = createAddStep(badgeId);
         AbstractRemoveBadgesStep removeStep = createRemoveStep(UUID.randomUUID().toString());
-        runRemoveJob(r, addStep, removeStep, 1, false, false);
+        runRemoveJob(addStep, removeStep, 1, false, false);
     }
 
     @Test
-    void removeInvalidIdInScriptedPipelineInNode(JenkinsRule r) throws Exception {
+    void removeInvalidIdInScriptedPipelineInNode() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AbstractAddBadgeStep addStep = createAddStep(badgeId);
         AbstractRemoveBadgesStep removeStep = createRemoveStep(UUID.randomUUID().toString());
-        runRemoveJob(r, addStep, removeStep, 1, true, false);
+        runRemoveJob(addStep, removeStep, 1, true, false);
     }
 
     @Test
-    void removeInvalidIdInDeclarativePipeline(JenkinsRule r) throws Exception {
+    void removeInvalidIdInDeclarativePipeline() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AbstractAddBadgeStep addStep = createAddStep(badgeId);
         AbstractRemoveBadgesStep removeStep = createRemoveStep(UUID.randomUUID().toString());
-        runRemoveJob(r, addStep, removeStep, 1, false, true);
+        runRemoveJob(addStep, removeStep, 1, false, true);
     }
 
     protected void runRemoveJob(
-            JenkinsRule r,
             AbstractAddBadgeStep addStep,
             AbstractRemoveBadgesStep removeStep,
             int expected,
             boolean inNode,
             boolean declarativePipeline)
             throws Exception {
-        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
+        WorkflowJob project = r.createProject(WorkflowJob.class);
 
         String script = addStep.toString() + "\n";
         script += removeStep.toString();

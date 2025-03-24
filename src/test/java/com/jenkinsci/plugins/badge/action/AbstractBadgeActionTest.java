@@ -37,6 +37,7 @@ import io.jenkins.plugins.ionicons.Ionicons;
 import java.io.IOException;
 import java.io.Writer;
 import jenkins.model.Jenkins;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -44,8 +45,15 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @WithJenkins
 abstract class AbstractBadgeActionTest {
 
+    protected static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
+
     @Test
-    void id(@SuppressWarnings("unused") JenkinsRule r) {
+    void id() {
         AbstractBadgeAction action = createAction(null, "icon", "text", "cssClass", "style", "link");
         assertNotNull(action.getId());
         assertTrue(action.getId().matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"));
@@ -58,7 +66,7 @@ abstract class AbstractBadgeActionTest {
     }
 
     @Test
-    void icon(@SuppressWarnings("unused") JenkinsRule r) {
+    void icon() {
         AbstractBadgeAction action = createAction("id", null, "text", "cssClass", "style", "link");
         assertNull(action.getIcon());
 
@@ -117,7 +125,7 @@ abstract class AbstractBadgeActionTest {
     }
 
     @Test
-    void text(@SuppressWarnings("unused") JenkinsRule r) {
+    void text() {
         AbstractBadgeAction action = createAction("id", "icon", null, "cssClass", "style", "link");
         assertNull(action.getText());
 
@@ -154,7 +162,7 @@ abstract class AbstractBadgeActionTest {
     }
 
     @Test
-    void cssClass(@SuppressWarnings("unused") JenkinsRule r) {
+    void cssClass() {
         AbstractBadgeAction action = createAction("id", "icon", "text", null, "style", "link");
         assertNull(action.getCssClass());
 
@@ -166,7 +174,7 @@ abstract class AbstractBadgeActionTest {
     }
 
     @Test
-    void style(@SuppressWarnings("unused") JenkinsRule r) {
+    void style() {
         AbstractBadgeAction action = createAction("id", "icon", "text", "cssClass", null, "link");
         assertNull(action.getStyle());
 
@@ -178,7 +186,7 @@ abstract class AbstractBadgeActionTest {
     }
 
     @Test
-    void link(@SuppressWarnings("unused") JenkinsRule r) {
+    void link() {
         AbstractBadgeAction action = createAction("id", "icon", "text", "cssClass", "style", null);
         assertNull(action.getLink());
 
@@ -199,19 +207,19 @@ abstract class AbstractBadgeActionTest {
     }
 
     @Test
-    void iconFileName(@SuppressWarnings("unused") JenkinsRule r) {
+    void iconFileName() {
         AbstractBadgeAction action = createAction(null, null, null, null, null, null);
         assertEquals(getIconFileName(), action.getIconFileName());
     }
 
     @Test
-    void displayName(@SuppressWarnings("unused") JenkinsRule r) {
+    void displayName() {
         AbstractBadgeAction action = createAction(null, null, null, null, null, null);
         assertEquals(getDisplayName(), action.getDisplayName());
     }
 
     @Test
-    void urlName(@SuppressWarnings("unused") JenkinsRule r) {
+    void urlName() {
         AbstractBadgeAction action = createAction(null, null, null, null, null, null);
         assertEquals(getUrlName(), action.getUrlName());
     }

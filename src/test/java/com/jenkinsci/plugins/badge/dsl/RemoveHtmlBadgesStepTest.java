@@ -32,6 +32,7 @@ import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -40,39 +41,46 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @Deprecated(since = "2.0", forRemoval = true)
 class RemoveHtmlBadgesStepTest {
 
+    private static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
+
     @Test
-    void removeById(JenkinsRule r) throws Exception {
+    void removeById() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AddHtmlBadgeStep addStep = createAddStep(badgeId);
         RemoveHtmlBadgesStep removeStep = createRemoveStep(badgeId);
-        runRemoveJob(r, addStep, removeStep, 0);
+        runRemoveJob(addStep, removeStep, 0);
     }
 
     @Test
-    void removeAll(JenkinsRule r) throws Exception {
+    void removeAll() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AddHtmlBadgeStep addStep = createAddStep(badgeId);
         RemoveHtmlBadgesStep removeStep = createRemoveStep(null);
-        runRemoveJob(r, addStep, removeStep, 0);
+        runRemoveJob(addStep, removeStep, 0);
     }
 
     @Test
-    void removeInvalidId(JenkinsRule r) throws Exception {
+    void removeInvalidId() throws Exception {
         String badgeId = UUID.randomUUID().toString();
         AddHtmlBadgeStep addStep = createAddStep(badgeId);
         RemoveHtmlBadgesStep removeStep = createRemoveStep(UUID.randomUUID().toString());
-        runRemoveJob(r, addStep, removeStep, 1);
+        runRemoveJob(addStep, removeStep, 1);
     }
 
     @Test
-    void deprecated(@SuppressWarnings("unused") JenkinsRule r) {
+    void deprecated() {
         RemoveHtmlBadgesStep removeStep = createRemoveStep(null);
         assertTrue(removeStep.getDescriptor().isAdvanced());
     }
 
-    private static void runRemoveJob(
-            JenkinsRule r, AddHtmlBadgeStep addStep, RemoveHtmlBadgesStep removeStep, int expected) throws Exception {
-        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
+    private static void runRemoveJob(AddHtmlBadgeStep addStep, RemoveHtmlBadgesStep removeStep, int expected)
+            throws Exception {
+        WorkflowJob project = r.createProject(WorkflowJob.class);
 
         String script = addStep.getDescriptor().getFunctionName() + "("
                 + (addStep.getId() != null ? "id: '" + addStep.getId() + "', " : "") + "html: '" + addStep.getHtml()

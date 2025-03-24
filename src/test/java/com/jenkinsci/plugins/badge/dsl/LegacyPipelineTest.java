@@ -32,11 +32,11 @@ import hudson.markup.RawHtmlMarkupFormatter;
 import hudson.model.BuildBadgeAction;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Stream;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.jvnet.hudson.test.JenkinsRule;
@@ -46,8 +46,15 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @Deprecated(since = "2.0", forRemoval = true)
 class LegacyPipelineTest {
 
+    private static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
+
     @Test
-    void color(JenkinsRule r) {
+    void color() {
         List<String> colors = Arrays.asList(
                 "blue", "brown", "cyan", "green", "indigo", "orange", "pink", "purple", "red", "yellow", "white",
                 "black");
@@ -73,16 +80,16 @@ class LegacyPipelineTest {
                 Arrays.asList("''", "color: ;"),
                 Arrays.asList("null", null));
 
-        assertAll("palette", colorTests(r, palette));
-        assertAll("palette-light", colorTests(r, paletteLight));
-        assertAll("palette-dark", colorTests(r, paletteDark));
-        assertAll("semantic", colorTests(r, semantic));
-        assertAll("other", colorTests(r, other));
+        assertAll("palette", colorTests(palette));
+        assertAll("palette-light", colorTests(paletteLight));
+        assertAll("palette-dark", colorTests(paletteDark));
+        assertAll("semantic", colorTests(semantic));
+        assertAll("other", colorTests(other));
     }
 
-    private static Stream<Executable> colorTests(JenkinsRule r, Stream<List<String>> tests) {
+    private static Stream<Executable> colorTests(Stream<List<String>> tests) {
         return tests.map(params -> () -> {
-            WorkflowRun run = runJob(r, "addBadge(color: " + params.get(0) + ")");
+            WorkflowRun run = runJob("addBadge(color: " + params.get(0) + ")");
 
             List<BuildBadgeAction> badgeActions = run.getBadgeActions();
             assertEquals(1, badgeActions.size());
@@ -93,8 +100,8 @@ class LegacyPipelineTest {
     }
 
     @Test
-    void appendText(JenkinsRule r) throws Exception {
-        WorkflowRun run = runJob(r, "createSummary(text: 'Test Text')");
+    void appendText() throws Exception {
+        WorkflowRun run = runJob("createSummary(text: 'Test Text')");
 
         List<BadgeSummaryAction> actions = run.getActions(BadgeSummaryAction.class);
         assertEquals(1, actions.size());
@@ -102,7 +109,7 @@ class LegacyPipelineTest {
         BadgeSummaryAction action = actions.get(0);
         assertEquals("Test Text", action.getText());
 
-        run = runJob(r, "def summary = createSummary(text: 'Test Text')\n" + "summary.appendText(' More Text', true)");
+        run = runJob("def summary = createSummary(text: 'Test Text')\n" + "summary.appendText(' More Text', true)");
 
         actions = run.getActions(BadgeSummaryAction.class);
         assertEquals(1, actions.size());
@@ -110,7 +117,7 @@ class LegacyPipelineTest {
         action = actions.get(0);
         assertEquals("Test Text More Text", action.getText());
 
-        run = runJob(r, "def summary = createSummary(text: 'Test Text')\n" + "summary.appendText(' More Text', false)");
+        run = runJob("def summary = createSummary(text: 'Test Text')\n" + "summary.appendText(' More Text', false)");
 
         actions = run.getActions(BadgeSummaryAction.class);
         assertEquals(1, actions.size());
@@ -119,7 +126,6 @@ class LegacyPipelineTest {
         assertEquals("Test Text More Text", action.getText());
 
         run = runJob(
-                r,
                 """
                 def summary = createSummary(text: 'Test Text')
                 summary.appendText(' More Text', false, false, false, null)
@@ -133,7 +139,6 @@ class LegacyPipelineTest {
 
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         run = runJob(
-                r,
                 """
                 def summary = createSummary(text: 'Test Text')
                 summary.appendText(' More Text', true, true, true, 'red')
@@ -146,9 +151,8 @@ class LegacyPipelineTest {
         assertEquals("Test Text<b><i> More Text</i></b>", action.getText());
     }
 
-    private static WorkflowRun runJob(JenkinsRule r, String script) throws Exception {
-        WorkflowJob project =
-                r.jenkins.createProject(WorkflowJob.class, UUID.randomUUID().toString());
+    private static WorkflowRun runJob(String script) throws Exception {
+        WorkflowJob project = r.createProject(WorkflowJob.class);
         project.setDefinition(new CpsFlowDefinition(script, true));
         return r.assertBuildStatusSuccess(project.scheduleBuild2(0));
     }

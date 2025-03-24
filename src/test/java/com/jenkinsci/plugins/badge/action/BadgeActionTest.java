@@ -23,6 +23,9 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
+
+@WithJenkins
 class BadgeActionTest extends AbstractBadgeActionTest {
 
     @Override
