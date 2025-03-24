@@ -31,6 +31,7 @@ import hudson.markup.MarkupFormatter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.UUID;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -39,8 +40,15 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @Deprecated(since = "2.0", forRemoval = true)
 class HtmlBadgeActionTest {
 
+    private static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
+
     @Test
-    void html(JenkinsRule r) {
+    void html() {
         HtmlBadgeAction action = HtmlBadgeAction.createHtmlBadge(null);
         assertEquals("", action.getHtml());
 
@@ -61,19 +69,19 @@ class HtmlBadgeActionTest {
     }
 
     @Test
-    void urlName(@SuppressWarnings("unused") JenkinsRule r) {
+    void urlName() {
         HtmlBadgeAction action = HtmlBadgeAction.createHtmlBadge(null);
         assertEquals("", action.getUrlName());
     }
 
     @Test
-    void displayName(@SuppressWarnings("unused") JenkinsRule r) {
+    void displayName() {
         HtmlBadgeAction action = HtmlBadgeAction.createHtmlBadge(null);
         assertEquals("", action.getDisplayName());
     }
 
     @Test
-    void iconFileName(@SuppressWarnings("unused") JenkinsRule r) {
+    void iconFileName() {
         HtmlBadgeAction action = HtmlBadgeAction.createHtmlBadge(null);
         assertNull(action.getIconFileName());
     }

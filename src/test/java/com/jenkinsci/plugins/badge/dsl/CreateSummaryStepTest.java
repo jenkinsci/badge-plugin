@@ -35,6 +35,7 @@ import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -43,8 +44,15 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @Deprecated(since = "2.0", forRemoval = true)
 class CreateSummaryStepTest {
 
+    private static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
+
     @Test
-    void id(@SuppressWarnings("unused") JenkinsRule r) {
+    void id() {
         CreateSummaryStep step = new CreateSummaryStep(null);
         assertNull(step.getId());
 
@@ -54,7 +62,7 @@ class CreateSummaryStepTest {
     }
 
     @Test
-    void icon(@SuppressWarnings("unused") JenkinsRule r) {
+    void icon() {
         CreateSummaryStep step = new CreateSummaryStep(null);
         assertNull(step.getIcon());
 
@@ -64,7 +72,7 @@ class CreateSummaryStepTest {
     }
 
     @Test
-    void text(@SuppressWarnings("unused") JenkinsRule r) {
+    void text() {
         CreateSummaryStep step = new CreateSummaryStep(null);
         assertNull(step.getText());
 
@@ -74,57 +82,57 @@ class CreateSummaryStepTest {
     }
 
     @Test
-    void deprecated(@SuppressWarnings("unused") JenkinsRule r) {
+    void deprecated() {
         CreateSummaryStep step = new CreateSummaryStep(null);
         assertTrue(step.getDescriptor().isAdvanced());
     }
 
     @Test
-    void createSummary_plain(JenkinsRule r) throws Exception {
+    void createSummary_plain() throws Exception {
         String text = randomUUID().toString();
-        BadgeSummaryAction action = createSummary(r, "summary.appendText('" + text + "')");
+        BadgeSummaryAction action = createSummary("summary.appendText('" + text + "')");
         assertEquals(text, action.getText());
     }
 
     @Test
-    void createSummary_html_unescaped(JenkinsRule r) throws Exception {
+    void createSummary_html_unescaped() throws Exception {
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
-        BadgeSummaryAction action = createSummary(r, "summary.appendText('<ul><li>" + text + "</li></ul>', false)");
+        BadgeSummaryAction action = createSummary("summary.appendText('<ul><li>" + text + "</li></ul>', false)");
         assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
     }
 
     @Test
-    void createSummary_html_unescaped_remove_script(JenkinsRule r) throws Exception {
+    void createSummary_html_unescaped_remove_script() throws Exception {
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
         String html = "<ul><li>" + text + "</li></ul><script>alert(\"exploit!\");</script>";
-        BadgeSummaryAction action = createSummary(r, "summary.appendText('" + html + "', false);");
+        BadgeSummaryAction action = createSummary("summary.appendText('" + html + "', false);");
         assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
     }
 
     @Test
-    void createSummary_html_escaped(JenkinsRule r) throws Exception {
+    void createSummary_html_escaped() throws Exception {
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
-        BadgeSummaryAction action = createSummary(r, "summary.appendText('<ul><li>" + text + "</li></ul>', true)");
+        BadgeSummaryAction action = createSummary("summary.appendText('<ul><li>" + text + "</li></ul>', true)");
         assertEquals("&lt;ul&gt;&lt;li&gt;" + text + "&lt;/li&gt;&lt;/ul&gt;", action.getText());
     }
 
     @Test
-    void createSummary_all(JenkinsRule r) throws Exception {
+    void createSummary_all() throws Exception {
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
-        BadgeSummaryAction action = createSummary(r, "summary.appendText('" + text + "', false, true, true, 'grey')");
+        BadgeSummaryAction action = createSummary("summary.appendText('" + text + "', false, true, true, 'grey')");
         assertEquals("<b><i>" + text + "</i></b>", action.getText());
     }
 
     @Test
-    void createSummary_with_text(JenkinsRule r) throws Exception {
+    void createSummary_with_text() throws Exception {
         String icon = randomUUID().toString();
         String text = randomUUID().toString();
 
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        WorkflowJob p = r.createProject(WorkflowJob.class);
         p.setDefinition(new CpsFlowDefinition(
                 "def summary = createSummary(icon:\"" + icon + "\", text:\"" + text + "\")", true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
@@ -136,10 +144,10 @@ class CreateSummaryStepTest {
         assertEquals(text, action.getText());
     }
 
-    private BadgeSummaryAction createSummary(JenkinsRule r, String script) throws Exception {
+    private static BadgeSummaryAction createSummary(String script) throws Exception {
         String icon = randomUUID().toString();
 
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        WorkflowJob p = r.createProject(WorkflowJob.class);
         p.setDefinition(new CpsFlowDefinition("def summary = createSummary(\"" + icon + "\")\n" + script, true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
         List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);

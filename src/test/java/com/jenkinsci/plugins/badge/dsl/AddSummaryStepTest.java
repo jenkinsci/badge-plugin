@@ -32,13 +32,14 @@ import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
-import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
+@WithJenkins
 class AddSummaryStepTest extends AddBadgeStepTest {
 
     @Override
     @Test
-    void defaultConstructor(JenkinsRule r) {
+    void defaultConstructor() {
         AbstractAddBadgeStep step = new AddSummaryStep();
         assertNull(step.getId());
         assertNull(step.getIcon());

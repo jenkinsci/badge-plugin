@@ -46,15 +46,17 @@ import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
+@WithJenkins
 class AddBadgeStepTest extends AbstractAddBadgeStepTest {
 
     @Override
     @Test
-    void defaultConstructor(JenkinsRule r) {
+    void defaultConstructor() {
         AbstractAddBadgeStep step = new AddBadgeStep();
         assertNull(step.getId());
         assertNull(step.getIcon());
@@ -66,7 +68,7 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
 
     @Test
     @Deprecated(since = "2.0", forRemoval = true)
-    void color(@SuppressWarnings("unused") JenkinsRule r) {
+    void color() {
         AddBadgeStep step = (AddBadgeStep) createStep("id", "icon", "text", "cssClass", null, "link");
         assertNull(step.getColor());
 
@@ -78,7 +80,7 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
     }
 
     @Test
-    void addInScriptedPipeline(JenkinsRule r) throws Exception {
+    void addInScriptedPipeline() throws Exception {
         AbstractAddBadgeStep step = createStep(
                 UUID.randomUUID().toString(),
                 "symbol-rocket plugin-ionicons-api",
@@ -86,11 +88,11 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "icon-md",
                 "color: green",
                 "https://jenkins.io");
-        runAddJob(r, step, false, false);
+        runAddJob(step, false, false);
     }
 
     @Test
-    void addInScriptedPipelineInNode(JenkinsRule r) throws Exception {
+    void addInScriptedPipelineInNode() throws Exception {
         AbstractAddBadgeStep step = createStep(
                 UUID.randomUUID().toString(),
                 "symbol-rocket plugin-ionicons-api",
@@ -98,17 +100,17 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "icon-md",
                 "color: green",
                 "https://jenkins.io");
-        runAddJob(r, step, true, false);
+        runAddJob(step, true, false);
     }
 
     @Test
-    void addInDeclarativePipeline(JenkinsRule r) throws Exception {
+    void addInDeclarativePipeline() throws Exception {
         AbstractAddBadgeStep step = createStep(UUID.randomUUID().toString(), null, null, null, null, null);
-        runAddJob(r, step, false, true);
+        runAddJob(step, false, true);
     }
 
     @Test
-    void modifyInScriptedPipeline(JenkinsRule r) throws Exception {
+    void modifyInScriptedPipeline() throws Exception {
         AbstractAddBadgeStep step = createStep(
                 UUID.randomUUID().toString(),
                 "symbol-rocket plugin-ionicons-api",
@@ -116,11 +118,11 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "icon-md",
                 "color: green",
                 "https://jenkins.io");
-        runModifyJob(r, step, false, false);
+        runModifyJob(step, false, false);
     }
 
     @Test
-    void modifyInScriptedPipelineInNode(JenkinsRule r) throws Exception {
+    void modifyInScriptedPipelineInNode() throws Exception {
         AbstractAddBadgeStep step = createStep(
                 UUID.randomUUID().toString(),
                 "symbol-rocket plugin-ionicons-api",
@@ -128,17 +130,17 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "icon-md",
                 "color: green",
                 "https://jenkins.io");
-        runModifyJob(r, step, true, false);
+        runModifyJob(step, true, false);
     }
 
     @Test
-    void modifyInDeclarativePipeline(JenkinsRule r) throws Exception {
+    void modifyInDeclarativePipeline() throws Exception {
         AbstractAddBadgeStep step = createStep(UUID.randomUUID().toString(), null, "Test Text", null, null, null);
-        runModifyJob(r, step, false, true);
+        runModifyJob(step, false, true);
     }
 
     @Test
-    void exportedBean(JenkinsRule r) throws Exception {
+    void exportedBean() throws Exception {
         AbstractAddBadgeStep step = createStep(
                 UUID.randomUUID().toString(),
                 "symbol-rocket plugin-ionicons-api",
@@ -146,7 +148,7 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "icon-md",
                 "color: green",
                 "https://jenkins.io");
-        WorkflowRun job = runAddJob(r, step, false, false);
+        WorkflowRun job = runAddJob(step, false, false);
 
         WorkflowRun bean = assertInstanceOf(WorkflowRun.class, job.getApi().bean);
         assertFields(step, bean);
@@ -224,9 +226,9 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         }
     }
 
-    protected WorkflowRun runAddJob(
-            JenkinsRule r, AbstractAddBadgeStep step, boolean inNode, boolean declarativePipeline) throws Exception {
-        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
+    protected WorkflowRun runAddJob(AbstractAddBadgeStep step, boolean inNode, boolean declarativePipeline)
+            throws Exception {
+        WorkflowJob project = r.createProject(WorkflowJob.class);
 
         String script = step.toString();
 
@@ -259,9 +261,9 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         return run;
     }
 
-    protected void runModifyJob(JenkinsRule r, AbstractAddBadgeStep step, boolean inNode, boolean declarativePipeline)
+    protected void runModifyJob(AbstractAddBadgeStep step, boolean inNode, boolean declarativePipeline)
             throws Exception {
-        WorkflowJob project = r.jenkins.createProject(WorkflowJob.class, "project");
+        WorkflowJob project = r.createProject(WorkflowJob.class);
 
         String actualText = step.getText();
         step.setText(UUID.randomUUID().toString());

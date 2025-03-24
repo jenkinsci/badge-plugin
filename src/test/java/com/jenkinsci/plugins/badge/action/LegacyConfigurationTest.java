@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import hudson.XmlFile;
 import java.io.File;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -36,8 +37,15 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @Deprecated(since = "2.0", forRemoval = true)
 class LegacyConfigurationTest {
 
+    private static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
+
     @Test
-    void badgeAction(@SuppressWarnings("unused") JenkinsRule r) throws Exception {
+    void badgeAction() throws Exception {
         BadgeAction action = readConfiguration("badge-action.xml");
         assertNotNull(action.getIcon());
         assertNotNull(action.getStyle());
@@ -57,7 +65,7 @@ class LegacyConfigurationTest {
     }
 
     @Test
-    void badgeSummaryAction(@SuppressWarnings("unused") JenkinsRule r) throws Exception {
+    void badgeSummaryAction() throws Exception {
         BadgeSummaryAction action = readConfiguration("summary-action.xml");
         assertNotNull(action.getText());
 

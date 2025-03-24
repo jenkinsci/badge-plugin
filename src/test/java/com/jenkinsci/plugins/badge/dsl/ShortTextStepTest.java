@@ -35,6 +35,7 @@ import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -43,8 +44,15 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @Deprecated(since = "2.0", forRemoval = true)
 class ShortTextStepTest {
 
+    private static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
+
     @Test
-    void text(@SuppressWarnings("unused") JenkinsRule r) {
+    void text() {
         AddShortTextStep step = new AddShortTextStep(null);
         assertNull(step.getText());
 
@@ -54,7 +62,7 @@ class ShortTextStepTest {
     }
 
     @Test
-    void color(@SuppressWarnings("unused") JenkinsRule r) {
+    void color() {
         AddShortTextStep step = new AddShortTextStep(null);
         assertNull(step.getColor());
 
@@ -63,7 +71,7 @@ class ShortTextStepTest {
     }
 
     @Test
-    void background(@SuppressWarnings("unused") JenkinsRule r) {
+    void background() {
         AddShortTextStep step = new AddShortTextStep(null);
         assertNull(step.getBackground());
 
@@ -72,7 +80,7 @@ class ShortTextStepTest {
     }
 
     @Test
-    void border(@SuppressWarnings("unused") JenkinsRule r) {
+    void border() {
         AddShortTextStep step = new AddShortTextStep(null);
         assertNull(step.getBorder());
 
@@ -81,7 +89,7 @@ class ShortTextStepTest {
     }
 
     @Test
-    void borderColor(@SuppressWarnings("unused") JenkinsRule r) {
+    void borderColor() {
         AddShortTextStep step = new AddShortTextStep(null);
         assertNull(step.getBorderColor());
 
@@ -90,7 +98,7 @@ class ShortTextStepTest {
     }
 
     @Test
-    void link(@SuppressWarnings("unused") JenkinsRule r) {
+    void link() {
         AddShortTextStep step = new AddShortTextStep(null);
         assertNull(step.getLink());
 
@@ -99,13 +107,13 @@ class ShortTextStepTest {
     }
 
     @Test
-    void deprecated(@SuppressWarnings("unused") JenkinsRule r) {
+    void deprecated() {
         AddShortTextStep step = new AddShortTextStep(null);
         assertTrue(step.getDescriptor().isAdvanced());
     }
 
     @Test
-    void addShortText(JenkinsRule r) throws Exception {
+    void addShortText() throws Exception {
         String text = UUID.randomUUID().toString();
         String color = UUID.randomUUID().toString();
         String background = UUID.randomUUID().toString();
@@ -113,7 +121,7 @@ class ShortTextStepTest {
         String borderColor = UUID.randomUUID().toString();
         String link = "http://" + UUID.randomUUID();
 
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        WorkflowJob p = r.createProject(WorkflowJob.class);
         p.setDefinition(new CpsFlowDefinition(
                 "addShortText(text:\"" + text + "\", color:\"" + color + "\", background:\"" + background
                         + "\", border:" + border + ", borderColor:\"" + borderColor + "\", link:\"" + link + "\")",
@@ -130,12 +138,12 @@ class ShortTextStepTest {
     }
 
     @Test
-    void jenkinsColorStyle(JenkinsRule r) throws Exception {
+    void jenkinsColorStyle() throws Exception {
         String text = UUID.randomUUID().toString();
         String color = "jenkins-!-color-red";
         int border = 1;
 
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        WorkflowJob p = r.createProject(WorkflowJob.class);
         p.setDefinition(new CpsFlowDefinition(
                 "addShortText(text:\"" + text + "\", color:\"" + color + "\", border:\"" + border + "\")", true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
@@ -149,12 +157,12 @@ class ShortTextStepTest {
     }
 
     @Test
-    void jenkinsWarningStyle(JenkinsRule r) throws Exception {
+    void jenkinsWarningStyle() throws Exception {
         String text = UUID.randomUUID().toString();
         String color = "jenkins-!-warning-color";
         int border = 1;
 
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        WorkflowJob p = r.createProject(WorkflowJob.class);
         p.setDefinition(new CpsFlowDefinition(
                 "addShortText(text:\"" + text + "\", color:\"" + color + "\", border:\"" + border + "\")", true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
@@ -168,10 +176,10 @@ class ShortTextStepTest {
     }
 
     @Test
-    void addShortText_minimal(JenkinsRule r) throws Exception {
+    void addShortText_minimal() throws Exception {
         String text = UUID.randomUUID().toString();
 
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+        WorkflowJob p = r.createProject(WorkflowJob.class);
         p.setDefinition(new CpsFlowDefinition("addShortText(text:\"" + text + "\")", true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 

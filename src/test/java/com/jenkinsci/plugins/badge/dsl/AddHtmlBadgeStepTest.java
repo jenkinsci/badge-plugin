@@ -35,6 +35,7 @@ import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -42,6 +43,13 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @WithJenkins
 @Deprecated(since = "2.0", forRemoval = true)
 class AddHtmlBadgeStepTest {
+
+    private static JenkinsRule r;
+
+    @BeforeAll
+    static void setUp(JenkinsRule rule) {
+        r = rule;
+    }
 
     @Test
     void id() {
@@ -64,27 +72,27 @@ class AddHtmlBadgeStepTest {
     }
 
     @Test
-    void deprecated(@SuppressWarnings("unused") JenkinsRule r) {
+    void deprecated() {
         AddHtmlBadgeStep step = new AddHtmlBadgeStep(null);
         assertTrue(step.getDescriptor().isAdvanced());
     }
 
     @Test
-    void addHtmlBadge(JenkinsRule r) throws Exception {
+    void addHtmlBadge() throws Exception {
         String html = UUID.randomUUID().toString();
-        testAddHtmlBadge(r, html, html);
+        testAddHtmlBadge(html, html);
     }
 
     @Test
-    void addHtmlBadge_remove_script(JenkinsRule r) throws Exception {
+    void addHtmlBadge_remove_script() throws Exception {
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String uuid = UUID.randomUUID().toString();
         String html = uuid + "<script>alert('exploit!');</script>";
-        testAddHtmlBadge(r, html, uuid);
+        testAddHtmlBadge(html, uuid);
     }
 
-    private void testAddHtmlBadge(JenkinsRule r, String html, String expected) throws Exception {
-        WorkflowJob p = r.jenkins.createProject(WorkflowJob.class, "p");
+    private static void testAddHtmlBadge(String html, String expected) throws Exception {
+        WorkflowJob p = r.createProject(WorkflowJob.class);
 
         String script = "addHtmlBadge(\"" + html + "\")";
 

@@ -27,13 +27,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
-import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
+@WithJenkins
 class AddWarningBadgeStepTest extends AddBadgeStepTest {
 
     @Override
     @Test
-    void defaultConstructor(JenkinsRule r) {
+    void defaultConstructor() {
         AbstractAddBadgeStep step = new AddWarningBadgeStep();
         assertNull(step.getId());
         assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
@@ -45,7 +46,7 @@ class AddWarningBadgeStepTest extends AddBadgeStepTest {
 
     @Override
     @Test
-    void icon(@SuppressWarnings("unused") JenkinsRule r) {
+    void icon() {
         AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link");
         assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
 
@@ -58,7 +59,7 @@ class AddWarningBadgeStepTest extends AddBadgeStepTest {
 
     @Override
     @Test
-    void cssClass(@SuppressWarnings("unused") JenkinsRule r) {
+    void cssClass() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link");
         assertNull(step.getCssClass());
 
@@ -71,7 +72,7 @@ class AddWarningBadgeStepTest extends AddBadgeStepTest {
 
     @Override
     @Test
-    void style(@SuppressWarnings("unused") JenkinsRule r) {
+    void style() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link");
         assertEquals("color: var(--warning-color)", step.getStyle());
 
