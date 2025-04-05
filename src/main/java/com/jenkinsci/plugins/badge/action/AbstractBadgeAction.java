@@ -59,6 +59,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
     private String cssClass;
     private String style;
     private String link;
+    private String target;
 
     /**
      * Ctor.
@@ -68,14 +69,33 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
      * @param cssClass the css class for a badge.
      * @param style the css style for a badge.
      * @param link the link for a badge.
+     *
+     * @deprecated Use {@link AbstractBadgeAction#AbstractBadgeAction(String, String, String, String, String, String, String)} instead.
      */
+    @Deprecated(since = "2.8")
     protected AbstractBadgeAction(String id, String icon, String text, String cssClass, String style, String link) {
+        this(id, icon, text, cssClass, style, link, null);
+    }
+
+    /**
+     * Ctor.
+     * @param id the id for a badge. if null, a random uuid will be generated.
+     * @param icon the icon for a badge.
+     * @param text the text for a badge.
+     * @param cssClass the css class for a badge.
+     * @param style the css style for a badge.
+     * @param link the link for a badge.
+     * @param target the link target for a badge.
+     */
+    protected AbstractBadgeAction(
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
         this.id = id != null ? id : UUID.randomUUID().toString();
         this.icon = icon;
         this.text = text;
         this.cssClass = cssClass;
         this.style = style;
         this.link = link;
+        this.target = target;
     }
 
     @Exported
@@ -179,6 +199,17 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
 
         LOGGER.log(Level.WARNING, () -> "Invalid link value: '" + link + "' - ignoring it");
         return null;
+    }
+
+    @Whitelisted
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    @Exported
+    @Whitelisted
+    public String getTarget() {
+        return target;
     }
 
     @Override
