@@ -25,33 +25,25 @@ package com.jenkinsci.plugins.badge.action;
 
 import hudson.model.BuildBadgeAction;
 import java.io.Serial;
-import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
-import org.kohsuke.stapler.export.Exported;
 
 /**
  * Common action for badges.
  */
 public class BadgeAction extends AbstractBadgeAction implements BuildBadgeAction {
 
-    private String target;
-
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public BadgeAction(String id, String icon, String text, String cssClass, String style, String link, String target) {
+    /**
+     * @deprecated Use {@link BadgeAction#BadgeAction(String, String, String, String, String, String, String)} instead.
+     */
+    @Deprecated(since = "2.8")
+    public BadgeAction(String id, String icon, String text, String cssClass, String style, String link) {
         super(id, icon, text, cssClass, style, link);
-        this.target = target;
     }
 
-    @Whitelisted
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
-    @Exported
-    @Whitelisted
-    public String getTarget() {
-        return target;
+    public BadgeAction(String id, String icon, String text, String cssClass, String style, String link, String target) {
+        super(id, icon, text, cssClass, style, link, target);
     }
 
     @Override

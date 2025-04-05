@@ -53,6 +53,10 @@ abstract class AbstractBadgeActionTest {
     }
 
     @Test
+    @Deprecated
+    abstract void deprecatedConstructor();
+
+    @Test
     void id() {
         AbstractBadgeAction action = createAction(null, "icon", "text", "cssClass", "style", "link", "target");
         assertNotNull(action.getId());
@@ -204,6 +208,18 @@ abstract class AbstractBadgeActionTest {
 
         action.setLink("mailto:foo@bar.com");
         assertEquals("mailto:foo@bar.com", action.getLink());
+    }
+
+    @Test
+    void target() {
+        AbstractBadgeAction action = createAction("id", "icon", "text", "cssClass", "style", "link", null);
+        assertNull(action.getTarget());
+
+        action.setTarget("");
+        assertEquals("", action.getTarget());
+
+        action.setTarget("_blank");
+        assertEquals("_blank", action.getTarget());
     }
 
     @Test
