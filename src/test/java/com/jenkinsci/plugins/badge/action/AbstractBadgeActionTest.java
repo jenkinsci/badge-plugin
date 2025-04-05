@@ -54,20 +54,20 @@ abstract class AbstractBadgeActionTest {
 
     @Test
     void id() {
-        AbstractBadgeAction action = createAction(null, "icon", "text", "cssClass", "style", "link");
+        AbstractBadgeAction action = createAction(null, "icon", "text", "cssClass", "style", "link", "target");
         assertNotNull(action.getId());
         assertTrue(action.getId().matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"));
 
-        action = createAction("id", "icon", "text", "cssClass", "style", "link");
+        action = createAction("id", "icon", "text", "cssClass", "style", "link", "target");
         assertEquals("id", action.getId());
 
-        action = createAction("", "icon", "text", "cssClass", "style", "link");
+        action = createAction("", "icon", "text", "cssClass", "style", "link", "target");
         assertEquals("", action.getId());
     }
 
     @Test
     void icon() {
-        AbstractBadgeAction action = createAction("id", null, "text", "cssClass", "style", "link");
+        AbstractBadgeAction action = createAction("id", null, "text", "cssClass", "style", "link", "target");
         assertNull(action.getIcon());
 
         action.setIcon("");
@@ -126,7 +126,7 @@ abstract class AbstractBadgeActionTest {
 
     @Test
     void text() {
-        AbstractBadgeAction action = createAction("id", "icon", null, "cssClass", "style", "link");
+        AbstractBadgeAction action = createAction("id", "icon", null, "cssClass", "style", "link", "target");
         assertNull(action.getText());
 
         action.setText("");
@@ -163,7 +163,7 @@ abstract class AbstractBadgeActionTest {
 
     @Test
     void cssClass() {
-        AbstractBadgeAction action = createAction("id", "icon", "text", null, "style", "link");
+        AbstractBadgeAction action = createAction("id", "icon", "text", null, "style", "link", "target");
         assertNull(action.getCssClass());
 
         action.setCssClass("");
@@ -175,7 +175,7 @@ abstract class AbstractBadgeActionTest {
 
     @Test
     void style() {
-        AbstractBadgeAction action = createAction("id", "icon", "text", "cssClass", null, "link");
+        AbstractBadgeAction action = createAction("id", "icon", "text", "cssClass", null, "link", "target");
         assertNull(action.getStyle());
 
         action.setStyle("");
@@ -187,7 +187,7 @@ abstract class AbstractBadgeActionTest {
 
     @Test
     void link() {
-        AbstractBadgeAction action = createAction("id", "icon", "text", "cssClass", "style", null);
+        AbstractBadgeAction action = createAction("id", "icon", "text", "cssClass", "style", null, null);
         assertNull(action.getLink());
 
         action.setLink("");
@@ -208,24 +208,24 @@ abstract class AbstractBadgeActionTest {
 
     @Test
     void iconFileName() {
-        AbstractBadgeAction action = createAction(null, null, null, null, null, null);
+        AbstractBadgeAction action = createAction(null, null, null, null, null, null, null);
         assertEquals(getIconFileName(), action.getIconFileName());
     }
 
     @Test
     void displayName() {
-        AbstractBadgeAction action = createAction(null, null, null, null, null, null);
+        AbstractBadgeAction action = createAction(null, null, null, null, null, null, null);
         assertEquals(getDisplayName(), action.getDisplayName());
     }
 
     @Test
     void urlName() {
-        AbstractBadgeAction action = createAction(null, null, null, null, null, null);
+        AbstractBadgeAction action = createAction(null, null, null, null, null, null, null);
         assertEquals(getUrlName(), action.getUrlName());
     }
 
     protected abstract AbstractBadgeAction createAction(
-            String id, String icon, String text, String cssClass, String style, String link);
+            String id, String icon, String text, String cssClass, String style, String link, String target);
 
     protected abstract String getDisplayName();
 

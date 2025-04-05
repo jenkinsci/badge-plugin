@@ -38,11 +38,11 @@ public class AddErrorBadgeStep extends AddBadgeStep {
 
     @DataBoundConstructor
     public AddErrorBadgeStep() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
-    protected AddErrorBadgeStep(String id, String text, String link) {
-        super(id, Ionicons.getIconClassName("remove-circle"), text, null, "color: var(--error-color)", link);
+    protected AddErrorBadgeStep(String id, String text, String link, String target) {
+        super(id, Ionicons.getIconClassName("remove-circle"), text, null, "color: var(--error-color)", link, target);
     }
 
     @Override
@@ -57,6 +57,9 @@ public class AddErrorBadgeStep extends AddBadgeStep {
         }
         if (getLink() != null) {
             fields.add("link: '" + getLink() + "'");
+        }
+        if (getTarget() != null) {
+            fields.add("target: '" + getTarget() + "'");
         }
 
         return getDescriptor().getFunctionName() + "(" + StringUtils.join(fields, ", ") + ")";

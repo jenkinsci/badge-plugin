@@ -47,45 +47,45 @@ class AddErrorBadgeStepTest extends AddBadgeStepTest {
     @Override
     @Test
     void icon() {
-        AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link");
+        AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link", "_blank");
         assertEquals("symbol-remove-circle plugin-ionicons-api", step.getIcon());
 
-        step = createStep("id", "", "text", "cssClass", "style", "link");
+        step = createStep("id", "", "text", "cssClass", "style", "link", "_blank");
         assertEquals("symbol-remove-circle plugin-ionicons-api", step.getIcon());
 
-        step = createStep("id", "icon", "text", "cssClass", "style", "link");
+        step = createStep("id", "icon", "text", "cssClass", "style", "link", "_blank");
         assertEquals("symbol-remove-circle plugin-ionicons-api", step.getIcon());
     }
 
     @Override
     @Test
     void cssClass() {
-        AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link");
+        AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link", "_blank");
         assertNull(step.getCssClass());
 
-        step = createStep("id", "icon", "text", "", "style", "link");
+        step = createStep("id", "icon", "text", "", "style", "link", "_blank");
         assertNull(step.getCssClass());
 
-        step = createStep("id", "icon", "text", "cssClass", "style", "link");
+        step = createStep("id", "icon", "text", "cssClass", "style", "link", "_blank");
         assertNull(step.getCssClass());
     }
 
     @Override
     @Test
     void style() {
-        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link");
+        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link", "_blank");
         assertEquals("color: var(--error-color)", step.getStyle());
 
-        step = createStep("id", "icon", "text", "cssClass", "", "link");
+        step = createStep("id", "icon", "text", "cssClass", "", "link", "_blank");
         assertEquals("color: var(--error-color)", step.getStyle());
 
-        step = createStep("id", "icon", "text", "cssClass", "style", "link");
+        step = createStep("id", "icon", "text", "cssClass", "style", "link", "_blank");
         assertEquals("color: var(--error-color)", step.getStyle());
     }
 
     @Override
     protected AbstractAddBadgeStep createStep(
-            String id, String icon, String text, String cssClass, String style, String link) {
-        return new AddErrorBadgeStep(id, text, link);
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
+        return new AddErrorBadgeStep(id, text, link, target);
     }
 }

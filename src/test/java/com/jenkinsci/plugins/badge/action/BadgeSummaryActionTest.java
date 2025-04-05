@@ -37,7 +37,7 @@ class BadgeSummaryActionTest extends AbstractBadgeActionTest {
     @Override
     @Test
     void icon() {
-        AbstractBadgeAction action = createAction("id", null, "text", "cssClass", "style", "link");
+        AbstractBadgeAction action = createAction("id", null, "text", "cssClass", "style", "link", "target");
         assertEquals(Jenkins.RESOURCE_PATH + "/images/16x16/empty.png", action.getIcon());
 
         action.setIcon("");
@@ -96,8 +96,8 @@ class BadgeSummaryActionTest extends AbstractBadgeActionTest {
 
     @Override
     protected AbstractBadgeAction createAction(
-            String id, String icon, String text, String cssClass, String style, String link) {
-        return new BadgeSummaryAction(id, icon, text, cssClass, style, link);
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
+        return new BadgeSummaryAction(id, icon, text, cssClass, style, link, target);
     }
 
     @Override

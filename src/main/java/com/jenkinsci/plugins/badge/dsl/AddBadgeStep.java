@@ -40,11 +40,12 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
 
     @DataBoundConstructor
     public AddBadgeStep() {
-        this(null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null);
     }
 
-    protected AddBadgeStep(String id, String icon, String text, String cssClass, String style, String link) {
-        super(id, icon, text, cssClass, style, link);
+    protected AddBadgeStep(
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
+        super(id, icon, text, cssClass, style, link, target);
     }
 
     /**
@@ -78,12 +79,13 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
 
     @Override
     public StepExecution start(StepContext context) {
-        return new Execution(getId(), getIcon(), getText(), getCssClass(), getStyle(), getLink(), context) {
+        return new Execution(
+                getId(), getIcon(), getText(), getCssClass(), getStyle(), getLink(), getTarget(), context) {
 
             @Override
             protected BadgeAction newAction(
-                    String id, String icon, String text, String cssClass, String style, String link) {
-                return new BadgeAction(id, icon, text, cssClass, style, link);
+                    String id, String icon, String text, String cssClass, String style, String link, String target) {
+                return new BadgeAction(id, icon, text, cssClass, style, link, target);
             }
         };
     }

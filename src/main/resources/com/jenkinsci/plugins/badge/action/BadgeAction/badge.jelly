@@ -32,7 +32,7 @@ THE SOFTWARE.
                 <!-- icon with link -->
                 <j:when test="${it.link != null &amp;&amp; it.link != ''}">
                     <span>
-                        <a href="${it.link}" class="${it.cssClass}" style="${it.style}">
+                        <a href="${it.link}" target="${it.target}" class="${it.cssClass}" style="${it.style}">
                             <l:icon class="icon-sm" style="width: 16px; height: 16px;" src="${it.icon}" alt="${it.text}" htmlTooltip="${it.text}"/>
                         </a>
                     </span>
@@ -53,7 +53,7 @@ THE SOFTWARE.
                     <!-- text with link -->
                     <j:when test="${it.link != null &amp;&amp; it.link != ''}">
                         <span>
-                            <a href="${it.link}" class="${it.cssClass}" style="${it.style}">
+                            <a href="${it.link}" target="${it.target}" class="${it.cssClass}" style="${it.style}">
                                 ${it.text}
                             </a>
                         </span>

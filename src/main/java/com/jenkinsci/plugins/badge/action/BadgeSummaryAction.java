@@ -41,7 +41,8 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
 
     private static final Logger LOGGER = Logger.getLogger(BadgeSummaryAction.class.getName());
 
-    public BadgeSummaryAction(String id, String icon, String text, String cssClass, String style, String link) {
+    public BadgeSummaryAction(
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
         super(id, icon, text, cssClass, style, link);
     }
 
