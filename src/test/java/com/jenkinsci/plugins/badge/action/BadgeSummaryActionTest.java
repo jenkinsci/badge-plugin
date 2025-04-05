@@ -24,6 +24,7 @@
 package com.jenkinsci.plugins.badge.action;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import io.jenkins.plugins.emoji.symbols.Emojis;
 import io.jenkins.plugins.ionicons.Ionicons;
@@ -33,6 +34,14 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 @WithJenkins
 class BadgeSummaryActionTest extends AbstractBadgeActionTest {
+
+    @Override
+    @Test
+    @Deprecated
+    void deprecatedConstructor() {
+        BadgeSummaryAction action = new BadgeSummaryAction("id", "icon", "text", "cssClass", "style", "link");
+        assertNull(action.getTarget());
+    }
 
     @Override
     @Test
