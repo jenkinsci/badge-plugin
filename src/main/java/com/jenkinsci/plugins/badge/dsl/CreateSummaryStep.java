@@ -122,7 +122,7 @@ public class CreateSummaryStep extends Step {
 
         @Override
         protected BadgeSummaryAction run() throws Exception {
-            BadgeSummaryAction action = new BadgeSummaryAction(id, icon, null, null, null, null);
+            BadgeSummaryAction action = new BadgeSummaryAction(id, icon, null, null, null, null, null);
             if (StringUtils.isNotBlank(text)) {
                 action.appendText(text);
             }

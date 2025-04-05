@@ -23,15 +23,28 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 @WithJenkins
 class BadgeActionTest extends AbstractBadgeActionTest {
 
+    @Test
+    void target() {
+        BadgeAction action = (BadgeAction) createAction("id", "icon", "text", "cssClass", "style", "link", null);
+        assertNull(action.getTarget());
+
+        action.setTarget("_blank");
+        assertEquals("_blank", action.getTarget());
+    }
+
     @Override
     protected AbstractBadgeAction createAction(
-            String id, String icon, String text, String cssClass, String style, String link) {
-        return new BadgeAction(id, icon, text, cssClass, style, link);
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
+        return new BadgeAction(id, icon, text, cssClass, style, link, target);
     }
 
     @Override

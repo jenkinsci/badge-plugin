@@ -41,17 +41,18 @@ public class AddSummaryStep extends AddBadgeStep {
     }
 
     protected AddSummaryStep(String id, String icon, String text, String cssClass, String style, String link) {
-        super(id, icon, text, cssClass, style, link);
+        super(id, icon, text, cssClass, style, link, null);
     }
 
     @Override
     public StepExecution start(StepContext context) {
-        return new Execution(getId(), getIcon(), getText(), getCssClass(), getStyle(), getLink(), context) {
+        return new Execution(
+                getId(), getIcon(), getText(), getCssClass(), getStyle(), getLink(), getTarget(), context) {
 
             @Override
             protected BadgeSummaryAction newAction(
-                    String id, String icon, String text, String cssClass, String style, String link) {
-                return new BadgeSummaryAction(id, icon, text, cssClass, style, link);
+                    String id, String icon, String text, String cssClass, String style, String link, String target) {
+                return new BadgeSummaryAction(id, icon, text, cssClass, style, link, target);
             }
         };
     }

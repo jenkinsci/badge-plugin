@@ -228,7 +228,8 @@ public class AddShortTextStep extends Step {
                 }
             }
 
-            BadgeAction action = new BadgeAction(null, null, shortText.getText(), null, style, shortText.getLink());
+            BadgeAction action =
+                    new BadgeAction(null, null, shortText.getText(), null, style, shortText.getLink(), null);
             getContext().get(Run.class).addAction(action);
 
             TaskListener listener = getContext().get(TaskListener.class);

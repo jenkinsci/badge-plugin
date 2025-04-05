@@ -45,19 +45,19 @@ abstract class AbstractAddBadgeStepTest {
 
     @Test
     void id() {
-        AbstractAddBadgeStep step = createStep(null, "icon", "text", "cssClass", "style", "link");
+        AbstractAddBadgeStep step = createStep(null, "icon", "text", "cssClass", "style", "link", "_blank");
         assertNull(step.getId());
 
-        step = createStep("id", "icon", "text", "cssClass", "style", "link");
+        step = createStep("id", "icon", "text", "cssClass", "style", "link", "_blank");
         assertEquals("id", step.getId());
 
-        step = createStep("", "icon", "text", "cssClass", "style", "link");
+        step = createStep("", "icon", "text", "cssClass", "style", "link", "_blank");
         assertEquals("", step.getId());
     }
 
     @Test
     void icon() {
-        AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link");
+        AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link", "_blank");
         assertNull(step.getIcon());
 
         step.setIcon("");
@@ -69,7 +69,7 @@ abstract class AbstractAddBadgeStepTest {
 
     @Test
     void text() {
-        AbstractAddBadgeStep step = createStep("id", "icon", null, "cssClass", "style", "link");
+        AbstractAddBadgeStep step = createStep("id", "icon", null, "cssClass", "style", "link", "_blank");
         assertNull(step.getText());
 
         step.setText("");
@@ -81,7 +81,7 @@ abstract class AbstractAddBadgeStepTest {
 
     @Test
     void cssClass() {
-        AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link");
+        AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link", "_blank");
         assertNull(step.getCssClass());
 
         step.setCssClass("");
@@ -93,7 +93,7 @@ abstract class AbstractAddBadgeStepTest {
 
     @Test
     void style() {
-        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link");
+        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link", "_blank");
         assertNull(step.getStyle());
 
         step.setStyle("");
@@ -105,7 +105,7 @@ abstract class AbstractAddBadgeStepTest {
 
     @Test
     void link() {
-        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", "style", null);
+        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", "style", null, null);
         assertNull(step.getLink());
 
         step.setLink("");
@@ -117,15 +117,15 @@ abstract class AbstractAddBadgeStepTest {
 
     @Test
     void string() {
-        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", "style", "link");
+        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", "style", "link", "_blank");
         assertNotNull(step.toString());
         assertTrue(step.toString().startsWith(step.getDescriptor().getFunctionName()));
 
-        step = createStep(null, null, null, null, null, null);
+        step = createStep(null, null, null, null, null, null, null);
         assertNotNull(step.toString());
         assertEquals(step.getDescriptor().getFunctionName() + "()", step.toString());
     }
 
     protected abstract AbstractAddBadgeStep createStep(
-            String id, String icon, String text, String cssClass, String style, String link);
+            String id, String icon, String text, String cssClass, String style, String link, String target);
 }
