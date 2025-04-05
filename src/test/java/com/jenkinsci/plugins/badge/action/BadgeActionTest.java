@@ -23,15 +23,26 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
 @WithJenkins
 class BadgeActionTest extends AbstractBadgeActionTest {
 
     @Override
+    @Test
+    @Deprecated
+    void deprecatedConstructor() {
+        BadgeAction action = new BadgeAction("id", "icon", "text", "cssClass", "style", "link");
+        assertNull(action.getTarget());
+    }
+
+    @Override
     protected AbstractBadgeAction createAction(
-            String id, String icon, String text, String cssClass, String style, String link) {
-        return new BadgeAction(id, icon, text, cssClass, style, link);
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
+        return new BadgeAction(id, icon, text, cssClass, style, link, target);
     }
 
     @Override

@@ -69,7 +69,7 @@ class AddSummaryStepTest extends AddBadgeStepTest {
 
     @Override
     protected AbstractAddBadgeStep createStep(
-            String id, String icon, String text, String cssClass, String style, String link) {
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
         return new AddSummaryStep(id, icon, text, cssClass, style, link);
     }
 }

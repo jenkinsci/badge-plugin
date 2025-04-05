@@ -38,11 +38,11 @@ public class AddInfoBadgeStep extends AddBadgeStep {
 
     @DataBoundConstructor
     public AddInfoBadgeStep() {
-        this(null, null, null);
+        this(null, null, null, null);
     }
 
-    protected AddInfoBadgeStep(String id, String text, String link) {
-        super(id, Ionicons.getIconClassName("information-circle"), text, null, "color: var(--blue)", link);
+    protected AddInfoBadgeStep(String id, String text, String link, String target) {
+        super(id, Ionicons.getIconClassName("information-circle"), text, null, "color: var(--blue)", link, target);
     }
 
     @Override
@@ -57,6 +57,9 @@ public class AddInfoBadgeStep extends AddBadgeStep {
         }
         if (getLink() != null) {
             fields.add("link: '" + getLink() + "'");
+        }
+        if (getTarget() != null) {
+            fields.add("target: '" + getTarget() + "'");
         }
 
         return getDescriptor().getFunctionName() + "(" + StringUtils.join(fields, ", ") + ")";

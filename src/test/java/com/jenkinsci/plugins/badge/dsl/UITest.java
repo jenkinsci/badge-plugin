@@ -37,16 +37,14 @@ class UITest {
                     "Test Text",
                     "Test Class",
                     "Test Style",
-                    "https://jenkins.io");
+                    "https://jenkins.io",
+                    "_blank");
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement builds = overview.getElementById("jenkins-builds");
-
-                assertEquals(6, builds.getElementsByTagName("span").size());
-
-                DomElement badge = builds.getElementsByTagName("a").get(3);
+                DomElement badge =
+                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls a");
                 DomElement icon = badge.getLastElementChild();
 
                 assertEquals("a", badge.getTagName());
@@ -63,16 +61,13 @@ class UITest {
         @Test
         void iconWithoutLink() throws Throwable {
             AddBadgeStep step = new AddBadgeStep(
-                    null, "symbol-rocket plugin-ionicons-api", "Test Text", "Test Class", "Test Style", null);
+                    null, "symbol-rocket plugin-ionicons-api", "Test Text", "Test Class", "Test Style", null, null);
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement builds = overview.getElementById("jenkins-builds");
-
-                assertEquals(6, builds.getElementsByTagName("span").size());
-
-                DomElement badge = builds.getElementsByTagName("span").get(2);
+                DomElement badge =
+                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls span");
                 DomElement icon = badge.getLastElementChild();
 
                 assertEquals("svg", icon.getTagName());
@@ -87,17 +82,14 @@ class UITest {
 
         @Test
         void textWithLink() throws Throwable {
-            AddBadgeStep step =
-                    new AddBadgeStep(null, null, "Test Text", "Test Class", "Test Style", "https://jenkins.io");
+            AddBadgeStep step = new AddBadgeStep(
+                    null, null, "Test Text", "Test Class", "Test Style", "https://jenkins.io", "_blank");
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement builds = overview.getElementById("jenkins-builds");
-
-                assertEquals(5, builds.getElementsByTagName("span").size());
-
-                DomElement badge = builds.getElementsByTagName("a").get(3);
+                DomElement badge =
+                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls a");
 
                 assertEquals("a", badge.getTagName());
 
@@ -105,21 +97,19 @@ class UITest {
                 assertEquals(step.getCssClass(), badge.getAttribute("class"));
                 assertEquals(step.getStyle(), badge.getAttribute("style"));
                 assertEquals(step.getLink(), badge.getAttribute("href"));
+                assertEquals(step.getTarget(), badge.getAttribute("target"));
             }
         }
 
         @Test
         void textWithoutLink() throws Throwable {
-            AddBadgeStep step = new AddBadgeStep(null, null, "Test Text", "Test Class", "Test Style", null);
+            AddBadgeStep step = new AddBadgeStep(null, null, "Test Text", "Test Class", "Test Style", null, null);
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement builds = overview.getElementById("jenkins-builds");
-
-                assertEquals(5, builds.getElementsByTagName("span").size());
-
-                DomElement badge = builds.getElementsByTagName("span").get(2);
+                DomElement badge =
+                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls span");
 
                 assertEquals("span", badge.getTagName());
 
@@ -131,16 +121,13 @@ class UITest {
 
         @Test
         void info() throws Throwable {
-            AddInfoBadgeStep step = new AddInfoBadgeStep(null, "Test Text", null);
+            AddInfoBadgeStep step = new AddInfoBadgeStep(null, "Test Text", null, null);
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement builds = overview.getElementById("jenkins-builds");
-
-                assertEquals(6, builds.getElementsByTagName("span").size());
-
-                DomElement badge = builds.getElementsByTagName("span").get(2);
+                DomElement badge =
+                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls span");
                 DomElement icon = badge.getLastElementChild();
 
                 assertEquals("svg", icon.getTagName());
@@ -154,16 +141,13 @@ class UITest {
 
         @Test
         void warning() throws Throwable {
-            AddWarningBadgeStep step = new AddWarningBadgeStep(null, "Test Text", null);
+            AddWarningBadgeStep step = new AddWarningBadgeStep(null, "Test Text", null, null);
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement builds = overview.getElementById("jenkins-builds");
-
-                assertEquals(6, builds.getElementsByTagName("span").size());
-
-                DomElement badge = builds.getElementsByTagName("span").get(2);
+                DomElement badge =
+                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls span");
                 DomElement icon = badge.getLastElementChild();
 
                 assertEquals("svg", icon.getTagName());
@@ -177,16 +161,13 @@ class UITest {
 
         @Test
         void error() throws Throwable {
-            AddErrorBadgeStep step = new AddErrorBadgeStep(null, "Test Text", null);
+            AddErrorBadgeStep step = new AddErrorBadgeStep(null, "Test Text", null, null);
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement builds = overview.getElementById("jenkins-builds");
-
-                assertEquals(6, builds.getElementsByTagName("span").size());
-
-                DomElement badge = builds.getElementsByTagName("span").get(2);
+                DomElement badge =
+                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls span");
                 DomElement icon = badge.getLastElementChild();
 
                 assertEquals("svg", icon.getTagName());
@@ -206,15 +187,16 @@ class UITest {
                     "Test Text",
                     "Test Class",
                     "Test Style",
-                    "https://jenkins.io");
+                    "https://jenkins.io",
+                    "_blank");
             RemoveBadgesStep removeStep = new RemoveBadgesStep(addStep.getId());
             WorkflowJob job = runJob(addStep, removeStep);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement builds = overview.getElementById("jenkins-builds");
-
-                assertEquals(4, builds.getElementsByTagName("span").size());
+                DomElement badge =
+                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls");
+                assertEquals(0, badge.getElementsByTagName("span").size());
             }
         }
     }

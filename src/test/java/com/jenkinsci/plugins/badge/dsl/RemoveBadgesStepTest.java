@@ -164,7 +164,13 @@ class RemoveBadgesStepTest extends AbstractRemoveBadgesStepTest {
 
     protected AbstractAddBadgeStep createAddStep(String id) {
         return new AddBadgeStep(
-                id, "symbol-rocket plugin-ionicons-api", "Test Text", "icon-md", "color: green", "https://jenkins.io");
+                id,
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io",
+                "_blank");
     }
 
     @Override

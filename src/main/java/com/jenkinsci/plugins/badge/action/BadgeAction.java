@@ -34,8 +34,16 @@ public class BadgeAction extends AbstractBadgeAction implements BuildBadgeAction
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * @deprecated Use {@link BadgeAction#BadgeAction(String, String, String, String, String, String, String)} instead.
+     */
+    @Deprecated(since = "2.8")
     public BadgeAction(String id, String icon, String text, String cssClass, String style, String link) {
         super(id, icon, text, cssClass, style, link);
+    }
+
+    public BadgeAction(String id, String icon, String text, String cssClass, String style, String link, String target) {
+        super(id, icon, text, cssClass, style, link, target);
     }
 
     @Override

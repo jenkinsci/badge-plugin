@@ -57,19 +57,20 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
     @Override
     @Test
     void defaultConstructor() {
-        AbstractAddBadgeStep step = new AddBadgeStep();
+        AddBadgeStep step = new AddBadgeStep();
         assertNull(step.getId());
         assertNull(step.getIcon());
         assertNull(step.getText());
         assertNull(step.getCssClass());
         assertNull(step.getStyle());
         assertNull(step.getLink());
+        assertNull(step.getTarget());
     }
 
     @Test
     @Deprecated(since = "2.0", forRemoval = true)
     void color() {
-        AddBadgeStep step = (AddBadgeStep) createStep("id", "icon", "text", "cssClass", null, "link");
+        AddBadgeStep step = (AddBadgeStep) createStep("id", "icon", "text", "cssClass", null, "link", "_blank");
         assertNull(step.getColor());
 
         step.setColor("");
@@ -87,7 +88,8 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "Test Text",
                 "icon-md",
                 "color: green",
-                "https://jenkins.io");
+                "https://jenkins.io",
+                "_blank");
         runAddJob(step, false, false);
     }
 
@@ -99,13 +101,14 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "Test Text",
                 "icon-md",
                 "color: green",
-                "https://jenkins.io");
+                "https://jenkins.io",
+                "_blank");
         runAddJob(step, true, false);
     }
 
     @Test
     void addInDeclarativePipeline() throws Exception {
-        AbstractAddBadgeStep step = createStep(UUID.randomUUID().toString(), null, null, null, null, null);
+        AbstractAddBadgeStep step = createStep(UUID.randomUUID().toString(), null, null, null, null, null, null);
         runAddJob(step, false, true);
     }
 
@@ -117,7 +120,8 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "Test Text",
                 "icon-md",
                 "color: green",
-                "https://jenkins.io");
+                "https://jenkins.io",
+                "_blank");
         runModifyJob(step, false, false);
     }
 
@@ -129,13 +133,14 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "Test Text",
                 "icon-md",
                 "color: green",
-                "https://jenkins.io");
+                "https://jenkins.io",
+                "_blank");
         runModifyJob(step, true, false);
     }
 
     @Test
     void modifyInDeclarativePipeline() throws Exception {
-        AbstractAddBadgeStep step = createStep(UUID.randomUUID().toString(), null, "Test Text", null, null, null);
+        AbstractAddBadgeStep step = createStep(UUID.randomUUID().toString(), null, "Test Text", null, null, null, null);
         runModifyJob(step, false, true);
     }
 
@@ -147,7 +152,8 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                 "Test Text",
                 "icon-md",
                 "color: green",
-                "https://jenkins.io");
+                "https://jenkins.io",
+                "_blank");
         WorkflowRun job = runAddJob(step, false, false);
 
         WorkflowRun bean = assertInstanceOf(WorkflowRun.class, job.getApi().bean);
@@ -239,17 +245,17 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         if (declarativePipeline) {
             script =
                     """
-        pipeline {
-            agent any
-            stages {
-                stage('Testing') {
-                    steps {
-                        %s
-                    }
-                }
-            }
-        }
-        """
+              pipeline {
+                  agent any
+                  stages {
+                      stage('Testing') {
+                          steps {
+                              %s
+                          }
+                      }
+                  }
+              }
+              """
                             .formatted(script);
         }
 
@@ -281,19 +287,19 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         if (declarativePipeline) {
             script =
                     """
-            pipeline {
-                agent any
-                stages {
-                    stage('Testing') {
-                        steps {
-                            script {
-                                %s
-                            }
-                        }
-                    }
-                }
-            }
-            """
+              pipeline {
+                  agent any
+                  stages {
+                      stage('Testing') {
+                          steps {
+                              script {
+                                  %s
+                              }
+                          }
+                      }
+                  }
+              }
+              """
                             .formatted(script);
         }
 
@@ -317,11 +323,12 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         assertEquals(step.getCssClass(), action.getCssClass());
         assertEquals(step.getStyle(), action.getStyle());
         assertEquals(step.getLink(), action.getLink());
+        assertEquals(step.getTarget(), action.getTarget());
     }
 
     @Override
     protected AbstractAddBadgeStep createStep(
-            String id, String icon, String text, String cssClass, String style, String link) {
-        return new AddBadgeStep(id, icon, text, cssClass, style, link);
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
+        return new AddBadgeStep(id, icon, text, cssClass, style, link, target);
     }
 }

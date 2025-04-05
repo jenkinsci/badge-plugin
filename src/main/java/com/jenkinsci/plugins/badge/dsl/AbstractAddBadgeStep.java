@@ -45,14 +45,17 @@ public abstract class AbstractAddBadgeStep extends Step {
     private String cssClass;
     private String style;
     private String link;
+    private String target;
 
-    protected AbstractAddBadgeStep(String id, String icon, String text, String cssClass, String style, String link) {
+    protected AbstractAddBadgeStep(
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
         this.id = id;
         this.icon = icon;
         this.text = text;
         this.cssClass = cssClass;
         this.style = style;
         this.link = link;
+        this.target = target;
     }
 
     @DataBoundSetter
@@ -109,6 +112,15 @@ public abstract class AbstractAddBadgeStep extends Step {
         this.link = link;
     }
 
+    public String getTarget() {
+        return target;
+    }
+
+    @DataBoundSetter
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
     @Override
     public String toString() {
         List<String> fields = new ArrayList<>();
@@ -131,7 +143,9 @@ public abstract class AbstractAddBadgeStep extends Step {
         if (getLink() != null) {
             fields.add("link: '" + getLink() + "'");
         }
-
+        if (getTarget() != null) {
+            fields.add("target: '" + getTarget() + "'");
+        }
         return getDescriptor().getFunctionName() + "(" + StringUtils.join(fields, ", ") + ")";
     }
 
@@ -146,9 +160,17 @@ public abstract class AbstractAddBadgeStep extends Step {
         private final String cssClass;
         private final String style;
         private final String link;
+        private final String target;
 
         Execution(
-                String id, String icon, String text, String cssClass, String style, String link, StepContext context) {
+                String id,
+                String icon,
+                String text,
+                String cssClass,
+                String style,
+                String link,
+                String target,
+                StepContext context) {
             super(context);
             this.id = id;
             this.icon = icon;
@@ -156,16 +178,17 @@ public abstract class AbstractAddBadgeStep extends Step {
             this.cssClass = cssClass;
             this.style = style;
             this.link = link;
+            this.target = target;
         }
 
         @Override
         protected AbstractBadgeAction run() throws Exception {
-            AbstractBadgeAction action = newAction(id, icon, text, cssClass, style, link);
+            AbstractBadgeAction action = newAction(id, icon, text, cssClass, style, link, target);
             getContext().get(Run.class).addAction(action);
             return action;
         }
 
         protected abstract AbstractBadgeAction newAction(
-                String id, String icon, String text, String cssClass, String style, String link);
+                String id, String icon, String text, String cssClass, String style, String link, String target);
     }
 }

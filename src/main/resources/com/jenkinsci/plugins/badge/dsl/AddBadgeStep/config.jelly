@@ -43,4 +43,7 @@ THE SOFTWARE.
     <f:entry field="link" title="Link">
         <f:textbox/>
     </f:entry>
+    <f:entry field="target" title="Target">
+        <f:textbox/>
+    </f:entry>
 </j:jelly>
