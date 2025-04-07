@@ -218,8 +218,8 @@ abstract class AbstractBadgeActionTest {
         action.setTarget("");
         assertEquals("", action.getTarget());
 
-        action.setTarget("_blank");
-        assertEquals("_blank", action.getTarget());
+        action.setTarget("target");
+        assertEquals("target", action.getTarget());
     }
 
     @Test

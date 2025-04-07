@@ -37,11 +37,12 @@ public class AddSummaryStep extends AddBadgeStep {
 
     @DataBoundConstructor
     public AddSummaryStep() {
-        this(null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null);
     }
 
-    protected AddSummaryStep(String id, String icon, String text, String cssClass, String style, String link) {
-        super(id, icon, text, cssClass, style, link, null);
+    protected AddSummaryStep(
+            String id, String icon, String text, String cssClass, String style, String link, String target) {
+        super(id, icon, text, cssClass, style, link, target);
     }
 
     @Override

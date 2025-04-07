@@ -108,7 +108,7 @@ See https://www.jenkins.io/doc/pipeline/steps/badge/#addwarningbadge-add-warning
 ----
 
 // add a badge with a warning icon, text and link
-addWarningBadge(text: 'Houston, we have a problem ...', link: 'https://youtu.be/2Q_ZzBGPdqE')
+addWarningBadge(text: 'Houston, we have a problem ...', link: 'https://youtu.be/2Q_ZzBGPdqE', target: '_blank')
 
 ----
 
@@ -150,7 +150,7 @@ See https://www.jenkins.io/doc/pipeline/steps/badge/#addsummary-add-summary[Jenk
 ----
 
 // add a summary with an icon, text and link
-addSummary(icon: 'symbol-home-outline plugin-ionicons-api', text: 'Test Chamber prepared', link: 'https://jenkins.io')
+addSummary(icon: 'symbol-home-outline plugin-ionicons-api', text: 'Test Chamber prepared', link: 'https://jenkins.io', target: "_blank")
 
 // add another summary with an icon and text
 def summary = addSummary(icon: 'symbol-people-outline plugin-ionicons-api', text: 'Looking for Test Subjects ...')

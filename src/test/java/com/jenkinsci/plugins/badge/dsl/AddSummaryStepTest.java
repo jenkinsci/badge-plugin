@@ -23,14 +23,8 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
-import java.util.List;
-import jenkins.model.Jenkins;
-import org.apache.commons.lang.StringUtils;
-import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
@@ -47,29 +41,12 @@ class AddSummaryStepTest extends AddBadgeStepTest {
         assertNull(step.getCssClass());
         assertNull(step.getStyle());
         assertNull(step.getLink());
-    }
-
-    @Override
-    protected void assertFields(AbstractAddBadgeStep step, WorkflowRun run) {
-        List<BadgeSummaryAction> summaryActions = run.getActions(BadgeSummaryAction.class);
-        assertEquals(1, summaryActions.size());
-
-        BadgeSummaryAction action = summaryActions.get(0);
-        assertEquals(step.getId(), action.getId());
-        if (StringUtils.isEmpty(step.getIcon())) {
-            assertEquals(Jenkins.RESOURCE_PATH + "/images/16x16/empty.png", action.getIcon());
-        } else {
-            assertEquals(step.getIcon(), action.getIcon());
-        }
-        assertEquals(step.getText(), action.getText());
-        assertEquals(step.getCssClass(), action.getCssClass());
-        assertEquals(step.getStyle(), action.getStyle());
-        assertEquals(step.getLink(), action.getLink());
+        assertNull(step.getTarget());
     }
 
     @Override
     protected AbstractAddBadgeStep createStep(
             String id, String icon, String text, String cssClass, String style, String link, String target) {
-        return new AddSummaryStep(id, icon, text, cssClass, style, link);
+        return new AddSummaryStep(id, icon, text, cssClass, style, link, target);
     }
 }
