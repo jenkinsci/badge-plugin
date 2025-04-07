@@ -23,12 +23,8 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
-import java.util.List;
-import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
@@ -43,15 +39,15 @@ class RemoveSummariesStepTest extends RemoveBadgesStepTest {
     }
 
     @Override
-    protected void assertActionExists(WorkflowRun run, int expected) {
-        List<BadgeSummaryAction> summaryActions = run.getActions(BadgeSummaryAction.class);
-        assertEquals(expected, summaryActions.size());
-    }
-
-    @Override
     protected AbstractAddBadgeStep createAddStep(String id) {
         return new AddSummaryStep(
-                id, "symbol-rocket plugin-ionicons-api", "Test Text", "icon-md", "color: green", "https://jenkins.io");
+                id,
+                "symbol-rocket plugin-ionicons-api",
+                "Test Text",
+                "icon-md",
+                "color: green",
+                "https://jenkins.io",
+                "_blank");
     }
 
     @Override

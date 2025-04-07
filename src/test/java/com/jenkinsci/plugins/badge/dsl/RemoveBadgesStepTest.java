@@ -26,7 +26,7 @@ package com.jenkinsci.plugins.badge.dsl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import hudson.model.BuildBadgeAction;
+import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import java.util.List;
 import java.util.UUID;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
@@ -158,7 +158,7 @@ class RemoveBadgesStepTest extends AbstractRemoveBadgesStepTest {
     }
 
     protected void assertActionExists(WorkflowRun run, int expected) {
-        List<BuildBadgeAction> badgeActions = run.getBadgeActions();
+        List<AbstractBadgeAction> badgeActions = run.getActions(AbstractBadgeAction.class);
         assertEquals(expected, badgeActions.size());
     }
 

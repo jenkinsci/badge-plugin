@@ -31,8 +31,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
-import com.jenkinsci.plugins.badge.action.BadgeAction;
-import hudson.model.BuildBadgeAction;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -70,7 +68,7 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
     @Test
     @Deprecated(since = "2.0", forRemoval = true)
     void color() {
-        AddBadgeStep step = (AddBadgeStep) createStep("id", "icon", "text", "cssClass", null, "link", "_blank");
+        AddBadgeStep step = (AddBadgeStep) createStep("id", "icon", "text", "cssClass", null, "link", "target");
         assertNull(step.getColor());
 
         step.setColor("");
@@ -189,6 +187,9 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
             assertEquals(
                     action.getLink(),
                     Optional.of(json.get("link")).filter(nullable).orElse(null));
+            assertEquals(
+                    action.getTarget(),
+                    Optional.of(json.get("target")).filter(nullable).orElse(null));
 
             // XML
             response = webClient
@@ -227,6 +228,11 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
             assertEquals(
                     action.getLink(),
                     Optional.ofNullable(xml.getElementsByTagName("link").item(0))
+                            .orElse(mockNode)
+                            .getTextContent());
+            assertEquals(
+                    action.getTarget(),
+                    Optional.ofNullable(xml.getElementsByTagName("target").item(0))
                             .orElse(mockNode)
                             .getTextContent());
         }
@@ -313,10 +319,10 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
     }
 
     protected void assertFields(AbstractAddBadgeStep step, WorkflowRun run) {
-        List<BuildBadgeAction> badgeActions = run.getBadgeActions();
+        List<AbstractBadgeAction> badgeActions = run.getActions(AbstractBadgeAction.class);
         assertEquals(1, badgeActions.size());
 
-        BadgeAction action = (BadgeAction) badgeActions.get(0);
+        AbstractBadgeAction action = badgeActions.get(0);
         assertEquals(step.getId(), action.getId());
         assertEquals(step.getIcon(), action.getIcon());
         assertEquals(step.getText(), action.getText());

@@ -42,44 +42,45 @@ class AddWarningBadgeStepTest extends AddBadgeStepTest {
         assertNull(step.getCssClass());
         assertEquals("color: var(--warning-color)", step.getStyle());
         assertNull(step.getLink());
+        assertNull(step.getTarget());
     }
 
     @Override
     @Test
     void icon() {
-        AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link", "_blank");
+        AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link", "target");
         assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
 
-        step = createStep("id", "", "text", "cssClass", "style", "link", "_blank");
+        step = createStep("id", "", "text", "cssClass", "style", "link", "target");
         assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
 
-        step = createStep("id", "icon", "text", "cssClass", "style", "link", "_blank");
+        step = createStep("id", "icon", "text", "cssClass", "style", "link", "target");
         assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
     }
 
     @Override
     @Test
     void cssClass() {
-        AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link", "_blank");
+        AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link", "target");
         assertNull(step.getCssClass());
 
-        step = createStep("id", "icon", "text", "", "style", "link", "_blank");
+        step = createStep("id", "icon", "text", "", "style", "link", "target");
         assertNull(step.getCssClass());
 
-        step = createStep("id", "icon", "text", "cssClass", "style", "link", "_blank");
+        step = createStep("id", "icon", "text", "cssClass", "style", "link", "target");
         assertNull(step.getCssClass());
     }
 
     @Override
     @Test
     void style() {
-        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link", "_blank");
+        AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link", "target");
         assertEquals("color: var(--warning-color)", step.getStyle());
 
-        step = createStep("id", "icon", "text", "cssClass", "", "link", "_blank");
+        step = createStep("id", "icon", "text", "cssClass", "", "link", "target");
         assertEquals("color: var(--warning-color)", step.getStyle());
 
-        step = createStep("id", "icon", "text", "cssClass", "style", "link", "_blank");
+        step = createStep("id", "icon", "text", "cssClass", "style", "link", "target");
         assertEquals("color: var(--warning-color)", step.getStyle());
     }
 

@@ -24,10 +24,38 @@ THE SOFTWARE.
 -->
 
 <?jelly escape-by-default='false'?>
-<j:jelly xmlns:j="jelly:core" xmlns:t="/lib/hudson">
-    <t:summary icon="${it.icon}" href="${it.link}">
-        <span class="${it.cssClass}" style="${it.style}">
-            ${it.text}
-        </span>
-    </t:summary>
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" xmlns:st="jelly:stapler">
+    <st:adjunct includes="com.jenkinsci.plugins.badge.assets"/>
+    <tr class="app-summary">
+        <td>
+            <j:choose>
+                <!-- with icon -->
+                <j:when test="${not empty it.icon}">
+                    <l:icon src="${it.icon}"/>
+                </j:when>
+                <!-- without icon -->
+                <j:otherwise>
+                    <l:icon src="/images/16x16/empty.png"/>
+                </j:otherwise>
+            </j:choose>
+        </td>
+        <td style="vertical-align:middle">
+            <j:choose>
+                <!-- text with link -->
+                <j:when test="${not empty it.link}">
+                    <a href="${it.link}" target="${it.target}" class="${it.cssClass}" style="${it.style}">
+                        <span>
+                            ${it.text}
+                        </span>
+                    </a>
+                </j:when>
+                <!-- text without link -->
+                <j:otherwise>
+                    <span class="${it.cssClass}" style="${it.style}">
+                        ${it.text}
+                    </span>
+                </j:otherwise>
+            </j:choose>
+        </td>
+    </tr>
 </j:jelly>

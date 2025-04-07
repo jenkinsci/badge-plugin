@@ -55,6 +55,7 @@ class UITest {
                 assertEquals("icon-sm", icon.getAttribute("class"));
                 assertEquals(step.getStyle(), badge.getAttribute("style"));
                 assertEquals(step.getLink(), badge.getAttribute("href"));
+                assertEquals(step.getTarget(), badge.getAttribute("target"));
             }
         }
 
@@ -212,7 +213,8 @@ class UITest {
                     "Test Text",
                     "Test Class",
                     "Test Style",
-                    "https://jenkins.io");
+                    "https://jenkins.io",
+                    "_blank");
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
@@ -230,16 +232,17 @@ class UITest {
                 assertEquals("span", text.getTagName());
 
                 assertEquals(step.getText(), text.getTextContent());
-                assertEquals(step.getCssClass(), text.getAttribute("class"));
-                assertEquals(step.getStyle(), text.getAttribute("style"));
+                assertEquals(step.getCssClass(), link.getAttribute("class"));
+                assertEquals(step.getStyle(), link.getAttribute("style"));
                 assertEquals(step.getLink(), link.getAttribute("href"));
+                assertEquals(step.getTarget(), link.getAttribute("target"));
             }
         }
 
         @Test
         void iconWithTextWithoutLink() throws Throwable {
             AddSummaryStep step = new AddSummaryStep(
-                    null, "symbol-rocket plugin-ionicons-api", "Test Text", "Test Class", "Test Style", null);
+                    null, "symbol-rocket plugin-ionicons-api", "Test Text", "Test Class", "Test Style", null, null);
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
@@ -263,7 +266,7 @@ class UITest {
         @Test
         void iconWithoutTextWithoutLink() throws Throwable {
             AddSummaryStep step = new AddSummaryStep(
-                    null, "symbol-rocket plugin-ionicons-api", null, "Test Class", "Test Style", null);
+                    null, "symbol-rocket plugin-ionicons-api", null, "Test Class", "Test Style", null, null);
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
@@ -286,8 +289,8 @@ class UITest {
 
         @Test
         void textWithoutIconWithLink() throws Throwable {
-            AddSummaryStep step =
-                    new AddSummaryStep(null, null, "Test Text", "Test Class", "Test Style", "https://jenkins.io");
+            AddSummaryStep step = new AddSummaryStep(
+                    null, null, "Test Text", "Test Class", "Test Style", "https://jenkins.io", "_blank");
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
@@ -306,15 +309,16 @@ class UITest {
 
                 assertEquals("/jenkins" + Jenkins.RESOURCE_PATH + "/images/16x16/empty.png", icon.getAttribute("src"));
                 assertEquals(step.getText(), text.getTextContent());
-                assertEquals(step.getCssClass(), text.getAttribute("class"));
-                assertEquals(step.getStyle(), text.getAttribute("style"));
+                assertEquals(step.getCssClass(), link.getAttribute("class"));
+                assertEquals(step.getStyle(), link.getAttribute("style"));
                 assertEquals(step.getLink(), link.getAttribute("href"));
+                assertEquals(step.getTarget(), link.getAttribute("target"));
             }
         }
 
         @Test
         void textWithoutIconWithoutLink() throws Throwable {
-            AddSummaryStep step = new AddSummaryStep(null, null, "Test Text", "Test Class", "Test Style", null);
+            AddSummaryStep step = new AddSummaryStep(null, null, "Test Text", "Test Class", "Test Style", null, null);
             WorkflowJob job = runJob(step, null);
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
@@ -344,7 +348,8 @@ class UITest {
                     "Test Text",
                     "Test Class",
                     "Test Style",
-                    "https://jenkins.io");
+                    "https://jenkins.io",
+                    "_blank");
             RemoveSummariesStep removeStep = new RemoveSummariesStep(addStep.getId());
             WorkflowJob job = runJob(addStep, removeStep);
 
