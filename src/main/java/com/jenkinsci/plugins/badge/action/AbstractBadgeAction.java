@@ -290,25 +290,32 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
         } else if (color.startsWith("dark-") && color.length() > 5) {
             primary = color.substring(5);
         }
+        // spotless:off
         // https://github.com/jenkinsci/jenkins/blob/master/src/main/scss/abstracts/_theme.scss
         return switch (primary) {
-                // palette
             case "blue",
-                    "brown",
-                    "cyan",
-                    "green",
-                    "indigo",
-                    "orange",
-                    "pink",
-                    "purple",
-                    "red",
-                    "yellow",
-                    "white",
-                    "black" -> "var(--" + color + ")";
-                // semantics
-            case "accent", "text", "error", "warning", "success", "destructive", "build", "danger", "info" -> "var(--"
-                    + color + "-color)";
+                 "brown",
+                 "cyan",
+                 "green",
+                 "indigo",
+                 "orange",
+                 "pink",
+                 "purple",
+                 "red",
+                 "yellow",
+                 "white",
+                 "black" -> "var(--" + color + ")"; // palette
+            case "accent",
+                 "text",
+                 "error",
+                 "warning",
+                 "success",
+                 "destructive",
+                 "build",
+                 "danger",
+                 "info" -> "var(--" + color + "-color)"; // semantics
             default -> color;
         };
+        // spotless:on
     }
 }
