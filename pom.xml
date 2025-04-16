@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.jenkins-ci.plugins</groupId>
     <artifactId>plugin</artifactId>
-    <version>5.10</version>
+    <version>5.11</version>
   </parent>
 
   <groupId>org.jenkins-ci.plugins</groupId>
@@ -148,4 +148,18 @@
       <url>https://repo.jenkins-ci.org/public/</url>
     </pluginRepository>
   </pluginRepositories>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <configuration>
+          <java>
+            <toggleOffOn />
+          </java>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
