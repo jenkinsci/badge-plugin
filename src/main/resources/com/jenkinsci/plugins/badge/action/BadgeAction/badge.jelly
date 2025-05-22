@@ -60,7 +60,8 @@ THE SOFTWARE.
                     </j:when>
                     <!-- text without link -->
                     <j:otherwise>
-                        <span class="${it.cssClass}" style="${it.style}">
+                        <st:adjunct includes="com.jenkinsci.plugins.badge.copy"/>
+                        <span id="text-badge" class="${it.cssClass}" style="${it.style}">
                             ${it.text}
                         </span>
                     </j:otherwise>
