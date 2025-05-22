@@ -26,6 +26,7 @@ THE SOFTWARE.
 <?jelly escape-by-default='false'?>
 <j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" xmlns:st="jelly:stapler">
     <st:adjunct includes="com.jenkinsci.plugins.badge.assets"/>
+    <st:adjunct includes="com.jenkinsci.plugins.badge.copy"/>
     <j:choose>
         <!-- icon -->
         <j:when test="${not empty it.icon}">
@@ -40,7 +41,7 @@ THE SOFTWARE.
                 </j:when>
                 <!-- icon without link -->
                 <j:otherwise>
-                    <span class="${it.cssClass}" style="${it.style}">
+                    <span class="${it.cssClass}" style="${it.style}" onclick="copy(this, '${it.text}')">
                         <l:icon class="icon-sm" style="width: 16px; height: 16px;" src="${it.icon}" alt="${it.text}" htmlTooltip="${it.text}"/>
                     </span>
                 </j:otherwise>
@@ -60,7 +61,7 @@ THE SOFTWARE.
                     </j:when>
                     <!-- text without link -->
                     <j:otherwise>
-                        <span class="${it.cssClass}" style="${it.style}">
+                        <span class="${it.cssClass}" style="${it.style}" onclick="copy(this, '${it.text}')">
                             ${it.text}
                         </span>
                     </j:otherwise>
