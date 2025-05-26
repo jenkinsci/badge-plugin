@@ -22,12 +22,21 @@
  * THE SOFTWARE.
  */
 
+Behaviour.specify('[id^="icon-only-badge"]', "CopyToClipboard", 0, (element) => {
+    element.onclick = () => copy(element);
+});
+
+Behaviour.specify('[id^="text-only-badge"]', "CopyToClipboard", 0, (element) => {
+    element.onclick = () => copy(element);
+});
+
 /**
  * Copy the text to the clipboard
- * @param parent The parent element to display the notification in
- * @param text The text to copy
+ * @param element The element to get the text from and display the notification in
  */
-function copy(parent, text) {
+function copy(element) {
+    let text = element.getAttribute("data-text");
+
     if (text == null || text === "") {
         return;
     }
@@ -37,14 +46,14 @@ function copy(parent, text) {
         .then(() => {
             hoverNotification(
                 "Copied to clipboard",
-                parent,
+                element
             );
         })
         .catch((error) => {
             console.warn(error);
             hoverNotification(
                 "Could not get permission to copy to clipboard",
-                parent,
+                element
             );
         });
 }
