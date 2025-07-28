@@ -1,9 +1,12 @@
 package com.jenkinsci.plugins.badge.dsl;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 import org.htmlunit.html.DomElement;
@@ -43,8 +46,11 @@ class UITest {
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement badge =
-                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls a");
+                DomElement badge = await().atMost(5, TimeUnit.SECONDS)
+                        .until(
+                                () -> overview.querySelector(
+                                        "#jenkins-builds .app-builds-container__item__inner__controls a"),
+                                Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
                 assertEquals("a", badge.getTagName());
@@ -67,8 +73,11 @@ class UITest {
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement badge =
-                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls span");
+                DomElement badge = await().atMost(5, TimeUnit.SECONDS)
+                        .until(
+                                () -> overview.querySelector(
+                                        "#jenkins-builds .app-builds-container__item__inner__controls span"),
+                                Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
                 assertEquals("svg", icon.getTagName());
@@ -89,8 +98,11 @@ class UITest {
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement badge =
-                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls a");
+                DomElement badge = await().atMost(5, TimeUnit.SECONDS)
+                        .until(
+                                () -> overview.querySelector(
+                                        "#jenkins-builds .app-builds-container__item__inner__controls a"),
+                                Objects::nonNull);
 
                 assertEquals("a", badge.getTagName());
 
@@ -109,8 +121,11 @@ class UITest {
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement badge =
-                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls span");
+                DomElement badge = await().atMost(5, TimeUnit.SECONDS)
+                        .until(
+                                () -> overview.querySelector(
+                                        "#jenkins-builds .app-builds-container__item__inner__controls span"),
+                                Objects::nonNull);
 
                 assertEquals("span", badge.getTagName());
 
@@ -127,8 +142,11 @@ class UITest {
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement badge =
-                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls span");
+                DomElement badge = await().atMost(5, TimeUnit.SECONDS)
+                        .until(
+                                () -> overview.querySelector(
+                                        "#jenkins-builds .app-builds-container__item__inner__controls span"),
+                                Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
                 assertEquals("svg", icon.getTagName());
@@ -147,8 +165,11 @@ class UITest {
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement badge =
-                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls span");
+                DomElement badge = await().atMost(5, TimeUnit.SECONDS)
+                        .until(
+                                () -> overview.querySelector(
+                                        "#jenkins-builds .app-builds-container__item__inner__controls span"),
+                                Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
                 assertEquals("svg", icon.getTagName());
@@ -167,8 +188,11 @@ class UITest {
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement badge =
-                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls span");
+                DomElement badge = await().atMost(5, TimeUnit.SECONDS)
+                        .until(
+                                () -> overview.querySelector(
+                                        "#jenkins-builds .app-builds-container__item__inner__controls span"),
+                                Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
                 assertEquals("svg", icon.getTagName());
@@ -195,8 +219,11 @@ class UITest {
 
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
-                DomElement badge =
-                        overview.querySelector("#jenkins-builds .app-builds-container__item__inner__controls");
+                DomElement badge = await().atMost(5, TimeUnit.SECONDS)
+                        .until(
+                                () -> overview.querySelector(
+                                        "#jenkins-builds .app-builds-container__item__inner__controls"),
+                                Objects::nonNull);
                 assertEquals(0, badge.getElementsByTagName("span").size());
             }
         }
