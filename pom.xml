@@ -56,7 +56,7 @@
     <gitHubRepo>jenkinsci/badge-plugin</gitHubRepo>
     <hpi.compatibleSinceVersion>2.0</hpi.compatibleSinceVersion>
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
-    <jenkins.baseline>2.479</jenkins.baseline>
+    <jenkins.baseline>2.492</jenkins.baseline>
     <jenkins.version>${jenkins.baseline}.3</jenkins.version>
     <revision>2.9</revision>
     <spotbugs.effort>Max</spotbugs.effort>
