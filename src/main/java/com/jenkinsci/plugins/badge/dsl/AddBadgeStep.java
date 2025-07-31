@@ -27,7 +27,7 @@ import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
