@@ -23,8 +23,9 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 
 import hudson.model.BuildBadgeAction;
 import java.util.List;
@@ -75,7 +76,7 @@ class RemoveHtmlBadgesStepTest {
     @Test
     void deprecated() {
         RemoveHtmlBadgesStep removeStep = createRemoveStep(null);
-        assertTrue(removeStep.getDescriptor().isAdvanced());
+        assertThat(removeStep.getDescriptor().isAdvanced(), is(true));
     }
 
     private static void runRemoveJob(AddHtmlBadgeStep addStep, RemoveHtmlBadgesStep removeStep, int expected)
@@ -96,7 +97,7 @@ class RemoveHtmlBadgesStepTest {
 
     private static void assertActionExists(WorkflowRun run, int expected) {
         List<BuildBadgeAction> badgeActions = run.getBadgeActions();
-        assertEquals(expected, badgeActions.size());
+        assertThat(badgeActions, hasSize(expected));
     }
 
     private static AddHtmlBadgeStep createAddStep(String id) {

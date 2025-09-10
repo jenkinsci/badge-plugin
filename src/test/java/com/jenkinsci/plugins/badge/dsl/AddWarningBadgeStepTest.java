@@ -23,8 +23,9 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -36,52 +37,52 @@ class AddWarningBadgeStepTest extends AddBadgeStepTest {
     @Test
     void defaultConstructor() {
         AbstractAddBadgeStep step = new AddWarningBadgeStep();
-        assertNull(step.getId());
-        assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
-        assertNull(step.getText());
-        assertNull(step.getCssClass());
-        assertEquals("color: var(--warning-color)", step.getStyle());
-        assertNull(step.getLink());
-        assertNull(step.getTarget());
+        assertThat(step.getId(), nullValue());
+        assertThat(step.getIcon(), is("symbol-warning plugin-ionicons-api"));
+        assertThat(step.getText(), nullValue());
+        assertThat(step.getCssClass(), nullValue());
+        assertThat(step.getStyle(), is("color: var(--warning-color)"));
+        assertThat(step.getLink(), nullValue());
+        assertThat(step.getTarget(), nullValue());
     }
 
     @Override
     @Test
     void icon() {
         AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link", "target");
-        assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
+        assertThat(step.getIcon(), is("symbol-warning plugin-ionicons-api"));
 
         step = createStep("id", "", "text", "cssClass", "style", "link", "target");
-        assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
+        assertThat(step.getIcon(), is("symbol-warning plugin-ionicons-api"));
 
         step = createStep("id", "icon", "text", "cssClass", "style", "link", "target");
-        assertEquals("symbol-warning plugin-ionicons-api", step.getIcon());
+        assertThat(step.getIcon(), is("symbol-warning plugin-ionicons-api"));
     }
 
     @Override
     @Test
     void cssClass() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link", "target");
-        assertNull(step.getCssClass());
+        assertThat(step.getCssClass(), nullValue());
 
         step = createStep("id", "icon", "text", "", "style", "link", "target");
-        assertNull(step.getCssClass());
+        assertThat(step.getCssClass(), nullValue());
 
         step = createStep("id", "icon", "text", "cssClass", "style", "link", "target");
-        assertNull(step.getCssClass());
+        assertThat(step.getCssClass(), nullValue());
     }
 
     @Override
     @Test
     void style() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link", "target");
-        assertEquals("color: var(--warning-color)", step.getStyle());
+        assertThat(step.getStyle(), is("color: var(--warning-color)"));
 
         step = createStep("id", "icon", "text", "cssClass", "", "link", "target");
-        assertEquals("color: var(--warning-color)", step.getStyle());
+        assertThat(step.getStyle(), is("color: var(--warning-color)"));
 
         step = createStep("id", "icon", "text", "cssClass", "style", "link", "target");
-        assertEquals("color: var(--warning-color)", step.getStyle());
+        assertThat(step.getStyle(), is("color: var(--warning-color)"));
     }
 
     @Override
