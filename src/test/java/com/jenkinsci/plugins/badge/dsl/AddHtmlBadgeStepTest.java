@@ -23,9 +23,10 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 import com.jenkinsci.plugins.badge.action.HtmlBadgeAction;
 import hudson.markup.RawHtmlMarkupFormatter;
@@ -54,27 +55,27 @@ class AddHtmlBadgeStepTest {
     @Test
     void id() {
         AddHtmlBadgeStep step = new AddHtmlBadgeStep(null);
-        assertNull(step.getId());
+        assertThat(step.getId(), nullValue());
 
         String id = UUID.randomUUID().toString();
         step.setId(id);
-        assertEquals(id, step.getId());
+        assertThat(step.getId(), is(id));
     }
 
     @Test
     void html() {
         AddHtmlBadgeStep step = new AddHtmlBadgeStep(null);
-        assertNull(step.getHtml());
+        assertThat(step.getHtml(), nullValue());
 
         String html = UUID.randomUUID().toString();
         step = new AddHtmlBadgeStep(html);
-        assertEquals(html, step.getHtml());
+        assertThat(step.getHtml(), is(html));
     }
 
     @Test
     void deprecated() {
         AddHtmlBadgeStep step = new AddHtmlBadgeStep(null);
-        assertTrue(step.getDescriptor().isAdvanced());
+        assertThat(step.getDescriptor().isAdvanced(), is(true));
     }
 
     @Test
@@ -100,10 +101,10 @@ class AddHtmlBadgeStepTest {
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
         List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-        assertEquals(1, badgeActions.size());
+        assertThat(badgeActions, hasSize(1));
 
         HtmlBadgeAction action = (HtmlBadgeAction) badgeActions.get(0);
-        assertEquals(expected, action.getHtml());
-        assertEquals(html, action.getRawHtml());
+        assertThat(action.getHtml(), is(expected));
+        assertThat(action.getRawHtml(), is(html));
     }
 }

@@ -23,9 +23,10 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import hudson.model.BuildBadgeAction;
@@ -54,62 +55,62 @@ class ShortTextStepTest {
     @Test
     void text() {
         AddShortTextStep step = new AddShortTextStep(null);
-        assertNull(step.getText());
+        assertThat(step.getText(), nullValue());
 
         String text = UUID.randomUUID().toString();
         step = new AddShortTextStep(text);
-        assertEquals(text, step.getText());
+        assertThat(step.getText(), is(text));
     }
 
     @Test
     void color() {
         AddShortTextStep step = new AddShortTextStep(null);
-        assertNull(step.getColor());
+        assertThat(step.getColor(), nullValue());
 
         step.setColor("red");
-        assertEquals("red", step.getColor());
+        assertThat(step.getColor(), is("red"));
     }
 
     @Test
     void background() {
         AddShortTextStep step = new AddShortTextStep(null);
-        assertNull(step.getBackground());
+        assertThat(step.getBackground(), nullValue());
 
         step.setBackground("red");
-        assertEquals("red", step.getBackground());
+        assertThat(step.getBackground(), is("red"));
     }
 
     @Test
     void border() {
         AddShortTextStep step = new AddShortTextStep(null);
-        assertNull(step.getBorder());
+        assertThat(step.getBorder(), nullValue());
 
         step.setBorder(1);
-        assertEquals(1, step.getBorder());
+        assertThat(step.getBorder(), is(1));
     }
 
     @Test
     void borderColor() {
         AddShortTextStep step = new AddShortTextStep(null);
-        assertNull(step.getBorderColor());
+        assertThat(step.getBorderColor(), nullValue());
 
         step.setBorderColor("red");
-        assertEquals("red", step.getBorderColor());
+        assertThat(step.getBorderColor(), is("red"));
     }
 
     @Test
     void link() {
         AddShortTextStep step = new AddShortTextStep(null);
-        assertNull(step.getLink());
+        assertThat(step.getLink(), nullValue());
 
         step.setLink("https://jenkins.io");
-        assertEquals("https://jenkins.io", step.getLink());
+        assertThat(step.getLink(), is("https://jenkins.io"));
     }
 
     @Test
     void deprecated() {
         AddShortTextStep step = new AddShortTextStep(null);
-        assertTrue(step.getDescriptor().isAdvanced());
+        assertThat(step.getDescriptor().isAdvanced(), is(true));
     }
 
     @Test
@@ -129,12 +130,12 @@ class ShortTextStepTest {
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
         List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-        assertEquals(1, badgeActions.size());
+        assertThat(badgeActions, hasSize(1));
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertEquals(text, action.getText());
-        assertNull(action.getIcon());
-        assertEquals(link, action.getLink());
+        assertThat(action.getText(), is(text));
+        assertThat(action.getIcon(), nullValue());
+        assertThat(action.getLink(), is(link));
     }
 
     @Test
@@ -149,11 +150,11 @@ class ShortTextStepTest {
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
         List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-        assertEquals(1, badgeActions.size());
+        assertThat(badgeActions, hasSize(1));
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertEquals(text, action.getText());
-        assertEquals("border: 1px solid ;color: var(---red);", action.getStyle());
+        assertThat(action.getText(), is(text));
+        assertThat(action.getStyle(), is("border: 1px solid ;color: var(---red);"));
     }
 
     @Test
@@ -168,11 +169,11 @@ class ShortTextStepTest {
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
         List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-        assertEquals(1, badgeActions.size());
+        assertThat(badgeActions, hasSize(1));
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertEquals(text, action.getText());
-        assertEquals("border: 1px solid ;color: var(--warning-color);", action.getStyle());
+        assertThat(action.getText(), is(text));
+        assertThat(action.getStyle(), is("border: 1px solid ;color: var(--warning-color);"));
     }
 
     @Test
@@ -184,11 +185,11 @@ class ShortTextStepTest {
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
         List<BuildBadgeAction> badgeActions = b.getBadgeActions();
-        assertEquals(1, badgeActions.size());
+        assertThat(badgeActions, hasSize(1));
 
         BadgeAction action = (BadgeAction) badgeActions.get(0);
-        assertEquals(text, action.getText());
-        assertNull(action.getIcon());
-        assertNull(action.getLink());
+        assertThat(action.getText(), is(text));
+        assertThat(action.getIcon(), nullValue());
+        assertThat(action.getLink(), nullValue());
     }
 }

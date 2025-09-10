@@ -1,14 +1,16 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import static org.awaitility.Awaitility.await;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.blankString;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import jenkins.model.Jenkins;
-import org.apache.commons.lang3.StringUtils;
 import org.htmlunit.html.DomElement;
 import org.htmlunit.html.HtmlPage;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
@@ -53,15 +55,15 @@ class UITest {
                                 Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
-                assertEquals("a", badge.getTagName());
-                assertEquals("svg", icon.getTagName());
+                assertThat(badge.getTagName(), is("a"));
+                assertThat(icon.getTagName(), is("svg"));
 
-                assertEquals(step.getText(), icon.getAttribute("data-html-tooltip"));
-                assertEquals(step.getCssClass(), badge.getAttribute("class"));
-                assertEquals("icon-sm", icon.getAttribute("class"));
-                assertEquals(step.getStyle(), badge.getAttribute("style"));
-                assertEquals(step.getLink(), badge.getAttribute("href"));
-                assertEquals(step.getTarget(), badge.getAttribute("target"));
+                assertThat(icon.getAttribute("data-html-tooltip"), is(step.getText()));
+                assertThat(badge.getAttribute("class"), is(step.getCssClass()));
+                assertThat(icon.getAttribute("class"), is("icon-sm"));
+                assertThat(badge.getAttribute("style"), is(step.getStyle()));
+                assertThat(badge.getAttribute("href"), is(step.getLink()));
+                assertThat(badge.getAttribute("target"), is(step.getTarget()));
             }
         }
 
@@ -80,13 +82,13 @@ class UITest {
                                 Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
-                assertEquals("svg", icon.getTagName());
-                assertEquals("span", badge.getTagName());
+                assertThat(icon.getTagName(), is("svg"));
+                assertThat(badge.getTagName(), is("span"));
 
-                assertEquals(step.getText(), icon.getAttribute("data-html-tooltip"));
-                assertEquals(step.getCssClass(), badge.getAttribute("class"));
-                assertEquals("icon-sm", icon.getAttribute("class"));
-                assertEquals(step.getStyle(), badge.getAttribute("style"));
+                assertThat(icon.getAttribute("data-html-tooltip"), is(step.getText()));
+                assertThat(badge.getAttribute("class"), is(step.getCssClass()));
+                assertThat(icon.getAttribute("class"), is("icon-sm"));
+                assertThat(badge.getAttribute("style"), is(step.getStyle()));
             }
         }
 
@@ -104,13 +106,13 @@ class UITest {
                                         "#jenkins-builds .app-builds-container__item__inner__controls a"),
                                 Objects::nonNull);
 
-                assertEquals("a", badge.getTagName());
+                assertThat(badge.getTagName(), is("a"));
 
-                assertEquals(step.getText(), badge.getTextContent());
-                assertEquals(step.getCssClass(), badge.getAttribute("class"));
-                assertEquals(step.getStyle(), badge.getAttribute("style"));
-                assertEquals(step.getLink(), badge.getAttribute("href"));
-                assertEquals(step.getTarget(), badge.getAttribute("target"));
+                assertThat(badge.getTextContent(), is(step.getText()));
+                assertThat(badge.getAttribute("class"), is(step.getCssClass()));
+                assertThat(badge.getAttribute("style"), is(step.getStyle()));
+                assertThat(badge.getAttribute("href"), is(step.getLink()));
+                assertThat(badge.getAttribute("target"), is(step.getTarget()));
             }
         }
 
@@ -127,11 +129,11 @@ class UITest {
                                         "#jenkins-builds .app-builds-container__item__inner__controls span"),
                                 Objects::nonNull);
 
-                assertEquals("span", badge.getTagName());
+                assertThat(badge.getTagName(), is("span"));
 
-                assertEquals(step.getText(), badge.getTextContent());
-                assertEquals(step.getCssClass(), badge.getAttribute("class"));
-                assertEquals(step.getStyle(), badge.getAttribute("style"));
+                assertThat(badge.getTextContent(), is(step.getText()));
+                assertThat(badge.getAttribute("class"), is(step.getCssClass()));
+                assertThat(badge.getAttribute("style"), is(step.getStyle()));
             }
         }
 
@@ -149,12 +151,12 @@ class UITest {
                                 Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
-                assertEquals("svg", icon.getTagName());
-                assertEquals("span", badge.getTagName());
+                assertThat(icon.getTagName(), is("svg"));
+                assertThat(badge.getTagName(), is("span"));
 
-                assertEquals(step.getText(), icon.getAttribute("data-html-tooltip"));
-                assertEquals("icon-sm", icon.getAttribute("class"));
-                assertEquals(step.getStyle(), badge.getAttribute("style"));
+                assertThat(icon.getAttribute("data-html-tooltip"), is(step.getText()));
+                assertThat(icon.getAttribute("class"), is("icon-sm"));
+                assertThat(badge.getAttribute("style"), is(step.getStyle()));
             }
         }
 
@@ -172,12 +174,12 @@ class UITest {
                                 Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
-                assertEquals("svg", icon.getTagName());
-                assertEquals("span", badge.getTagName());
+                assertThat(icon.getTagName(), is("svg"));
+                assertThat(badge.getTagName(), is("span"));
 
-                assertEquals(step.getText(), icon.getAttribute("data-html-tooltip"));
-                assertEquals("icon-sm", icon.getAttribute("class"));
-                assertEquals(step.getStyle(), badge.getAttribute("style"));
+                assertThat(icon.getAttribute("data-html-tooltip"), is(step.getText()));
+                assertThat(icon.getAttribute("class"), is("icon-sm"));
+                assertThat(badge.getAttribute("style"), is(step.getStyle()));
             }
         }
 
@@ -195,12 +197,12 @@ class UITest {
                                 Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
-                assertEquals("svg", icon.getTagName());
-                assertEquals("span", badge.getTagName());
+                assertThat(icon.getTagName(), is("svg"));
+                assertThat(badge.getTagName(), is("span"));
 
-                assertEquals(step.getText(), icon.getAttribute("data-html-tooltip"));
-                assertEquals("icon-sm", icon.getAttribute("class"));
-                assertEquals(step.getStyle(), badge.getAttribute("style"));
+                assertThat(icon.getAttribute("data-html-tooltip"), is(step.getText()));
+                assertThat(icon.getAttribute("class"), is("icon-sm"));
+                assertThat(badge.getAttribute("style"), is(step.getStyle()));
             }
         }
 
@@ -224,7 +226,7 @@ class UITest {
                                 () -> overview.querySelector(
                                         "#jenkins-builds .app-builds-container__item__inner__controls"),
                                 Objects::nonNull);
-                assertEquals(0, badge.getElementsByTagName("span").size());
+                assertThat(badge.getElementsByTagName("span"), empty());
             }
         }
     }
@@ -247,22 +249,22 @@ class UITest {
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
 
-                assertEquals(2, overview.getElementsByTagName("tr").size());
+                assertThat(overview.getElementsByTagName("tr"), hasSize(2));
 
                 DomElement summary = overview.getElementsByTagName("tr").get(0);
                 DomElement icon = summary.getFirstElementChild().getFirstElementChild();
                 DomElement link = summary.getLastElementChild().getFirstElementChild();
                 DomElement text = link.getFirstElementChild();
 
-                assertEquals("svg", icon.getTagName());
-                assertEquals("a", link.getTagName());
-                assertEquals("span", text.getTagName());
+                assertThat(icon.getTagName(), is("svg"));
+                assertThat(link.getTagName(), is("a"));
+                assertThat(text.getTagName(), is("span"));
 
-                assertEquals(step.getText(), text.getTextContent());
-                assertEquals(step.getCssClass(), link.getAttribute("class"));
-                assertEquals(step.getStyle(), link.getAttribute("style"));
-                assertEquals(step.getLink(), link.getAttribute("href"));
-                assertEquals(step.getTarget(), link.getAttribute("target"));
+                assertThat(text.getTextContent(), is(step.getText()));
+                assertThat(link.getAttribute("class"), is(step.getCssClass()));
+                assertThat(link.getAttribute("style"), is(step.getStyle()));
+                assertThat(link.getAttribute("href"), is(step.getLink()));
+                assertThat(link.getAttribute("target"), is(step.getTarget()));
             }
         }
 
@@ -275,18 +277,18 @@ class UITest {
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
 
-                assertEquals(2, overview.getElementsByTagName("tr").size());
+                assertThat(overview.getElementsByTagName("tr"), hasSize(2));
 
                 DomElement summary = overview.getElementsByTagName("tr").get(0);
                 DomElement icon = summary.getFirstElementChild().getFirstElementChild();
                 DomElement text = summary.getLastElementChild().getFirstElementChild();
 
-                assertEquals("svg", icon.getTagName());
-                assertEquals("span", text.getTagName());
+                assertThat(icon.getTagName(), is("svg"));
+                assertThat(text.getTagName(), is("span"));
 
-                assertEquals(step.getText(), text.getTextContent());
-                assertEquals(step.getCssClass(), text.getAttribute("class"));
-                assertEquals(step.getStyle(), text.getAttribute("style"));
+                assertThat(text.getTextContent(), is(step.getText()));
+                assertThat(text.getAttribute("class"), is(step.getCssClass()));
+                assertThat(text.getAttribute("style"), is(step.getStyle()));
             }
         }
 
@@ -299,18 +301,18 @@ class UITest {
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
 
-                assertEquals(2, overview.getElementsByTagName("tr").size());
+                assertThat(overview.getElementsByTagName("tr"), hasSize(2));
 
                 DomElement summary = overview.getElementsByTagName("tr").get(0);
                 DomElement icon = summary.getFirstElementChild().getFirstElementChild();
                 DomElement text = summary.getLastElementChild().getFirstElementChild();
 
-                assertEquals("svg", icon.getTagName());
-                assertEquals("span", text.getTagName());
+                assertThat(icon.getTagName(), is("svg"));
+                assertThat(text.getTagName(), is("span"));
 
-                assertTrue(StringUtils.isBlank(text.getTextContent()));
-                assertEquals(step.getCssClass(), text.getAttribute("class"));
-                assertEquals(step.getStyle(), text.getAttribute("style"));
+                assertThat(text.getTextContent(), blankString());
+                assertThat(text.getAttribute("class"), is(step.getCssClass()));
+                assertThat(text.getAttribute("style"), is(step.getStyle()));
             }
         }
 
@@ -323,23 +325,24 @@ class UITest {
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
 
-                assertEquals(2, overview.getElementsByTagName("tr").size());
+                assertThat(overview.getElementsByTagName("tr"), hasSize(2));
 
                 DomElement summary = overview.getElementsByTagName("tr").get(0);
                 DomElement icon = summary.getFirstElementChild().getFirstElementChild();
                 DomElement link = summary.getLastElementChild().getFirstElementChild();
                 DomElement text = link.getFirstElementChild();
 
-                assertEquals("img", icon.getTagName());
-                assertEquals("a", link.getTagName());
-                assertEquals("span", text.getTagName());
+                assertThat(icon.getTagName(), is("img"));
+                assertThat(link.getTagName(), is("a"));
+                assertThat(text.getTagName(), is("span"));
 
-                assertEquals("/jenkins" + Jenkins.RESOURCE_PATH + "/images/16x16/empty.png", icon.getAttribute("src"));
-                assertEquals(step.getText(), text.getTextContent());
-                assertEquals(step.getCssClass(), link.getAttribute("class"));
-                assertEquals(step.getStyle(), link.getAttribute("style"));
-                assertEquals(step.getLink(), link.getAttribute("href"));
-                assertEquals(step.getTarget(), link.getAttribute("target"));
+                assertThat(
+                        icon.getAttribute("src"), is("/jenkins" + Jenkins.RESOURCE_PATH + "/images/16x16/empty.png"));
+                assertThat(text.getTextContent(), is(step.getText()));
+                assertThat(link.getAttribute("class"), is(step.getCssClass()));
+                assertThat(link.getAttribute("style"), is(step.getStyle()));
+                assertThat(link.getAttribute("href"), is(step.getLink()));
+                assertThat(link.getAttribute("target"), is(step.getTarget()));
             }
         }
 
@@ -351,19 +354,20 @@ class UITest {
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
 
-                assertEquals(2, overview.getElementsByTagName("tr").size());
+                assertThat(overview.getElementsByTagName("tr"), hasSize(2));
 
                 DomElement summary = overview.getElementsByTagName("tr").get(0);
                 DomElement icon = summary.getFirstElementChild().getFirstElementChild();
                 DomElement text = summary.getLastElementChild().getFirstElementChild();
 
-                assertEquals("img", icon.getTagName());
-                assertEquals("span", text.getTagName());
+                assertThat(icon.getTagName(), is("img"));
+                assertThat(text.getTagName(), is("span"));
 
-                assertEquals("/jenkins" + Jenkins.RESOURCE_PATH + "/images/16x16/empty.png", icon.getAttribute("src"));
-                assertEquals(step.getText(), text.getTextContent());
-                assertEquals(step.getCssClass(), text.getAttribute("class"));
-                assertEquals(step.getStyle(), text.getAttribute("style"));
+                assertThat(
+                        icon.getAttribute("src"), is("/jenkins" + Jenkins.RESOURCE_PATH + "/images/16x16/empty.png"));
+                assertThat(text.getTextContent(), is(step.getText()));
+                assertThat(text.getAttribute("class"), is(step.getCssClass()));
+                assertThat(text.getAttribute("style"), is(step.getStyle()));
             }
         }
 
@@ -383,7 +387,7 @@ class UITest {
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job.getLastBuild());
 
-                assertEquals(1, overview.getElementsByTagName("tr").size());
+                assertThat(overview.getElementsByTagName("tr"), hasSize(1));
             }
         }
     }

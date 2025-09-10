@@ -23,7 +23,8 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -35,7 +36,7 @@ class RemoveSummariesStepTest extends RemoveBadgesStepTest {
     @Test
     void defaultConstructor() {
         AbstractRemoveBadgesStep step = new RemoveSummariesStep();
-        assertNull(step.getId());
+        assertThat(step.getId(), nullValue());
     }
 
     @Override

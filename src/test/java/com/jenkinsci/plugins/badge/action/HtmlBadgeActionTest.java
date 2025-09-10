@@ -23,8 +23,10 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.markup.MarkupFormatter;
@@ -50,11 +52,11 @@ class HtmlBadgeActionTest {
     @Test
     void html() {
         HtmlBadgeAction action = HtmlBadgeAction.createHtmlBadge(null);
-        assertEquals("", action.getHtml());
+        assertThat(action.getHtml(), emptyString());
 
         String html = UUID.randomUUID().toString();
         action = HtmlBadgeAction.createHtmlBadge(html);
-        assertEquals(html, action.getHtml());
+        assertThat(action.getHtml(), is(html));
 
         MarkupFormatter formatter = new MarkupFormatter() {
             @Override
@@ -63,26 +65,26 @@ class HtmlBadgeActionTest {
             }
         };
         r.jenkins.setMarkupFormatter(formatter);
-        assertEquals(
-                "<b><font color=\"var(--error-color)\">Error preparing HTML content for UI</font></b>",
-                action.getHtml());
+        assertThat(
+                action.getHtml(),
+                is("<b><font color=\"var(--error-color)\">Error preparing HTML content for UI</font></b>"));
     }
 
     @Test
     void urlName() {
         HtmlBadgeAction action = HtmlBadgeAction.createHtmlBadge(null);
-        assertEquals("", action.getUrlName());
+        assertThat(action.getUrlName(), emptyString());
     }
 
     @Test
     void displayName() {
         HtmlBadgeAction action = HtmlBadgeAction.createHtmlBadge(null);
-        assertEquals("", action.getDisplayName());
+        assertThat(action.getDisplayName(), emptyString());
     }
 
     @Test
     void iconFileName() {
         HtmlBadgeAction action = HtmlBadgeAction.createHtmlBadge(null);
-        assertNull(action.getIconFileName());
+        assertThat(action.getIconFileName(), nullValue());
     }
 }

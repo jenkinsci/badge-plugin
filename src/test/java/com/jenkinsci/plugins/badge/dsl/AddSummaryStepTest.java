@@ -23,7 +23,8 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -35,13 +36,13 @@ class AddSummaryStepTest extends AddBadgeStepTest {
     @Test
     void defaultConstructor() {
         AbstractAddBadgeStep step = new AddSummaryStep();
-        assertNull(step.getId());
-        assertNull(step.getIcon());
-        assertNull(step.getText());
-        assertNull(step.getCssClass());
-        assertNull(step.getStyle());
-        assertNull(step.getLink());
-        assertNull(step.getTarget());
+        assertThat(step.getId(), nullValue());
+        assertThat(step.getIcon(), nullValue());
+        assertThat(step.getText(), nullValue());
+        assertThat(step.getCssClass(), nullValue());
+        assertThat(step.getStyle(), nullValue());
+        assertThat(step.getLink(), nullValue());
+        assertThat(step.getTarget(), nullValue());
     }
 
     @Override

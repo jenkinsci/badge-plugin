@@ -24,9 +24,11 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import static java.util.UUID.randomUUID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
 import hudson.markup.RawHtmlMarkupFormatter;
@@ -54,44 +56,44 @@ class CreateSummaryStepTest {
     @Test
     void id() {
         CreateSummaryStep step = new CreateSummaryStep(null);
-        assertNull(step.getId());
+        assertThat(step.getId(), nullValue());
 
         String id = UUID.randomUUID().toString();
         step.setId(id);
-        assertEquals(id, step.getId());
+        assertThat(step.getId(), is(id));
     }
 
     @Test
     void icon() {
         CreateSummaryStep step = new CreateSummaryStep(null);
-        assertNull(step.getIcon());
+        assertThat(step.getIcon(), nullValue());
 
         String icon = UUID.randomUUID().toString();
         step = new CreateSummaryStep(icon);
-        assertEquals(icon, step.getIcon());
+        assertThat(step.getIcon(), is(icon));
     }
 
     @Test
     void text() {
         CreateSummaryStep step = new CreateSummaryStep(null);
-        assertNull(step.getText());
+        assertThat(step.getText(), nullValue());
 
         String text = UUID.randomUUID().toString();
         step.setText(text);
-        assertEquals(text, step.getText());
+        assertThat(step.getText(), is(text));
     }
 
     @Test
     void deprecated() {
         CreateSummaryStep step = new CreateSummaryStep(null);
-        assertTrue(step.getDescriptor().isAdvanced());
+        assertThat(step.getDescriptor().isAdvanced(), is(true));
     }
 
     @Test
     void createSummary_plain() throws Exception {
         String text = randomUUID().toString();
         BadgeSummaryAction action = createSummary("summary.appendText('" + text + "')");
-        assertEquals(text, action.getText());
+        assertThat(action.getText(), is(text));
     }
 
     @Test
@@ -99,7 +101,7 @@ class CreateSummaryStepTest {
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
         BadgeSummaryAction action = createSummary("summary.appendText('<ul><li>" + text + "</li></ul>', false)");
-        assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
+        assertThat(action.getText(), is("<ul><li>" + text + "</li></ul>"));
     }
 
     @Test
@@ -108,7 +110,7 @@ class CreateSummaryStepTest {
         String text = randomUUID().toString();
         String html = "<ul><li>" + text + "</li></ul><script>alert(\"exploit!\");</script>";
         BadgeSummaryAction action = createSummary("summary.appendText('" + html + "', false);");
-        assertEquals("<ul><li>" + text + "</li></ul>", action.getText());
+        assertThat(action.getText(), is("<ul><li>" + text + "</li></ul>"));
     }
 
     @Test
@@ -116,7 +118,7 @@ class CreateSummaryStepTest {
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
         BadgeSummaryAction action = createSummary("summary.appendText('<ul><li>" + text + "</li></ul>', true)");
-        assertEquals("&lt;ul&gt;&lt;li&gt;" + text + "&lt;/li&gt;&lt;/ul&gt;", action.getText());
+        assertThat(action.getText(), is("&lt;ul&gt;&lt;li&gt;" + text + "&lt;/li&gt;&lt;/ul&gt;"));
     }
 
     @Test
@@ -124,7 +126,7 @@ class CreateSummaryStepTest {
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         String text = randomUUID().toString();
         BadgeSummaryAction action = createSummary("summary.appendText('" + text + "', false, true, true, 'grey')");
-        assertEquals("<b><i>" + text + "</i></b>", action.getText());
+        assertThat(action.getText(), is("<b><i>" + text + "</i></b>"));
     }
 
     @Test
@@ -137,11 +139,11 @@ class CreateSummaryStepTest {
                 "def summary = createSummary(icon:\"" + icon + "\", text:\"" + text + "\")", true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
         List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
-        assertEquals(1, summaryActions.size());
+        assertThat(summaryActions, hasSize(1));
 
         BadgeSummaryAction action = summaryActions.get(0);
-        assertTrue(action.getIcon().endsWith(icon));
-        assertEquals(text, action.getText());
+        assertThat(action.getIcon(), endsWith(icon));
+        assertThat(action.getText(), is(text));
     }
 
     private static BadgeSummaryAction createSummary(String script) throws Exception {
@@ -151,10 +153,10 @@ class CreateSummaryStepTest {
         p.setDefinition(new CpsFlowDefinition("def summary = createSummary(\"" + icon + "\")\n" + script, true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
         List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
-        assertEquals(1, summaryActions.size());
+        assertThat(summaryActions, hasSize(1));
 
         BadgeSummaryAction action = summaryActions.get(0);
-        assertTrue(action.getIcon().endsWith(icon));
+        assertThat(action.getIcon(), endsWith(icon));
         return action;
     }
 }

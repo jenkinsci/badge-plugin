@@ -23,10 +23,13 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -56,26 +59,26 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
     @Test
     void defaultConstructor() {
         AddBadgeStep step = new AddBadgeStep();
-        assertNull(step.getId());
-        assertNull(step.getIcon());
-        assertNull(step.getText());
-        assertNull(step.getCssClass());
-        assertNull(step.getStyle());
-        assertNull(step.getLink());
-        assertNull(step.getTarget());
+        assertThat(step.getId(), nullValue());
+        assertThat(step.getIcon(), nullValue());
+        assertThat(step.getText(), nullValue());
+        assertThat(step.getCssClass(), nullValue());
+        assertThat(step.getStyle(), nullValue());
+        assertThat(step.getLink(), nullValue());
+        assertThat(step.getTarget(), nullValue());
     }
 
     @Test
     @Deprecated(since = "2.0", forRemoval = true)
     void color() {
         AddBadgeStep step = (AddBadgeStep) createStep("id", "icon", "text", "cssClass", null, "link", "target");
-        assertNull(step.getColor());
+        assertThat(step.getColor(), nullValue());
 
         step.setColor("");
-        assertEquals("", step.getColor());
+        assertThat(step.getColor(), emptyString());
 
         step.setColor("style");
-        assertEquals("style", step.getColor());
+        assertThat(step.getColor(), is("style"));
     }
 
     @Test
@@ -170,26 +173,26 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
 
             Predicate<Object> nullable = value -> !(value instanceof JSONNull);
 
-            assertEquals(action.getClass().getName(), json.get("_class"));
-            assertEquals(action.getId(), json.get("id"));
-            assertEquals(
+            assertThat(action.getClass().getName(), is(json.get("_class")));
+            assertThat(action.getId(), is(json.get("id")));
+            assertThat(
                     action.getIcon(),
-                    Optional.of(json.get("icon")).filter(nullable).orElse(null));
-            assertEquals(
+                    is(Optional.of(json.get("icon")).filter(nullable).orElse(null)));
+            assertThat(
                     action.getText(),
-                    Optional.of(json.get("text")).filter(nullable).orElse(null));
-            assertEquals(
+                    is(Optional.of(json.get("text")).filter(nullable).orElse(null)));
+            assertThat(
                     action.getCssClass(),
-                    Optional.of(json.get("cssClass")).filter(nullable).orElse(null));
-            assertEquals(
+                    is(Optional.of(json.get("cssClass")).filter(nullable).orElse(null)));
+            assertThat(
                     action.getStyle(),
-                    Optional.of(json.get("style")).filter(nullable).orElse(null));
-            assertEquals(
+                    is(Optional.of(json.get("style")).filter(nullable).orElse(null)));
+            assertThat(
                     action.getLink(),
-                    Optional.of(json.get("link")).filter(nullable).orElse(null));
-            assertEquals(
+                    is(Optional.of(json.get("link")).filter(nullable).orElse(null)));
+            assertThat(
                     action.getTarget(),
-                    Optional.of(json.get("target")).filter(nullable).orElse(null));
+                    is(Optional.of(json.get("target")).filter(nullable).orElse(null)));
 
             // XML
             response = webClient
@@ -203,38 +206,38 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
             Node mockNode = mock(Node.class);
             when(mockNode.getTextContent()).thenReturn(null);
 
-            assertEquals(action.getClass().getName(), xml.getAttribute("_class"));
-            assertEquals(action.getId(), xml.getElementsByTagName("id").item(0).getTextContent());
-            assertEquals(
+            assertThat(action.getClass().getName(), is(xml.getAttribute("_class")));
+            assertThat(action.getId(), is(xml.getElementsByTagName("id").item(0).getTextContent()));
+            assertThat(
                     action.getIcon(),
-                    Optional.ofNullable(xml.getElementsByTagName("icon").item(0))
+                    is(Optional.ofNullable(xml.getElementsByTagName("icon").item(0))
                             .orElse(mockNode)
-                            .getTextContent());
-            assertEquals(
+                            .getTextContent()));
+            assertThat(
                     action.getText(),
-                    Optional.ofNullable(xml.getElementsByTagName("text").item(0))
+                    is(Optional.ofNullable(xml.getElementsByTagName("text").item(0))
                             .orElse(mockNode)
-                            .getTextContent());
-            assertEquals(
+                            .getTextContent()));
+            assertThat(
                     action.getCssClass(),
-                    Optional.ofNullable(xml.getElementsByTagName("cssClass").item(0))
+                    is(Optional.ofNullable(xml.getElementsByTagName("cssClass").item(0))
                             .orElse(mockNode)
-                            .getTextContent());
-            assertEquals(
+                            .getTextContent()));
+            assertThat(
                     action.getStyle(),
-                    Optional.ofNullable(xml.getElementsByTagName("style").item(0))
+                    is(Optional.ofNullable(xml.getElementsByTagName("style").item(0))
                             .orElse(mockNode)
-                            .getTextContent());
-            assertEquals(
+                            .getTextContent()));
+            assertThat(
                     action.getLink(),
-                    Optional.ofNullable(xml.getElementsByTagName("link").item(0))
+                    is(Optional.ofNullable(xml.getElementsByTagName("link").item(0))
                             .orElse(mockNode)
-                            .getTextContent());
-            assertEquals(
+                            .getTextContent()));
+            assertThat(
                     action.getTarget(),
-                    Optional.ofNullable(xml.getElementsByTagName("target").item(0))
+                    is(Optional.ofNullable(xml.getElementsByTagName("target").item(0))
                             .orElse(mockNode)
-                            .getTextContent());
+                            .getTextContent()));
         }
     }
 
@@ -251,17 +254,17 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         if (declarativePipeline) {
             script =
                     """
-              pipeline {
-                  agent any
-                  stages {
-                      stage('Testing') {
-                          steps {
-                              %s
-                          }
-                      }
-                  }
-              }
-              """
+                            pipeline {
+                                agent any
+                                stages {
+                                    stage('Testing') {
+                                        steps {
+                                            %s
+                                        }
+                                    }
+                                }
+                            }
+                            """
                             .formatted(script);
         }
 
@@ -279,12 +282,13 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
 
         String actualText = step.getText();
         step.setText(UUID.randomUUID().toString());
-        assertNotEquals(actualText, step.getText());
+        assertThat(step.getText(), is(not(actualText)));
 
         String script = """
-        def badge = %s
-        badge.setText('%s')
-        """.formatted(step, actualText);
+                def badge = %s
+                badge.setText('%s')
+                """
+                .formatted(step, actualText);
 
         if (inNode) {
             script = "node() { " + script + " }";
@@ -293,19 +297,19 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         if (declarativePipeline) {
             script =
                     """
-              pipeline {
-                  agent any
-                  stages {
-                      stage('Testing') {
-                          steps {
-                              script {
-                                  %s
-                              }
-                          }
-                      }
-                  }
-              }
-              """
+                            pipeline {
+                                agent any
+                                stages {
+                                    stage('Testing') {
+                                        steps {
+                                            script {
+                                                %s
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            """
                             .formatted(script);
         }
 
@@ -313,23 +317,23 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         WorkflowRun run = r.assertBuildStatusSuccess(project.scheduleBuild2(0));
 
         step.setText(actualText);
-        assertEquals(actualText, step.getText());
+        assertThat(step.getText(), is(actualText));
 
         assertFields(step, run);
     }
 
     protected void assertFields(AbstractAddBadgeStep step, WorkflowRun run) {
         List<AbstractBadgeAction> badgeActions = run.getActions(AbstractBadgeAction.class);
-        assertEquals(1, badgeActions.size());
+        assertThat(badgeActions, hasSize(1));
 
         AbstractBadgeAction action = badgeActions.get(0);
-        assertEquals(step.getId(), action.getId());
-        assertEquals(step.getIcon(), action.getIcon());
-        assertEquals(step.getText(), action.getText());
-        assertEquals(step.getCssClass(), action.getCssClass());
-        assertEquals(step.getStyle(), action.getStyle());
-        assertEquals(step.getLink(), action.getLink());
-        assertEquals(step.getTarget(), action.getTarget());
+        assertThat(action.getId(), is(step.getId()));
+        assertThat(action.getIcon(), is(step.getIcon()));
+        assertThat(action.getText(), is(step.getText()));
+        assertThat(action.getCssClass(), is(step.getCssClass()));
+        assertThat(action.getStyle(), is(step.getStyle()));
+        assertThat(action.getLink(), is(step.getLink()));
+        assertThat(action.getTarget(), is(step.getTarget()));
     }
 
     @Override
