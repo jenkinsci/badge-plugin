@@ -2,6 +2,7 @@ package com.jenkinsci.plugins.badge.dsl;
 
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Objects;
@@ -62,6 +63,9 @@ class UITest {
                 assertEquals(step.getStyle(), badge.getAttribute("style"));
                 assertEquals(step.getLink(), badge.getAttribute("href"));
                 assertEquals(step.getTarget(), badge.getAttribute("target"));
+
+                // copy to clipboard should not be enabled
+                assertFalse(badge.hasAttribute("data-text"));
             }
         }
 
@@ -111,6 +115,9 @@ class UITest {
                 assertEquals(step.getStyle(), badge.getAttribute("style"));
                 assertEquals(step.getLink(), badge.getAttribute("href"));
                 assertEquals(step.getTarget(), badge.getAttribute("target"));
+
+                // copy to clipboard should not be enabled
+                assertFalse(badge.hasAttribute("data-text"));
             }
         }
 
@@ -132,6 +139,9 @@ class UITest {
                 assertEquals(step.getText(), badge.getTextContent());
                 assertEquals(step.getCssClass(), badge.getAttribute("class"));
                 assertEquals(step.getStyle(), badge.getAttribute("style"));
+
+                // copy to clipboard should be enabled
+                assertEquals(step.getText(), badge.getAttribute("data-text"));
             }
         }
 
@@ -155,6 +165,9 @@ class UITest {
                 assertEquals(step.getText(), icon.getAttribute("data-html-tooltip"));
                 assertEquals("icon-sm", icon.getAttribute("class"));
                 assertEquals(step.getStyle(), badge.getAttribute("style"));
+
+                // copy to clipboard should be enabled
+                assertEquals(step.getText(), badge.getAttribute("data-text"));
             }
         }
 
@@ -178,6 +191,9 @@ class UITest {
                 assertEquals(step.getText(), icon.getAttribute("data-html-tooltip"));
                 assertEquals("icon-sm", icon.getAttribute("class"));
                 assertEquals(step.getStyle(), badge.getAttribute("style"));
+
+                // copy to clipboard should be enabled
+                assertEquals(step.getText(), badge.getAttribute("data-text"));
             }
         }
 
@@ -201,6 +217,9 @@ class UITest {
                 assertEquals(step.getText(), icon.getAttribute("data-html-tooltip"));
                 assertEquals("icon-sm", icon.getAttribute("class"));
                 assertEquals(step.getStyle(), badge.getAttribute("style"));
+
+                // copy to clipboard should be enabled
+                assertEquals(step.getText(), badge.getAttribute("data-text"));
             }
         }
 
