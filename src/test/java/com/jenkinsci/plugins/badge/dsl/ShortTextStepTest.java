@@ -124,8 +124,8 @@ class ShortTextStepTest {
 
         WorkflowJob p = r.createProject(WorkflowJob.class);
         p.setDefinition(new CpsFlowDefinition(
-                "addShortText(text:\"" + text + "\", color:\"" + color + "\", background:\"" + background
-                        + "\", border:" + border + ", borderColor:\"" + borderColor + "\", link:\"" + link + "\")",
+                "addShortText(text: \"" + text + "\", color: \"" + color + "\", background: \"" + background
+                        + "\", border:" + border + ", borderColor: \"" + borderColor + "\", link: \"" + link + "\")",
                 true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
@@ -146,7 +146,7 @@ class ShortTextStepTest {
 
         WorkflowJob p = r.createProject(WorkflowJob.class);
         p.setDefinition(new CpsFlowDefinition(
-                "addShortText(text:\"" + text + "\", color:\"" + color + "\", border:\"" + border + "\")", true));
+                "addShortText(text: \"" + text + "\", color: \"" + color + "\", border: \"" + border + "\")", true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
         List<BuildBadgeAction> badgeActions = b.getBadgeActions();
@@ -165,7 +165,7 @@ class ShortTextStepTest {
 
         WorkflowJob p = r.createProject(WorkflowJob.class);
         p.setDefinition(new CpsFlowDefinition(
-                "addShortText(text:\"" + text + "\", color:\"" + color + "\", border:\"" + border + "\")", true));
+                "addShortText(text: \"" + text + "\", color: \"" + color + "\", border: \"" + border + "\")", true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
         List<BuildBadgeAction> badgeActions = b.getBadgeActions();
@@ -181,7 +181,7 @@ class ShortTextStepTest {
         String text = UUID.randomUUID().toString();
 
         WorkflowJob p = r.createProject(WorkflowJob.class);
-        p.setDefinition(new CpsFlowDefinition("addShortText(text:\"" + text + "\")", true));
+        p.setDefinition(new CpsFlowDefinition("addShortText(text: \"" + text + "\")", true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
 
         List<BuildBadgeAction> badgeActions = b.getBadgeActions();

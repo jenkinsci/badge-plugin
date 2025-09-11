@@ -30,7 +30,6 @@ import hudson.model.Run;
 import hudson.model.TaskListener;
 import java.io.PrintStream;
 import java.io.Serial;
-import org.apache.commons.lang3.StringUtils;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
@@ -123,7 +122,7 @@ public class CreateSummaryStep extends Step {
         @Override
         protected BadgeSummaryAction run() throws Exception {
             BadgeSummaryAction action = new BadgeSummaryAction(id, icon, null, null, null, null, null);
-            if (StringUtils.isNotBlank(text)) {
+            if (text != null && !text.isBlank()) {
                 action.appendText(text);
             }
             getContext().get(Run.class).addAction(action);

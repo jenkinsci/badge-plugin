@@ -28,7 +28,6 @@ import hudson.Extension;
 import io.jenkins.plugins.ionicons.Ionicons;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
@@ -62,7 +61,7 @@ public class AddInfoBadgeStep extends AddBadgeStep {
             fields.add("target: '" + getTarget() + "'");
         }
 
-        return getDescriptor().getFunctionName() + "(" + StringUtils.join(fields, ", ") + ")";
+        return getDescriptor().getFunctionName() + "(" + String.join(", ", fields) + ")";
     }
 
     @Extension

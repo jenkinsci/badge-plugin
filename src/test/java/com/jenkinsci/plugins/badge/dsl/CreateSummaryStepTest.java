@@ -136,7 +136,7 @@ class CreateSummaryStepTest {
 
         WorkflowJob p = r.createProject(WorkflowJob.class);
         p.setDefinition(new CpsFlowDefinition(
-                "def summary = createSummary(icon:\"" + icon + "\", text:\"" + text + "\")", true));
+                "def summary = createSummary(icon: \"" + icon + "\", text: \"" + text + "\")", true));
         WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
         List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
         assertThat(summaryActions, hasSize(1));
@@ -144,6 +144,23 @@ class CreateSummaryStepTest {
         BadgeSummaryAction action = summaryActions.get(0);
         assertThat(action.getIcon(), endsWith(icon));
         assertThat(action.getText(), is(text));
+    }
+
+    @Test
+    void createSummary_with_empty_text() throws Exception {
+        String icon = randomUUID().toString();
+        String text = "";
+
+        WorkflowJob p = r.createProject(WorkflowJob.class);
+        p.setDefinition(new CpsFlowDefinition(
+                "def summary = createSummary(icon: \"" + icon + "\", text: \"" + text + "\")", true));
+        WorkflowRun b = r.assertBuildStatusSuccess(p.scheduleBuild2(0));
+        List<BadgeSummaryAction> summaryActions = b.getActions(BadgeSummaryAction.class);
+        assertThat(summaryActions, hasSize(1));
+
+        BadgeSummaryAction action = summaryActions.get(0);
+        assertThat(action.getIcon(), endsWith(icon));
+        assertThat(action.getText(), nullValue());
     }
 
     private static BadgeSummaryAction createSummary(String script) throws Exception {
