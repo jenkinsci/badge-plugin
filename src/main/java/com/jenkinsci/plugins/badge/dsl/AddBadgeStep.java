@@ -23,15 +23,12 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import java.util.Objects;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * Add a badge.
@@ -46,47 +43,6 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
     protected AddBadgeStep(
             String id, String icon, String text, String cssClass, String style, String link, String target) {
         super(id, icon, text, cssClass, style, link, target);
-    }
-
-    /**
-     * @deprecated replaced by {@link #setStyle(String)}.
-     */
-    @DataBoundSetter
-    @Deprecated(since = "2.0", forRemoval = true)
-    public void setColor(String color) {
-        // translate old color to new field
-        if (color != null) {
-            String newStyle = "";
-            if (color.startsWith("jenkins-!-color")) {
-                newStyle += "color: var(--" + color.replaceFirst("jenkins-!-color-", "") + ");";
-            } else if (color.startsWith("jenkins-!-")) {
-                newStyle += "color: var(--" + color.replaceFirst("jenkins-!-", "") + ");";
-            } else {
-                newStyle += "color: " + AbstractBadgeAction.getJenkinsColorStyle(color) + ";";
-            }
-            setStyle(newStyle + Objects.requireNonNullElse(getStyle(), ""));
-        }
-    }
-
-    /**
-     * @deprecated replaced by {@link #getStyle()}.
-     */
-    @Deprecated(since = "2.0", forRemoval = true)
-    public String getColor() {
-        // translate new field to color
-        String style = Objects.requireNonNullElse(getStyle(), "");
-        String startToken = "color: ";
-        String endToken = ";";
-
-        int start = style.indexOf(startToken);
-        if (start != -1) {
-            start += startToken.length();
-            int end = style.indexOf(endToken, start);
-            if (end != -1) {
-                return style.substring(start, end);
-            }
-        }
-        return null;
     }
 
     @Override
