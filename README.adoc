@@ -24,6 +24,10 @@ Since version 1.10 release notes are recorded in https://github.com/jenkinsci/ba
 
 Changelogs for older releases can be found in the link:CHANGELOG.adoc[archive].
 
+=== Version 3.x
+
+Version 3.0 removes legacy features introduced in <<Version 2.x>> and therefore breaks compatibility in case the legacy features where not migrated before upgrading the plugin. More details on this can be found in the https://github.com/jenkinsci/badge-plugin/releases/tag/badge-3.0[Release Notes for 3.0].
+
 === Version 2.x
 
 Version 2.0 is a major rework of the original plugin and introduces lots of new features.
