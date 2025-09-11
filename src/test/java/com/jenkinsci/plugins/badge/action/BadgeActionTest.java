@@ -34,7 +34,7 @@ class BadgeActionTest extends AbstractBadgeActionTest {
 
     @Override
     @Test
-    @Deprecated
+    @Deprecated(since = "2.8", forRemoval = true)
     void deprecatedConstructor() {
         BadgeAction action = new BadgeAction("id", "icon", "text", "cssClass", "style", "link");
         assertThat(action.getTarget(), nullValue());
