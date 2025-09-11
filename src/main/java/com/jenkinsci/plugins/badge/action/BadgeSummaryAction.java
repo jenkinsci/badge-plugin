@@ -24,7 +24,7 @@
 package com.jenkinsci.plugins.badge.action;
 
 import java.io.Serial;
-import org.apache.commons.lang3.StringUtils;
+import java.util.Objects;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 
@@ -66,7 +66,7 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
         if (escapeHtml) {
             text = StringEscapeUtils.escapeHtml4(text);
         }
-        setText(StringUtils.defaultString(getText()) + text);
+        setText(Objects.requireNonNullElse(getText(), "") + text);
     }
 
     @Whitelisted
@@ -89,7 +89,7 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
         if (escapeHtml) {
             text = StringEscapeUtils.escapeHtml4(text);
         }
-        setText(StringUtils.defaultString(getText()) + startTags + text + closeTags);
+        setText(Objects.requireNonNullElse(getText(), "") + startTags + text + closeTags);
     }
 
     // LEGACY CODE

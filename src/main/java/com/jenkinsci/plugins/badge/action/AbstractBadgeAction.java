@@ -34,7 +34,6 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jenkins.model.Jenkins;
-import org.apache.commons.lang3.StringUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
@@ -112,7 +111,8 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
     @Exported
     @Whitelisted
     public String getIcon() {
-        if (StringUtils.isBlank(icon)
+        if (icon == null
+                || icon.isBlank()
                 || icon.startsWith("/")
                 || icon.startsWith("symbol-")
                 || icon.startsWith("icon-")
@@ -148,7 +148,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
     @Exported
     @Whitelisted
     public String getText() {
-        if (StringUtils.isBlank(text)) {
+        if (text == null || text.isBlank()) {
             return text;
         }
 
@@ -190,7 +190,8 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
     @Exported
     @Whitelisted
     public String getLink() {
-        if (StringUtils.isBlank(link)
+        if (link == null
+                || link.isBlank()
                 || link.startsWith("/")
                 || link.matches("^https?://.*")
                 || link.matches("^mailto:.*")) {
