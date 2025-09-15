@@ -7,9 +7,12 @@
     margin: 0 0.1rem 0 0;
     text-decoration: none;
     text-align: center;
-    white-space: nowrap;
+    white-space: normal;
     vertical-align: middle;
     position: relative;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 .badge-text--background::before {
@@ -38,7 +41,10 @@
     margin: 0 0.1rem 0 0;
     text-decoration: none;
     text-align: center;
-    white-space: nowrap;
+    white-space: normal;
     vertical-align: middle;
     position: relative;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
