@@ -24,7 +24,6 @@
 package com.jenkinsci.plugins.badge.dsl;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -66,19 +65,6 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         assertThat(step.getStyle(), nullValue());
         assertThat(step.getLink(), nullValue());
         assertThat(step.getTarget(), nullValue());
-    }
-
-    @Test
-    @Deprecated(since = "2.0", forRemoval = true)
-    void color() {
-        AddBadgeStep step = (AddBadgeStep) createStep("id", "icon", "text", "cssClass", null, "link", "target");
-        assertThat(step.getColor(), nullValue());
-
-        step.setColor("");
-        assertThat(step.getColor(), emptyString());
-
-        step.setColor("style");
-        assertThat(step.getColor(), is("style"));
     }
 
     @Test

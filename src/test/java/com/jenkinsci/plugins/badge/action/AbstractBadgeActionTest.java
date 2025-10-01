@@ -55,7 +55,7 @@ abstract class AbstractBadgeActionTest {
     }
 
     @Test
-    @Deprecated
+    @Deprecated(since = "2.8", forRemoval = true)
     abstract void deprecatedConstructor();
 
     @Test
