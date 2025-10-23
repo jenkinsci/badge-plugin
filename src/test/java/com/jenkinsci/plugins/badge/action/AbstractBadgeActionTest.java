@@ -79,9 +79,6 @@ abstract class AbstractBadgeActionTest {
         action.setIcon("");
         assertThat(action.getIcon(), emptyString());
 
-        action.setIcon("icon.png");
-        assertThat(action.getIcon(), is(Jenkins.RESOURCE_PATH + "/images/16x16/icon.png"));
-
         action.setIcon("/relative/url/icon.png");
         assertThat(action.getIcon(), is("/relative/url/icon.png"));
 
@@ -126,8 +123,21 @@ abstract class AbstractBadgeActionTest {
         action.setIcon("yellow.gif");
         assertThat(action.getIcon(), is(Emojis.getIconClassName("yellow_square")));
 
+        // does not exist in core
+        action.setIcon("icon.png");
+        assertThat(action.getIcon(), is("icon.png"));
+
+        // core resource in 16x16
         action.setIcon("blue.gif");
         assertThat(action.getIcon(), is(Jenkins.RESOURCE_PATH + "/images/16x16/blue.gif"));
+
+        // core resource in svgs
+        action.setIcon("error.svg");
+        assertThat(action.getIcon(), is(Jenkins.RESOURCE_PATH + "/images/svgs/error.svg"));
+
+        // can not be validated
+        action.setIcon("[/]");
+        assertThat(action.getIcon(), is("[/]"));
     }
 
     @Test
