@@ -135,8 +135,7 @@ class RemoveBadgesStepTest extends AbstractRemoveBadgesStepTest {
         }
 
         if (declarativePipeline) {
-            script =
-                    """
+            script = """
                             pipeline {
                                 agent any
                                 stages {
@@ -148,8 +147,7 @@ class RemoveBadgesStepTest extends AbstractRemoveBadgesStepTest {
                                         }
                                     }
                                 }
-                            }"""
-                            .formatted(script);
+                            }""".formatted(script);
         }
 
         project.setDefinition(new CpsFlowDefinition(script, true));
