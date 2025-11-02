@@ -127,8 +127,7 @@ class LegacyPipelineTest {
         action = actions.get(0);
         assertThat(action.getText(), is("Test Text More Text"));
 
-        run = runJob(
-                """
+        run = runJob("""
                         def summary = createSummary(text: 'Test Text')
                         summary.appendText(' More Text', false, false, false, null)
                         """);
@@ -140,8 +139,7 @@ class LegacyPipelineTest {
         assertThat(action.getText(), is("Test Text More Text"));
 
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
-        run = runJob(
-                """
+        run = runJob("""
                         def summary = createSummary(text: 'Test Text')
                         summary.appendText(' More Text', true, true, true, 'red')
                         """);

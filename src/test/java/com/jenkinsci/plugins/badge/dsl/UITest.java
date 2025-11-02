@@ -396,8 +396,7 @@ class UITest {
             throws Exception {
         WorkflowJob project = r.createProject(WorkflowJob.class);
 
-        String script =
-                """
+        String script = """
                         pipeline {
                             agent any
                             stages {
@@ -409,8 +408,7 @@ class UITest {
                                 }
                             }
                         }
-                        """
-                        .formatted(addStep.toString(), removeStep != null ? removeStep.toString() : "");
+                        """.formatted(addStep.toString(), removeStep != null ? removeStep.toString() : "");
 
         project.setDefinition(new CpsFlowDefinition(script, true));
         r.assertBuildStatusSuccess(project.scheduleBuild2(0));

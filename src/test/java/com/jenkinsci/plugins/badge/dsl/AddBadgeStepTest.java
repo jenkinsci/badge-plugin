@@ -252,8 +252,7 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         }
 
         if (declarativePipeline) {
-            script =
-                    """
+            script = """
                             pipeline {
                                 agent any
                                 stages {
@@ -264,8 +263,7 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                                     }
                                 }
                             }
-                            """
-                            .formatted(script);
+                            """.formatted(script);
         }
 
         project.setDefinition(new CpsFlowDefinition(script, true));
@@ -287,16 +285,14 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
         String script = """
                 def badge = %s
                 badge.setText('%s')
-                """
-                .formatted(step, actualText);
+                """.formatted(step, actualText);
 
         if (inNode) {
             script = "node() { " + script + " }";
         }
 
         if (declarativePipeline) {
-            script =
-                    """
+            script = """
                             pipeline {
                                 agent any
                                 stages {
@@ -309,8 +305,7 @@ class AddBadgeStepTest extends AbstractAddBadgeStepTest {
                                     }
                                 }
                             }
-                            """
-                            .formatted(script);
+                            """.formatted(script);
         }
 
         project.setDefinition(new CpsFlowDefinition(script, true));
