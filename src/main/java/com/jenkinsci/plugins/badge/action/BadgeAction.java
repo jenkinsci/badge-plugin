@@ -37,7 +37,7 @@ public class BadgeAction extends AbstractBadgeAction implements BuildBadgeAction
     /**
      * @deprecated Use {@link BadgeAction#BadgeAction(String, String, String, String, String, String, String)} instead.
      */
-    @Deprecated(since = "2.8")
+    @Deprecated(since = "2.8", forRemoval = true)
     public BadgeAction(String id, String icon, String text, String cssClass, String style, String link) {
         super(id, icon, text, cssClass, style, link);
     }
