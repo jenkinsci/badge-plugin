@@ -23,8 +23,9 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
 
 import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import java.util.List;
@@ -42,7 +43,7 @@ class RemoveBadgesStepTest extends AbstractRemoveBadgesStepTest {
     @Test
     void defaultConstructor() {
         AbstractRemoveBadgesStep step = new RemoveBadgesStep();
-        assertNull(step.getId());
+        assertThat(step.getId(), nullValue());
     }
 
     @Test
@@ -134,21 +135,19 @@ class RemoveBadgesStepTest extends AbstractRemoveBadgesStepTest {
         }
 
         if (declarativePipeline) {
-            script =
-                    """
-            pipeline {
-                agent any
-                stages {
-                    stage('Testing') {
-                        steps {
-                            script {
-                                %s
-                            }
-                        }
-                    }
-                }
-            }"""
-                            .formatted(script);
+            script = """
+                            pipeline {
+                                agent any
+                                stages {
+                                    stage('Testing') {
+                                        steps {
+                                            script {
+                                                %s
+                                            }
+                                        }
+                                    }
+                                }
+                            }""".formatted(script);
         }
 
         project.setDefinition(new CpsFlowDefinition(script, true));
@@ -159,7 +158,7 @@ class RemoveBadgesStepTest extends AbstractRemoveBadgesStepTest {
 
     protected void assertActionExists(WorkflowRun run, int expected) {
         List<AbstractBadgeAction> badgeActions = run.getActions(AbstractBadgeAction.class);
-        assertEquals(expected, badgeActions.size());
+        assertThat(badgeActions.size(), is(expected));
     }
 
     protected AbstractAddBadgeStep createAddStep(String id) {

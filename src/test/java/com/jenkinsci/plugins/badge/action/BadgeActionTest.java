@@ -23,7 +23,8 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.nullValue;
 
 import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
@@ -36,7 +37,7 @@ class BadgeActionTest extends AbstractBadgeActionTest {
     @Deprecated
     void deprecatedConstructor() {
         BadgeAction action = new BadgeAction("id", "icon", "text", "cssClass", "style", "link");
-        assertNull(action.getTarget());
+        assertThat(action.getTarget(), nullValue());
     }
 
     @Override

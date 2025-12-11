@@ -29,7 +29,6 @@ import hudson.model.Run;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
@@ -66,7 +65,7 @@ abstract class AbstractRemoveBadgesStep extends Step {
             fields.add("id: '" + getId() + "'");
         }
 
-        return getDescriptor().getFunctionName() + "(" + StringUtils.join(fields, ", ") + ")";
+        return getDescriptor().getFunctionName() + "(" + String.join(", ", fields) + ")";
     }
 
     @Override

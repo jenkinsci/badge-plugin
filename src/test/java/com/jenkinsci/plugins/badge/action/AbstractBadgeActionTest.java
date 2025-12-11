@@ -23,10 +23,12 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.matchesPattern;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.markup.EscapedMarkupFormatter;
@@ -59,99 +61,109 @@ abstract class AbstractBadgeActionTest {
     @Test
     void id() {
         AbstractBadgeAction action = createAction(null, "icon", "text", "cssClass", "style", "link", "target");
-        assertNotNull(action.getId());
-        assertTrue(action.getId().matches("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"));
+        assertThat(action.getId(), notNullValue());
+        assertThat(action.getId(), matchesPattern("^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"));
 
         action = createAction("id", "icon", "text", "cssClass", "style", "link", "target");
-        assertEquals("id", action.getId());
+        assertThat(action.getId(), is("id"));
 
         action = createAction("", "icon", "text", "cssClass", "style", "link", "target");
-        assertEquals("", action.getId());
+        assertThat(action.getId(), emptyString());
     }
 
     @Test
     void icon() {
         AbstractBadgeAction action = createAction("id", null, "text", "cssClass", "style", "link", "target");
-        assertNull(action.getIcon());
+        assertThat(action.getIcon(), nullValue());
 
         action.setIcon("");
-        assertEquals("", action.getIcon());
-
-        action.setIcon("icon.png");
-        assertEquals(Jenkins.RESOURCE_PATH + "/images/16x16/icon.png", action.getIcon());
+        assertThat(action.getIcon(), emptyString());
 
         action.setIcon("/relative/url/icon.png");
-        assertEquals("/relative/url/icon.png", action.getIcon());
+        assertThat(action.getIcon(), is("/relative/url/icon.png"));
 
         action.setIcon("symbol-rocket plugin-ionicons-api");
-        assertEquals("symbol-rocket plugin-ionicons-api", action.getIcon());
+        assertThat(action.getIcon(), is("symbol-rocket plugin-ionicons-api"));
 
         action.setIcon("symbol-cube");
-        assertEquals("symbol-cube", action.getIcon());
+        assertThat(action.getIcon(), is("symbol-cube"));
 
         action.setIcon("icon-gear");
-        assertEquals("icon-gear", action.getIcon());
+        assertThat(action.getIcon(), is("icon-gear"));
 
         action.setIcon("https://host.domain/icon.png");
-        assertEquals("https://host.domain/icon.png", action.getIcon());
+        assertThat(action.getIcon(), is("https://host.domain/icon.png"));
 
         action.setIcon("completed.gif");
-        assertEquals("symbol-status-blue", action.getIcon());
+        assertThat(action.getIcon(), is("symbol-status-blue"));
         action.setIcon("db_in.gif");
-        assertEquals(Ionicons.getIconClassName("cloud-upload-outline"), action.getIcon());
+        assertThat(action.getIcon(), is(Ionicons.getIconClassName("cloud-upload-outline")));
         action.setIcon("db_out.gif");
-        assertEquals(Ionicons.getIconClassName("cloud-download-outline"), action.getIcon());
+        assertThat(action.getIcon(), is(Ionicons.getIconClassName("cloud-download-outline")));
         action.setIcon("delete.gif");
-        assertEquals("symbol-trash", action.getIcon());
+        assertThat(action.getIcon(), is("symbol-trash"));
         action.setIcon("error.gif");
-        assertEquals("symbol-status-red", action.getIcon());
+        assertThat(action.getIcon(), is("symbol-status-red"));
         action.setIcon("folder.gif");
-        assertEquals("symbol-folder", action.getIcon());
+        assertThat(action.getIcon(), is("symbol-folder"));
         action.setIcon("green.gif");
-        assertEquals(Emojis.getIconClassName("green_square"), action.getIcon());
+        assertThat(action.getIcon(), is(Emojis.getIconClassName("green_square")));
         action.setIcon("info.gif");
-        assertEquals("symbol-information-circle", action.getIcon());
+        assertThat(action.getIcon(), is("symbol-information-circle"));
         action.setIcon("red.gif");
-        assertEquals(Emojis.getIconClassName("red_square"), action.getIcon());
+        assertThat(action.getIcon(), is(Emojis.getIconClassName("red_square")));
         action.setIcon("save.gif");
-        assertEquals(Ionicons.getIconClassName("save-outline"), action.getIcon());
+        assertThat(action.getIcon(), is(Ionicons.getIconClassName("save-outline")));
         action.setIcon("success.gif");
-        assertEquals("symbol-status-blue", action.getIcon());
+        assertThat(action.getIcon(), is("symbol-status-blue"));
         action.setIcon("text.gif");
-        assertEquals("symbol-document-text", action.getIcon());
+        assertThat(action.getIcon(), is("symbol-document-text"));
         action.setIcon("warning.gif");
-        assertEquals("symbol-status-yellow", action.getIcon());
+        assertThat(action.getIcon(), is("symbol-status-yellow"));
         action.setIcon("yellow.gif");
-        assertEquals(Emojis.getIconClassName("yellow_square"), action.getIcon());
+        assertThat(action.getIcon(), is(Emojis.getIconClassName("yellow_square")));
 
+        // does not exist in core
+        action.setIcon("icon.png");
+        assertThat(action.getIcon(), is("icon.png"));
+
+        // core resource in 16x16
         action.setIcon("blue.gif");
-        assertEquals(Jenkins.RESOURCE_PATH + "/images/16x16/blue.gif", action.getIcon());
+        assertThat(action.getIcon(), is(Jenkins.RESOURCE_PATH + "/images/16x16/blue.gif"));
+
+        // core resource in svgs
+        action.setIcon("error.svg");
+        assertThat(action.getIcon(), is(Jenkins.RESOURCE_PATH + "/images/svgs/error.svg"));
+
+        // can not be validated
+        action.setIcon("[/]");
+        assertThat(action.getIcon(), is("[/]"));
     }
 
     @Test
     void text() {
         AbstractBadgeAction action = createAction("id", "icon", null, "cssClass", "style", "link", "target");
-        assertNull(action.getText());
+        assertThat(action.getText(), nullValue());
 
         action.setText("");
-        assertEquals("", action.getText());
+        assertThat(action.getText(), emptyString());
 
         action.setText("text");
-        assertEquals("text", action.getText());
+        assertThat(action.getText(), is("text"));
 
         r.jenkins.setMarkupFormatter(new EscapedMarkupFormatter());
         action.setText("<p>Plain Text</p>");
-        assertEquals("&lt;p&gt;Plain Text&lt;/p&gt;", action.getText());
+        assertThat(action.getText(), is("&lt;p&gt;Plain Text&lt;/p&gt;"));
 
         action.setText("<script>alert('Plain Text')</script>");
-        assertEquals("&lt;script&gt;alert(&#039;Plain Text&#039;)&lt;/script&gt;", action.getText());
+        assertThat(action.getText(), is("&lt;script&gt;alert(&#039;Plain Text&#039;)&lt;/script&gt;"));
 
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
         action.setText("<p>Safe HTML</p><script>alert('Unsafe HTML')</script>");
-        assertEquals("<p>Safe HTML</p>", action.getText());
+        assertThat(action.getText(), is("<p>Safe HTML</p>"));
 
         action.setText("<script>alert('Unsafe HTML')</script>");
-        assertEquals("", action.getText());
+        assertThat(action.getText(), emptyString());
 
         MarkupFormatter formatter = new MarkupFormatter() {
             @Override
@@ -161,83 +173,84 @@ abstract class AbstractBadgeActionTest {
         };
         r.jenkins.setMarkupFormatter(formatter);
         action.setText("text");
-        assertEquals(
-                "<b><font color=\"var(--error-color)\">Error preparing badge text for UI</font></b>", action.getText());
+        assertThat(
+                action.getText(),
+                is("<b><font color=\"var(--error-color)\">Error preparing badge text for UI</font></b>"));
     }
 
     @Test
     void cssClass() {
         AbstractBadgeAction action = createAction("id", "icon", "text", null, "style", "link", "target");
-        assertNull(action.getCssClass());
+        assertThat(action.getCssClass(), nullValue());
 
         action.setCssClass("");
-        assertEquals("", action.getCssClass());
+        assertThat(action.getCssClass(), emptyString());
 
         action.setCssClass("cssClass");
-        assertEquals("cssClass", action.getCssClass());
+        assertThat(action.getCssClass(), is("cssClass"));
     }
 
     @Test
     void style() {
         AbstractBadgeAction action = createAction("id", "icon", "text", "cssClass", null, "link", "target");
-        assertNull(action.getStyle());
+        assertThat(action.getStyle(), nullValue());
 
         action.setStyle("");
-        assertEquals("", action.getStyle());
+        assertThat(action.getStyle(), emptyString());
 
         action.setStyle("style");
-        assertEquals("style", action.getStyle());
+        assertThat(action.getStyle(), is("style"));
     }
 
     @Test
     void link() {
         AbstractBadgeAction action = createAction("id", "icon", "text", "cssClass", "style", null, null);
-        assertNull(action.getLink());
+        assertThat(action.getLink(), nullValue());
 
         action.setLink("");
-        assertEquals("", action.getLink());
+        assertThat(action.getLink(), emptyString());
 
         action.setLink("link");
-        assertNull(action.getLink());
+        assertThat(action.getLink(), nullValue());
 
         action.setLink("/relative/url");
-        assertEquals("/relative/url", action.getLink());
+        assertThat(action.getLink(), is("/relative/url"));
 
         action.setLink("https://host.domain");
-        assertEquals("https://host.domain", action.getLink());
+        assertThat(action.getLink(), is("https://host.domain"));
 
         action.setLink("mailto:foo@bar.com");
-        assertEquals("mailto:foo@bar.com", action.getLink());
+        assertThat(action.getLink(), is("mailto:foo@bar.com"));
     }
 
     @Test
     void target() {
         AbstractBadgeAction action = createAction("id", "icon", "text", "cssClass", "style", "link", null);
-        assertNull(action.getTarget());
+        assertThat(action.getTarget(), nullValue());
 
         action.setTarget("");
-        assertEquals("", action.getTarget());
+        assertThat(action.getTarget(), emptyString());
 
         action.setTarget("target");
-        assertEquals("target", action.getTarget());
+        assertThat(action.getTarget(), is("target"));
     }
 
     @Test
     void iconFileName() {
         AbstractBadgeAction action = createAction(null, null, null, null, null, null, null);
-        assertEquals(getIconFileName(), action.getIconFileName());
+        assertThat(action.getIconFileName(), is(getIconFileName()));
     }
 
     @Test
     void displayName() {
         AbstractBadgeAction action = createAction(null, null, null, null, null, null, null);
-        assertEquals(getDisplayName(), action.getDisplayName());
+        assertThat(action.getDisplayName(), is(getDisplayName()));
     }
 
     @Test
     void urlName() {
         AbstractBadgeAction action = createAction(null, null, null, null, null, null, null);
-        assertEquals(getUrlName(), action.getUrlName());
+        assertThat(action.getUrlName(), is(getUrlName()));
     }
 
     protected abstract AbstractBadgeAction createAction(

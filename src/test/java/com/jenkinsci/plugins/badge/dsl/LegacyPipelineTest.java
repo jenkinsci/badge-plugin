@@ -23,8 +23,10 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeSummaryAction;
@@ -92,10 +94,10 @@ class LegacyPipelineTest {
             WorkflowRun run = runJob("addBadge(color: " + params.get(0) + ")");
 
             List<BuildBadgeAction> badgeActions = run.getBadgeActions();
-            assertEquals(1, badgeActions.size());
+            assertThat(badgeActions, hasSize(1));
 
             BadgeAction action = (BadgeAction) badgeActions.get(0);
-            assertEquals(params.get(1), action.getStyle());
+            assertThat(action.getStyle(), is(params.get(1)));
         });
     }
 
@@ -104,51 +106,49 @@ class LegacyPipelineTest {
         WorkflowRun run = runJob("createSummary(text: 'Test Text')");
 
         List<BadgeSummaryAction> actions = run.getActions(BadgeSummaryAction.class);
-        assertEquals(1, actions.size());
+        assertThat(actions, hasSize(1));
 
         BadgeSummaryAction action = actions.get(0);
-        assertEquals("Test Text", action.getText());
+        assertThat(action.getText(), is("Test Text"));
 
         run = runJob("def summary = createSummary(text: 'Test Text')\n" + "summary.appendText(' More Text', true)");
 
         actions = run.getActions(BadgeSummaryAction.class);
-        assertEquals(1, actions.size());
+        assertThat(actions, hasSize(1));
 
         action = actions.get(0);
-        assertEquals("Test Text More Text", action.getText());
+        assertThat(action.getText(), is("Test Text More Text"));
 
         run = runJob("def summary = createSummary(text: 'Test Text')\n" + "summary.appendText(' More Text', false)");
 
         actions = run.getActions(BadgeSummaryAction.class);
-        assertEquals(1, actions.size());
+        assertThat(actions, hasSize(1));
 
         action = actions.get(0);
-        assertEquals("Test Text More Text", action.getText());
+        assertThat(action.getText(), is("Test Text More Text"));
 
-        run = runJob(
-                """
-                def summary = createSummary(text: 'Test Text')
-                summary.appendText(' More Text', false, false, false, null)
-                """);
+        run = runJob("""
+                        def summary = createSummary(text: 'Test Text')
+                        summary.appendText(' More Text', false, false, false, null)
+                        """);
 
         actions = run.getActions(BadgeSummaryAction.class);
-        assertEquals(1, actions.size());
+        assertThat(actions, hasSize(1));
 
         action = actions.get(0);
-        assertEquals("Test Text More Text", action.getText());
+        assertThat(action.getText(), is("Test Text More Text"));
 
         r.jenkins.setMarkupFormatter(RawHtmlMarkupFormatter.INSTANCE);
-        run = runJob(
-                """
-                def summary = createSummary(text: 'Test Text')
-                summary.appendText(' More Text', true, true, true, 'red')
-                """);
+        run = runJob("""
+                        def summary = createSummary(text: 'Test Text')
+                        summary.appendText(' More Text', true, true, true, 'red')
+                        """);
 
         actions = run.getActions(BadgeSummaryAction.class);
-        assertEquals(1, actions.size());
+        assertThat(actions, hasSize(1));
 
         action = actions.get(0);
-        assertEquals("Test Text<b><i> More Text</i></b>", action.getText());
+        assertThat(action.getText(), is("Test Text<b><i> More Text</i></b>"));
     }
 
     private static WorkflowRun runJob(String script) throws Exception {

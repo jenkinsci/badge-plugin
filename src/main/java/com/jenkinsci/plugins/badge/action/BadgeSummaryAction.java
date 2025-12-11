@@ -24,8 +24,8 @@
 package com.jenkinsci.plugins.badge.action;
 
 import java.io.Serial;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import java.util.Objects;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 
 /**
@@ -64,9 +64,9 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
     @Deprecated(since = "2.0", forRemoval = true)
     public void appendText(String text, boolean escapeHtml) {
         if (escapeHtml) {
-            text = StringEscapeUtils.escapeHtml(text);
+            text = StringEscapeUtils.escapeHtml4(text);
         }
-        setText(StringUtils.defaultString(getText()) + text);
+        setText(Objects.requireNonNullElse(getText(), "") + text);
     }
 
     @Whitelisted
@@ -83,13 +83,13 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
             closeTags += "</i>";
         }
         if (color != null) {
-            startTags += "<font color=\"" + StringEscapeUtils.escapeHtml(color) + "\">";
+            startTags += "<font color=\"" + StringEscapeUtils.escapeHtml4(color) + "\">";
             closeTags += "</font>";
         }
         if (escapeHtml) {
-            text = StringEscapeUtils.escapeHtml(text);
+            text = StringEscapeUtils.escapeHtml4(text);
         }
-        setText(StringUtils.defaultString(getText()) + startTags + text + closeTags);
+        setText(Objects.requireNonNullElse(getText(), "") + startTags + text + closeTags);
     }
 
     // LEGACY CODE

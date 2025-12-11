@@ -23,7 +23,12 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.startsWith;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -46,96 +51,96 @@ abstract class AbstractAddBadgeStepTest {
     @Test
     void id() {
         AbstractAddBadgeStep step = createStep(null, "icon", "text", "cssClass", "style", "link", "target");
-        assertNull(step.getId());
+        assertThat(step.getId(), nullValue());
 
         step = createStep("id", "icon", "text", "cssClass", "style", "link", "target");
-        assertEquals("id", step.getId());
+        assertThat(step.getId(), is("id"));
 
         step = createStep("", "icon", "text", "cssClass", "style", "link", "target");
-        assertEquals("", step.getId());
+        assertThat(step.getId(), emptyString());
     }
 
     @Test
     void icon() {
         AbstractAddBadgeStep step = createStep("id", null, "text", "cssClass", "style", "link", "target");
-        assertNull(step.getIcon());
+        assertThat(step.getIcon(), nullValue());
 
         step.setIcon("");
-        assertEquals("", step.getIcon());
+        assertThat(step.getIcon(), emptyString());
 
         step.setIcon("icon");
-        assertEquals("icon", step.getIcon());
+        assertThat(step.getIcon(), is("icon"));
     }
 
     @Test
     void text() {
         AbstractAddBadgeStep step = createStep("id", "icon", null, "cssClass", "style", "link", "target");
-        assertNull(step.getText());
+        assertThat(step.getText(), nullValue());
 
         step.setText("");
-        assertEquals("", step.getText());
+        assertThat(step.getText(), emptyString());
 
         step.setText("text");
-        assertEquals("text", step.getText());
+        assertThat(step.getText(), is("text"));
     }
 
     @Test
     void cssClass() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", null, "style", "link", "target");
-        assertNull(step.getCssClass());
+        assertThat(step.getCssClass(), nullValue());
 
         step.setCssClass("");
-        assertEquals("", step.getCssClass());
+        assertThat(step.getCssClass(), emptyString());
 
         step.setCssClass("cssClass");
-        assertEquals("cssClass", step.getCssClass());
+        assertThat(step.getCssClass(), is("cssClass"));
     }
 
     @Test
     void style() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", null, "link", "target");
-        assertNull(step.getStyle());
+        assertThat(step.getStyle(), nullValue());
 
         step.setStyle("");
-        assertEquals("", step.getStyle());
+        assertThat(step.getStyle(), emptyString());
 
         step.setStyle("style");
-        assertEquals("style", step.getStyle());
+        assertThat(step.getStyle(), is("style"));
     }
 
     @Test
     void link() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", "style", null, "target");
-        assertNull(step.getLink());
+        assertThat(step.getLink(), nullValue());
 
         step.setLink("");
-        assertEquals("", step.getLink());
+        assertThat(step.getLink(), emptyString());
 
         step.setLink("link");
-        assertEquals("link", step.getLink());
+        assertThat(step.getLink(), is("link"));
     }
 
     @Test
     void target() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", "style", "link", null);
-        assertNull(step.getTarget());
+        assertThat(step.getTarget(), nullValue());
 
         step.setTarget("");
-        assertEquals("", step.getTarget());
+        assertThat(step.getTarget(), emptyString());
 
         step.setTarget("target");
-        assertEquals("target", step.getTarget());
+        assertThat(step.getTarget(), is("target"));
     }
 
     @Test
     void string() {
         AbstractAddBadgeStep step = createStep("id", "icon", "text", "cssClass", "style", "link", "target");
-        assertNotNull(step.toString());
-        assertTrue(step.toString().startsWith(step.getDescriptor().getFunctionName()));
+        assertThat(step.toString(), notNullValue());
+        assertThat(step.toString(), startsWith(step.getDescriptor().getFunctionName()));
 
         step = createStep(null, null, null, null, null, null, null);
-        assertNotNull(step.toString());
-        assertEquals(step.getDescriptor().getFunctionName() + "()", step.toString());
+        assertThat(step.toString(), notNullValue());
+        assertThat(step.toString(), is(step.getDescriptor().getFunctionName() + "()"));
     }
 
     protected abstract AbstractAddBadgeStep createStep(

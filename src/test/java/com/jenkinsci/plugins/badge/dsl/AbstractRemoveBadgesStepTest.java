@@ -23,9 +23,11 @@
  */
 package com.jenkinsci.plugins.badge.dsl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -48,24 +50,24 @@ abstract class AbstractRemoveBadgesStepTest {
     @Test
     void id() {
         AbstractRemoveBadgesStep step = createRemoveStep(null);
-        assertNull(step.getId());
+        assertThat(step.getId(), nullValue());
 
         step = createRemoveStep("id");
-        assertEquals("id", step.getId());
+        assertThat(step.getId(), is("id"));
 
         step = createRemoveStep("");
-        assertEquals("", step.getId());
+        assertThat(step.getId(), emptyString());
     }
 
     @Test
     void string() {
         AbstractRemoveBadgesStep step = createRemoveStep("id");
-        assertNotNull(step.toString());
-        assertEquals(step.getDescriptor().getFunctionName() + "(id: '" + step.getId() + "')", step.toString());
+        assertThat(step.toString(), notNullValue());
+        assertThat(step.toString(), is(step.getDescriptor().getFunctionName() + "(id: '" + step.getId() + "')"));
 
         step = createRemoveStep(null);
-        assertNotNull(step.toString());
-        assertEquals(step.getDescriptor().getFunctionName() + "()", step.toString());
+        assertThat(step.toString(), notNullValue());
+        assertThat(step.toString(), is(step.getDescriptor().getFunctionName() + "()"));
     }
 
     protected abstract AbstractRemoveBadgesStep createRemoveStep(String id);

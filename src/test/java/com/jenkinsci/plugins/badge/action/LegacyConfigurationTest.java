@@ -23,8 +23,9 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 
 import hudson.XmlFile;
 import java.io.File;
@@ -37,6 +38,7 @@ import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 @Deprecated(since = "2.0", forRemoval = true)
 class LegacyConfigurationTest {
 
+    @SuppressWarnings("unused")
     private static JenkinsRule r;
 
     @BeforeAll
@@ -47,30 +49,30 @@ class LegacyConfigurationTest {
     @Test
     void badgeAction() throws Exception {
         BadgeAction action = readConfiguration("badge-action.xml");
-        assertNotNull(action.getIcon());
-        assertNotNull(action.getStyle());
+        assertThat(action.getIcon(), notNullValue());
+        assertThat(action.getStyle(), notNullValue());
 
         action = readConfiguration("badge-action-null.xml");
-        assertNull(action.getIcon());
-        assertNull(action.getStyle());
+        assertThat(action.getIcon(), nullValue());
+        assertThat(action.getStyle(), nullValue());
 
         action = readConfiguration("badge-action-borderColor-null.xml");
-        assertNotNull(action.getStyle());
+        assertThat(action.getStyle(), notNullValue());
 
         action = readConfiguration("badge-action-jenkins.xml");
-        assertNotNull(action.getStyle());
+        assertThat(action.getStyle(), notNullValue());
 
         action = readConfiguration("badge-action-jenkins-color.xml");
-        assertNotNull(action.getStyle());
+        assertThat(action.getStyle(), notNullValue());
     }
 
     @Test
     void badgeSummaryAction() throws Exception {
         BadgeSummaryAction action = readConfiguration("summary-action.xml");
-        assertNotNull(action.getText());
+        assertThat(action.getText(), notNullValue());
 
         action = readConfiguration("summary-action-null.xml");
-        assertNull(action.getText());
+        assertThat(action.getText(), nullValue());
     }
 
     @SuppressWarnings("unchecked")

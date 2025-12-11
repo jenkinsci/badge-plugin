@@ -23,8 +23,8 @@
  */
 package com.jenkinsci.plugins.badge.action;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 import hudson.model.Action;
 import hudson.model.BuildBadgeAction;
@@ -38,15 +38,15 @@ class ActionClassHierarchyTest {
 
         @Test
         void abstractBadgeAction() {
-            assertTrue(Action.class.isAssignableFrom(AbstractBadgeAction.class));
-            assertFalse(BuildBadgeAction.class.isAssignableFrom(AbstractBadgeAction.class));
+            assertThat(Action.class.isAssignableFrom(AbstractBadgeAction.class), is(true));
+            assertThat(BuildBadgeAction.class.isAssignableFrom(AbstractBadgeAction.class), is(false));
         }
 
         @Test
         void badgeAction() {
-            assertTrue(Action.class.isAssignableFrom(BadgeAction.class));
-            assertTrue(BuildBadgeAction.class.isAssignableFrom(BadgeAction.class));
-            assertTrue(AbstractBadgeAction.class.isAssignableFrom(BadgeAction.class));
+            assertThat(Action.class.isAssignableFrom(BadgeAction.class), is(true));
+            assertThat(BuildBadgeAction.class.isAssignableFrom(BadgeAction.class), is(true));
+            assertThat(AbstractBadgeAction.class.isAssignableFrom(BadgeAction.class), is(true));
         }
     }
 
@@ -55,9 +55,9 @@ class ActionClassHierarchyTest {
 
         @Test
         void badgeSummaryAction() {
-            assertTrue(Action.class.isAssignableFrom(BadgeSummaryAction.class));
-            assertFalse(BuildBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class));
-            assertTrue(AbstractBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class));
+            assertThat(Action.class.isAssignableFrom(BadgeSummaryAction.class), is(true));
+            assertThat(BuildBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class), is(false));
+            assertThat(AbstractBadgeAction.class.isAssignableFrom(BadgeSummaryAction.class), is(true));
         }
     }
 }

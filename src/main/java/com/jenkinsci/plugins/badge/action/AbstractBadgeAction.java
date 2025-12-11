@@ -30,11 +30,13 @@ import io.jenkins.plugins.ionicons.Ionicons;
 import java.io.IOException;
 import java.io.Serial;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jenkins.model.Jenkins;
-import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
@@ -112,7 +114,8 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
     @Exported
     @Whitelisted
     public String getIcon() {
-        if (StringUtils.isBlank(icon)
+        if (icon == null
+                || icon.isBlank()
                 || icon.startsWith("/")
                 || icon.startsWith("symbol-")
                 || icon.startsWith("icon-")
@@ -136,8 +139,31 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
             case "text.gif" -> "symbol-document-text";
             case "warning.gif" -> "symbol-status-yellow";
             case "yellow.gif" -> Emojis.getIconClassName("yellow_square");
-            default -> Jenkins.RESOURCE_PATH + "/images/16x16/" + icon;
+            default -> {
+                if (isJenkinsResource(Jenkins.RESOURCE_PATH + "/images/16x16/" + icon)) {
+                    yield Jenkins.RESOURCE_PATH + "/images/16x16/" + icon;
+                } else if (isJenkinsResource(Jenkins.RESOURCE_PATH + "/images/svgs/" + icon)) {
+                    yield Jenkins.RESOURCE_PATH + "/images/svgs/" + icon;
+                } else {
+                    LOGGER.log(Level.WARNING, () -> "Icon '" + icon + "' not found as Jenkins resource");
+                    yield icon;
+                }
+            }
         };
+    }
+
+    private static boolean isJenkinsResource(String iconPath) {
+        try {
+            String url = Jenkins.get().getRootUrl() + iconPath;
+            HttpURLConnection conn = (HttpURLConnection) new URI(url).toURL().openConnection();
+            conn.setRequestMethod("HEAD");
+            conn.setConnectTimeout(3000);
+            conn.setReadTimeout(3000);
+            return conn.getResponseCode() == 200;
+        } catch (IOException | URISyntaxException ex) {
+            LOGGER.log(Level.WARNING, ex, () -> "Unable to validate Jenkins resource '" + iconPath + "'.");
+            return false;
+        }
     }
 
     @Whitelisted
@@ -148,7 +174,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
     @Exported
     @Whitelisted
     public String getText() {
-        if (StringUtils.isBlank(text)) {
+        if (text == null || text.isBlank()) {
             return text;
         }
 
@@ -190,7 +216,8 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
     @Exported
     @Whitelisted
     public String getLink() {
-        if (StringUtils.isBlank(link)
+        if (link == null
+                || link.isBlank()
                 || link.startsWith("/")
                 || link.matches("^https?://.*")
                 || link.matches("^mailto:.*")) {

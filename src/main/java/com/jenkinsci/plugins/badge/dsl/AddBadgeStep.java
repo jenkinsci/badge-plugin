@@ -27,7 +27,7 @@ import com.jenkinsci.plugins.badge.action.AbstractBadgeAction;
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import org.apache.commons.lang.StringUtils;
+import java.util.Objects;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepExecution;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -64,7 +64,7 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
             } else {
                 newStyle += "color: " + AbstractBadgeAction.getJenkinsColorStyle(color) + ";";
             }
-            setStyle(newStyle + StringUtils.defaultString(getStyle()));
+            setStyle(newStyle + Objects.requireNonNullElse(getStyle(), ""));
         }
     }
 
@@ -74,7 +74,19 @@ public class AddBadgeStep extends AbstractAddBadgeStep {
     @Deprecated(since = "2.0", forRemoval = true)
     public String getColor() {
         // translate new field to color
-        return StringUtils.substringBetween(getStyle(), "color: ", ";");
+        String style = Objects.requireNonNullElse(getStyle(), "");
+        String startToken = "color: ";
+        String endToken = ";";
+
+        int start = style.indexOf(startToken);
+        if (start != -1) {
+            start += startToken.length();
+            int end = style.indexOf(endToken, start);
+            if (end != -1) {
+                return style.substring(start, end);
+            }
+        }
+        return null;
     }
 
     @Override
