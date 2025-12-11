@@ -8,7 +8,6 @@
     <version>5.28</version>
   </parent>
 
-  <groupId>org.jenkins-ci.plugins</groupId>
   <artifactId>badge</artifactId>
   <version>${revision}.${changelist}</version>
   <packaging>hpi</packaging>
@@ -24,25 +23,6 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-
-  <developers>
-    <developer>
-      <id>strangelookingnerd</id>
-      <name>Daniel Krämer</name>
-    </developer>
-    <developer>
-      <id>bakito</id>
-      <name>Marc Brugger</name>
-    </developer>
-    <developer>
-      <id>wolfs</id>
-      <name>Stefan Wolf</name>
-    </developer>
-    <developer>
-      <id>beryx</id>
-      <name>Serban Iordache</name>
-    </developer>
-  </developers>
 
   <scm>
     <connection>scm:git:https://github.com/${gitHubRepo}.git</connection>
@@ -60,8 +40,6 @@
     <jenkins.version>${jenkins.baseline}.3</jenkins.version>
     <revision>3</revision>
     <changelist>999999-SNAPSHOT</changelist>
-    <spotbugs.effort>Max</spotbugs.effort>
-    <spotbugs.threshold>Low</spotbugs.threshold>
     <spotless.check.skip>false</spotless.check.skip>
     <ban-junit4-imports.skip>false</ban-junit4-imports.skip>
     <hpi.strictBundledArtifacts>true</hpi.strictBundledArtifacts>
@@ -72,7 +50,7 @@
       <dependency>
         <groupId>io.jenkins.tools.bom</groupId>
         <artifactId>bom-${jenkins.baseline}.x</artifactId>
-        <version>5473.vb_9533d9e5d88</version>
+        <version>5759.va_1462c940572</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
