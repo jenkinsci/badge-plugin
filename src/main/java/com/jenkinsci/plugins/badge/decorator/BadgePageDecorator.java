@@ -21,39 +21,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+package com.jenkinsci.plugins.badge.decorator;
 
-Behaviour.specify('[id^="icon-only-badge"]', "CopyToClipboard", 0, (element) => {
-    element.onclick = () => copy(element);
-});
-
-Behaviour.specify('[id^="text-only-badge"]', "CopyToClipboard", 0, (element) => {
-    element.onclick = () => copy(element);
-});
+import hudson.Extension;
+import hudson.model.PageDecorator;
 
 /**
- * Copy the text to the clipboard
- * @param element The element to get the text from and display the notification in
+ * A {@link PageDecorator} to load <code>assets.css</code> and <code>copy.js</code> bundled by this plugin.
  */
-function copy(element) {
-    let text = element.dataset.text;
-
-    if (text == null || text === "") {
-        return;
-    }
-
-    navigator.clipboard
-        .writeText(text)
-        .then(() => {
-            hoverNotification(
-                "Copied to clipboard",
-                element
-            );
-        })
-        .catch((error) => {
-            console.warn(error);
-            hoverNotification(
-                "Could not get permission to copy to clipboard",
-                element
-            );
-        });
-}
+@Extension
+public class BadgePageDecorator extends PageDecorator {}
