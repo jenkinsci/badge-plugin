@@ -24,8 +24,7 @@ THE SOFTWARE.
 -->
 
 <?jelly escape-by-default='false'?>
-<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout" xmlns:st="jelly:stapler">
-    <st:adjunct includes="com.jenkinsci.plugins.badge.assets"/>
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
     <tr class="app-summary">
         <td>
             <j:choose>

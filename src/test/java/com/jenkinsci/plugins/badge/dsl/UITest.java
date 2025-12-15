@@ -64,6 +64,8 @@ class UITest {
                 assertThat(badge.getAttribute("style"), is(step.getStyle()));
                 assertThat(badge.getAttribute("href"), is(step.getLink()));
                 assertThat(badge.getAttribute("target"), is(step.getTarget()));
+                // copy to clipboard should not be enabled
+                assertThat(badge.hasAttribute("data-text"), is(false));
             }
         }
 
@@ -113,6 +115,8 @@ class UITest {
                 assertThat(badge.getAttribute("style"), is(step.getStyle()));
                 assertThat(badge.getAttribute("href"), is(step.getLink()));
                 assertThat(badge.getAttribute("target"), is(step.getTarget()));
+                // copy to clipboard should not be enabled
+                assertThat(badge.hasAttribute("data-text"), is(false));
             }
         }
 
@@ -134,6 +138,8 @@ class UITest {
                 assertThat(badge.getTextContent(), is(step.getText()));
                 assertThat(badge.getAttribute("class"), is(step.getCssClass()));
                 assertThat(badge.getAttribute("style"), is(step.getStyle()));
+                // copy to clipboard should be enabled
+                assertThat(badge.getAttribute("data-text"), is(step.getText()));
             }
         }
 
@@ -157,6 +163,8 @@ class UITest {
                 assertThat(icon.getAttribute("data-html-tooltip"), is(step.getText()));
                 assertThat(icon.getAttribute("class"), is("icon-sm"));
                 assertThat(badge.getAttribute("style"), is(step.getStyle()));
+                // copy to clipboard should be enabled
+                assertThat(badge.getAttribute("data-text"), is(step.getText()));
             }
         }
 
@@ -180,6 +188,8 @@ class UITest {
                 assertThat(icon.getAttribute("data-html-tooltip"), is(step.getText()));
                 assertThat(icon.getAttribute("class"), is("icon-sm"));
                 assertThat(badge.getAttribute("style"), is(step.getStyle()));
+                // copy to clipboard should be enabled
+                assertThat(badge.getAttribute("data-text"), is(step.getText()));
             }
         }
 
@@ -203,6 +213,8 @@ class UITest {
                 assertThat(icon.getAttribute("data-html-tooltip"), is(step.getText()));
                 assertThat(icon.getAttribute("class"), is("icon-sm"));
                 assertThat(badge.getAttribute("style"), is(step.getStyle()));
+                // copy to clipboard should be enabled
+                assertThat(badge.getAttribute("data-text"), is(step.getText()));
             }
         }
 
