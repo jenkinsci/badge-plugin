@@ -4,6 +4,7 @@
         Badges are symbols or icons with an optional text message and an optional clickable hyperlink.
         Badges are often used to provide a visual indicator of additional status information about a Pipeline build.
         Badges added by <code>addBadge</code> are displayed in the build history of the Pipeline job.
+        Badges that either consist of only an icon and a toolip text or only text will also have a <i>copy to clipboard</i> feature enabled by default.
     </p>
 
     <p>
@@ -32,13 +33,13 @@
     </p>
 
     <p>
-        The plugin includes icons as GIF images and also supports the <a href="https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16">16x16 icons</a> that are offered by Jenkins.
-        These icons are listed in the <a href="https://plugins.jenkins.io/badge/#plugin-content-icons">plugin documentation</a> and are referenced as "<i>image-name</i>.gif".
-        For example, the following are all valid references to icons included with the plugin:
+        The plugin also supports the <a href="https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/16x16">16x16 icons</a> as well as the <a href="https://github.com/jenkinsci/jenkins/tree/master/war/src/main/webapp/images/svgs">SVG icons</a> that are offered by Jenkins.
+        For example, the following are all valid references to icons included by Jenkins:
     <ul>
-        <li><code>addBadge icon: 'completed.gif', text: 'This is a completed symbol'</code></li>
-        <li><code>addBadge icon: 'success.gif', text: 'This is a success icon'</code></li>
-        <li><code>addBadge icon: 'warning.gif', text: 'This is a warning icon'</code></li>
+        <li><code>addBadge icon: 'aborted.gif', text: 'This is a aborted symbol'</code></li>
+        <li><code>addBadge icon: 'folder-open.gif', text: 'This is a folder icon'</code></li>
+        <li><code>addBadge icon: 'document_edit.gif', text: 'This is a document icon'</code></li>
+        <li><code>addBadge icon: 'error.svg', text: 'This is an error'</code></li>
     </ul>
     </p>
 
