@@ -43,7 +43,7 @@
     <spotless.check.skip>false</spotless.check.skip>
     <ban-junit4-imports.skip>false</ban-junit4-imports.skip>
     <hpi.strictBundledArtifacts>true</hpi.strictBundledArtifacts>
-    <jenkins-test-harness.version>2549.va_d3707a_ff237</jenkins-test-harness.version>
+    <jenkins-test-harness.version>2551.vb_14930141097</jenkins-test-harness.version>
   </properties>
 
   <dependencyManagement>
