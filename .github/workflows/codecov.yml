@@ -11,11 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Coverage on Ubuntu
     steps:
-      - name: Set up JDK 17 and Maven
+      - name: Set up JDK and Maven
         uses: s4u/setup-maven-action@v1.19.0
         with:
           java-distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
       - name: Generate coverage with JaCoCo
         run: mvn clean jacoco:prepare-agent test jacoco:report
 
