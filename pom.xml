@@ -34,11 +34,11 @@
   <properties>
     <changelist>-SNAPSHOT</changelist>
     <gitHubRepo>jenkinsci/badge-plugin</gitHubRepo>
-    <hpi.compatibleSinceVersion>2.0</hpi.compatibleSinceVersion>
+    <hpi.compatibleSinceVersion>3.0</hpi.compatibleSinceVersion>
     <!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
     <jenkins.baseline>2.516</jenkins.baseline>
     <jenkins.version>${jenkins.baseline}.3</jenkins.version>
-    <revision>2</revision>
+    <revision>3</revision>
     <changelist>999999-SNAPSHOT</changelist>
     <spotless.check.skip>false</spotless.check.skip>
     <ban-junit4-imports.skip>false</ban-junit4-imports.skip>
@@ -58,10 +58,6 @@
   </dependencyManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>io.jenkins.plugins</groupId>
-      <artifactId>commons-text-api</artifactId>
-    </dependency>
     <dependency>
       <groupId>io.jenkins.plugins</groupId>
       <artifactId>emoji-symbols-api</artifactId>
