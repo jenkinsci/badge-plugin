@@ -22,7 +22,7 @@ toc::[]
 
 Since version 1.10 release notes are recorded in https://github.com/jenkinsci/badge-plugin/releases[GitHub Releases].
 
-Changelogs for older releases can be found in the link:CHANGELOG.adoc[archive].
+Changelogs for older releases can be found in the link:https://github.com/jenkinsci/badge-plugin/blob/fa18486e5f1f21f8f3eb7fe3a8e6088647e84ab3/CHANGELOG.adoc[archive].
 
 === Version 3.x
 
