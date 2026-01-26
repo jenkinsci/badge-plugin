@@ -38,8 +38,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
-import org.kohsuke.accmod.Restricted;
-import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.export.Exported;
 import org.kohsuke.stapler.export.ExportedBean;
 
@@ -74,7 +72,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
      *
      * @deprecated Use {@link AbstractBadgeAction#AbstractBadgeAction(String, String, String, String, String, String, String)} instead.
      */
-    @Deprecated(since = "2.8")
+    @Deprecated(since = "2.8", forRemoval = true)
     protected AbstractBadgeAction(String id, String icon, String text, String cssClass, String style, String link) {
         this(id, icon, text, cssClass, style, link, null);
     }
@@ -123,7 +121,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
             return icon;
         }
 
-        // backwards compatible replacement for old GIFs
+        // backwards compatible replacement for old GIFs - since 2.8
         return switch (icon) {
             case "completed.gif" -> "symbol-status-blue";
             case "db_in.gif" -> Ionicons.getIconClassName("cloud-upload-outline");
@@ -247,102 +245,5 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
     @Override
     public String getUrlName() {
         return "";
-    }
-
-    // LEGACY CODE
-    @Deprecated(since = "2.0", forRemoval = true)
-    private transient String iconPath;
-
-    @Deprecated(since = "2.0", forRemoval = true)
-    private transient String color;
-
-    @Deprecated(since = "2.0", forRemoval = true)
-    private transient String background;
-
-    @Deprecated(since = "2.0", forRemoval = true)
-    private transient String border;
-
-    @Deprecated(since = "2.0", forRemoval = true)
-    private transient String borderColor;
-
-    /**
-     * @deprecated kept for backwards compatibility.
-     * Translates pre 2.0 build.xml to latest format for backwards compatibility.
-     * @return this instance
-     */
-    @Serial
-    @Deprecated(since = "2.0", forRemoval = true)
-    protected Object readResolve() {
-        // field renamed - see AbstractBadgeAction
-        if (iconPath != null) {
-            setIcon(iconPath);
-        }
-
-        // field reworked - see AddShortTextStep
-        String style = "";
-        if (border != null) {
-            style += "border: " + border + " solid " + (borderColor != null ? borderColor : "") + ";";
-        }
-        if (background != null) {
-            style += "background: " + background + ";";
-        }
-        if (color != null) {
-            if (color.startsWith("jenkins-!-color")) {
-                style += "color: var(--" + color.replaceFirst("jenkins-!-color-", "") + ");";
-            } else if (color.startsWith("jenkins-!-")) {
-                style += "color: var(--" + color.replaceFirst("jenkins-!-", "") + ");";
-            } else {
-                style += "color: " + getJenkinsColorStyle(color) + ";";
-            }
-        }
-        if (!style.isEmpty()) {
-            setStyle(style);
-        }
-
-        return this;
-    }
-
-    /**
-     * Get the Jenkins color style for the given color reference. Returns {@code color} if the color is not a
-     * known Jenkins palette color or semantic color.
-     * @param color color reference
-     * @return jenkins color style variable
-     */
-    @NonNull
-    @Restricted(NoExternalUse.class)
-    public static String getJenkinsColorStyle(@NonNull String color) {
-        String primary = color;
-        if (color.startsWith("light-") && color.length() > 6) {
-            primary = color.substring(6);
-        } else if (color.startsWith("dark-") && color.length() > 5) {
-            primary = color.substring(5);
-        }
-        // spotless:off
-        // https://github.com/jenkinsci/jenkins/blob/master/src/main/scss/abstracts/_theme.scss
-        return switch (primary) {
-            case "blue",
-                 "brown",
-                 "cyan",
-                 "green",
-                 "indigo",
-                 "orange",
-                 "pink",
-                 "purple",
-                 "red",
-                 "yellow",
-                 "white",
-                 "black" -> "var(--" + color + ")"; // palette
-            case "accent",
-                 "text",
-                 "error",
-                 "warning",
-                 "success",
-                 "destructive",
-                 "build",
-                 "danger",
-                 "info" -> "var(--" + color + "-color)"; // semantics
-            default -> color;
-        };
-        // spotless:on
     }
 }
