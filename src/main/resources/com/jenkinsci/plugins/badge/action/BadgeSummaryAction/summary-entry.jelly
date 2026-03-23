@@ -23,15 +23,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -->
 
-<?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
-  <l:card title="Summary" expandable="summary">
-    <div>
-      <table>
-        <j:forEach var="action" items="${it.actions}">
-          <st:include page="../../action/BadgeSummaryAction/summary-entry.jelly" it="${action}" optional="true" />
-        </j:forEach>
-      </table>
-    </div>
-  </l:card>
+<?jelly escape-by-default='false'?>
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
+  <tr class="app-summary">
+    <td>
+      <j:choose>
+        <!-- with icon -->
+        <j:when test="${not empty it.icon}">
+          <l:icon src="${it.icon}"/>
+        </j:when>
+        <!-- without icon -->
+        <j:otherwise>
+          <l:icon src="/images/16x16/empty.png"/>
+        </j:otherwise>
+      </j:choose>
+    </td>
+    <td style="vertical-align:middle">
+      <j:choose>
+        <!-- text with link -->
+        <j:when test="${not empty it.link}">
+          <a href="${it.link}" target="${it.target}" class="${it.cssClass}" style="${it.style}">
+            <span>
+              ${it.text}
+            </span>
+          </a>
+        </j:when>
+        <!-- text without link -->
+        <j:otherwise>
+          <span class="${it.cssClass}" style="${it.style}">
+            ${it.text}
+          </span>
+        </j:otherwise>
+      </j:choose>
+    </td>
+  </tr>
 </j:jelly>
