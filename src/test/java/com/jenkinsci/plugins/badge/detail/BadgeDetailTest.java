@@ -26,14 +26,19 @@ package com.jenkinsci.plugins.badge.detail;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.jenkinsci.plugins.badge.action.BadgeAction;
 import com.jenkinsci.plugins.badge.dsl.AddBadgeStep;
+import hudson.Functions;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-import org.htmlunit.html.HtmlPage;
+import jenkins.model.details.Detail;
+import jenkins.model.details.DetailGroup;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
@@ -58,10 +63,6 @@ class BadgeDetailTest {
 
         WorkflowRun run = runJob();
         assertDoesNotThrow(() -> new BadgeDetail(run));
-
-        try (JenkinsRule.WebClient webClient = r.createWebClient()) {
-            HtmlPage overview = webClient.getPage(run);
-        }
     }
 
     @Test
@@ -77,6 +78,15 @@ class BadgeDetailTest {
         WorkflowRun run = runJob();
         BadgeDetail detail = new BadgeDetail(run);
         assertThat(detail.getGroup(), is(BadgeDetail.BadgeDetailGroup.get()));
+    }
+
+    @Test
+    void factory() throws Exception {
+        WorkflowRun run = runJob();
+        Map<DetailGroup, List<Detail>> details = Functions.getDetailsFor(run);
+        List<Detail> detail = details.get(BadgeDetail.BadgeDetailGroup.get());
+        assertThat(detail, hasSize(1));
+        assertThat(detail, hasItem(instanceOf(BadgeDetail.class)));
     }
 
     private WorkflowRun runJob() throws Exception {
