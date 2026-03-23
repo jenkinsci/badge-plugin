@@ -33,11 +33,11 @@ import java.util.List;
 import jenkins.model.Tab;
 import jenkins.model.TransientActionFactory;
 
-public class BadgeSummaryTab extends Tab {
+public class SummaryTab extends Tab {
 
     private final List<BadgeSummaryAction> actions;
 
-    public BadgeSummaryTab(Run<?, ?> run) {
+    public SummaryTab(Run<?, ?> run) {
         super(run);
         actions = run.getActions().stream()
                 .filter(BadgeSummaryAction.class::isInstance)
@@ -66,7 +66,8 @@ public class BadgeSummaryTab extends Tab {
     }
 
     @Extension
-    public static class BadgeSummaryTabFactory extends TransientActionFactory<Run> {
+    @SuppressWarnings("unused")
+    public static class SummaryTabFactory extends TransientActionFactory<Run> {
 
         @Override
         public Class<Run> type() {
@@ -75,8 +76,8 @@ public class BadgeSummaryTab extends Tab {
 
         @NonNull
         @Override
-        public Collection<? extends Tab> createFor(@NonNull Run target) {
-            return Collections.singleton(new BadgeSummaryTab(target));
+        public Collection<SummaryTab> createFor(@NonNull Run target) {
+            return Collections.singleton(new SummaryTab(target));
         }
     }
 }

@@ -61,6 +61,7 @@ public class BadgeDetail extends Detail {
     }
 
     @Extension
+    @SuppressWarnings("unused")
     public static class BadgeDetailFactory extends DetailFactory<Run> {
 
         @Override
