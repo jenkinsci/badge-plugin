@@ -26,11 +26,11 @@ THE SOFTWARE.
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:l="/lib/layout">
   <l:run-subpage>
-    <l:app-bar title="${it.displayName}" headingLevel="h2" />
+    <l:app-bar title="${it.displayName}" headingLevel="h2"/>
     <div>
       <table>
         <j:forEach var="action" items="${it.actions}">
-          <st:include page="../../action/BadgeSummaryAction/summary-entry.jelly" it="${action}" optional="true" />
+          <st:include page="../../action/BadgeSummaryAction/summary-entry.jelly" it="${action}" optional="true"/>
         </j:forEach>
       </table>
     </div>
