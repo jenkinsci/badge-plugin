@@ -26,7 +26,7 @@ Changelogs for older releases can be found in the link:https://github.com/jenkin
 
 === Version 3.x
 
-Version 3.0 removes legacy features introduced in <<Version 2.x>> and therefore breaks compatibility in case the legacy features where not migrated before upgrading the plugin. More details on this can be found in the https://github.com/jenkinsci/badge-plugin/releases/tag/badge-3.0[Release Notes for 3.0].
+Version 3.0 removes legacy features introduced in <<Version 2.x>> and therefore breaks compatibility in case the legacy features where not migrated before upgrading the plugin. More details on this can be found in the https://github.com/jenkinsci/badge-plugin/releases/tag/3.583.vdc8d4a_a_1d586[Release Notes for 3.583.vdc8d4a_a_1d586].
 
 === Version 2.x
 
