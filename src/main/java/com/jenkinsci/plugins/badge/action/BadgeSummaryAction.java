@@ -24,9 +24,6 @@
 package com.jenkinsci.plugins.badge.action;
 
 import java.io.Serial;
-import java.util.Objects;
-import org.apache.commons.text.StringEscapeUtils;
-import org.jenkinsci.plugins.scriptsecurity.sandbox.whitelists.Whitelisted;
 
 /**
  * Common action for build summaries.
@@ -39,7 +36,7 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
     /**
      * @deprecated Use {@link BadgeSummaryAction#BadgeSummaryAction(String, String, String, String, String, String, String)} instead.
      */
-    @Deprecated(since = "2.8")
+    @Deprecated(since = "2.8", forRemoval = true)
     public BadgeSummaryAction(String id, String icon, String text, String cssClass, String style, String link) {
         super(id, icon, text, cssClass, style, link);
     }
@@ -52,66 +49,5 @@ public class BadgeSummaryAction extends AbstractBadgeAction {
     @Override
     public String getDisplayName() {
         return "Badge Summary Action";
-    }
-
-    @Whitelisted
-    @Deprecated(since = "2.0", forRemoval = true)
-    public void appendText(String text) {
-        appendText(text, false);
-    }
-
-    @Whitelisted
-    @Deprecated(since = "2.0", forRemoval = true)
-    public void appendText(String text, boolean escapeHtml) {
-        if (escapeHtml) {
-            text = StringEscapeUtils.escapeHtml4(text);
-        }
-        setText(Objects.requireNonNullElse(getText(), "") + text);
-    }
-
-    @Whitelisted
-    @Deprecated(since = "2.0", forRemoval = true)
-    public void appendText(String text, boolean escapeHtml, boolean bold, boolean italic, String color) {
-        String startTags = "";
-        String closeTags = "";
-        if (bold) {
-            startTags += "<b>";
-            closeTags += "</b>";
-        }
-        if (italic) {
-            startTags += "<i>";
-            closeTags += "</i>";
-        }
-        if (color != null) {
-            startTags += "<font color=\"" + StringEscapeUtils.escapeHtml4(color) + "\">";
-            closeTags += "</font>";
-        }
-        if (escapeHtml) {
-            text = StringEscapeUtils.escapeHtml4(text);
-        }
-        setText(Objects.requireNonNullElse(getText(), "") + startTags + text + closeTags);
-    }
-
-    // LEGACY CODE
-    @Deprecated(since = "2.0", forRemoval = true)
-    private transient String summaryText;
-
-    /**
-     * @deprecated kept for backwards compatibility.
-     * Translates pre 2.0 build.xml to latest format for backwards compatibility.
-     * @return this instance
-     */
-    @Serial
-    @Override
-    @Deprecated(since = "2.0", forRemoval = true)
-    protected Object readResolve() {
-        super.readResolve();
-
-        // field renamed
-        if (summaryText != null) {
-            setText(summaryText);
-        }
-
-        return this;
     }
 }
