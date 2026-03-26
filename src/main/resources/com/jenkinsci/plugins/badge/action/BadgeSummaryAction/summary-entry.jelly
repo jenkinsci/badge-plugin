@@ -2,7 +2,7 @@
 <!--
 The MIT License
 
-Copyright (c) 2025, Badge Plugin Authors
+Copyright (c) 2026, Badge Plugin Authors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -->
 
-<?jelly escape-by-default='true'?>
-<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
-  <f:entry field="id" title="Id (optional)">
-    <f:textbox/>
-  </f:entry>
-  <f:entry field="icon" title="Icon">
-    <f:textbox/>
-  </f:entry>
-  <f:entry field="text" title="Text">
-    <f:textbox/>
-  </f:entry>
-  <f:entry field="cssClass" title="CSS Class">
-    <f:textbox/>
-  </f:entry>
-  <f:entry field="style" title="CSS Style">
-    <f:textbox/>
-  </f:entry>
-  <f:entry field="link" title="Link">
-    <f:textbox/>
-  </f:entry>
-  <f:entry field="target" title="Target">
-    <f:textbox/>
-  </f:entry>
+<?jelly escape-by-default='false'?>
+<j:jelly xmlns:j="jelly:core" xmlns:l="/lib/layout">
+  <tr class="app-summary">
+    <td>
+      <j:choose>
+        <!-- with icon -->
+        <j:when test="${not empty it.icon}">
+          <l:icon src="${it.icon}"/>
+        </j:when>
+        <!-- without icon -->
+        <j:otherwise>
+          <l:icon src="/images/16x16/empty.png"/>
+        </j:otherwise>
+      </j:choose>
+    </td>
+    <td style="vertical-align:middle">
+      <j:choose>
+        <!-- text with link -->
+        <j:when test="${not empty it.link}">
+          <a href="${it.link}" target="${it.target}" class="${it.cssClass}" style="${it.style}">
+            <span>
+              ${it.text}
+            </span>
+          </a>
+        </j:when>
+        <!-- text without link -->
+        <j:otherwise>
+          <span class="${it.cssClass}" style="${it.style}">
+            ${it.text}
+          </span>
+        </j:otherwise>
+      </j:choose>
+    </td>
+  </tr>
 </j:jelly>
