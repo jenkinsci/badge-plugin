@@ -72,7 +72,12 @@ public class BadgeDetail extends Detail {
         @NonNull
         @Override
         public List<? extends Detail> createFor(@NonNull Run target) {
-            return List.of(new BadgeDetail(target));
+            BadgeDetail detail = new BadgeDetail(target);
+            if (detail.getActions().isEmpty()) {
+                return List.of();
+            } else {
+                return List.of(detail);
+            }
         }
     }
 }

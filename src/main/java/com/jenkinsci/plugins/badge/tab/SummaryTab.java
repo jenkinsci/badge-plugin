@@ -28,7 +28,6 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.model.Run;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import jenkins.model.Tab;
 import jenkins.model.TransientActionFactory;
@@ -77,7 +76,12 @@ public class SummaryTab extends Tab {
         @NonNull
         @Override
         public Collection<SummaryTab> createFor(@NonNull Run target) {
-            return Collections.singleton(new SummaryTab(target));
+            SummaryTab tab = new SummaryTab(target);
+            if (tab.getActions().isEmpty()) {
+                return List.of();
+            } else {
+                return List.of(tab);
+            }
         }
     }
 }
