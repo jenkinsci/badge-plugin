@@ -4,7 +4,7 @@
 :toclevels: 3
 :toc-title:
 
-image:https://ci.jenkins.io/job/Plugins/job/badge-plugin/job/master/badge/icon[Build Status,link=https://ci.jenkins.io/job/Plugins/job/badge-plugin/job/master/]
+image:https://ci.jenkins.io/buildStatus/icon?job=Plugins%2Fbadge-plugin%2Fmaster[Build Status,link=https://ci.jenkins.io/job/Plugins/job/badge-plugin/job/master/]
 image:https://codecov.io/gh/jenkinsci/badge-plugin/branch/master/graph/badge.svg[Codecov Coverage,link=https://codecov.io/gh/jenkinsci/badge-plugin]
 image:https://github.com/jenkinsci/badge-plugin/actions/workflows/jenkins-security-scan.yml/badge.svg[Jenkins Security Scan,link=https://github.com/jenkinsci/badge-plugin/actions/workflows/jenkins-security-scan.yml]
 
