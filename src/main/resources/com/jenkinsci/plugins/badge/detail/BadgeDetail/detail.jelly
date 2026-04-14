@@ -26,6 +26,6 @@ THE SOFTWARE.
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler">
   <j:forEach var="action" items="${it.actions}">
-    <st:include page="/com/jenkinsci/plugins/badge/action/BadgeAction/badge.jelly" it="${action}" />
+    <st:include page="/com/jenkinsci/plugins/badge/action/BadgeAction/badge.jelly" it="${action}"/>
   </j:forEach>
 </j:jelly>
