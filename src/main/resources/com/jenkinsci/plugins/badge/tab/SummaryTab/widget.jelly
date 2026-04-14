@@ -29,7 +29,7 @@ THE SOFTWARE.
     <div>
       <table>
         <j:forEach var="action" items="${it.actions}">
-          <st:include page="/com/jenkinsci/plugins/badge/action/BadgeSummaryAction/summary-entry.jelly" it="${action}" />
+          <st:include page="/com/jenkinsci/plugins/badge/action/BadgeSummaryAction/summary-entry.jelly" it="${action}"/>
         </j:forEach>
       </table>
     </div>
