@@ -131,9 +131,15 @@ abstract class AbstractBadgeActionTest {
         action.setIcon("blue.gif");
         assertThat(action.getIcon(), is(Jenkins.RESOURCE_PATH + "/images/16x16/blue.gif"));
 
-        // core resource in svgs
+        // backwards compatible replacement for old SVGs
+        action.setIcon("accept.svg");
+        assertThat(action.getIcon(), is(Ionicons.getIconClassName("checkmark-circle-outline")));
         action.setIcon("error.svg");
-        assertThat(action.getIcon(), is(Jenkins.RESOURCE_PATH + "/images/svgs/error.svg"));
+        assertThat(action.getIcon(), is("symbol-status-red"));
+        action.setIcon("folder-delete.svg");
+        assertThat(action.getIcon(), is(Ionicons.getIconClassName("folder-open-outline")));
+        action.setIcon("warning.svg");
+        assertThat(action.getIcon(), is("symbol-status-yellow"));
 
         // can not be validated
         action.setIcon("[/]");
