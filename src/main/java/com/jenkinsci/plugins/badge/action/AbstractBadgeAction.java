@@ -121,7 +121,7 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
             return icon;
         }
 
-        // backwards compatible replacement for old GIFs - since 2.8
+        // backwards compatible replacement for old GIFs and SVGs - since 2.8
         return switch (icon) {
             case "completed.gif" -> "symbol-status-blue";
             case "db_in.gif" -> Ionicons.getIconClassName("cloud-upload-outline");
@@ -137,6 +137,10 @@ public abstract class AbstractBadgeAction implements Action, Serializable {
             case "text.gif" -> "symbol-document-text";
             case "warning.gif" -> "symbol-status-yellow";
             case "yellow.gif" -> Emojis.getIconClassName("yellow_square");
+            case "accept.svg" -> Ionicons.getIconClassName("checkmark-circle-outline");
+            case "error.svg" -> "symbol-status-red";
+            case "folder-delete.svg" -> Ionicons.getIconClassName("folder-open-outline");
+            case "warning.svg" -> "symbol-status-yellow";
             default -> {
                 if (isJenkinsResource(Jenkins.RESOURCE_PATH + "/images/16x16/" + icon)) {
                     yield Jenkins.RESOURCE_PATH + "/images/16x16/" + icon;
