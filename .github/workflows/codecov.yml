@@ -12,7 +12,7 @@ jobs:
     name: Coverage on Ubuntu
     steps:
       - name: Set up JDK and Maven
-        uses: s4u/setup-maven-action@v1.20.0
+        uses: s4u/setup-maven-action@ba34de01b7f4ba2ab8e2860df8993a29f4477056 # v1.20.0
         with:
           java-distribution: 'temurin'
           java-version: '21'
@@ -20,7 +20,7 @@ jobs:
         run: mvn clean jacoco:prepare-agent test jacoco:report
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v7
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7
         with:
           token: ${{secrets.CODECOV_TOKEN}}
           file: ./target/site/jacoco/jacoco.xml
