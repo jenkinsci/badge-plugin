@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import com.jenkinsci.plugins.badge.tab.SummaryTab;
+import hudson.util.VersionNumber;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -441,11 +442,13 @@ class UITest {
             // new job page
             try (JenkinsRule.WebClient webClient = r.createWebClient()) {
                 HtmlPage overview = webClient.getPage(job);
+                // Jenkins 2.583 redesigned the experimental job builds list
+                // (https://github.com/jenkinsci/badge-plugin/issues/379)
+                String badgeSelector = Jenkins.getVersion().isNewerThanOrEqualTo(new VersionNumber("2.583"))
+                        ? "#jenkins-builds .app-temporary-list__item__description a"
+                        : "#jenkins-builds .app-builds-container__item__inner__controls a";
                 DomElement badge = await().atMost(5, TimeUnit.SECONDS)
-                        .until(
-                                () -> overview.querySelector(
-                                        "#jenkins-builds .app-builds-container__item__inner__controls a"),
-                                Objects::nonNull);
+                        .until(() -> overview.querySelector(badgeSelector), Objects::nonNull);
                 DomElement icon = badge.getLastElementChild();
 
                 assertThat(badge.getTagName(), is("a"));
